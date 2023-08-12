@@ -3,9 +3,14 @@ import { createRouter, createWebHashHistory } from "vue-router";
 const router = createRouter({
   routes: [
     {
-      name: "Home",
+      name: "Welcome",
       path: "/",
-      component: () => import("@/views/Home.vue")
+      component: () => import("@/views/Welcome.vue")
+    },
+    {
+      name: "Login",
+      path: "/login",
+      component: () => import("@/views/login/Login.vue")
     }
   ],
   history: createWebHashHistory(),

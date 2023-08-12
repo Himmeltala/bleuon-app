@@ -1,13 +1,26 @@
 @import "./mixins.scss";
-@import "./cust-res.scss";
+
+:root {
+  --bleuon-font-size: 14px;
+}
+
+// 375 ~ 1400 都是 14px，超过 1500px 就开始依次往上递增
+@for $i from 1 through 30 {
+  $min: $i * 100 + 1500px;
+
+  @media screen and (min-width: $min) {
+    :root {
+      --bleuon-font-size: #{calc($min / 100)};
+    }
+  }
+}
 
 html,
 body {
   margin: 0;
   padding: 0;
-  color: var(--text-a);
-  font-size: var(--reactive-font);
-  background-color: var(--background-bg);
+  font-size: var(--bleuon-font-size);
+  background-color: var(--bleuon-bg);
 
   & {
     scrollbar-color: initial;
@@ -16,27 +29,5 @@ body {
 
   &::-webkit-scrollbar {
     display: none;
-  }
-}
-
-a:link {
-  text-decoration: none;
-}
-
-@include pc() {
-  .page {
-    --uno: f-s-c relative;
-    z-index: 2;
-
-    & > .content {
-      width: 55vw;
-    }
-  }
-}
-
-@include mb() {
-  .page {
-    --uno: px-4;
-    width: 100%;
   }
 }

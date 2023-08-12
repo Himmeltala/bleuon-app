@@ -2,7 +2,7 @@
 @import "@/scss/index";
 
 html[class="dark"] {
-  --background-bg: #222222;
+  --bg-a: #222222;
   // 主题规定的文字颜色
   --text-a: #a7a7a7;
   --text-b: #999999;
@@ -11,7 +11,7 @@ html[class="dark"] {
 }
 
 html[class="light"] {
-  --background-bg: #f8f8f8;
+  --bg-a: #f8f8f8;
   // 主题规定的文字颜色
   --text-a: #383838;
   --text-b: #686868;
