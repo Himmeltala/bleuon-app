@@ -2,7 +2,7 @@
 
 <template>
   <div class="welcome">
-    <div class="fixed-lt w-100% f-c-b px-55 h-20 b-b-1 b-b-solid b-b-#e4e4e4 bg-white">
+    <div class="header fixed-lt w-100% f-c-b px-55 h-20 b-b-1 b-b-solid b-b-#e4e4e4 bg-white">
       <div class="flex-grow-1 cursor-pointer f-c-s" @click="$router.push('/')">
         <img src="/bleuon-icon.png" class="w-45 h-15 object-cover" />
       </div>
@@ -18,7 +18,7 @@
         <el-button type="primary" @click="$router.push('/login')">免费注册</el-button>
       </div>
     </div>
-    <div class="mt-50">
+    <div class="mt-70">
       <div class="text-center text-3rem font-bold">免费在线流程图思维导图</div>
       <div class="text-center text-1.5rem mt-4 text-b">
         一款在线作图工具，支持原型图、UML、BPMN、网络拓扑图等多种图形绘制

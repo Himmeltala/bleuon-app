@@ -11,6 +11,21 @@ const router = createRouter({
       name: "Login",
       path: "/login",
       component: () => import("@/views/login/Login.vue")
+    },
+    {
+      path: "/u",
+      children: [
+        {
+          name: "Profile",
+          path: "profile/:uid",
+          component: () => import("@/views/user/Profile.vue")
+        },
+        {
+          name: "Setting",
+          path: "setting",
+          component: () => import("@/views/user/Setting.vue")
+        }
+      ]
     }
   ],
   history: createWebHashHistory(),
