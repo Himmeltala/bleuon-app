@@ -21,10 +21,10 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
           <div class="ml-10">
             <div class="username f-c-c mb-5">
               <div class="font-bold text-1.5rem mr-10">Himmelbleu</div>
-              <el-button>编辑资料</el-button>
+              <el-button @click="$router.push('/u/setting')">编辑资料</el-button>
             </div>
             <div class="usertags mb-5">
-              <el-tag class="mr-4">本科</el-tag>
+              <el-tag type="warning" class="mr-4">本科</el-tag>
               <el-tag>计算机科学与技术</el-tag>
             </div>
             <div class="signature text-b">Time tick away, dream faded away!</div>
@@ -52,16 +52,19 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
           <template #label>
             <span :class="{ 'font-bold': activeName === 'myworks' }">我的作品</span>
           </template>
+          <!--  -->
         </el-tab-pane>
         <el-tab-pane label="我的关注" name="myfollows">
           <template #label>
             <span :class="{ 'font-bold': activeName === 'myfollows' }">我的关注</span>
           </template>
+          <!--  -->
         </el-tab-pane>
         <el-tab-pane label="我的粉丝" name="myfans">
           <template #label>
             <span :class="{ 'font-bold': activeName === 'myfans' }">我的粉丝</span>
           </template>
+          <!--  -->
         </el-tab-pane>
       </el-tabs>
     </div>
