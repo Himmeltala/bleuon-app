@@ -25,7 +25,7 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <div class="menu">
+  <div class="menu h-100vh flow-auto px-5 b-r-1 b-r-solid b-r-#e4e4e4 bg-white">
     <div class="menu__header">
       <div class="mt-5">
         <img src="/bleuon-icon.png" class="h-15 w-40 object-cover" />
@@ -101,7 +101,7 @@ onBeforeMount(() => {
 
 <style scoped lang="scss">
 .menu__item {
-  --uno: cursor-pointer select-none p-3 rd-2;
+  --uno: cursor-pointer select-none p-3 rd-2 transition-all-300;
 
   &.active {
     --uno: bg-#F3F5F9;
