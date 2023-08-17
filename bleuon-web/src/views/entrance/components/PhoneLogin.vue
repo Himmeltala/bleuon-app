@@ -9,12 +9,13 @@ const formData = reactive({
   <div>
     <el-form>
       <el-form-item>
-        <el-input size="large" v-model="formData.phoneNum" placeholder="请输入手机号" />
+        <el-input clearable size="large" v-model="formData.phoneNum" placeholder="请输入手机号" />
       </el-form-item>
       <el-form-item>
         <div class="f-c-b w-100%">
           <div class="w-70%">
             <el-input
+              clearable
               class="w-100%"
               size="large"
               v-model="formData.identifyingCode"

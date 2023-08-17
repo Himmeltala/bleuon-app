@@ -9,10 +9,19 @@ const formData = reactive({
   <div>
     <el-form>
       <el-form-item>
-        <el-input size="large" v-model="formData.account" placeholder="请输入手机号或邮箱" />
+        <el-input
+          clearable
+          size="large"
+          v-model="formData.account"
+          placeholder="请输入手机号或邮箱" />
       </el-form-item>
       <el-form-item>
-        <el-input size="large" v-model="formData.password" placeholder="请输入密码" show-password />
+        <el-input
+          clearable
+          size="large"
+          v-model="formData.password"
+          placeholder="请输入密码"
+          show-password />
       </el-form-item>
       <el-form-item>
         <el-button size="large" class="w-100%" type="primary">

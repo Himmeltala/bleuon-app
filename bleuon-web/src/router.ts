@@ -41,11 +41,12 @@ const router = createRouter({
       ]
     },
     {
-      name: "Login",
-      meta: { title: "最近" },
-      path: "/login",
-      component: () => import("@/views/login/Login.vue")
+      name: "Entrance",
+      meta: { title: "入口" },
+      path: "/entrance",
+      component: () => import("@/views/entrance/Entrance.vue")
     },
+
     {
       path: "/u",
       children: [

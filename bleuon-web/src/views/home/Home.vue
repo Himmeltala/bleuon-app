@@ -11,13 +11,7 @@ const activeItem = ref<ActiveItem>("MyRecent");
     <Menu class="w-17%" v-model:active-item="activeItem"></Menu>
     <div class="content h-100vh flow-auto px-10 pb-10 w-83%">
       <Header></Header>
-      <RouterView v-slot="{ Component }">
-        <template v-if="Component">
-          <KeepAlive>
-            <component :is="Component" />
-          </KeepAlive>
-        </template>
-      </RouterView>
+      <RouterView></RouterView>
     </div>
   </div>
 </template>
