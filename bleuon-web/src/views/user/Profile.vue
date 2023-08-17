@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Header from "./Header.vue";
+import Header from "./components/Header.vue";
 import type { TabsPaneContext } from "element-plus";
 
 const activeName = ref<"myworks" | "myfollows" | "myfans">("myworks");
@@ -52,19 +52,16 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
           <template #label>
             <span :class="{ 'font-bold': activeName === 'myworks' }">我的作品</span>
           </template>
-          <!--  -->
         </el-tab-pane>
         <el-tab-pane label="我的关注" name="myfollows">
           <template #label>
             <span :class="{ 'font-bold': activeName === 'myfollows' }">我的关注</span>
           </template>
-          <!--  -->
         </el-tab-pane>
         <el-tab-pane label="我的粉丝" name="myfans">
           <template #label>
             <span :class="{ 'font-bold': activeName === 'myfans' }">我的粉丝</span>
           </template>
-          <!--  -->
         </el-tab-pane>
       </el-tabs>
     </div>

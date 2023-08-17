@@ -11,7 +11,7 @@ function filterFiles() {}
     <div class="f-c-b">
       <div>最近</div>
       <div class="f-c-c">
-        <div class="mr-5">
+        <div>
           <el-tooltip content="筛选" placement="bottom">
             <el-button @click="filterFiles" size="small">
               <template #icon>
@@ -31,7 +31,7 @@ function filterFiles() {}
         :index="index"
         v-model:last-index="lastFileIndex"
         :disabled="lastFileIndex == index"
-        v-for="(item, index) in 10"></File>
+        v-for="(item, index) in 5"></File>
     </div>
   </div>
 </template>

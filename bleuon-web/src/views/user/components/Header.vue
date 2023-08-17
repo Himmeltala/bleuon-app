@@ -33,9 +33,7 @@ const props = defineProps({
       </div>
     </div>
     <div class="flex-grow-1 f-c-e">
-      <img
-        src="https://img2.baidu.com/it/u=1397727792,1861968739&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-        class="rd-50% h-10 w-10" />
+      <Avatar></Avatar>
     </div>
   </div>
 </template>

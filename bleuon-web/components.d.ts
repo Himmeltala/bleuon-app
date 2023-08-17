@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AccountLogin: typeof import('./src/views/login/AccountLogin.vue')['default']
+    Avatar: typeof import('./src/components/Avatar.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
@@ -26,7 +27,7 @@ declare module 'vue' {
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     File: typeof import('./src/views/home/components/File.vue')['default']
     Folder: typeof import('./src/views/home/components/Folder.vue')['default']
-    Header: typeof import('./src/views/user/Header.vue')['default']
+    Header: typeof import('./src/views/user/components/Header.vue')['default']
     Home: typeof import('./src/views/home/Home.vue')['default']
     Index: typeof import('./src/views/Index.vue')['default']
     Login: typeof import('./src/views/login/Login.vue')['default']

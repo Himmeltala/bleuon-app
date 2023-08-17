@@ -54,14 +54,6 @@ function handleClick() {
         分享
       </div>
       <div class="text-0.9rem f-c-s">
-        <div class="i-tabler-copy mr-2"></div>
-        复制
-      </div>
-      <div class="text-0.9rem f-c-s">
-        <div class="i-tabler-arrows-move mr-2"></div>
-        移动
-      </div>
-      <div class="text-0.9rem f-c-s">
         <div class="i-tabler-trash-x mr-2"></div>
         删除
       </div>
@@ -86,11 +78,15 @@ function handleClick() {
     }
   }
 
-  .options__panel > div {
-    --uno: cursor-pointer px-4 py-2 rd-2 transition-all-300;
+  .options__panel {
+    box-shadow: 0 6px 16px 1px rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
 
-    &:hover {
-      --uno: bg-#F3F5F9;
+    & > div {
+      --uno: cursor-pointer px-4 py-2 rd-2 transition-all-300;
+
+      &:hover {
+        --uno: bg-#F3F5F9;
+      }
     }
   }
 }

@@ -22,6 +22,8 @@ onBeforeMount(() => {
   const currRouterName = router.currentRoute.value.name;
   emits("update:activeItem", currRouterName);
 });
+
+const disabled = ref(false);
 </script>
 
 <template>
@@ -30,8 +32,26 @@ onBeforeMount(() => {
       <div class="mt-5">
         <img src="/bleuon-icon.png" class="h-15 w-40 object-cover" />
       </div>
-      <div class="mt-5">
-        <el-button class="w-100%" type="primary">＋新建</el-button>
+      <div class="mt-5 relative">
+        <el-button @click="disabled = !disabled" class="w-100%" type="primary">＋新建</el-button>
+        <div
+          class="options__panel select-none p-2 z-2 absolute top-12 left-0 w-65 bg-white rd-2"
+          :class="disabled ? 'block' : 'hidden'">
+          <div class="f-c-b flex-wrap flex-gap-5">
+            <div class="item">
+              <div></div>
+              <div>流程图</div>
+            </div>
+            <div class="item">
+              <div></div>
+              <div>思维导图</div>
+            </div>
+            <div class="item">
+              <div></div>
+              <div>UML</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="menu__body mt-10 pb-5 b-b-1 b-b-solid b-b-#e4e4e4">
@@ -109,6 +129,19 @@ onBeforeMount(() => {
 
   &:hover {
     --uno: bg-#F3F5F9;
+  }
+}
+
+.options__panel {
+  box-shadow: 0 6px 16px 1px rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+
+  .item {
+    flex: 0 1 45% !important;
+    --uno: cursor-pointer px-4 py-2 rd-2 transition-all-300;
+
+    &:hover {
+      --uno: bg-#F3F5F9;
+    }
   }
 }
 </style>
