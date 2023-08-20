@@ -1,13 +1,16 @@
-package com.bleuon.configs;
+package com.bleuon.config;
 
-import com.bleuon.annotaions.UniteApi;
+import com.bleuon.annotaion.UniteApi;
 import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ * @author zheng
+ */
 @Configuration
-public class WebMvcConfiguration implements WebMvcConfigurer {
+public class WebMvcConfig implements WebMvcConfigurer {
 
     @Resource
     private UniteApiProps uniteApiProps;

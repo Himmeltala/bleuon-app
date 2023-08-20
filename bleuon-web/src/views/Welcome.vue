@@ -12,10 +12,10 @@
         <div class="hover">专题</div>
       </div>
       <div class="flex-grow-1 f-c-e">
-        <el-button text @click="$router.push('/login')">
+        <el-button text @click="$router.push('/entrance')">
           <span class="text-primary">登录</span>
         </el-button>
-        <el-button type="primary" @click="$router.push('/login')">免费注册</el-button>
+        <el-button type="primary" @click="$router.push('/entrance')">免费注册</el-button>
       </div>
     </div>
     <div class="mt-70">
