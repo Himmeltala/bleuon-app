@@ -8,11 +8,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 /**
+ * UserDetails 实现类
+ *
  * @author zheng
  */
 @Data
 @AllArgsConstructor
-public class LoginUser implements UserDetails {
+public class BleuUserDetailsImpl implements UserDetails {
 
     private User user;
 
