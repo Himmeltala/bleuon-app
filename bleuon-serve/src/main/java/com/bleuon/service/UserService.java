@@ -6,6 +6,6 @@ import com.bleuon.model.User;
 /**
  * @author zheng
  */
-public interface BleuUserService extends IService<User> {
+public interface UserService extends IService<User> {
 
 }

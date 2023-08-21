@@ -33,3 +33,10 @@ XxxController -> XxxService extends IService
 XxxServiceImpl implements XxxService extends ServiceImpl
 
 XxxMapper implements BaseMapper
+
+# Security 逻辑
+
+1. 经过 UsernamePasswordAuthenticationFilter：封装 Authentication 对象，最多只有用户名和密码，没有权限。交给下一个处理。
+2. 经过 ProviderManager：调用 DaoAuthenticationProvider.authenticate 进行认证。使用 InMemoryUserDetailsManager
+   根据用户名查询用户信息，封装 UserDetails 返回。
+3. 获得权限信息，返回 jwt。

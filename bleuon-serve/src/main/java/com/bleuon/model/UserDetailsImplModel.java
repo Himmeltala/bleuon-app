@@ -14,7 +14,7 @@ import java.util.Collection;
  */
 @Data
 @AllArgsConstructor
-public class BleuUserDetailsImpl implements UserDetails {
+public class UserDetailsImplModel implements UserDetails {
 
     private User user;
 

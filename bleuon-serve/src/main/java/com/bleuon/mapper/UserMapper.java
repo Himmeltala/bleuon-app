@@ -8,6 +8,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @author zheng
  */
 @Mapper
-public interface BleuUserMapper extends BaseMapper<User> {
+public interface UserMapper extends BaseMapper<User> {
 
 }
