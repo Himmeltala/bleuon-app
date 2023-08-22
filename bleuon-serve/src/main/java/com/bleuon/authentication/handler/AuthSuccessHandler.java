@@ -15,7 +15,9 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * 登录成功处理器
@@ -37,7 +39,10 @@ public class AuthSuccessHandler implements AuthenticationSuccessHandler {
         response.setContentType("application/json;charset=utf-8");
         UserDetails details = (User) authentication.getPrincipal();
         // 传递 UserDetails，创建 jwt 令牌
-        String token = JwtUtil.createJwt(details);
+        String jwtUuid = UUID.randomUUID().toString();
+        Date expire = JwtUtil.getExpire();
+        String token = JwtUtil.createJwt(details, jwtUuid, expire);
+        // 存入 redis 数据库
         // 创建与前端传输的数据格式 AuthenticationVoReq
         AuthVoReq voReq = new AuthVoReq();
         voReq.setToken(token);

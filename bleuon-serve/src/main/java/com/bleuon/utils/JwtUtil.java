@@ -3,6 +3,8 @@ package com.bleuon.utils;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -22,7 +24,7 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(KEY));
     }
 
-    public static String createJwt(UserDetails details) {
+    public static String createJwt(UserDetails details, String jwtUuid, Date expire) {
         JwtBuilder builder = Jwts.builder();
         return builder
                 // header
@@ -33,11 +35,11 @@ public class JwtUtil {
                 // jwt 主题
                 .setSubject("bleuon")
                 // 过期时间
-                .setExpiration(getExpire())
+                .setExpiration(expire)
                 // 颁发时间
                 .setIssuedAt(new Date())
                 // jwt id
-                .setId(UUID.randomUUID().toString())
+                .setId(jwtUuid)
                 // signature
                 .signWith(generateKey())
                 .compact();

@@ -17,6 +17,8 @@ public class UnAuthSuccessHandler implements LogoutSuccessHandler {
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+        // TODO 获取请求头的 JWT，获取 JWT 的 ID
+        // TODO 删除 Redis 中存储的 JWT
         response.getWriter().write("退出成功！");
     }
 

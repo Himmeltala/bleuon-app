@@ -7,7 +7,6 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -39,6 +38,13 @@ public class AuthJwtFilter extends OncePerRequestFilter {
         String authentication = request.getHeader("Authorization");
         Claims claims = JwtUtil.parseJwt(authentication);
         if (claims != null) {
+            // TODO 解析 JWT，获取 JWT ID
+            String jwtId = claims.getId();
+            // TODO 查询 Redis 中是否有该 JWT
+            // TODO 如果没有这个 JWT，认证失败
+
+            // TODO 如果有这个 JWT，认证成功
+
             List<String> authorities = authMapper.queryAuthsByUserId(null, (String) claims.get("username"));
             UserDetails details = JwtUtil.toUserDetails(claims, authorities);
             // 创建 UsernamePasswordAuthenticationToken
