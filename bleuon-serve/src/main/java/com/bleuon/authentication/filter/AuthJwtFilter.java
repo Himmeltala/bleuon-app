@@ -15,17 +15,21 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+/**
+ * 请求进入时，这个过滤器第一时间执行，首先检验请求头是否携带 Token。
+ * <p>
+ * 如果没有携带 Token 认证失败，放行进入下一个过滤链。通过 SecurityContextHolder，设置认证信息，表示认证未通过，执行处理器。
+ *
+ * @author zheng
+ */
 @Component
 public class AuthJwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        // 获取请求头的 token
         String authentication = request.getHeader("Authorization");
-        // 解析 token
         Claims claims = JwtUtil.parseJwt(authentication);
         if (claims != null) {
-            // 封装 UserDetails
             UserDetails details = JwtUtil.toUserDetails(claims);
             // 创建 UsernamePasswordAuthenticationToken
             UsernamePasswordAuthenticationToken authToken =

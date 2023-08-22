@@ -17,10 +17,10 @@ import java.util.List;
 @AllArgsConstructor
 public class AuthVoReq {
 
-    private String username;
-    private String roles;
-    private List<String> authorities;
-    private String token;
     private Date expire;
+    private String token;
+    private String username;
+    private List<String> roles;
+    private List<String> authorities;
 
 }

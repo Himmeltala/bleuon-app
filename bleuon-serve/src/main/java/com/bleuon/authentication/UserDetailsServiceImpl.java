@@ -11,14 +11,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
- * 替换默认的 InMemoryUserDetailManager，使用 UserDetailsServiceImpl。
+ * 当用户登录时进入这个类，通过用户名查询用户信息，封装 UserDetails。
+ * <p>
+ * 替换 InMemoryUserDetailManager。使用数据库根据用户名查询用户信息，得到的结果封装为 UserDetails 对象。
  *
  * @author zheng
  */
 @Service
-public class UserDetailsServiceImpl
-        extends ServiceImpl<UserMapper, User>
-        implements UserService, UserDetailsService {
+public class UserDetailsServiceImpl extends ServiceImpl<UserMapper, User> implements UserService, UserDetailsService {
 
     private final PasswordEncoder passwordEncoder;
 
@@ -26,10 +26,6 @@ public class UserDetailsServiceImpl
         this.passwordEncoder = passwordEncoder;
     }
 
-    /**
-     * 替换默认的 InMemoryUserDetailManager。
-     * 使用数据库根据用户名查询用户信息，得到的结果封装为 UserDetails 对象。
-     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = findUserByUsernameOrEmail(username);
