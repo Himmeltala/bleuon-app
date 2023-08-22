@@ -22,16 +22,14 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(KEY));
     }
 
-    public static String createJwt(UserDetails details, Integer id) {
+    public static String createJwt(UserDetails details) {
         JwtBuilder builder = Jwts.builder();
         return builder
                 // header
                 .setHeaderParam("typ", "JWT")
                 .setHeaderParam("alg", "HS256")
                 // payload
-                .claim("id", id)
                 .claim("username", details.getUsername())
-                .claim("authorities", UserDetailsUtil.getAuths(details))
                 // jwt 主题
                 .setSubject("bleuon")
                 // 过期时间
@@ -63,9 +61,8 @@ public class JwtUtil {
         }
     }
 
-    public static UserDetails toUserDetails(Claims claims) {
+    public static UserDetails toUserDetails(Claims claims, List<String> authorities) {
         String username = (String) claims.get("username");
-        ArrayList<String> authorities = (ArrayList<String>) claims.get("authorities");
 
         return User
                 .withUsername(username)

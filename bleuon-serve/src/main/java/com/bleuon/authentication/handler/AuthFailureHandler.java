@@ -21,7 +21,7 @@ public class AuthFailureHandler implements AuthenticationFailureHandler {
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         response.setContentType("application/json;charset=utf-8");
         response.getWriter()
-                .write(JSON.toJSONString(ResponseEntity.status(401).body("用户名或密码错误，导致认证失败！请重试。")));
+                .write(JSON.toJSONString(ResponseEntity.status(401).body("认证失败！请重试。")));
     }
 
 }

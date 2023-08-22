@@ -1,11 +1,13 @@
 package com.bleuon.authentication.filter;
 
+import com.bleuon.mapper.AuthMapper;
 import com.bleuon.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * 请求进入时，这个过滤器第一时间执行，首先检验请求头是否携带 Token。
@@ -25,12 +28,19 @@ import java.io.IOException;
 @Component
 public class AuthJwtFilter extends OncePerRequestFilter {
 
+    private final AuthMapper authMapper;
+
+    public AuthJwtFilter(AuthMapper authMapper) {
+        this.authMapper = authMapper;
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authentication = request.getHeader("Authorization");
         Claims claims = JwtUtil.parseJwt(authentication);
         if (claims != null) {
-            UserDetails details = JwtUtil.toUserDetails(claims);
+            List<String> authorities = authMapper.queryAuthsByUserId(null, (String) claims.get("username"));
+            UserDetails details = JwtUtil.toUserDetails(claims, authorities);
             // 创建 UsernamePasswordAuthenticationToken
             UsernamePasswordAuthenticationToken authToken =
                     new UsernamePasswordAuthenticationToken(details, null, details.getAuthorities());

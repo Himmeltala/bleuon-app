@@ -1,14 +1,18 @@
-package com.bleuon.authentication;
+package com.bleuon.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.bleuon.mapper.UserMapper;
+import com.bleuon.mapper.AuthMapper;
+import com.bleuon.mapper.AuthUserDetailsMapper;
+import com.bleuon.service.AuthUserDetailsService;
 import com.bleuon.entity.User;
-import com.bleuon.service.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 当用户登录时进入这个类，通过用户名查询用户信息，封装 UserDetails。
@@ -18,11 +22,13 @@ import org.springframework.stereotype.Service;
  * @author zheng
  */
 @Service
-public class UserDetailsServiceImpl extends ServiceImpl<UserMapper, User> implements UserService, UserDetailsService {
+public class AuthUserDetailsServiceImpl extends ServiceImpl<AuthUserDetailsMapper, User> implements AuthUserDetailsService, UserDetailsService {
 
+    private final AuthMapper authMapper;
     private final PasswordEncoder passwordEncoder;
 
-    public UserDetailsServiceImpl(PasswordEncoder passwordEncoder) {
+    public AuthUserDetailsServiceImpl(AuthMapper authMapper, PasswordEncoder passwordEncoder) {
+        this.authMapper = authMapper;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -37,11 +43,12 @@ public class UserDetailsServiceImpl extends ServiceImpl<UserMapper, User> implem
         String encode = passwordEncoder.encode(user.getPassword());
         user.setPassword(encode);
 
+        List<String> auths = authMapper.queryAuthsByUserId(null, username);
+
         return org.springframework.security.core.userdetails.User
                 .withUsername(username)
                 .password(user.getPassword())
-                .roles(user.getRoles().split(","))
-                .authorities(user.getAuthorities().split(","))
+                .authorities(auths.toArray(new String[0]))
                 .build();
     }
 

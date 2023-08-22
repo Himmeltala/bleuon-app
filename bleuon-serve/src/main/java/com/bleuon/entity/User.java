@@ -13,13 +13,13 @@ import java.sql.Timestamp;
  * @author zheng
  */
 @Data
-@TableName("users")
+@TableName("t_users")
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
 
     @TableId(value = "id")
-    private String id;
+    private Long id;
     @TableField(value = "username")
     private String username;
     @TableField(value = "password")
@@ -42,9 +42,5 @@ public class User {
     private String sex;
     @TableField(value = "register_date")
     private Timestamp registerDate;
-    @TableField("authorities")
-    private String authorities;
-    @TableField("roles")
-    private String roles;
 
 }

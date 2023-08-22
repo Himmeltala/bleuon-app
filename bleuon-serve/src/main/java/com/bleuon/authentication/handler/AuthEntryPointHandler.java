@@ -23,7 +23,7 @@ public class AuthEntryPointHandler implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         response.setContentType("application/json;charset=utf-8");
         response.getWriter()
-                .write(JSON.toJSONString(ResponseEntity.status(401).body("未授权，导致认证失败！请先登录。")));
+                .write(JSON.toJSONString(ResponseEntity.status(401).body("未授权，认证失败！")));
     }
 
 }
