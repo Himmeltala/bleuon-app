@@ -1,4 +1,4 @@
-package com.bleuon.model;
+package com.bleuon.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -19,7 +19,7 @@ import java.sql.Timestamp;
 public class User {
 
     @TableId(value = "id")
-    private Integer id;
+    private String id;
     @TableField(value = "username")
     private String username;
     @TableField(value = "password")
@@ -42,5 +42,9 @@ public class User {
     private String sex;
     @TableField(value = "register_date")
     private Timestamp registerDate;
+    @TableField("authorities")
+    private String authorities;
+    @TableField("roles")
+    private String roles;
 
 }

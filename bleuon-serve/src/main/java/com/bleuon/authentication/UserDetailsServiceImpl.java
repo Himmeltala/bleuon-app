@@ -1,10 +1,8 @@
-package com.bleuon.auth;
+package com.bleuon.authentication;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bleuon.mapper.UserMapper;
-import com.bleuon.model.UserDetailsImplModel;
-import com.bleuon.model.User;
+import com.bleuon.entity.User;
 import com.bleuon.service.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,20 +11,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
- * 替换默认的 InMemoryUserDetailManager，使用 DbUserDetailsServiceImpl。
+ * 替换默认的 InMemoryUserDetailManager，使用 UserDetailsServiceImpl。
  *
  * @author zheng
  */
 @Service
-public class DbUserDetailsServiceImpl
+public class UserDetailsServiceImpl
         extends ServiceImpl<UserMapper, User>
         implements UserService, UserDetailsService {
 
     private final PasswordEncoder passwordEncoder;
-    private final UserMapper userMapper;
 
-    public DbUserDetailsServiceImpl(UserMapper userMapper, PasswordEncoder passwordEncoder) {
-        this.userMapper = userMapper;
+    public UserDetailsServiceImpl(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -36,14 +32,29 @@ public class DbUserDetailsServiceImpl
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(User::getUsername, username);
-        User user = userMapper.selectOne(queryWrapper);
+        User user = findUserByUsernameOrEmail(username);
+
+        if (user == null) {
+            throw new UsernameNotFoundException("用户名或密码错误");
+        }
 
         String encode = passwordEncoder.encode(user.getPassword());
         user.setPassword(encode);
 
-        return new UserDetailsImplModel(user);
+        return org.springframework.security.core.userdetails.User
+                .withUsername(username)
+                .password(user.getPassword())
+                .roles(user.getRoles().split(","))
+                .authorities(user.getAuthorities().split(","))
+                .build();
+    }
+
+    private User findUserByUsernameOrEmail(String text) {
+        return query()
+                .eq("username", text)
+                .or()
+                .eq("email", text)
+                .one();
     }
 
 }

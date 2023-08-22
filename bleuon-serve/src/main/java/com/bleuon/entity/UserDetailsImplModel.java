@@ -1,4 +1,4 @@
-package com.bleuon.model;
+package com.bleuon.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

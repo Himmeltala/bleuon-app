@@ -26,17 +26,8 @@ src
 5. application.yml：应用的配置文件，包含应用的属性设置。
 6. mappers：存放 MyBatis 的 Mapper 接口，用于定义 SQL 映射操作。
 
-# 调用逻辑
+# Spring Security
 
-XxxController -> XxxService extends IService
-
-XxxServiceImpl implements XxxService extends ServiceImpl
-
-XxxMapper implements BaseMapper
-
-# Security 逻辑
-
-1. 经过 UsernamePasswordAuthenticationFilter：封装 Authentication 对象，最多只有用户名和密码，没有权限。交给下一个处理。
-2. 经过 ProviderManager：调用 DaoAuthenticationProvider.authenticate 进行认证。使用 InMemoryUserDetailsManager
-   根据用户名查询用户信息，封装 UserDetails 返回。
-3. 获得权限信息，返回 jwt。
+1. 登录发放 jwt（完成）
+2. 通过 jwt 访问其他接口（完成）
+3. 退出，注销 jwt（）
