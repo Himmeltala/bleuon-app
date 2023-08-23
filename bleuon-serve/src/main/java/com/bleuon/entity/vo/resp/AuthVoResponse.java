@@ -1,10 +1,11 @@
-package com.bleuon.entity.vo.req;
+package com.bleuon.entity.vo.resp;
 
+import com.bleuon.entity.vo.VoResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,12 +16,16 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthVoReq {
+@EqualsAndHashCode(callSuper = true)
+public class AuthVoResponse extends VoResponse {
 
-    private Date expire;
+    // 过期时间
+    private Long expire;
+    // Token
     private String token;
+    // 用户名
     private String username;
-    private List<String> roles;
+    // 权限
     private List<String> authorities;
 
 }

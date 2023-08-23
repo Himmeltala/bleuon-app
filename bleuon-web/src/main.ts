@@ -7,6 +7,30 @@ import { createPinia } from "pinia";
 import "uno.css";
 import "@/style.scss";
 
+Storage.prototype.setStorageWithAge = (key: string, token: string, maxAge: number) => {
+  if (isNaN(maxAge) || maxAge < 1) throw new Error("maxAge must be a number.");
+  localStorage.setItem(
+    key,
+    JSON.stringify({
+      token, // token
+      expire: Date.now(), // 当前时间戳
+      maxAge: maxAge // 过期时间戳
+    })
+  );
+};
+
+Storage.prototype.getStorageWithAge = (key: string) => {
+  const parsed = JSON.parse(localStorage.getItem(key));
+  if (parsed) {
+    const { token, expire, maxAge } = parsed;
+    if (expire + maxAge < Date.now()) {
+      localStorage.removeItem(key);
+      return undefined;
+    }
+    return token;
+  } else return undefined;
+};
+
 const app = createApp(App);
 app.use(router);
 app.use(createPinia());

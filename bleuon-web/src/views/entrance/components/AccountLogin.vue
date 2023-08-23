@@ -1,8 +1,17 @@
 <script setup lang="ts">
-const formData = reactive({
-  account: "",
+import { UserApi } from "@/apis";
+
+const router = useRouter();
+const formData = reactive<IUser>({
+  username: "",
   password: ""
 });
+
+async function confirmLogin() {
+  await UserApi.login(formData, () => {
+    router.push("/home");
+  });
+}
 </script>
 
 <template>
@@ -12,7 +21,7 @@ const formData = reactive({
         <el-input
           clearable
           size="large"
-          v-model="formData.account"
+          v-model="formData.username"
           placeholder="请输入手机号或邮箱" />
       </el-form-item>
       <el-form-item>
@@ -24,7 +33,7 @@ const formData = reactive({
           show-password />
       </el-form-item>
       <el-form-item>
-        <el-button size="large" class="w-100%" type="primary">
+        <el-button @click="confirmLogin" size="large" class="w-100%" type="primary">
           <span class="font-bold">登录</span>
         </el-button>
       </el-form-item>

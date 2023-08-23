@@ -12,14 +12,14 @@ const emits = defineEmits(["update:activeItem"]);
 
 const router = useRouter();
 
-function handleClickedItem(routerName: ActiveItem) {
+function navigateTo(routerName: ActiveItem) {
   emits("update:activeItem", routerName);
   const rsv = router.resolve({ name: routerName });
   router.push({ name: rsv.name, path: rsv.path });
 }
 
 onBeforeMount(() => {
-  const currRouterName = router.currentRoute.value.name;
+  const currRouterName = router.currentRoute.value.name as ActiveItem;
   emits("update:activeItem", currRouterName);
 });
 
@@ -57,36 +57,36 @@ const disabled = ref(false);
     <div class="menu__body mt-10 pb-5 b-b-1 b-b-solid b-b-#e4e4e4">
       <div
         class="menu__item f-c-s"
-        :class="{ active: activeItem == 'CreateByTemplate' }"
-        @click="handleClickedItem('CreateByTemplate')">
+        :class="{ active: activeItem == 'auth-create-by-template' }"
+        @click="navigateTo('auth-create-by-template')">
         <div class="mr-2 i-tabler-apps"></div>
         从模板新建
       </div>
       <div
         class="menu__item f-c-s"
-        :class="{ active: activeItem == 'MyRecent' }"
-        @click="handleClickedItem('MyRecent')">
+        :class="{ active: activeItem == 'auth-my-recent' }"
+        @click="navigateTo('auth-my-recent')">
         <div class="mr-2 i-tabler-clock-hour-3"></div>
         最近文件
       </div>
       <div
         class="menu__item f-c-s"
-        :class="{ active: activeItem == 'MyFiles' }"
-        @click="handleClickedItem('MyFiles')">
+        :class="{ active: activeItem == 'auth-my-files' }"
+        @click="navigateTo('auth-my-files')">
         <div class="mr-2 i-tabler-folder"></div>
         我的文件
       </div>
       <div
         class="menu__item f-c-s"
-        :class="{ active: activeItem == 'MyShares' }"
-        @click="handleClickedItem('MyShares')">
+        :class="{ active: activeItem == 'auth-my-shares' }"
+        @click="navigateTo('auth-my-shares')">
         <div class="mr-2 i-tabler-share"></div>
         我的分享
       </div>
       <div
         class="menu__item f-c-s"
-        :class="{ active: activeItem == 'MyStars' }"
-        @click="handleClickedItem('MyStars')">
+        :class="{ active: activeItem == 'auth-my-stars' }"
+        @click="navigateTo('auth-my-stars')">
         <div class="mr-2 i-tabler-star"></div>
         我的收藏
       </div>
@@ -94,15 +94,15 @@ const disabled = ref(false);
     <div class="mt-5 pb-5 b-b-1 b-b-solid b-b-#e4e4e4">
       <div
         class="menu__item f-c-s"
-        :class="{ active: activeItem == 'Templates' }"
-        @click="handleClickedItem('Templates')">
+        :class="{ active: activeItem == 'auth-templates' }"
+        @click="navigateTo('auth-templates')">
         <div class="mr-2 i-tabler-template"></div>
         模板社区
       </div>
       <div
         class="menu__item f-c-s"
-        :class="{ active: activeItem == 'Discussion' }"
-        @click="handleClickedItem('Discussion')">
+        :class="{ active: activeItem == 'public-discussion' }"
+        @click="navigateTo('public-discussion')">
         <div class="mr-2 i-tabler-friends"></div>
         讨论社区
       </div>
@@ -110,8 +110,8 @@ const disabled = ref(false);
     <div class="mt-5 pb-5">
       <div
         class="menu__item f-c-s"
-        :class="{ active: activeItem == 'Recycle' }"
-        @click="handleClickedItem('Recycle')">
+        :class="{ active: activeItem == 'auth-recycle' }"
+        @click="navigateTo('auth-recycle')">
         <div class="mr-2 i-tabler-trash-x"></div>
         回收站
       </div>

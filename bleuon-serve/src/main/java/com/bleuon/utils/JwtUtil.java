@@ -16,15 +16,15 @@ public class JwtUtil {
     private static final long EXPIRATION_TIME = 86400000 * 7; // 24 小时，单位毫秒
     private static final String KEY = "cereshuzhitingnizhenbangcereshuzhitingnizhenbang";
 
-    public static Date getExpire() {
-        return new Date(System.currentTimeMillis() + EXPIRATION_TIME);
+    public static Long getExpire() {
+        return new Date(System.currentTimeMillis() + EXPIRATION_TIME).getTime();
     }
 
     private static SecretKey generateKey() {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(KEY));
     }
 
-    public static String createJwt(UserDetails details, String jwtUuid, Date expire) {
+    public static String createJwt(UserDetails details, String jwtUuid, Long expire) {
         JwtBuilder builder = Jwts.builder();
         return builder
                 // header
@@ -35,7 +35,7 @@ public class JwtUtil {
                 // jwt 主题
                 .setSubject("bleuon")
                 // 过期时间
-                .setExpiration(expire)
+                .setExpiration(new Date(expire))
                 // 颁发时间
                 .setIssuedAt(new Date())
                 // jwt id

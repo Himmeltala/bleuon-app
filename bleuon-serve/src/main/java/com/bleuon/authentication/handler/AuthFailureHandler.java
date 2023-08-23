@@ -1,6 +1,8 @@
 package com.bleuon.authentication.handler;
 
 import com.alibaba.fastjson2.JSON;
+import com.bleuon.consts.CodeStatus;
+import com.bleuon.entity.vo.resp.AuthVoResponse;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,8 +24,11 @@ public class AuthFailureHandler implements AuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         response.setContentType("application/json;charset=utf-8");
+        AuthVoResponse vo = new AuthVoResponse();
+        vo.setMessage("用户名或密码错误！");
+        vo.setCode(CodeStatus.PASSWORD_OR_USERNAME_ERROR);
         response.getWriter()
-                .write(JSON.toJSONString(ResponseEntity.status(401).body("认证失败！请重试。")));
+                .write(JSON.toJSONString(vo));
     }
 
 }

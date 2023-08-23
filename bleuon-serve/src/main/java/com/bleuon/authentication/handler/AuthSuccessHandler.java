@@ -1,15 +1,13 @@
 package com.bleuon.authentication.handler;
 
 import com.alibaba.fastjson2.JSON;
-import com.bleuon.entity.vo.req.AuthVoReq;
+import com.bleuon.entity.vo.resp.AuthVoResponse;
 import com.bleuon.utils.JwtUtil;
 import com.bleuon.utils.RedisUtil;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -49,19 +47,20 @@ public class AuthSuccessHandler implements AuthenticationSuccessHandler {
         UserDetails details = (User) authentication.getPrincipal();
         // 传递 UserDetails，创建 jwt 令牌
         String jwtUuid = UUID.randomUUID().toString();
-        Date expire = JwtUtil.getExpire();
+        Long expire = JwtUtil.getExpire();
         String token = JwtUtil.createJwt(details, jwtUuid, expire);
         // 存入 Redis 数据库
-        redisUtil.set(jwtUuid, token, expire.getTime());
+        redisUtil.set(jwtUuid, token, expire);
         // 创建与前端传输的数据格式 AuthenticationVoReq
-        AuthVoReq voReq = new AuthVoReq();
-        voReq.setToken(token);
-        voReq.setExpire(JwtUtil.getExpire());
-        voReq.setUsername(details.getUsername());
-        voReq.setAuthorities(getAuthorities(details));
+        AuthVoResponse vo = new AuthVoResponse();
+        vo.setToken(token);
+        vo.setExpire(JwtUtil.getExpire());
+        vo.setUsername(details.getUsername());
+        vo.setAuthorities(getAuthorities(details));
+        vo.setMessage("登录成功！");
         // 返回 ResponseEntity 实体类
         response.getWriter()
-                .write(JSON.toJSONString(ResponseEntity.status(200).body(voReq)));
+                .write(JSON.toJSONString(vo));
     }
 
 }

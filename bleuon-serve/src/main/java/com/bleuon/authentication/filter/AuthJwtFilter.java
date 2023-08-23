@@ -1,5 +1,8 @@
 package com.bleuon.authentication.filter;
 
+import com.alibaba.fastjson2.JSON;
+import com.bleuon.consts.CodeStatus;
+import com.bleuon.entity.vo.resp.AuthVoResponse;
 import com.bleuon.mapper.AuthMapper;
 import com.bleuon.utils.JwtUtil;
 import com.bleuon.utils.RedisUtil;
@@ -9,6 +12,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -39,6 +43,7 @@ public class AuthJwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authentication = request.getHeader("Authorization");
         Claims claims = JwtUtil.parseJwt(authentication);
+
         if (claims != null) {
             String jwtId = claims.getId();
             Long expire = redisUtil.getExpire(jwtId);

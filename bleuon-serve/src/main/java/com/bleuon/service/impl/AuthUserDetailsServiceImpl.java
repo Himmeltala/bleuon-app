@@ -41,10 +41,10 @@ public class AuthUserDetailsServiceImpl extends ServiceImpl<AuthUserDetailsMappe
         String encode = passwordEncoder.encode(user.getPassword());
         user.setPassword(encode);
 
-        List<String> auths = authMapper.queryAuthsByUserId(null, username);
+        List<String> auths = authMapper.queryAuthsByUserId(null, user.getUsername());
 
         return org.springframework.security.core.userdetails.User
-                .withUsername(username)
+                .withUsername(user.getUsername())
                 .password(user.getPassword())
                 .authorities(auths.toArray(new String[0]))
                 .build();
@@ -55,6 +55,8 @@ public class AuthUserDetailsServiceImpl extends ServiceImpl<AuthUserDetailsMappe
                 .eq("username", text)
                 .or()
                 .eq("email", text)
+                .or()
+                .eq("phone", text)
                 .one();
     }
 

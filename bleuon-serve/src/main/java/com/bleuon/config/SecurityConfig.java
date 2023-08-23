@@ -47,6 +47,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(auth -> {
             // 不需要认证的 api
             auth.requestMatchers("/api/auth/**").permitAll();
+            auth.requestMatchers("/api/public/**").permitAll();
             // 除上之外的所有 api 都需要认证
             auth.anyRequest().authenticated();
         });
@@ -73,6 +74,7 @@ public class SecurityConfig {
         // 关闭 Session 会话管理，取消 JSESSIONID
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
+        // 添加 jwt 校验过滤器链
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
