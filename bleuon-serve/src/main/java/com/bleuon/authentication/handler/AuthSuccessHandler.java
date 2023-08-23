@@ -3,15 +3,20 @@ package com.bleuon.authentication.handler;
 import com.alibaba.fastjson2.JSON;
 import com.bleuon.entity.vo.req.AuthVoReq;
 import com.bleuon.utils.JwtUtil;
+import com.bleuon.utils.RedisUtil;
+import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,7 +29,11 @@ import java.util.UUID;
  *
  * @author zheng
  */
+@Component
 public class AuthSuccessHandler implements AuthenticationSuccessHandler {
+
+    @Resource
+    private RedisUtil redisUtil;
 
     private List<String> getAuthorities(UserDetails details) {
         List<String> list = new ArrayList<>();
@@ -42,7 +51,8 @@ public class AuthSuccessHandler implements AuthenticationSuccessHandler {
         String jwtUuid = UUID.randomUUID().toString();
         Date expire = JwtUtil.getExpire();
         String token = JwtUtil.createJwt(details, jwtUuid, expire);
-        // 存入 redis 数据库
+        // 存入 Redis 数据库
+        redisUtil.set(jwtUuid, token, expire.getTime());
         // 创建与前端传输的数据格式 AuthenticationVoReq
         AuthVoReq voReq = new AuthVoReq();
         voReq.setToken(token);

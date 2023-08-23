@@ -22,6 +22,21 @@ public class SecurityConfig {
     @Resource
     private AuthJwtFilter jwtFilter;
 
+    @Resource
+    private AuthSuccessHandler authSuccessHandler;
+
+    @Resource
+    private AuthFailureHandler authFailureHandler;
+
+    @Resource
+    private UnAuthSuccessHandler unAuthSuccessHandler;
+
+    @Resource
+    private AuthEntryPointHandler authEntryPointHandler;
+
+    @Resource
+    private AuthAccessDeniedHandler authAccessDeniedHandler;
+
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -38,19 +53,19 @@ public class SecurityConfig {
 
         http.formLogin(conf -> conf
                 .loginProcessingUrl("/api/auth/login")
-                .successHandler(new AuthSuccessHandler())
-                .failureHandler(new AuthFailureHandler())
+                .successHandler(authSuccessHandler)
+                .failureHandler(authFailureHandler)
         );
 
         http.logout(conf -> conf
                 .logoutUrl("/api/auth/logout")
-                .logoutSuccessHandler(new UnAuthSuccessHandler())
+                .logoutSuccessHandler(unAuthSuccessHandler)
         );
 
         // 异常处理器
         http.exceptionHandling(conf -> conf
-                .authenticationEntryPoint(new AuthEntryPointHandler())
-                .accessDeniedHandler(new AuthAccessDeniedHandler())
+                .authenticationEntryPoint(authEntryPointHandler)
+                .accessDeniedHandler(authAccessDeniedHandler)
         );
 
         http.csrf(AbstractHttpConfigurer::disable);

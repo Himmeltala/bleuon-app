@@ -1,10 +1,17 @@
 package com.bleuon.authentication.handler;
 
+import com.alibaba.fastjson2.JSON;
+import com.bleuon.utils.JwtUtil;
+import com.bleuon.utils.RedisUtil;
+import io.jsonwebtoken.Claims;
+import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
@@ -13,13 +20,31 @@ import java.io.IOException;
  *
  * @author zheng
  */
+@Component
 public class UnAuthSuccessHandler implements LogoutSuccessHandler {
+
+    @Resource
+    private RedisUtil redisUtil;
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        // TODO 获取请求头的 JWT，获取 JWT 的 ID
-        // TODO 删除 Redis 中存储的 JWT
-        response.getWriter().write("退出成功！");
+        response.setContentType("application/json;charset=utf-8");
+        String authToken = request.getHeader("Authorization");
+        Claims claims = JwtUtil.parseJwt(authToken);
+        if (claims != null) {
+            String jwtUuid = claims.getId();
+            if (redisUtil.hasKey(jwtUuid)) {
+                redisUtil.del(jwtUuid);
+                response.getWriter()
+                        .write(JSON.toJSONString(ResponseEntity.status(200).body("退出成功！")));
+            } else {
+                response.getWriter()
+                        .write(JSON.toJSONString(ResponseEntity.status(403).body("Token 已经过期或不存在，无法退出！")));
+            }
+        } else {
+            response.getWriter()
+                    .write(JSON.toJSONString(ResponseEntity.status(403).body("没有携带 Token，无法退出！")));
+        }
     }
 
 }

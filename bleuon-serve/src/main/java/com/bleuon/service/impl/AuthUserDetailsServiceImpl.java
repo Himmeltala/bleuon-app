@@ -5,13 +5,13 @@ import com.bleuon.mapper.AuthMapper;
 import com.bleuon.mapper.AuthUserDetailsMapper;
 import com.bleuon.service.AuthUserDetailsService;
 import com.bleuon.entity.User;
+import jakarta.annotation.Resource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -24,13 +24,11 @@ import java.util.List;
 @Service
 public class AuthUserDetailsServiceImpl extends ServiceImpl<AuthUserDetailsMapper, User> implements AuthUserDetailsService, UserDetailsService {
 
-    private final AuthMapper authMapper;
-    private final PasswordEncoder passwordEncoder;
+    @Resource
+    private AuthMapper authMapper;
 
-    public AuthUserDetailsServiceImpl(AuthMapper authMapper, PasswordEncoder passwordEncoder) {
-        this.authMapper = authMapper;
-        this.passwordEncoder = passwordEncoder;
-    }
+    @Resource
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

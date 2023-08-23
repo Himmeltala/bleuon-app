@@ -2,7 +2,9 @@ package com.bleuon.authentication.filter;
 
 import com.bleuon.mapper.AuthMapper;
 import com.bleuon.utils.JwtUtil;
+import com.bleuon.utils.RedisUtil;
 import io.jsonwebtoken.Claims;
+import jakarta.annotation.Resource;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,32 +29,29 @@ import java.util.List;
 @Component
 public class AuthJwtFilter extends OncePerRequestFilter {
 
-    private final AuthMapper authMapper;
+    @Resource
+    private AuthMapper authMapper;
 
-    public AuthJwtFilter(AuthMapper authMapper) {
-        this.authMapper = authMapper;
-    }
+    @Resource
+    private RedisUtil redisUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authentication = request.getHeader("Authorization");
         Claims claims = JwtUtil.parseJwt(authentication);
         if (claims != null) {
-            // TODO 解析 JWT，获取 JWT ID
             String jwtId = claims.getId();
-            // TODO 查询 Redis 中是否有该 JWT
-            // TODO 如果没有这个 JWT，认证失败
-
-            // TODO 如果有这个 JWT，认证成功
-
-            List<String> authorities = authMapper.queryAuthsByUserId(null, (String) claims.get("username"));
-            UserDetails details = JwtUtil.toUserDetails(claims, authorities);
-            // 创建 UsernamePasswordAuthenticationToken
-            UsernamePasswordAuthenticationToken authToken =
-                    new UsernamePasswordAuthenticationToken(details, null, details.getAuthorities());
-            authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            // 设置 SecurityContextHolder
-            SecurityContextHolder.getContext().setAuthentication(authToken);
+            Long expire = redisUtil.getExpire(jwtId);
+            if (expire != -2) {
+                List<String> authorities = authMapper.queryAuthsByUserId(null, (String) claims.get("username"));
+                UserDetails details = JwtUtil.toUserDetails(claims, authorities);
+                // 创建 UsernamePasswordAuthenticationToken
+                UsernamePasswordAuthenticationToken authToken =
+                        new UsernamePasswordAuthenticationToken(details, null, details.getAuthorities());
+                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                // 设置 SecurityContextHolder
+                SecurityContextHolder.getContext().setAuthentication(authToken);
+            }
         }
 
         filterChain.doFilter(request, response);
