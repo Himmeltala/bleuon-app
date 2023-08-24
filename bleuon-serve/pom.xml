@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.bleuon</groupId>
-    <artifactId>serve</artifactId>
+    <artifactId>bleuon-serve</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>bleuon-serve</name>
     <description>
@@ -77,6 +77,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <!-- mail -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
         <!-- spring mongodb -->
         <dependency>

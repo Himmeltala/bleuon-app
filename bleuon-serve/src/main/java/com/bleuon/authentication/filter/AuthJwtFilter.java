@@ -2,13 +2,13 @@ package com.bleuon.authentication.filter;
 
 import com.bleuon.mapper.AuthMapper;
 import com.bleuon.utils.JwtUtil;
-import com.bleuon.utils.RedisUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.annotation.Resource;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,7 +33,7 @@ public class AuthJwtFilter extends OncePerRequestFilter {
     private AuthMapper authMapper;
 
     @Resource
-    private RedisUtil redisUtil;
+    private RedisTemplate<String, String> redisTemplate;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -42,8 +42,8 @@ public class AuthJwtFilter extends OncePerRequestFilter {
 
         if (claims != null) {
             String jwtId = claims.getId();
-            Long expire = redisUtil.getExpire(jwtId);
-            if (expire != -2) {
+            Long expire = redisTemplate.getExpire(jwtId);
+            if (expire != null && expire != -2) {
                 List<String> authorities = authMapper.queryAuthsByUserId(null, (String) claims.get("username"));
                 UserDetails details = JwtUtil.toUserDetails(claims, authorities);
                 // 创建 UsernamePasswordAuthenticationToken

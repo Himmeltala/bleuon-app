@@ -26,7 +26,7 @@ public class AuthAccessDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         response.setContentType("application/json;charset=utf-8");
         AuthVoResponse vo = new AuthVoResponse();
-        vo.setCode(Codes.AUTHORITY_NOT_ENOUGH);
+        vo.setCode(Codes.AUTH_NOT_ENOUGH);
         vo.setMessage("权限不足！请联系管理员升级权限。");
         response.getWriter()
                 .write(JSON.toJSONString(vo));

@@ -11,6 +11,12 @@ spring:
       host: 127.0.0.1
       port: 6379
       password: root
+  mail:
+    host: smtp.qq.com
+    username: himmelbleu@qq.com
+    password: zrnkjyheqjbnheaa
+    default-encoding: UTF-8
+    port: 587
 
 # mybatis plus
 mybatis-plus:

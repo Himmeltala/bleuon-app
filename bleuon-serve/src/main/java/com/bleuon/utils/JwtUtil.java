@@ -54,11 +54,8 @@ public class JwtUtil {
                     .setSigningKey(generateKey())
                     .build();
             Jws<Claims> claimsJws = parser.parseClaimsJws(token);
-            // Claims claims = claimsJws.getBody();
-            // Date issuedAt = claims.getIssuedAt();
-            // return new Date().after(issuedAt) ? null : claims;
             return claimsJws.getBody();
-        } catch (ExpiredJwtException e) {
+        } catch (Exception e) {
             return null;
         }
     }

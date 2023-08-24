@@ -1,31 +1,26 @@
 package com.bleuon;
 
-import com.bleuon.mapper.AuthMapper;
+import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.redis.core.RedisTemplate;
-
-import java.util.List;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 
 @SpringBootTest
 class BleuonServeApplicationTests {
 
-    @Autowired
-    private AuthMapper authMapper;
-
-    @Autowired
-    private RedisTemplate redisTemplate;
+    @Resource
+    private JavaMailSender mailSender;
 
     @Test
-    void testAuthMapper() {
-        List<String> list = authMapper.queryAuthsByUserId(null, "himmelbleu");
-        System.out.println(list);
-    }
+    public void sendMail() {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("himmelbleu@qq.com");
+        message.setTo("himmelbleu@qq.com");
+        message.setSubject("主题：简单邮件");
+        message.setText("测试邮件内容");
 
-    @Test
-    void testRedis() {
-        redisTemplate.opsForValue().set("student", "hello");
+        mailSender.send(message);
     }
 
 }

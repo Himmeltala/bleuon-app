@@ -14,8 +14,6 @@ import java.io.IOException;
 
 /**
  * 处理在需要进行身份验证的请求中，当用户未经身份验证或者身份验证失败时的行为。
- * <p>
- * 当请求没有携带 Token 时，会进入这个处理器进行处理。
  *
  * @author zheng
  */
@@ -27,8 +25,8 @@ public class AuthEntryPointHandler implements AuthenticationEntryPoint {
         response.setContentType("application/json;charset=utf-8");
         AuthVoResponse vo = new AuthVoResponse();
 
-        vo.setMessage("Token 过期或不存在");
-        vo.setCode(Codes.TOKEN_NONE_OR_EXPIRE);
+        vo.setMessage("可能是身份认证错误，可能是 Token 的解析错误，或者是连接 Redis、MySQL 失败的错误");
+        vo.setCode(Codes.AUTHORITY_UNKNOWN_ERROR);
 
         response.getWriter()
                 .write(JSON.toJSONString(vo));
