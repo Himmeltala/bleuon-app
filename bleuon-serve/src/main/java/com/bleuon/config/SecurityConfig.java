@@ -1,6 +1,6 @@
 package com.bleuon.config;
 
-import com.bleuon.authentication.filter.AuthJwtFilter;
+import com.bleuon.authentication.filter.AuthJwtLoginFilter;
 import com.bleuon.authentication.handler.*;
 import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Bean;
@@ -20,22 +20,22 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     @Resource
-    private AuthJwtFilter jwtFilter;
+    private AuthJwtLoginFilter authJwtLoginFilter;
 
     @Resource
-    private AuthSuccessHandler authSuccessHandler;
+    private AuthUsernamePasswordSuccessHandler authUsernamePasswordSuccessHandler;
 
     @Resource
-    private AuthFailureHandler authFailureHandler;
+    private AuthUsernamePasswordFailureHandler authUsernamePasswordFailureHandler;
 
     @Resource
-    private UnAuthSuccessHandler unAuthSuccessHandler;
+    private UnAuthJwtLogoutSuccessHandler unAuthJwtLogoutSuccessHandler;
 
     @Resource
-    private AuthEntryPointHandler authEntryPointHandler;
+    private AuthJwtLoginEntryPointHandler authJwtLoginEntryPointHandler;
 
     @Resource
-    private AuthAccessDeniedHandler authAccessDeniedHandler;
+    private AuthJwtLoginAccessDeniedHandler authJwtLoginAccessDeniedHandler;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -54,19 +54,19 @@ public class SecurityConfig {
 
         http.formLogin(conf -> conf
                 .loginProcessingUrl("/api/auth/login")
-                .successHandler(authSuccessHandler)
-                .failureHandler(authFailureHandler)
+                .successHandler(authUsernamePasswordSuccessHandler)
+                .failureHandler(authUsernamePasswordFailureHandler)
         );
 
         http.logout(conf -> conf
                 .logoutUrl("/api/auth/logout")
-                .logoutSuccessHandler(unAuthSuccessHandler)
+                .logoutSuccessHandler(unAuthJwtLogoutSuccessHandler)
         );
 
         // 异常处理器
         http.exceptionHandling(conf -> conf
-                .authenticationEntryPoint(authEntryPointHandler)
-                .accessDeniedHandler(authAccessDeniedHandler)
+                .authenticationEntryPoint(authJwtLoginEntryPointHandler)
+                .accessDeniedHandler(authJwtLoginAccessDeniedHandler)
         );
 
         http.csrf(AbstractHttpConfigurer::disable);
@@ -75,7 +75,7 @@ public class SecurityConfig {
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         // 添加 jwt 校验过滤器链
-        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(authJwtLoginFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

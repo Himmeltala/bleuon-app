@@ -2,7 +2,7 @@ package com.bleuon.authentication.handler;
 
 import com.alibaba.fastjson2.JSON;
 import com.bleuon.consts.Codes;
-import com.bleuon.entity.vo.resp.AuthVoResponse;
+import com.bleuon.entity.vo.AuthVoResponse;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,12 +13,12 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 /**
- * 登录失败处理器
+ * 用户名和密码登录失败处理器
  *
  * @author zheng
  */
 @Component
-public class AuthFailureHandler implements AuthenticationFailureHandler {
+public class AuthUsernamePasswordFailureHandler implements AuthenticationFailureHandler {
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {

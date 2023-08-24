@@ -1,10 +1,10 @@
 package com.bleuon.controller;
 
-import com.bleuon.annotaion.UniteApi;
+import com.bleuon.annotaion.RequestMappingPrefix;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 
-@UniteApi("/test")
+@RequestMappingPrefix("/test")
 public class TestController {
 
     @PostMapping("/hello")

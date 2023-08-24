@@ -1,4 +1,4 @@
-package com.bleuon.entity.vo.resp;
+package com.bleuon.entity.vo;
 
 import com.bleuon.entity.vo.VoResponse;
 import lombok.AllArgsConstructor;

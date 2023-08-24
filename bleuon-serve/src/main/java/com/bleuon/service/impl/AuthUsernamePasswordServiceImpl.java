@@ -1,9 +1,9 @@
 package com.bleuon.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.bleuon.mapper.AuthMapper;
-import com.bleuon.mapper.AuthUserDetailsMapper;
-import com.bleuon.service.AuthUserDetailsService;
+import com.bleuon.mapper.AuthUsernamePasswordMapper;
+import com.bleuon.mapper.UserBaseMapper;
+import com.bleuon.service.AuthUsernamePasswordService;
 import com.bleuon.entity.User;
 import jakarta.annotation.Resource;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,17 +15,19 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * 当用户登录时进入这个类，通过用户名查询用户信息，封装 UserDetails。
+ * 用户名密码登录 Service 实现类。
  * <p>
- * 替换 InMemoryUserDetailManager。使用数据库根据用户名查询用户信息，得到的结果封装为 UserDetails 对象。
+ * 当用户选择用户名、邮箱、手机号 + 密码的方式登录时处理。
+ * <p>
+ * 同时也是替换 InMemoryUserDetailManager，即通过数据库查询用户信息，得到的结果封装为 UserDetails 对象。
  *
  * @author zheng
  */
 @Service
-public class AuthUserDetailsServiceImpl extends ServiceImpl<AuthUserDetailsMapper, User> implements AuthUserDetailsService, UserDetailsService {
+public class AuthUsernamePasswordServiceImpl extends ServiceImpl<UserBaseMapper, User> implements AuthUsernamePasswordService, UserDetailsService {
 
     @Resource
-    private AuthMapper authMapper;
+    private AuthUsernamePasswordMapper authUsernamePasswordMapper;
 
     @Resource
     private PasswordEncoder passwordEncoder;
@@ -41,7 +43,7 @@ public class AuthUserDetailsServiceImpl extends ServiceImpl<AuthUserDetailsMappe
         String encode = passwordEncoder.encode(user.getPassword());
         user.setPassword(encode);
 
-        List<String> auths = authMapper.queryAuthsByUserId(null, user.getUsername());
+        List<String> auths = authUsernamePasswordMapper.queryAuthorities(null, user.getUsername());
 
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getUsername())

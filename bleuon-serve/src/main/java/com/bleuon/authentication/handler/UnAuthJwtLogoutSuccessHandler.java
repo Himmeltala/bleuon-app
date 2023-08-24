@@ -2,7 +2,7 @@ package com.bleuon.authentication.handler;
 
 import com.alibaba.fastjson2.JSON;
 import com.bleuon.consts.Codes;
-import com.bleuon.entity.vo.resp.AuthVoResponse;
+import com.bleuon.entity.vo.AuthVoResponse;
 import com.bleuon.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.annotation.Resource;
@@ -22,7 +22,7 @@ import java.io.IOException;
  * @author zheng
  */
 @Component
-public class UnAuthSuccessHandler implements LogoutSuccessHandler {
+public class UnAuthJwtLogoutSuccessHandler implements LogoutSuccessHandler {
 
     @Resource
     private RedisTemplate<String, String> redisTemplate;

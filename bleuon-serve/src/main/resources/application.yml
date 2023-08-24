@@ -31,11 +31,13 @@ pagehelper:
   support-methods-arguments: true
   params: count=countsql
 
-# unite api
-uniteapi:
-  prefix: api
-
 # logger
 logging:
   level:
     com.bleuon.mapper: trace
+
+# request mapping
+request:
+  mapping:
+    prefix:
+      prefix: api

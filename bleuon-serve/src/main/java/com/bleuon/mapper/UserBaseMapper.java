@@ -5,6 +5,6 @@ import com.bleuon.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface AuthUserDetailsMapper extends BaseMapper<User> {
+public interface UserBaseMapper extends BaseMapper<User> {
 
 }

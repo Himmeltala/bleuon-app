@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
  */
 @Data
 @Component
-@ConfigurationProperties(prefix = "uniteapi")
-public class UniteApiProps {
+@ConfigurationProperties(prefix = "request.mapping.prefix")
+public class RequestMappingPrefixProps {
 
     String prefix = "api";
 

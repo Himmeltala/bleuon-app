@@ -2,7 +2,7 @@ package com.bleuon.authentication.handler;
 
 import com.alibaba.fastjson2.JSON;
 import com.bleuon.consts.Codes;
-import com.bleuon.entity.vo.resp.AuthVoResponse;
+import com.bleuon.entity.vo.AuthVoResponse;
 import com.bleuon.utils.JwtUtil;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
@@ -20,12 +20,12 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 登录成功处理器
+ * 用户名和密码登录成功处理器
  *
  * @author zheng
  */
 @Component
-public class AuthSuccessHandler implements AuthenticationSuccessHandler {
+public class AuthUsernamePasswordSuccessHandler implements AuthenticationSuccessHandler {
 
     @Resource
     private RedisTemplate<String, String> redisTemplate;
@@ -34,11 +34,11 @@ public class AuthSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         response.setContentType("application/json;charset=utf-8");
         UserDetails details = (User) authentication.getPrincipal();
-        // 传递 UserDetails，创建 jwt 令牌
+
         String jwtUuid = UUID.randomUUID().toString();
         Long expire = JwtUtil.getExpire();
         String token = JwtUtil.createJwt(details, jwtUuid, expire);
-        // 存入 Redis 数据库
+
         redisTemplate.opsForValue().set(jwtUuid, token, expire, TimeUnit.SECONDS);
 
         AuthVoResponse vo = new AuthVoResponse();

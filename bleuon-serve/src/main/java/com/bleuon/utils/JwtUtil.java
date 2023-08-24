@@ -3,8 +3,6 @@ package com.bleuon.utils;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -13,11 +11,11 @@ import java.util.*;
 
 public class JwtUtil {
 
-    private static final long EXPIRATION_TIME = 86400000 * 7; // 24 小时，单位毫秒
+    private static final long EXPIRE_SECONDS = 86400000 * 7; // 24 小时，单位毫秒
     private static final String KEY = "cereshuzhitingnizhenbangcereshuzhitingnizhenbang";
 
     public static Long getExpire() {
-        return new Date(System.currentTimeMillis() + EXPIRATION_TIME).getTime();
+        return new Date(System.currentTimeMillis() + EXPIRE_SECONDS).getTime();
     }
 
     private static SecretKey generateKey() {
@@ -27,20 +25,13 @@ public class JwtUtil {
     public static String createJwt(UserDetails details, String jwtUuid, Long expire) {
         JwtBuilder builder = Jwts.builder();
         return builder
-                // header
                 .setHeaderParam("typ", "JWT")
                 .setHeaderParam("alg", "HS256")
-                // payload
                 .claim("username", details.getUsername())
-                // jwt 主题
                 .setSubject("bleuon")
-                // 过期时间
                 .setExpiration(new Date(expire))
-                // 颁发时间
                 .setIssuedAt(new Date())
-                // jwt id
                 .setId(jwtUuid)
-                // signature
                 .signWith(generateKey())
                 .compact();
     }

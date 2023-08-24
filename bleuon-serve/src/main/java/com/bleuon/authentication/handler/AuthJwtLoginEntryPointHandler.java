@@ -2,7 +2,7 @@ package com.bleuon.authentication.handler;
 
 import com.alibaba.fastjson2.JSON;
 import com.bleuon.consts.Codes;
-import com.bleuon.entity.vo.resp.AuthVoResponse;
+import com.bleuon.entity.vo.AuthVoResponse;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,12 +13,12 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 /**
- * 处理在需要进行身份验证的请求中，当用户未经身份验证或者身份验证失败时的行为。
+ * 认证过程中 Token 失效、不存在、或解析错误，或连接 Redis、MySQL 失败的错误。
  *
  * @author zheng
  */
 @Component
-public class AuthEntryPointHandler implements AuthenticationEntryPoint {
+public class AuthJwtLoginEntryPointHandler implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {

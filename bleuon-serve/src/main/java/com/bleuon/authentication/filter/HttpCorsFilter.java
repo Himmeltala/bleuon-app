@@ -12,7 +12,7 @@ import java.io.IOException;
 
 @Component
 @Order(-102)
-public class CorsFilter extends HttpFilter {
+public class HttpCorsFilter extends HttpFilter {
 
     @Override
     protected void doFilter(HttpServletRequest request,

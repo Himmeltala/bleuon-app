@@ -8,8 +8,8 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 @Mapper
-public interface AuthMapper extends BaseMapper<User> {
+public interface AuthUsernamePasswordMapper extends BaseMapper<User> {
 
-    List<String> queryAuthsByUserId(@Param("userId") Long userId, @Param("username") String username);
+    List<String> queryAuthorities(@Param("id") Long id, @Param("username") String username);
 
 }

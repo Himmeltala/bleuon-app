@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 @RequestMapping
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface UniteApi {
+public @interface RequestMappingPrefix {
 
     /**
      * Alias for {@link RequestMapping#name}.
