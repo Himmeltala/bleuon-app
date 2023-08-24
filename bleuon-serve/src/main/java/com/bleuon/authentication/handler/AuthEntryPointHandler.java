@@ -1,12 +1,11 @@
 package com.bleuon.authentication.handler;
 
 import com.alibaba.fastjson2.JSON;
-import com.bleuon.consts.CodeStatus;
+import com.bleuon.consts.Codes;
 import com.bleuon.entity.vo.resp.AuthVoResponse;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -29,7 +28,7 @@ public class AuthEntryPointHandler implements AuthenticationEntryPoint {
         AuthVoResponse vo = new AuthVoResponse();
 
         vo.setMessage("Token 过期或不存在");
-        vo.setCode(CodeStatus.TOKEN_NONE_OR_EXPIRE);
+        vo.setCode(Codes.TOKEN_NONE_OR_EXPIRE);
 
         response.getWriter()
                 .write(JSON.toJSONString(vo));

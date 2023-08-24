@@ -13,6 +13,7 @@ request.interceptors.request.use(
     return config;
   },
   error => {
+    ElMessage.error("请求错误：请查看控制台");
     return Promise.reject(error);
   }
 );
@@ -21,16 +22,26 @@ request.interceptors.response.use(
   config => {
     const { data } = config;
 
-    // 权限相关的错误请求
-    if (data.body.code > 40000) {
-      ElMessage.error(data.body.message);
+    if (data.code >= 40100 && data.code <= 40199) {
+      ElMessage.error("权限错误：" + data.message);
       localStorage.removeItem("BleuOn-Token");
-      location.reload();
+
+      setTimeout(() => {
+        location.reload();
+      }, 500);
+
+      return Promise.reject(data.message);
+    } else if (data.code > 40199 && data.code <= 40299) {
+      ElMessage.error("登录错误：" + data.message);
+      return Promise.reject(data.message);
     }
+
+    ElMessage.success(data.message);
 
     return config;
   },
   error => {
+    ElMessage.error("请求错误：请查看控制台");
     return Promise.reject(error);
   }
 );

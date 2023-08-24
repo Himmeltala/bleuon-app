@@ -14,10 +14,11 @@ type ResponseBody = {
 };
 
 declare interface ResponseEntity {
-  body: ResponseBody;
-  headers: {};
-  statusCode: string;
-  statusCodeValue: number;
+  code: number;
+  message: string;
+  data: any;
+  expire: number; // 毫秒数
+  token: string;
 }
 
 declare interface Storage {
