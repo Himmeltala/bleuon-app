@@ -34,9 +34,11 @@ request.interceptors.response.use(
     } else if (data.code > 40199 && data.code <= 40299) {
       ElMessage.error("登录错误：" + data.message);
       return Promise.reject(data.message);
+    } else if (data.code >= 50000 && data.code < 60000) {
+      ElMessage.error("错误：" + data.message);
+    } else {
+      ElMessage.success(data.message);
     }
-
-    ElMessage.success(data.message);
 
     return config;
   },

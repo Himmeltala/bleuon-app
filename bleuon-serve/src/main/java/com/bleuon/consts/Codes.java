@@ -29,9 +29,9 @@ public class Codes {
     public static int ERROR = 50000;
 
     // 邮箱发送失败
-    public static int SEND_EMAIL_FAILED = 500100;
+    public static int SEND_EMAIL_FAILED = 50010;
 
     // 发送过多邮箱验证码
-    public static int SEND_MULTI_EMAIL = 500101;
+    public static int SEND_MULTI_EMAIL = 50011;
 
 }

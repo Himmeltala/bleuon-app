@@ -44,7 +44,8 @@ const validateCode = (rule: any, value: any, callback: any) => {
 const formRules = reactive<FormRules>({
   mail: [
     { required: true, message: "请输入电子邮箱", trigger: "blur" },
-    { validator: validateEmail, trigger: "change" }
+    { validator: validateEmail, trigger: "change" },
+    { validator: validateEmail, trigger: "blur" },
   ],
   code: [
     {
@@ -52,7 +53,8 @@ const formRules = reactive<FormRules>({
       message: "请输入验证码",
       trigger: "change"
     },
-    { validator: validateCode, trigger: "change" }
+    { validator: validateCode, trigger: "change" },
+    { validator: validateCode, trigger: "blur" },
   ]
 });
 

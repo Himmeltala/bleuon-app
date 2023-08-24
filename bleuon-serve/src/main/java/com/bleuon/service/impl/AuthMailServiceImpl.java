@@ -31,9 +31,6 @@ public class AuthMailServiceImpl extends ServiceImpl<UserBaseMapper, User>
     @Resource
     private RedisTemplate<String, String> redisTemplate;
 
-    @Resource
-    private AuthUsernamePasswordMapper authUsernamePasswordMapper;
-
     private boolean isMailExist(String mail) {
         User user = query().eq("email", mail).one();
         return user != null;
@@ -56,14 +53,14 @@ public class AuthMailServiceImpl extends ServiceImpl<UserBaseMapper, User>
             redisTemplate.opsForValue().set(type + ":" + mail, code.toString(), 1, TimeUnit.MINUTES);
             boolean isOk = sendMail(mail, type, code);
             if (isOk) {
-                vo.setMessage("验证码发送成功");
+                vo.setMessage("验证码发送成功，请注意查收！");
                 vo.setCode(Codes.SUCCESS);
             } else {
                 vo.setMessage("验证码发送失败，请稍后再试！");
                 vo.setCode(Codes.SEND_EMAIL_FAILED);
             }
         } else {
-            vo.setMessage("邮箱不存在");
+            vo.setMessage("邮箱不存在！");
             vo.setCode(Codes.EMAIL_NONE);
         }
 
@@ -104,23 +101,28 @@ public class AuthMailServiceImpl extends ServiceImpl<UserBaseMapper, User>
         AuthVoResponse vo = new AuthVoResponse();
         String redisCode = redisTemplate.opsForValue().get(type + ":" + mail);
         if (redisCode == null) {
-            vo.setMessage("验证码已过期！");
+            vo.setMessage("验证码不存在或已过期！");
             vo.setCode(Codes.EMAIL_CODE_ERROR);
         } else {
             if (redisCode.equals(code)) {
                 User user = findUserByUsernameOrEmail(mail);
-                String jwtUuid = UUID.randomUUID().toString();
-                Long expire = JwtUtil.getExpire();
-                String token = JwtUtil.createJwt(user, jwtUuid, expire);
+                if (user != null) {
+                    String jwtUuid = UUID.randomUUID().toString();
+                    Long expire = JwtUtil.getExpire();
+                    String token = JwtUtil.createJwt(user, jwtUuid, expire);
 
-                redisTemplate.opsForValue().set(jwtUuid, token, expire, TimeUnit.SECONDS);
+                    redisTemplate.opsForValue().set(jwtUuid, token, expire, TimeUnit.SECONDS);
 
-                vo.setToken(token);
-                vo.setExpire(JwtUtil.getExpire());
-                vo.setMessage("登录成功！");
-                vo.setCode(Codes.SUCCESS);
+                    vo.setToken(token);
+                    vo.setExpire(JwtUtil.getExpire());
+                    vo.setMessage("登录成功！");
+                    vo.setCode(Codes.SUCCESS);
+                } else {
+                    vo.setMessage("邮箱不存在！");
+                    vo.setCode(Codes.EMAIL_NONE);
+                }
             } else {
-                vo.setMessage("验证码不匹配！");
+                vo.setMessage("验证码与发送邮箱不匹配！");
                 vo.setCode(Codes.EMAIL_CODE_ERROR);
             }
         }
