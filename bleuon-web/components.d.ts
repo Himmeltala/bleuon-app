@@ -25,6 +25,7 @@ declare module 'vue' {
     ElTabs: typeof import('element-plus/es')['ElTabs']
     ElTag: typeof import('element-plus/es')['ElTag']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
+    EmailLogin: typeof import('./src/views/entrance/components/EmailLogin.vue')['default']
     Entrance: typeof import('./src/views/entrance/Entrance.vue')['default']
     File: typeof import('./src/views/home/components/File.vue')['default']
     Folder: typeof import('./src/views/home/components/Folder.vue')['default']

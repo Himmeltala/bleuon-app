@@ -25,7 +25,7 @@ public class AuthJwtLoginEntryPointHandler implements AuthenticationEntryPoint {
         response.setContentType("application/json;charset=utf-8");
         AuthVoResponse vo = new AuthVoResponse();
 
-        vo.setMessage("可能是身份认证错误，可能是 Token 的解析错误，或者是连接 Redis、MySQL 失败的错误");
+        vo.setMessage("URL 不存在，或权限认证失败等其他问题");
         vo.setCode(Codes.AUTHORITY_UNKNOWN_ERROR);
 
         response.getWriter()

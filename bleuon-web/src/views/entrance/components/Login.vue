@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AccountLogin from "./AccountLogin.vue";
-import PhoneLogin from "./PhoneLogin.vue";
+import EmailLogin from "./EmailLogin.vue";
 
 defineProps({
   dynamicCompName: {
@@ -10,10 +10,10 @@ defineProps({
 });
 defineEmits(["update:dynamicCompName"]);
 
-const tabIndex = ref<"AccountLogin" | "PhoneLogin">("AccountLogin");
+const tabIndex = ref<"AccountLogin" | "EmailLogin">("AccountLogin");
 const tabs = {
   AccountLogin,
-  PhoneLogin
+  EmailLogin
 };
 </script>
 
@@ -31,12 +31,12 @@ const tabs = {
           账号登录
         </div>
         <div
-          @click="tabIndex = 'PhoneLogin'"
+          @click="tabIndex = 'EmailLogin'"
           class="cursor-pointer pb-4 text-1.1rem"
           :class="
-            tabIndex === 'PhoneLogin' ? 'active font-bold b-b-solid b-b-primary b-b-2' : 'text-b'
+            tabIndex === 'EmailLogin' ? 'active font-bold b-b-solid b-b-primary b-b-2' : 'text-b'
           ">
-          短信登录
+          邮箱登录
         </div>
       </div>
       <KeepAlive>

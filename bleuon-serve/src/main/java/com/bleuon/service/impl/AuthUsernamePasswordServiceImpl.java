@@ -24,7 +24,8 @@ import java.util.List;
  * @author zheng
  */
 @Service
-public class AuthUsernamePasswordServiceImpl extends ServiceImpl<UserBaseMapper, User> implements AuthUsernamePasswordService, UserDetailsService {
+public class AuthUsernamePasswordServiceImpl extends ServiceImpl<UserBaseMapper, User>
+        implements AuthUsernamePasswordService, UserDetailsService {
 
     @Resource
     private AuthUsernamePasswordMapper authUsernamePasswordMapper;
@@ -43,12 +44,12 @@ public class AuthUsernamePasswordServiceImpl extends ServiceImpl<UserBaseMapper,
         String encode = passwordEncoder.encode(user.getPassword());
         user.setPassword(encode);
 
-        List<String> auths = authUsernamePasswordMapper.queryAuthorities(null, user.getUsername());
+        List<String> authorities = authUsernamePasswordMapper.queryAuthorities(null, user.getUsername());
 
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getUsername())
                 .password(user.getPassword())
-                .authorities(auths.toArray(new String[0]))
+                .authorities(authorities.toArray(new String[0]))
                 .build();
     }
 

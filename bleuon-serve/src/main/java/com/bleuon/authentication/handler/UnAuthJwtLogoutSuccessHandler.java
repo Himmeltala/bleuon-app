@@ -42,6 +42,7 @@ public class UnAuthJwtLogoutSuccessHandler implements LogoutSuccessHandler {
                 redisTemplate.delete(jwtUuid);
 
                 vo.setMessage("退出成功！");
+                vo.setCode(Codes.SUCCESS);
                 response.getWriter()
                         .write(JSON.toJSONString(vo));
             } else {

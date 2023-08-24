@@ -8,7 +8,7 @@ const formData = reactive<IUser>({
 });
 
 async function confirmLogin() {
-  await UserApi.login(formData, () => {
+  await UserApi.AccountLogin(formData, () => {
     router.push("/home");
   });
 }
@@ -22,7 +22,7 @@ async function confirmLogin() {
           clearable
           size="large"
           v-model="formData.username"
-          placeholder="请输入手机号或邮箱" />
+          placeholder="请输入手机号/邮箱/用户名" />
       </el-form-item>
       <el-form-item>
         <el-input

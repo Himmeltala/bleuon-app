@@ -5,6 +5,7 @@ import com.bleuon.authentication.handler.*;
 import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -16,7 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
     @Resource
@@ -47,6 +48,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(auth -> {
             // 不需要认证的 api
             auth.requestMatchers("/api/auth/**").permitAll();
+            auth.requestMatchers(HttpMethod.GET, "/api/auth/**").permitAll();
             auth.requestMatchers("/api/public/**").permitAll();
             // 除上之外的所有 api 都需要认证
             auth.anyRequest().authenticated();
