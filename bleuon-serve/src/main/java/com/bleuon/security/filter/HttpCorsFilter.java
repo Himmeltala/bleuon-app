@@ -1,4 +1,4 @@
-package com.bleuon.authentication.filter;
+package com.bleuon.security.filter;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

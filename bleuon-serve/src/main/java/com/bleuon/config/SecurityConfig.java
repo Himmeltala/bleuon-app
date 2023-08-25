@@ -1,7 +1,7 @@
 package com.bleuon.config;
 
-import com.bleuon.authentication.filter.AuthJwtFilter;
-import com.bleuon.authentication.handler.*;
+import com.bleuon.security.filter.AuthJwtFilter;
+import com.bleuon.security.handler.*;
 import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

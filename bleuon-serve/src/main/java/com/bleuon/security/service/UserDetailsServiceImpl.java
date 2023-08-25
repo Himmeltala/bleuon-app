@@ -1,4 +1,4 @@
-package com.bleuon.service;
+package com.bleuon.security.service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bleuon.mapper.UserMapper;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
  * @author zheng
  */
 @Service
-public class AccountLoginService extends ServiceImpl<UserMapper, User> implements UserDetailsService {
+public class UserDetailsServiceImpl extends ServiceImpl<UserMapper, User> implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

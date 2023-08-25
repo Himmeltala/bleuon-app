@@ -1,8 +1,9 @@
-package com.bleuon.authentication.handler;
+package com.bleuon.security.handler;
 
 import com.alibaba.fastjson2.JSON;
-import com.bleuon.consts.Codes;
-import com.bleuon.entity.vo.AuthVoR;
+import com.bleuon.consts.HttpCode;
+import com.bleuon.entity.vo.AuthVo;
+import com.bleuon.entity.vo.Vo;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,11 +24,8 @@ public class AuthJwtEntryPointHandler implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         response.setContentType("application/json;charset=utf-8");
-        AuthVoR vo = new AuthVoR();
 
-        vo.setMessage("认证被拒绝，具体问题联系管理员。");
-        vo.setCode(Codes.AUTHORITY_UNKNOWN_ERROR);
-
+        Vo vo = AuthVo.error(HttpCode.ERROR, "认证被拒绝！");
         response.getWriter()
                 .write(JSON.toJSONString(vo));
     }

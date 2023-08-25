@@ -1,8 +1,8 @@
-package com.bleuon.authentication.handler;
+package com.bleuon.security.handler;
 
 import com.alibaba.fastjson2.JSON;
-import com.bleuon.consts.Codes;
-import com.bleuon.entity.vo.AuthVoR;
+import com.bleuon.consts.HttpCode;
+import com.bleuon.entity.vo.AuthVo;
 import com.bleuon.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.annotation.Resource;
@@ -32,7 +32,7 @@ public class LogoutSuccessHandler implements org.springframework.security.web.au
         String authToken = request.getHeader("Authorization");
         Claims claims = JwtUtil.parseJwt(authToken);
 
-        AuthVoR vo = new AuthVoR();
+        AuthVo vo = new AuthVo();
 
         if (claims != null) {
             String jwtUuid = claims.getId();
@@ -41,18 +41,18 @@ public class LogoutSuccessHandler implements org.springframework.security.web.au
                 redisTemplate.delete(jwtUuid);
 
                 vo.setMessage("退出成功！");
-                vo.setCode(Codes.SUCCESS);
+                vo.setCode(HttpCode.SUCCESS);
                 response.getWriter()
                         .write(JSON.toJSONString(vo));
             } else {
                 vo.setMessage("Token 已经过期或不存在，无法退出！");
-                vo.setCode(Codes.AUTH_TOKEN_NONE_OR_EXPIRE);
+                vo.setCode(HttpCode.ERROR);
                 response.getWriter()
                         .write(JSON.toJSONString(vo));
             }
         } else {
             vo.setMessage("没有携带 Token，无法退出！");
-            vo.setCode(Codes.AUTH_TOKEN_NONE_OR_EXPIRE);
+            vo.setCode(HttpCode.ERROR);
             response.getWriter()
                     .write(JSON.toJSONString(vo));
         }

@@ -1,6 +1,6 @@
-package com.bleuon.authentication.filter;
+package com.bleuon.security.filter;
 
-import com.bleuon.mapper.AuthJwtMapper;
+import com.bleuon.mapper.AuthMapper;
 import com.bleuon.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.annotation.Resource;
@@ -8,6 +8,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.NonNull;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
@@ -32,13 +33,13 @@ import java.util.Map;
 public class AuthJwtFilter extends OncePerRequestFilter {
 
     @Resource
-    private AuthJwtMapper mapper;
+    private AuthMapper mapper;
 
     @Resource
     private RedisTemplate<String, String> redisTemplate;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
         String authorization = request.getHeader("Authorization");
         Claims claims = JwtUtil.parseJwt(authorization);
 
@@ -47,8 +48,8 @@ public class AuthJwtFilter extends OncePerRequestFilter {
             Long expire = redisTemplate.getExpire(jwtId);
 
             if (expire != null && expire != -2) {
-                List<String> authorities = mapper.getAuthorities(Map.of("username", claims.get("username")));
-                UserDetails details = JwtUtil.toUserDetails(claims, authorities);
+                List<String> auth = mapper.getAuthority(Map.of("username", claims.get("username")));
+                UserDetails details = JwtUtil.toUserDetails(claims, auth);
                 SecurityContext context = SecurityContextHolder.createEmptyContext();
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(details, details.getPassword(), details.getAuthorities());

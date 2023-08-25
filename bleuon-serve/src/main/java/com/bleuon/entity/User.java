@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
@@ -16,7 +17,7 @@ import java.sql.Timestamp;
 @TableName("t_users")
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User implements Serializable {
 
     @TableId(value = "id")
     private String id;

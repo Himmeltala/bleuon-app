@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type { FormRules } from "element-plus";
+import { UserApi } from "@/apis";
 import {
   emailValidator,
   verifyCodeValidator,
   getVerifyCode,
   submitForm
 } from "@/services/form-validators";
-import { UserApi } from "@/apis";
+import type { FormRules } from "element-plus";
 
 let interval: number;
 const coudButtonCount = ref(60);

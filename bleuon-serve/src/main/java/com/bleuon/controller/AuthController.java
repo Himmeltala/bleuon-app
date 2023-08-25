@@ -2,8 +2,8 @@ package com.bleuon.controller;
 
 import com.bleuon.annotaion.RequestMappingPrefix;
 import com.bleuon.entity.User;
-import com.bleuon.entity.vo.AuthVoR;
-import com.bleuon.entity.vo.VoR;
+import com.bleuon.entity.vo.AuthVo;
+import com.bleuon.entity.vo.Vo;
 import com.bleuon.service.AccountRegisterService;
 import com.bleuon.service.MailRelatedService;
 import com.bleuon.utils.HttpUtil;
@@ -24,20 +24,20 @@ public class AuthController {
     private AccountRegisterService registerService;
 
     @GetMapping("/aks-mail-verify-code")
-    public VoR askMailVerifyCode(@RequestParam String mail,
-                                 @RequestParam String type, HttpServletRequest http) {
+    public Vo askMailVerifyCode(@RequestParam String mail,
+                                @RequestParam String type, HttpServletRequest http) {
         return mailRelatedService.getMailVerifyCode(mail, type, HttpUtil.getIpAddr(http));
     }
 
     @PostMapping("/verify-mail-code")
-    public AuthVoR verifyMailCode(@RequestParam String mail,
-                                  @RequestParam String type,
-                                  @RequestParam String code) {
+    public AuthVo verifyMailCode(@RequestParam String mail,
+                                 @RequestParam String type,
+                                 @RequestParam String code) {
         return mailRelatedService.verifyMailCode(mail, type, code);
     }
 
     @PostMapping("/account-register")
-    public VoR accountRegister(@RequestBody User user) {
+    public Vo accountRegister(@RequestBody User user) {
         return registerService.register(user);
     }
 

@@ -18,7 +18,7 @@ const tabs = {
 </script>
 
 <template>
-  <div class="login w-100% h-100% relative f-c-c">
+  <div class="register w-100% h-100% relative f-c-c">
     <div class="w-40%">
       <div class="mb-10 text-1.6rem">欢迎注册 BleuOn</div>
       <div class="mb-10 f-c-s">

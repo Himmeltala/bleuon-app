@@ -43,7 +43,9 @@ const tabs = {
         <component :is="tabs[tabIndex]"></component>
       </KeepAlive>
       <div class="f-c-b">
-        <div class="text-b cursor-pointer">忘记密码？</div>
+        <div class="text-b cursor-pointer" @click="$emit('update:dynamicCompName', 'FindAccount')">
+          忘记密码？
+        </div>
         <div
           class="text-primary cursor-pointer"
           @click="$emit('update:dynamicCompName', 'Register')">

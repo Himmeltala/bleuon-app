@@ -1,13 +1,15 @@
 package com.bleuon.service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.bleuon.consts.Codes;
+import com.bleuon.consts.HttpCode;
 import com.bleuon.consts.MailType;
 import com.bleuon.entity.User;
-import com.bleuon.entity.vo.AuthVoR;
-import com.bleuon.entity.vo.VoR;
+import com.bleuon.entity.vo.AuthVo;
+import com.bleuon.entity.vo.Vo;
+import com.bleuon.mapper.AuthMapper;
 import com.bleuon.mapper.UserMapper;
 import com.bleuon.utils.JwtUtil;
+import com.bleuon.utils.NumbersUtil;
 import jakarta.annotation.Resource;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,12 +20,20 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
-import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * 电子邮箱相关服务
+ * <p>
+ * 1. 获取验证码。注册、登录、重置密码业务。
+ * 2. 校验验证码。校验 Redis 中是否存在验证码。
+ *
+ * @author zheng
+ */
 @Service
 public class MailRelatedService extends ServiceImpl<UserMapper, User> {
 
@@ -36,16 +46,19 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> {
     @Resource
     private RedisTemplate<String, String> redisTemplate;
 
+    @Resource
+    private AuthMapper authMapper;
+
     @Value("${spring.mail.sender}")
     private String senderMailAddress;
 
     @Getter
     @Setter
-    private String cacheCodeKey;
+    private String cacheCode;
 
     @Getter
     @Setter
-    private String singleGetKey;
+    private String sender;
 
     /**
      * 获取邮箱验证码
@@ -54,26 +67,25 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> {
      * @param type 验证码类型
      * @param ip   请求 IP
      */
-    public VoR getMailVerifyCode(String mail, String type, String ip) {
-        VoR vo = new VoR();
+    public Vo getMailVerifyCode(String mail, String type, String ip) {
+        setCacheCode(type + ":" + mail);
+        setSender(type + ":" + mail + ":" + ip);
 
-        setCacheCodeKey(type + ":" + mail);
-        setSingleGetKey(type + ":" + mail + ":" + ip);
-        Boolean isMultiGet = redisTemplate.hasKey(getSingleGetKey());
+        Vo vo = new Vo();
 
-        if (Boolean.TRUE.equals(isMultiGet)) {
+        if (isMultiGet()) {
             vo.setMessage("60s 内只能获取一次验证码！");
-            vo.setCode(Codes.SEND_MULTI_EMAIL);
+            vo.setCode(HttpCode.ERROR);
             return vo;
-        } else {
-            redisTemplate.opsForValue().set(getSingleGetKey(), ip, 1, TimeUnit.MINUTES);
         }
 
-        if (type.equals("register")) {
-            this.getRegisterVerifyCode(mail, type, vo);
-        } else {
-            this.getLoginVerifyCode(mail, type, vo);
-        }
+        rememberIp(ip);
+
+        if (type.equals("register"))
+            getRegisterVerifyCode(mail, type, vo);
+        else
+            getLoginVerifyCode(mail, type, vo);
+
 
         return vo;
     }
@@ -85,76 +97,79 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> {
      * @param type 验证码类型
      * @param code 验证码
      */
-    public AuthVoR verifyMailCode(String mail, String type, String code) {
-        AuthVoR vo = new AuthVoR();
+    @Transactional
+    public AuthVo verifyMailCode(String mail, String type, String code) {
+        setCacheCode(type + ":" + mail);
+        String cacheCode = redisTemplate.opsForValue().get(getCacheCode());
 
-        setCacheCodeKey(type + ":" + mail);
-        String cacheCode = redisTemplate.opsForValue().get(getCacheCodeKey());
+        AuthVo vo = new AuthVo();
 
         if (cacheCode == null) {
-            vo.setMessage("验证码不存或校验的邮箱不匹配！");
-            vo.setCode(Codes.EMAIL_CODE_ERROR);
-        } else {
-            if (cacheCode.equals(code)) {
-
-                if (type.equals("register")) {
-                    this.verifyRegisterMailCode(mail, vo);
-                } else {
-                    this.verifyLoginMailCode(mail, vo);
-                }
-
-                redisTemplate.delete(getCacheCodeKey());
-            } else {
-                vo.setMessage("验证码与校验的邮箱不匹配！");
-                vo.setCode(Codes.EMAIL_CODE_ERROR);
-            }
+            vo.setMessage("验证码和邮箱不匹配！");
+            vo.setCode(HttpCode.ERROR);
+            return vo;
         }
+
+        if (!cacheCode.equals(code)) {
+            vo.setMessage("验证码不存在，或与邮箱不匹配！");
+            vo.setCode(HttpCode.ERROR);
+            return vo;
+        }
+
+        if (type.equals("register"))
+            verifyRegisterMailCode(mail, vo);
+        else
+            verifyLoginMailCode(mail, vo);
+
+
+        redisTemplate.delete(getCacheCode());
+
         return vo;
     }
 
-    private boolean isMailExist(String mail) {
-        User user = query().eq("email", mail).one();
-        return user != null;
+    private boolean isMultiGet() {
+        return Boolean.TRUE.equals(redisTemplate.hasKey(getSender()));
     }
 
-    private void getLoginVerifyCode(String mail, String type, VoR vo) {
-        if (this.isMailExist(mail)) {
-            this.sendVerifyCode(mail, type, vo);
+    private void rememberIp(String ip) {
+        redisTemplate.opsForValue().set(getSender(), ip, 1, TimeUnit.MINUTES);
+    }
+
+    private boolean isMailExist(String mail) {
+        return query().eq("email", mail).one() != null;
+    }
+
+    private void getLoginVerifyCode(String mail, String type, Vo vo) {
+        if (isMailExist(mail)) {
+            String code = generateCode();
+            boolean isOk = sendMail(mail, type, code);
+            vo.setMessage(isOk ? "验证码发送成功，请注意查收！" : "验证码发送失败，请重试！");
+            vo.setCode(isOk ? HttpCode.SUCCESS : HttpCode.ERROR);
         } else {
             vo.setMessage("邮箱未注册！");
-            vo.setCode(Codes.EMAIL_NONE);
+            vo.setCode(HttpCode.ERROR);
         }
     }
 
-    private void getRegisterVerifyCode(String mail, String type, VoR vo) {
-        if (!this.isMailExist(mail)) {
-            this.sendVerifyCode(mail, type, vo);
+    private void getRegisterVerifyCode(String mail, String type, Vo vo) {
+        if (!isMailExist(mail)) {
+            String code = generateCode();
+            boolean o = sendMail(mail, type, code);
+            vo.setMessage(o ? "验证码发送成功，请注意查收！" : "验证码发送失败，请重试！");
+            vo.setCode(o ? HttpCode.SUCCESS : HttpCode.ERROR);
         } else {
             vo.setMessage("邮箱被注册！");
-            vo.setCode(Codes.EMAIL_EXISTS);
+            vo.setCode(HttpCode.ERROR);
         }
     }
 
-    private void sendVerifyCode(String mail, String type, VoR vo) {
-        String verifyCode = this.generateVerifyCode();
-        redisTemplate.opsForValue().set(getCacheCodeKey(), verifyCode, 3, TimeUnit.MINUTES);
-        boolean isOk = this.generateVerifyCodeMail(mail, type, verifyCode);
-        if (isOk) {
-            vo.setMessage("验证码发送成功，请注意查收！");
-            vo.setCode(Codes.SUCCESS);
-        } else {
-            vo.setMessage("验证码发送失败，请重试！");
-            vo.setCode(Codes.SEND_EMAIL_FAILED);
-        }
+    private String generateCode() {
+        String code = String.valueOf(NumbersUtil.random(100000, 999999));
+        redisTemplate.opsForValue().set(getCacheCode(), code, 3, TimeUnit.MINUTES);
+        return code;
     }
 
-    private String generateVerifyCode() {
-        Random random = new Random();
-        int coed = random.nextInt(899999) + 100000;
-        return Integer.toString(coed);
-    }
-
-    private boolean generateVerifyCodeMail(String mail, String type, String code) {
+    private boolean sendMail(String mail, String type, String code) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom(senderMailAddress);
@@ -179,68 +194,61 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> {
         }
     }
 
-
-    private void verifyRegisterMailCode(String mail, AuthVoR vo) {
-        User isExistUser = this.findUserByEmail(mail);
-
-        if (isExistUser == null) {
-            saveUserToDb(vo, mail);
+    public void verifyRegisterMailCode(String mail, AuthVo vo) {
+        if (findUserByEmail(mail) == null) {
+            startTransaction(vo, mail);
         } else {
             vo.setMessage("邮箱已被注册！");
-            vo.setCode(Codes.EMAIL_EXISTS);
+            vo.setCode(HttpCode.ERROR);
         }
     }
 
-    private void verifyLoginMailCode(String mail, AuthVoR vo) {
-        User isExistUser = this.findUserByEmail(mail);
+    private void verifyLoginMailCode(String mail, AuthVo vo) {
+        User user = findUserByEmail(mail);
 
-        if (isExistUser != null) {
+        if (user != null) {
             String uuid = UUID.randomUUID().toString();
             Long expire = JwtUtil.getExpire();
-            String token = JwtUtil.createJwt(isExistUser, uuid, expire);
+            String token = JwtUtil.createJwt(user, uuid, expire);
 
             redisTemplate.opsForValue().set(uuid, token, expire, TimeUnit.SECONDS);
 
             vo.setToken(token);
             vo.setExpire(JwtUtil.getExpire());
             vo.setMessage("登录成功！");
-            vo.setCode(Codes.SUCCESS);
+            vo.setCode(HttpCode.SUCCESS);
 
-            redisTemplate.delete(getCacheCodeKey());
+            redisTemplate.delete(getCacheCode());
         } else {
             vo.setMessage("邮箱未注册！");
-            vo.setCode(Codes.EMAIL_NONE);
+            vo.setCode(HttpCode.ERROR);
         }
     }
 
     private User findUserByEmail(String mail) {
-        return this.query()
-                .eq("email", mail)
-                .one();
+        return query().eq("email", mail).one();
     }
 
+    public void startTransaction(Vo vo, String mail) {
+        User user = createUser(mail);
 
-    private void saveUserToDb(VoR vo, String mail) {
-        User u = new User();
+        boolean o = save(user);
+        authMapper.setAuthority(user.getId(), 3L, user.getUsername());
+
+        if (o) vo.setData(user);
+
+        vo.setCode(o ? HttpCode.SUCCESS : HttpCode.ERROR);
+        vo.setMessage(o ? "注册成功！" : "注册失败！");
+    }
+
+    private User createUser(String mail) {
+        User user = new User();
         String uuid = UUID.randomUUID().toString();
-        u.setId(UUID.randomUUID().toString());
-        u.setUsername("用户_" + uuid);
-        u.setEmail(mail);
-        u.setPassword(passwordEncoder.encode(uuid.substring(0, 8)));
-        try {
-            boolean isOk = this.save(u);
-            if (isOk) {
-                vo.setData(u);
-                vo.setMessage("注册成功！");
-                vo.setCode(Codes.SUCCESS);
-            } else {
-                vo.setMessage("注册失败！");
-                vo.setCode(Codes.ERROR);
-            }
-        } catch (Exception e) {
-            vo.setMessage("注册失败！");
-            vo.setCode(Codes.ERROR);
-        }
+        user.setId(uuid);
+        user.setEmail(mail);
+        user.setUsername("用户_" + uuid);
+        user.setPassword(passwordEncoder.encode(uuid.substring(0, 8)));
+        return user;
     }
 
 }

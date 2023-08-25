@@ -22,25 +22,18 @@ request.interceptors.response.use(
   config => {
     const { data } = config;
 
-    if (data.code >= 40100 && data.code <= 40199) {
-      ElMessage.error("权限错误：" + data.message);
-      localStorage.removeItem("BleuOn-Token");
-
-      setTimeout(() => {
-        location.reload();
-      }, 500);
-
-      return Promise.reject(data.message);
-    } else if (data.code > 40199 && data.code <= 40299) {
-      ElMessage.error("错误：" + data.message);
-      return Promise.reject(data.message);
-    } else if (data.code >= 50000 && data.code < 60000) {
-      ElMessage.error("错误：" + data.message);
-    } else {
+    if (data.code === "SUCCESS") {
       ElMessage.success(data.message);
+      return config;
     }
 
-    return config;
+    if (data.code === "NO_AUTHORITY") {
+      localStorage.removeItem("BleuOn-Token");
+      setTimeout(location.reload, 500);
+    }
+
+    ElMessage.error(data.message);
+    return Promise.reject(data.message);
   },
   error => {
     ElMessage.error("发生错误！");

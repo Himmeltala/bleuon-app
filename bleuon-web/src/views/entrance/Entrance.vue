@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import Login from "./components/Login.vue";
 import Register from "./components/Register.vue";
+import FindAccount from "./components/FindAccount.vue";
 
 const tabs = {
   Login,
-  Register
+  Register,
+  FindAccount
 };
-const dynamicCompName = ref<"Login" | "Register">("Login");
+const dynamicCompName = ref<"Login" | "Register" | "FindAccount">("Login");
 </script>
 
 <template>
