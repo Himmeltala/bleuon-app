@@ -1,6 +1,6 @@
 package com.bleuon.authentication.filter;
 
-import com.bleuon.mapper.LoginMapper;
+import com.bleuon.mapper.AuthJwtMapper;
 import com.bleuon.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.annotation.Resource;
@@ -32,7 +32,7 @@ import java.util.Map;
 public class AuthJwtFilter extends OncePerRequestFilter {
 
     @Resource
-    private LoginMapper mapper;
+    private AuthJwtMapper mapper;
 
     @Resource
     private RedisTemplate<String, String> redisTemplate;
@@ -47,15 +47,12 @@ public class AuthJwtFilter extends OncePerRequestFilter {
             Long expire = redisTemplate.getExpire(jwtId);
 
             if (expire != null && expire != -2) {
-                List<String> authorities = mapper.queryAuthorities(Map.of("username", claims.get("username")));
+                List<String> authorities = mapper.getAuthorities(Map.of("username", claims.get("username")));
                 UserDetails details = JwtUtil.toUserDetails(claims, authorities);
-
                 SecurityContext context = SecurityContextHolder.createEmptyContext();
-
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(details, details.getPassword(), details.getAuthorities());
                 context.setAuthentication(authentication);
-
                 SecurityContextHolder.setContext(context);
             }
         }

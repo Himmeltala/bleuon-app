@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import Login from "./components/Login.vue";
-import Logon from "./components/Logon.vue";
+import Register from "./components/Register.vue";
 
 const tabs = {
   Login,
-  Logon
+  Register
 };
-const dynamicCompName = ref<"Login" | "Logon">("Login");
+const dynamicCompName = ref<"Login" | "Register">("Login");
 </script>
 
 <template>

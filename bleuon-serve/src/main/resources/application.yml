@@ -1,4 +1,3 @@
-# spring
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -17,27 +16,25 @@ spring:
     password: zrnkjyheqjbnheaa
     default-encoding: UTF-8
     port: 587
+    sender: himmelbleu@qq.com
 
-# mybatis plus
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
   mapper-locations: classpath*:/mapper/**/*.xml
 
-# mybatis pagehelper
 pagehelper:
   helper-dialect: mysql
   reasonable: true
   support-methods-arguments: true
   params: count=countsql
 
-# logger
-logging:
-  level:
-    com.bleuon.mapper: trace
-
 # request mapping
 request:
   mapping:
     prefix:
       prefix: api
+
+logging:
+  level:
+    com.bleuon: trace

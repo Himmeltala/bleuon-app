@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.util.UUID;
 
 @SpringBootTest
 class BleuonServeApplicationTests {
@@ -12,15 +15,13 @@ class BleuonServeApplicationTests {
     @Resource
     private JavaMailSender mailSender;
 
+    @Resource
+    private BCryptPasswordEncoder passwordEncoder;
+
     @Test
     public void sendMail() {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("himmelbleu@qq.com");
-        message.setTo("himmelbleu@qq.com");
-        message.setSubject("主题：简单邮件");
-        message.setText("测试邮件内容");
-
-        mailSender.send(message);
+        String encode = passwordEncoder.encode("12345678");
+        System.out.println(encode);
     }
 
 }

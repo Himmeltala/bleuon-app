@@ -1,10 +1,16 @@
 <script setup lang="ts">
-import type { FormInstance, FormRules } from "element-plus";
+import type { FormRules } from "element-plus";
+import {
+  emailValidator,
+  verifyCodeValidator,
+  getVerifyCode,
+  submitForm
+} from "@/services/form-validators";
 import { UserApi } from "@/apis";
 
-const count = ref(60);
 let interval: number;
-const disabled = ref(false);
+const coudButtonCount = ref(60);
+const codeButtonDisabled = ref(false);
 const isMailCorrect = ref(false);
 const isCodeCorrect = ref(false);
 
@@ -14,77 +20,38 @@ const formData = reactive({
   code: ""
 });
 
-const validateEmail = (rule: any, value: any, callback: any) => {
-  const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-  if (!regex.test(value)) {
-    isMailCorrect.value = false;
-    callback(new Error("请输入正确的邮箱格式"));
-  } else if (value === "") {
-    isMailCorrect.value = false;
-    callback(new Error("请输入邮箱地址"));
-  } else {
-    isMailCorrect.value = true;
-    callback();
-  }
-};
-
-const validateCode = (rule: any, value: any, callback: any) => {
-  if (value.length < 6) {
-    isCodeCorrect.value = false;
-    callback(new Error("请输入 6 位数的验证码"));
-  } else if (value === "") {
-    isCodeCorrect.value = false;
-    callback(new Error("请输入验证码"));
-  } else {
-    isCodeCorrect.value = true;
-    callback();
-  }
-};
-
 const formRules = reactive<FormRules>({
   mail: [
     { required: true, message: "请输入电子邮箱", trigger: "blur" },
-    { validator: validateEmail, trigger: "change" },
-    { validator: validateEmail, trigger: "blur" },
+    { validator: emailValidator(isMailCorrect), trigger: "change" },
+    { validator: emailValidator(isMailCorrect), trigger: "blur" }
   ],
   code: [
     {
       required: true,
       message: "请输入验证码",
-      trigger: "change"
+      trigger: "blur"
     },
-    { validator: validateCode, trigger: "change" },
-    { validator: validateCode, trigger: "blur" },
+    { validator: verifyCodeValidator(isCodeCorrect), trigger: "change" },
+    { validator: verifyCodeValidator(isCodeCorrect), trigger: "blur" }
   ]
 });
 
-async function getMailCode() {
-  if (!disabled.value) {
-    UserApi.askMailCode(formData.mail, "login");
-  }
-  interval = setInterval(() => {
-    count.value--;
-    if (count.value < 0) {
-      clearInterval(interval);
-      disabled.value = false;
-      count.value = 60;
-    }
-  }, 900);
-  disabled.value = true;
+function confirmGetVerifyCode() {
+  getVerifyCode(interval, coudButtonCount, codeButtonDisabled, async () => {
+    await UserApi.askMailCode(formData.mail, "login");
+  });
 }
 
 const router = useRouter();
 
-const confirmLogin = async (formEl: FormInstance | undefined) => {
-  if (!formEl) return;
-  await formEl.validate((valid, fields) => {
-    if (valid) {
-      UserApi.mailCodeLogin(formData.mail, formData.code, "login", () => {
-        router.push("/home");
-      });
-    }
+async function confirmSubmitForm() {
+  await submitForm(formRef.value, async () => {
+    await UserApi.mailCodeLogin(formData.mail, formData.code, "login", () => {
+      router.push("/home");
+    });
   });
-};
+}
 </script>
 
 <template>
@@ -106,8 +73,13 @@ const confirmLogin = async (formEl: FormInstance | undefined) => {
               placeholder="请输入验证码" />
           </div>
           <div class="w-30% f-c-e">
-            <el-button :disabled="disabled" size="large" @click="getMailCode">
-              <span v-if="count < 60 && count >= 0">请等待 {{ count }}s</span>
+            <el-button
+              :disabled="codeButtonDisabled || !isMailCorrect"
+              size="large"
+              @click="confirmGetVerifyCode">
+              <span v-if="coudButtonCount < 60 && coudButtonCount >= 0">
+                请等待 {{ coudButtonCount }}s
+              </span>
               <span v-else>获取验证码</span>
             </el-button>
           </div>
@@ -115,7 +87,7 @@ const confirmLogin = async (formEl: FormInstance | undefined) => {
       </el-form-item>
       <el-form-item>
         <el-button
-          @click="confirmLogin(formRef)"
+          @click="confirmSubmitForm"
           :disabled="!isMailCorrect || !isCodeCorrect"
           size="large"
           class="w-100%"

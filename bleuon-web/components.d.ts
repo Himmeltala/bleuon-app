@@ -8,6 +8,8 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AccountLogin: typeof import('./src/views/entrance/components/AccountLogin.vue')['default']
+    AccountLogon: typeof import('./src/views/entrance/components/AccountLogon.vue')['default']
+    AccountRegister: typeof import('./src/views/entrance/components/AccountRegister.vue')['default']
     Avatar: typeof import('./src/components/Avatar.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElForm: typeof import('element-plus/es')['ElForm']
@@ -26,6 +28,8 @@ declare module 'vue' {
     ElTag: typeof import('element-plus/es')['ElTag']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     EmailLogin: typeof import('./src/views/entrance/components/EmailLogin.vue')['default']
+    EmailLogon: typeof import('./src/views/entrance/components/EmailLogon.vue')['default']
+    EmailRegister: typeof import('./src/views/entrance/components/EmailRegister.vue')['default']
     Entrance: typeof import('./src/views/entrance/Entrance.vue')['default']
     File: typeof import('./src/views/home/components/File.vue')['default']
     Folder: typeof import('./src/views/home/components/Folder.vue')['default']
@@ -43,7 +47,7 @@ declare module 'vue' {
     Profile: typeof import('./src/views/user/Profile.vue')['default']
     Recent: typeof import('./src/views/home/Recent.vue')['default']
     Recommend: typeof import('./src/views/user/Recommend.vue')['default']
-    Register: typeof import('./src/views/entrance/Register.vue')['default']
+    Register: typeof import('./src/views/entrance/components/Register.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Setting: typeof import('./src/views/user/Setting.vue')['default']

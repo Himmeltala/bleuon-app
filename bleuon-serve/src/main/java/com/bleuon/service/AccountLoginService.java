@@ -1,13 +1,11 @@
-package com.bleuon.service.impl;
+package com.bleuon.service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bleuon.mapper.UserMapper;
 import com.bleuon.entity.User;
-import jakarta.annotation.Resource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,10 +18,7 @@ import org.springframework.stereotype.Service;
  * @author zheng
  */
 @Service
-public class LoginServiceImpl extends ServiceImpl<UserMapper, User> implements UserDetailsService {
-
-    @Resource
-    private PasswordEncoder passwordEncoder;
+public class AccountLoginService extends ServiceImpl<UserMapper, User> implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -32,9 +27,6 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper, User> implements U
         if (user == null) {
             throw new UsernameNotFoundException("用户名或密码错误！");
         }
-
-        String encode = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encode);
 
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getUsername())

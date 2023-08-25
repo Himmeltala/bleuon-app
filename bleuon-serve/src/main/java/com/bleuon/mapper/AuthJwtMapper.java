@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 @Mapper
-public interface LoginMapper {
+public interface AuthJwtMapper {
 
-    List<String> queryAuthorities(Map<String, Object> map);
+    List<String> getAuthorities(Map<String, Object> map);
 
 }

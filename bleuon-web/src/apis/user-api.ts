@@ -28,14 +28,32 @@ export async function AccountLogin(entity: IUser, success: Function, error?: Fun
 }
 
 /**
+ * 邮箱、用户名或手机号注册
+ *
+ * @param entity 用户实体类
+ */
+export async function AccountRegister(entity: IUser, success?: Function, error?: Function) {
+  try {
+    const { data } = await request.post<ResponseEntity>("/auth/account-register", {
+      username: entity.username,
+      password: entity.password
+    });
+
+    success && success(data);
+  } catch (err) {
+    error && error();
+  }
+}
+
+/**
  * 获取验证码
  *
- * @param mail 邮箱地址
+ * @param mail 电子邮箱地址
  * @param type login（登录）、reset（重置）、register（注册）
  */
 export async function askMailCode(
   mail: string,
-  type: string,
+  type: "login" | "register" | "reset",
   success?: Function,
   error?: Function
 ) {
@@ -52,10 +70,17 @@ export async function askMailCode(
   }
 }
 
+/**
+ * 进行邮箱验证码登录
+ *
+ * @param mail 电子邮箱地址
+ * @param code 验证码
+ * @param type login（登录）、reset（重置）、register（注册）
+ */
 export async function mailCodeLogin(
   mail: string,
   code: string,
-  type: string,
+  type: "login" | "register" | "reset",
   success?: Function,
   error?: Function
 ) {

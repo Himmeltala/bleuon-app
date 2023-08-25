@@ -19,7 +19,7 @@ import java.sql.Timestamp;
 public class User {
 
     @TableId(value = "id")
-    private Long id;
+    private String id;
     @TableField(value = "username")
     private String username;
     @TableField(value = "password")

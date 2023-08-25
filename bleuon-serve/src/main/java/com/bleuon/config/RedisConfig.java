@@ -16,13 +16,9 @@ public class RedisConfig {
         RedisSerializer<String> redisSerializer = new StringRedisSerializer();
         redisTemplate.setConnectionFactory(factory);
 
-        // key序列化
         redisTemplate.setKeySerializer(redisSerializer);
-        // value序列化
         redisTemplate.setValueSerializer(redisSerializer);
-        // key hashmap序列化
         redisTemplate.setHashKeySerializer(redisSerializer);
-        // value hashmap序列化
         redisTemplate.setHashValueSerializer(redisSerializer);
 
         return redisTemplate;

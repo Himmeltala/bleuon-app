@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
- * 配置到 application.xml
+ * 配置到 application.yml
  *
  * @author zheng
  */

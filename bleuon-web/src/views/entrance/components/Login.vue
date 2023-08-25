@@ -20,7 +20,7 @@ const tabs = {
 <template>
   <div class="login w-100% h-100% relative f-c-c">
     <div class="w-40%">
-      <div class="mb-10 text-1.6rem">欢迎使用BleuOn</div>
+      <div class="mb-10 text-1.6rem">欢迎使用 BleuOn</div>
       <div class="mb-10 f-c-s">
         <div
           @click="tabIndex = 'AccountLogin'"
@@ -44,7 +44,9 @@ const tabs = {
       </KeepAlive>
       <div class="f-c-b">
         <div class="text-b cursor-pointer">忘记密码？</div>
-        <div class="text-primary cursor-pointer" @click="$emit('update:dynamicCompName', 'Logon')">
+        <div
+          class="text-primary cursor-pointer"
+          @click="$emit('update:dynamicCompName', 'Register')">
           新用户账号注册
         </div>
       </div>
