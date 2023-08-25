@@ -39,7 +39,7 @@ const formRules = reactive<FormRules>({
 
 function confirmGetVerifyCode() {
   getVerifyCode(interval, coudButtonCount, codeButtonDisabled, async () => {
-    await UserApi.askMailCode(formData.mail, "login");
+    await UserApi.askMailVerifyCode(formData.mail, "login");
   });
 }
 
@@ -47,7 +47,7 @@ const router = useRouter();
 
 async function confirmSubmitForm() {
   await submitForm(formRef.value, async () => {
-    await UserApi.mailCodeLogin(formData.mail, formData.code, "login", () => {
+    await UserApi.verifyMailCode(formData.mail, formData.code, "login", () => {
       router.push("/home");
     });
   });

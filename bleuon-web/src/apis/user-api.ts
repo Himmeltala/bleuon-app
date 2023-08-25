@@ -51,7 +51,7 @@ export async function AccountRegister(entity: IUser, success?: Function, error?:
  * @param mail 电子邮箱地址
  * @param type login（登录）、reset（重置）、register（注册）
  */
-export async function askMailCode(
+export async function askMailVerifyCode(
   mail: string,
   type: "login" | "register" | "reset",
   success?: Function,
@@ -77,11 +77,11 @@ export async function askMailCode(
  * @param code 验证码
  * @param type login（登录）、reset（重置）、register（注册）
  */
-export async function mailCodeLogin(
+export async function verifyMailCode(
   mail: string,
   code: string,
   type: "login" | "register" | "reset",
-  success?: Function,
+  success: Function,
   error?: Function
 ) {
   try {
@@ -98,9 +98,10 @@ export async function mailCodeLogin(
         }
       }
     );
-
-    localStorage.setStorageWithAge("BleuOn-Token", data.token, data.expire);
-    success && success(data);
+    if (type === "login") {
+      localStorage.setStorageWithAge("BleuOn-Token", data.token, data.expire);
+    }
+    success(data);
   } catch (err) {
     error && error();
   }

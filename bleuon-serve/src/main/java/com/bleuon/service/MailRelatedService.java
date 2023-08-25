@@ -25,7 +25,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @Service
-public class MailLoginService extends ServiceImpl<UserMapper, User> {
+public class MailRelatedService extends ServiceImpl<UserMapper, User> {
 
     @Resource
     private JavaMailSender mailSender;
@@ -112,13 +112,13 @@ public class MailLoginService extends ServiceImpl<UserMapper, User> {
         return vo;
     }
 
-    private boolean hasMail(String mail) {
+    private boolean isMailExist(String mail) {
         User user = query().eq("email", mail).one();
         return user != null;
     }
 
     private void getLoginVerifyCode(String mail, String type, VoR vo) {
-        if (this.hasMail(mail)) {
+        if (this.isMailExist(mail)) {
             this.sendVerifyCode(mail, type, vo);
         } else {
             vo.setMessage("邮箱未注册！");
@@ -127,7 +127,7 @@ public class MailLoginService extends ServiceImpl<UserMapper, User> {
     }
 
     private void getRegisterVerifyCode(String mail, String type, VoR vo) {
-        if (!this.hasMail(mail)) {
+        if (!this.isMailExist(mail)) {
             this.sendVerifyCode(mail, type, vo);
         } else {
             vo.setMessage("邮箱被注册！");

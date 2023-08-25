@@ -39,16 +39,18 @@ const formRules = reactive<FormRules>({
 
 function confirmGetVerifyCode() {
   getVerifyCode(interval, coudButtonCount, codeButtonDisabled, async () => {
-    await UserApi.askMailCode(formData.mail, "register");
+    await UserApi.askMailVerifyCode(formData.mail, "register");
   });
 }
 
-const router = useRouter();
-
 async function confirmSubmitForm() {
   await submitForm(formRef.value, async () => {
-    await UserApi.mailCodeLogin(formData.mail, formData.code, "register", () => {
-      router.push("/home");
+    await UserApi.verifyMailCode(formData.mail, formData.code, "register", () => {
+      ElMessage({
+        type: "success",
+        message: "请使用邮箱登录！",
+        grouping: true
+      });
     });
   });
 }

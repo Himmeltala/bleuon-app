@@ -13,7 +13,7 @@ request.interceptors.request.use(
     return config;
   },
   error => {
-    ElMessage.error("请求错误：请查看控制台");
+    ElMessage.error("发生错误！");
     return Promise.reject(error);
   }
 );
@@ -32,7 +32,7 @@ request.interceptors.response.use(
 
       return Promise.reject(data.message);
     } else if (data.code > 40199 && data.code <= 40299) {
-      ElMessage.error("登录错误：" + data.message);
+      ElMessage.error("错误：" + data.message);
       return Promise.reject(data.message);
     } else if (data.code >= 50000 && data.code < 60000) {
       ElMessage.error("错误：" + data.message);
@@ -43,7 +43,7 @@ request.interceptors.response.use(
     return config;
   },
   error => {
-    ElMessage.error("请求错误：请查看控制台");
+    ElMessage.error("发生错误！");
     return Promise.reject(error);
   }
 );
