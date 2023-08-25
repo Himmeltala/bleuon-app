@@ -4,10 +4,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bleuon.consts.Codes;
 import com.bleuon.consts.MailType;
 import com.bleuon.entity.User;
-import com.bleuon.entity.vo.AuthVoResponse;
-import com.bleuon.mapper.AuthUsernamePasswordMapper;
-import com.bleuon.mapper.UserBaseMapper;
-import com.bleuon.service.AuthMailService;
+import com.bleuon.entity.vo.AuthVoR;
+import com.bleuon.mapper.UserMapper;
 import com.bleuon.utils.JwtUtil;
 import jakarta.annotation.Resource;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -22,8 +20,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @Service
-public class AuthMailServiceImpl extends ServiceImpl<UserBaseMapper, User>
-        implements AuthMailService {
+public class MailLoginServiceImpl extends ServiceImpl<UserMapper, User> {
 
     @Resource
     private JavaMailSender mailSender;
@@ -31,13 +28,13 @@ public class AuthMailServiceImpl extends ServiceImpl<UserBaseMapper, User>
     @Resource
     private RedisTemplate<String, String> redisTemplate;
 
-    private boolean isMailExist(String mail) {
+    private boolean hasMail(String mail) {
         User user = query().eq("email", mail).one();
         return user != null;
     }
 
-    public AuthVoResponse getMailVerifyCode(String mail, String type, String ip) {
-        AuthVoResponse vo = new AuthVoResponse();
+    public AuthVoR getMailVerifyCode(String mail, String type, String ip) {
+        AuthVoR vo = new AuthVoR();
 
         Boolean hasKey = redisTemplate.hasKey(type + ":" + mail + ":" + ip);
         if (Boolean.TRUE.equals(hasKey)) {
@@ -48,10 +45,10 @@ public class AuthMailServiceImpl extends ServiceImpl<UserBaseMapper, User>
             redisTemplate.opsForValue().set(type + ":" + mail + ":" + ip, ip, 1, TimeUnit.MINUTES);
         }
 
-        if (isMailExist(mail)) {
-            Integer code = generateCode();
-            redisTemplate.opsForValue().set(type + ":" + mail, code.toString(), 1, TimeUnit.MINUTES);
-            boolean isOk = sendMail(mail, type, code);
+        if (hasMail(mail)) {
+            String verifyCode = generateVerifyCode();
+            redisTemplate.opsForValue().set(type + ":" + mail, verifyCode, 1, TimeUnit.MINUTES);
+            boolean isOk = sendMail(mail, type, verifyCode);
             if (isOk) {
                 vo.setMessage("验证码发送成功，请注意查收！");
                 vo.setCode(Codes.SUCCESS);
@@ -67,12 +64,13 @@ public class AuthMailServiceImpl extends ServiceImpl<UserBaseMapper, User>
         return vo;
     }
 
-    private Integer generateCode() {
+    private String generateVerifyCode() {
         Random random = new Random();
-        return random.nextInt(899999) + 100000;
+        int coed = random.nextInt(899999) + 100000;
+        return Integer.toString(coed);
     }
 
-    private boolean sendMail(String mail, String type, Integer code) {
+    private boolean sendMail(String mail, String type, String code) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom("himmelbleu@qq.com");
@@ -97,15 +95,15 @@ public class AuthMailServiceImpl extends ServiceImpl<UserBaseMapper, User>
         }
     }
 
-    public AuthVoResponse verifyMailCode(String mail, String type, String code) {
-        AuthVoResponse vo = new AuthVoResponse();
+    public AuthVoR verifyMailCode(String mail, String type, String code) {
+        AuthVoR vo = new AuthVoR();
         String redisCode = redisTemplate.opsForValue().get(type + ":" + mail);
         if (redisCode == null) {
             vo.setMessage("验证码不存在或已过期！");
             vo.setCode(Codes.EMAIL_CODE_ERROR);
         } else {
             if (redisCode.equals(code)) {
-                User user = findUserByUsernameOrEmail(mail);
+                User user = findUserByFiled(mail);
                 if (user != null) {
                     String jwtUuid = UUID.randomUUID().toString();
                     Long expire = JwtUtil.getExpire();
@@ -129,13 +127,13 @@ public class AuthMailServiceImpl extends ServiceImpl<UserBaseMapper, User>
         return vo;
     }
 
-    public User findUserByUsernameOrEmail(String text) {
+    public User findUserByFiled(String filed) {
         return query()
-                .eq("username", text)
+                .eq("username", filed)
                 .or()
-                .eq("email", text)
+                .eq("email", filed)
                 .or()
-                .eq("phone", text)
+                .eq("phone", filed)
                 .one();
     }
 

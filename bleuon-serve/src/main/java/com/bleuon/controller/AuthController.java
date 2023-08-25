@@ -1,8 +1,8 @@
 package com.bleuon.controller;
 
 import com.bleuon.annotaion.RequestMappingPrefix;
-import com.bleuon.entity.vo.AuthVoResponse;
-import com.bleuon.service.impl.AuthMailServiceImpl;
+import com.bleuon.entity.vo.AuthVoR;
+import com.bleuon.service.impl.MailLoginServiceImpl;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,18 +13,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class AuthController {
 
     @Resource
-    private AuthMailServiceImpl mailService;
+    private MailLoginServiceImpl mailService;
 
     @GetMapping("/aks-mail-verify-code")
-    public AuthVoResponse askMailVerifyCode(@RequestParam String mail,
-                                            @RequestParam String type, HttpServletRequest http) {
+    public AuthVoR askMailVerifyCode(@RequestParam String mail,
+                                     @RequestParam String type, HttpServletRequest http) {
         return mailService.getMailVerifyCode(mail, type, http.getRemoteHost());
     }
 
     @PostMapping("/verify-mail-code")
-    public AuthVoResponse verifyMailCode(@RequestParam String mail,
-                                         @RequestParam String type,
-                                         @RequestParam String code) {
+    public AuthVoR verifyMailCode(@RequestParam String mail,
+                                  @RequestParam String type,
+                                  @RequestParam String code) {
         return mailService.verifyMailCode(mail, type, code);
     }
 

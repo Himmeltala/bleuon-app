@@ -2,7 +2,7 @@ package com.bleuon.authentication.handler;
 
 import com.alibaba.fastjson2.JSON;
 import com.bleuon.consts.Codes;
-import com.bleuon.entity.vo.AuthVoResponse;
+import com.bleuon.entity.vo.AuthVoR;
 import com.bleuon.utils.JwtUtil;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
  * @author zheng
  */
 @Component
-public class AuthUsernamePasswordSuccessHandler implements AuthenticationSuccessHandler {
+public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     @Resource
     private RedisTemplate<String, String> redisTemplate;
@@ -41,7 +41,7 @@ public class AuthUsernamePasswordSuccessHandler implements AuthenticationSuccess
 
         redisTemplate.opsForValue().set(jwtUuid, token, expire, TimeUnit.SECONDS);
 
-        AuthVoResponse vo = new AuthVoResponse();
+        AuthVoR vo = new AuthVoR();
         vo.setToken(token);
         vo.setExpire(JwtUtil.getExpire());
         vo.setMessage("登录成功！");

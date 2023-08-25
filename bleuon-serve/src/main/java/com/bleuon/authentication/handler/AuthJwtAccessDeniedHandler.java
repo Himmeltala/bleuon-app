@@ -2,7 +2,7 @@ package com.bleuon.authentication.handler;
 
 import com.alibaba.fastjson2.JSON;
 import com.bleuon.consts.Codes;
-import com.bleuon.entity.vo.AuthVoResponse;
+import com.bleuon.entity.vo.AuthVoR;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,12 +20,12 @@ import java.io.IOException;
  * @author zheng
  */
 @Component
-public class AuthJwtLoginAccessDeniedHandler implements AccessDeniedHandler {
+public class AuthJwtAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         response.setContentType("application/json;charset=utf-8");
-        AuthVoResponse vo = new AuthVoResponse();
+        AuthVoR vo = new AuthVoR();
         vo.setCode(Codes.AUTH_NOT_ENOUGH);
         vo.setMessage("权限不足！请联系管理员升级权限。");
         response.getWriter()

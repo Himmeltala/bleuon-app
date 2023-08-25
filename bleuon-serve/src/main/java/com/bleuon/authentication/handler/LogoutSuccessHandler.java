@@ -2,7 +2,7 @@ package com.bleuon.authentication.handler;
 
 import com.alibaba.fastjson2.JSON;
 import com.bleuon.consts.Codes;
-import com.bleuon.entity.vo.AuthVoResponse;
+import com.bleuon.entity.vo.AuthVoR;
 import com.bleuon.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.annotation.Resource;
@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -22,7 +21,7 @@ import java.io.IOException;
  * @author zheng
  */
 @Component
-public class UnAuthJwtLogoutSuccessHandler implements LogoutSuccessHandler {
+public class LogoutSuccessHandler implements org.springframework.security.web.authentication.logout.LogoutSuccessHandler {
 
     @Resource
     private RedisTemplate<String, String> redisTemplate;
@@ -33,7 +32,7 @@ public class UnAuthJwtLogoutSuccessHandler implements LogoutSuccessHandler {
         String authToken = request.getHeader("Authorization");
         Claims claims = JwtUtil.parseJwt(authToken);
 
-        AuthVoResponse vo = new AuthVoResponse();
+        AuthVoR vo = new AuthVoR();
 
         if (claims != null) {
             String jwtUuid = claims.getId();

@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class VoResponse {
+public class VoR {
 
     // 状态码
     private Integer code;

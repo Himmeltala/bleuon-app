@@ -1,6 +1,5 @@
 package com.bleuon.entity.vo;
 
-import com.bleuon.entity.vo.VoResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class AuthVoResponse extends VoResponse {
+public class AuthVoR extends VoR {
 
     // 过期时间
     private Long expire;

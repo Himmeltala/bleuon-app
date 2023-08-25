@@ -1,9 +1,7 @@
 package com.bleuon.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.bleuon.mapper.AuthUsernamePasswordMapper;
-import com.bleuon.mapper.UserBaseMapper;
-import com.bleuon.service.AuthUsernamePasswordService;
+import com.bleuon.mapper.UserMapper;
 import com.bleuon.entity.User;
 import jakarta.annotation.Resource;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,8 +9,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * 用户名密码登录 Service 实现类。
@@ -24,42 +20,35 @@ import java.util.List;
  * @author zheng
  */
 @Service
-public class AuthUsernamePasswordServiceImpl extends ServiceImpl<UserBaseMapper, User>
-        implements AuthUsernamePasswordService, UserDetailsService {
-
-    @Resource
-    private AuthUsernamePasswordMapper authUsernamePasswordMapper;
+public class LoginServiceImpl extends ServiceImpl<UserMapper, User> implements UserDetailsService {
 
     @Resource
     private PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = findUserByUsernameOrEmail(username);
+        User user = findUserByFiled(username);
 
         if (user == null) {
-            throw new UsernameNotFoundException("用户名或密码错误");
+            throw new UsernameNotFoundException("用户名或密码错误！");
         }
 
         String encode = passwordEncoder.encode(user.getPassword());
         user.setPassword(encode);
 
-        List<String> authorities = authUsernamePasswordMapper.queryAuthorities(null, user.getUsername());
-
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getUsername())
                 .password(user.getPassword())
-                .authorities(authorities.toArray(new String[0]))
                 .build();
     }
 
-    private User findUserByUsernameOrEmail(String text) {
+    private User findUserByFiled(String field) {
         return query()
-                .eq("username", text)
+                .eq("username", field)
                 .or()
-                .eq("email", text)
+                .eq("email", field)
                 .or()
-                .eq("phone", text)
+                .eq("phone", field)
                 .one();
     }
 

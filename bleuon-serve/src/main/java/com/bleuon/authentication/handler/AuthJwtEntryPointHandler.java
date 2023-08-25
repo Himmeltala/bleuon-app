@@ -2,7 +2,7 @@ package com.bleuon.authentication.handler;
 
 import com.alibaba.fastjson2.JSON;
 import com.bleuon.consts.Codes;
-import com.bleuon.entity.vo.AuthVoResponse;
+import com.bleuon.entity.vo.AuthVoR;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,14 +18,14 @@ import java.io.IOException;
  * @author zheng
  */
 @Component
-public class AuthJwtLoginEntryPointHandler implements AuthenticationEntryPoint {
+public class AuthJwtEntryPointHandler implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         response.setContentType("application/json;charset=utf-8");
-        AuthVoResponse vo = new AuthVoResponse();
+        AuthVoR vo = new AuthVoR();
 
-        vo.setMessage("URL 不存在，或权限认证失败等其他问题");
+        vo.setMessage("认证被拒绝，具体问题联系管理员。");
         vo.setCode(Codes.AUTHORITY_UNKNOWN_ERROR);
 
         response.getWriter()
