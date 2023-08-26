@@ -48,7 +48,7 @@ async function confirmRegister() {
     await UserApi.AccountRegister(formData, () => {
       ElMessage({
         type: "success",
-        message: "请前往登录！",
+        message: "恭喜您，请返回登录页面进行登录！",
         grouping: true
       });
     });

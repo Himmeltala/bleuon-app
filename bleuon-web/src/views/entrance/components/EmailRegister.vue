@@ -48,7 +48,7 @@ async function confirmSubmitForm() {
     await UserApi.verifyMailCode(formData.mail, formData.code, "register", () => {
       ElMessage({
         type: "success",
-        message: "请使用邮箱登录！",
+        message: "恭喜您，请返回登录页面进行邮箱登录！",
         grouping: true
       });
     });
