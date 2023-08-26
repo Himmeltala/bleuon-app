@@ -11,20 +11,20 @@ import type { FormRules } from "element-plus";
 let interval: number;
 const coudButtonCount = ref(60);
 const codeButtonDisabled = ref(false);
-const isMailCorrect = ref(false);
+const isEmailCorrect = ref(false);
 const isCodeCorrect = ref(false);
 
 const formRef = ref();
 const formData = reactive({
-  mail: "",
+  email: "",
   code: ""
 });
 
 const formRules = reactive<FormRules>({
-  mail: [
+  email: [
     { required: true, message: "请输入电子邮箱", trigger: "blur" },
-    { validator: emailValidator(isMailCorrect), trigger: "change" },
-    { validator: emailValidator(isMailCorrect), trigger: "blur" }
+    { validator: emailValidator(isEmailCorrect), trigger: "change" },
+    { validator: emailValidator(isEmailCorrect), trigger: "blur" }
   ],
   code: [
     {
@@ -38,8 +38,8 @@ const formRules = reactive<FormRules>({
 });
 
 function confirmGetVerifyCode() {
-  getVerifyCode(interval, coudButtonCount, codeButtonDisabled, async () => {
-    await UserApi.askMailVerifyCode(formData.mail, "login");
+  getVerifyCode(interval, coudButtonCount, codeButtonDisabled, async (callback: any) => {
+    await UserApi.askMailVerifyCode(formData.email, "login", () => callback());
   });
 }
 
@@ -47,7 +47,7 @@ const router = useRouter();
 
 async function confirmSubmitForm() {
   await submitForm(formRef.value, async () => {
-    await UserApi.verifyMailCode(formData.mail, formData.code, "login", () => {
+    await UserApi.verifyMailCode(formData, formData.code, "login", () => {
       router.push("/home");
     });
   });
@@ -57,8 +57,8 @@ async function confirmSubmitForm() {
 <template>
   <div>
     <el-form ref="formRef" :model="formData" :rules="formRules">
-      <el-form-item prop="mail">
-        <el-input clearable size="large" v-model="formData.mail" placeholder="请输入邮箱" />
+      <el-form-item prop="email">
+        <el-input clearable size="large" v-model="formData.email" placeholder="请输入邮箱" />
       </el-form-item>
       <el-form-item prop="code">
         <div class="f-c-b w-100%">
@@ -74,7 +74,7 @@ async function confirmSubmitForm() {
           </div>
           <div class="w-30% f-c-e">
             <el-button
-              :disabled="codeButtonDisabled || !isMailCorrect"
+              :disabled="codeButtonDisabled || !isEmailCorrect"
               size="large"
               @click="confirmGetVerifyCode">
               <span v-if="coudButtonCount < 60 && coudButtonCount >= 0">
@@ -88,7 +88,7 @@ async function confirmSubmitForm() {
       <el-form-item>
         <el-button
           @click="confirmSubmitForm"
-          :disabled="!isMailCorrect || !isCodeCorrect"
+          :disabled="!isEmailCorrect || !isCodeCorrect"
           size="large"
           class="w-100%"
           type="primary">

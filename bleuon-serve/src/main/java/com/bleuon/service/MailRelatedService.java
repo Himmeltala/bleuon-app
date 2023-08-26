@@ -93,13 +93,13 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> {
     /**
      * 校验邮箱验证码
      *
-     * @param mail 邮箱地址
+     * @param user 实体类
      * @param type 验证码类型
      * @param code 验证码
      */
     @Transactional
-    public AuthVo verifyMailCode(String mail, String type, String code) {
-        setCacheCode(type + ":" + mail);
+    public AuthVo verifyMailCode(User user, String type, String code) {
+        setCacheCode(type + ":" + user.getEmail());
         String cacheCode = redisTemplate.opsForValue().get(getCacheCode());
 
         AuthVo vo = new AuthVo();
@@ -117,9 +117,9 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> {
         }
 
         if (type.equals("register"))
-            verifyRegisterMailCode(mail, vo);
+            verifyRegisterMailCode(user, vo);
         else
-            verifyLoginMailCode(mail, vo);
+            verifyLoginMailCode(user, vo);
 
 
         redisTemplate.delete(getCacheCode());
@@ -194,17 +194,17 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> {
         }
     }
 
-    public void verifyRegisterMailCode(String mail, AuthVo vo) {
-        if (findUserByEmail(mail) == null) {
-            startTransaction(vo, mail);
+    public void verifyRegisterMailCode(User user, AuthVo vo) {
+        if (findUserByEmail(user.getEmail()) == null) {
+            startTransaction(vo, user);
         } else {
             vo.setMessage("邮箱已被注册！");
             vo.setCode(HttpCode.ERROR);
         }
     }
 
-    private void verifyLoginMailCode(String mail, AuthVo vo) {
-        User user = findUserByEmail(mail);
+    private void verifyLoginMailCode(User u, AuthVo vo) {
+        User user = findUserByEmail(u.getEmail());
 
         if (user != null) {
             String uuid = UUID.randomUUID().toString();
@@ -229,8 +229,8 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> {
         return query().eq("email", mail).one();
     }
 
-    public void startTransaction(Vo vo, String mail) {
-        User user = createUser(mail);
+    public void startTransaction(Vo vo, User u) {
+        User user = createUser(u);
 
         boolean o = save(user);
         authMapper.setAuthority(user.getId(), 3L, user.getUsername());
@@ -241,13 +241,11 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> {
         vo.setMessage(o ? "注册成功！" : "注册失败！");
     }
 
-    private User createUser(String mail) {
-        User user = new User();
+    private User createUser(User user) {
         String uuid = UUID.randomUUID().toString();
         user.setId(uuid);
-        user.setEmail(mail);
         user.setUsername("用户_" + uuid);
-        user.setPassword(passwordEncoder.encode(uuid.substring(0, 8)));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return user;
     }
 

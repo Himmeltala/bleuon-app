@@ -25,15 +25,16 @@ public class AuthController {
 
     @GetMapping("/aks-mail-verify-code")
     public Vo askMailVerifyCode(@RequestParam String mail,
-                                @RequestParam String type, HttpServletRequest http) {
+                                @RequestParam String type,
+                                HttpServletRequest http) {
         return mailRelatedService.getMailVerifyCode(mail, type, HttpUtil.getIpAddr(http));
     }
 
     @PostMapping("/verify-mail-code")
-    public AuthVo verifyMailCode(@RequestParam String mail,
+    public AuthVo verifyMailCode(@RequestBody User user,
                                  @RequestParam String type,
                                  @RequestParam String code) {
-        return mailRelatedService.verifyMailCode(mail, type, code);
+        return mailRelatedService.verifyMailCode(user, type, code);
     }
 
     @PostMapping("/account-register")

@@ -71,14 +71,14 @@ export async function askMailVerifyCode(
 }
 
 /**
- * 进行邮箱验证码登录
+ * 校验邮箱验证码
  *
- * @param mail 电子邮箱地址
+ * @param user 用户实体类
  * @param code 验证码
  * @param type login（登录）、reset（重置）、register（注册）
  */
 export async function verifyMailCode(
-  mail: string,
+  user: IUser,
   code: string,
   type: "login" | "register" | "reset",
   success: Function,
@@ -88,13 +88,13 @@ export async function verifyMailCode(
     const { data } = await request.post<ResponseEntity>(
       "/auth/verify-mail-code",
       {
-        mail,
-        type,
-        code
+        email: user.email,
+        password: user.password
       },
       {
-        headers: {
-          "Content-Type": "application/multipart/form-data"
+        params: {
+          type,
+          code
         }
       }
     );

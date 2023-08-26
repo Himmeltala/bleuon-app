@@ -10,7 +10,7 @@ defineProps({
 });
 defineEmits(["update:dynamicCompName"]);
 
-const tabIndex = ref<"AccountRegister" | "EmailRegister">("AccountRegister");
+const tabIndex = ref<"AccountRegister" | "EmailRegister">("EmailRegister");
 const tabs = {
   AccountRegister,
   EmailRegister
@@ -23,22 +23,22 @@ const tabs = {
       <div class="mb-10 text-1.6rem">欢迎注册 BleuOn</div>
       <div class="mb-10 f-c-s">
         <div
-          @click="tabIndex = 'AccountRegister'"
+          @click="tabIndex = 'EmailRegister'"
           class="mr-10 cursor-pointer pb-4 text-1.1rem"
+          :class="
+            tabIndex === 'EmailRegister' ? 'active font-bold b-b-solid b-b-primary b-b-2' : 'text-b'
+          ">
+          邮箱注册
+        </div>
+        <div
+          @click="tabIndex = 'AccountRegister'"
+          class="cursor-pointer pb-4 text-1.1rem"
           :class="
             tabIndex === 'AccountRegister'
               ? 'active font-bold b-b-solid b-b-primary b-b-2'
               : 'text-b'
           ">
           账号注册
-        </div>
-        <div
-          @click="tabIndex = 'EmailRegister'"
-          class="cursor-pointer pb-4 text-1.1rem"
-          :class="
-            tabIndex === 'EmailRegister' ? 'active font-bold b-b-solid b-b-primary b-b-2' : 'text-b'
-          ">
-          邮箱注册
         </div>
       </div>
       <KeepAlive>

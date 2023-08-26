@@ -52,19 +52,19 @@ export function getVerifyCode(
   interval: number,
   count: Ref<number>,
   disabled: Ref<boolean>,
-  success: Function
+  startInterval: Function
 ) {
-  if (!disabled.value) {
-    success();
-  }
-  interval = setInterval(() => {
-    count.value--;
-    if (count.value < 0) {
-      clearInterval(interval);
-      disabled.value = false;
-      count.value = 60;
-    }
-  }, 900);
+  startInterval(() => {
+    interval = setInterval(() => {
+      count.value--;
+      if (count.value < 0) {
+        clearInterval(interval);
+        disabled.value = false;
+        count.value = 60;
+      }
+    }, 1000);
+  });
+
   disabled.value = true;
 }
 
