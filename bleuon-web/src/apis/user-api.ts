@@ -106,3 +106,15 @@ export async function verifyMailCode(
     error && error();
   }
 }
+
+export async function resetPassword(user: IUser, success: Function, error?: Function) {
+  try {
+    const { data } = await request.post<ResponseEntity>("/auth/reset-password", {
+      email: user.email,
+      password: user.password
+    });
+    success(data);
+  } catch (err) {
+    error && error();
+  }
+}

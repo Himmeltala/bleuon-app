@@ -10,11 +10,19 @@ defineProps({
 });
 defineEmits(["update:dynamicCompName"]);
 
-const tabIndex = ref<"AccountLogin" | "EmailLogin">("AccountLogin");
+type TabIndexType = "AccountLogin" | "EmailLogin";
+
+const tabIndex = ref<TabIndexType>("AccountLogin");
 const tabs = {
   AccountLogin,
   EmailLogin
 };
+
+const router = useRouter();
+
+function changeTabIndex(name: TabIndexType) {
+  tabIndex.value = name;
+}
 </script>
 
 <template>
@@ -23,7 +31,7 @@ const tabs = {
       <div class="mb-10 text-1.6rem">欢迎使用 BleuOn</div>
       <div class="mb-10 f-c-s">
         <div
-          @click="tabIndex = 'AccountLogin'"
+          @click="changeTabIndex('AccountLogin')"
           class="mr-10 cursor-pointer pb-4 text-1.1rem"
           :class="
             tabIndex === 'AccountLogin' ? 'active font-bold b-b-solid b-b-primary b-b-2' : 'text-b'
@@ -31,7 +39,7 @@ const tabs = {
           账号登录
         </div>
         <div
-          @click="tabIndex = 'EmailLogin'"
+          @click="changeTabIndex('EmailLogin')"
           class="cursor-pointer pb-4 text-1.1rem"
           :class="
             tabIndex === 'EmailLogin' ? 'active font-bold b-b-solid b-b-primary b-b-2' : 'text-b'

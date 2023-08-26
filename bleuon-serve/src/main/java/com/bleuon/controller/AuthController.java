@@ -6,6 +6,7 @@ import com.bleuon.entity.vo.AuthVo;
 import com.bleuon.entity.vo.Vo;
 import com.bleuon.service.AccountRegisterService;
 import com.bleuon.service.MailRelatedService;
+import com.bleuon.service.ResetPasswordService;
 import com.bleuon.utils.HttpUtil;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,6 +23,9 @@ public class AuthController {
 
     @Resource
     private AccountRegisterService registerService;
+
+    @Resource
+    private ResetPasswordService resetPasswordService;
 
     @GetMapping("/aks-mail-verify-code")
     public Vo askMailVerifyCode(@RequestParam String mail,
@@ -40,6 +44,11 @@ public class AuthController {
     @PostMapping("/account-register")
     public Vo accountRegister(@RequestBody User user) {
         return registerService.register(user);
+    }
+
+    @PostMapping("/reset-password")
+    public Vo resetPassword(@RequestBody User user) {
+        return resetPasswordService.resetPassword(user);
     }
 
 }

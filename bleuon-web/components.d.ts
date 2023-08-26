@@ -36,6 +36,8 @@ declare module 'vue' {
     FindAccountByEmail: typeof import('./src/views/entrance/components/FindAccountByEmail.vue')['default']
     FindAccountByPhone: typeof import('./src/views/entrance/components/FindAccountByPhone.vue')['default']
     FindAccountByUsername: typeof import('./src/views/entrance/components/FindAccountByUsername.vue')['default']
+    FindAccountResetPassword: typeof import('./src/views/entrance/components/FindAccountResetPassword.vue')['default']
+    FindAccountVerifyCode: typeof import('./src/views/entrance/components/FindAccountVerifyCode.vue')['default']
     Folder: typeof import('./src/views/home/components/Folder.vue')['default']
     Header: typeof import('./src/views/home/components/Header.vue')['default']
     Home: typeof import('./src/views/home/Home.vue')['default']
