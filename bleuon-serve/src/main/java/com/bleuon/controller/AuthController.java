@@ -42,7 +42,7 @@ public class AuthController {
     @PostMapping("/verify-mail-code")
     public AuthVo verifyMailCode(@RequestBody User user,
                                  @RequestParam @Pattern(regexp = "(register|login|reset)", message = "发送验证码的类型是 register 或 login 或 reset") String type,
-                                 @RequestParam @Pattern(regexp = "^\\d{6}$\n", message = "验证码必须是 6 个数字") String code) {
+                                 @RequestParam @Pattern(regexp = "^\\d{6}$", message = "验证码必须是 6 个数字") String code) {
         return mailRelatedService.verifyMailCode(user, type, code);
     }
 
