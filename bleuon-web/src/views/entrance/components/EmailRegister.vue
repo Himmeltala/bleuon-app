@@ -6,7 +6,7 @@ import {
   passwordValidator,
   rePasswdValidator,
   getVerifyCode,
-  submitForm
+  commitForm
 } from "@/services/form-validators";
 import { UserApi } from "@/apis";
 
@@ -67,8 +67,8 @@ function confirmGetVerifyCode() {
   });
 }
 
-async function confirmSubmitForm() {
-  await submitForm(formRef.value, async () => {
+function confirmSubmitForm() {
+  commitForm(formRef.value, async () => {
     await UserApi.verifyMailCode(formData, formData.code, "register", () => {
       ElMessage({
         type: "success",

@@ -48,11 +48,11 @@ export async function AccountRegister(entity: IUser, success?: Function, error?:
 /**
  * 获取验证码
  *
- * @param mail 电子邮箱地址
+ * @param email 电子邮箱地址
  * @param type login（登录）、reset（重置）、register（注册）
  */
 export async function askMailVerifyCode(
-  mail: string,
+  email: string,
   type: "login" | "register" | "reset",
   success?: Function,
   error?: Function
@@ -61,7 +61,7 @@ export async function askMailVerifyCode(
     const { data } = await request.get<ResponseEntity>("/auth/aks-mail-verify-code", {
       params: {
         type,
-        mail
+        email
       }
     });
     success && success(data);

@@ -68,7 +68,14 @@ export function getVerifyCode(
   disabled.value = true;
 }
 
-export async function submitForm(
+/**
+ * 提交表单
+ *
+ * @param formEl 表单 Ref 对象
+ * @param success 成功回调
+ * @param error 失败回调
+ */
+export async function commitForm(
   formEl: FormInstance | undefined,
   success?: Function,
   error?: Function
@@ -159,6 +166,11 @@ export function rePasswdValidator(
   };
 }
 
+/**
+ * 手机号、电子邮箱、用户名格式校验器
+ *
+ * @param isCorrect 是否正确的标志变量
+ */
 export function accountValidator(isCorrect: Ref<boolean>) {
   return (rule: any, value: any, callback: any) => {
     const regex =

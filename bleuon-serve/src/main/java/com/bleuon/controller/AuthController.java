@@ -33,10 +33,10 @@ public class AuthController {
     private ResetPasswordService resetPasswordService;
 
     @GetMapping("/aks-mail-verify-code")
-    public Vo askMailVerifyCode(@RequestParam @Email(message = "不是一个合法的电子邮箱地址") String mail,
+    public Vo askMailVerifyCode(@RequestParam @Email(message = "不是一个合法的电子邮箱地址") String email,
                                 @RequestParam @Pattern(regexp = "(register|login|reset)", message = "发送验证码的类型是 register 或 login 或 reset") String type,
                                 HttpServletRequest http) {
-        return mailRelatedService.getMailVerifyCode(mail, type, HttpUtil.getIpAddr(http));
+        return mailRelatedService.getMailVerifyCode(email, type, HttpUtil.getIpAddr(http));
     }
 
     @PostMapping("/verify-mail-code")

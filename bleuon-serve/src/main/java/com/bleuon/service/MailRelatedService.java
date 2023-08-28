@@ -63,13 +63,13 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> {
     /**
      * 获取邮箱验证码
      *
-     * @param mail 电子邮箱地址
+     * @param email 电子邮箱地址
      * @param type 验证码类型
      * @param ip   请求 IP
      */
-    public Vo getMailVerifyCode(String mail, String type, String ip) {
-        setCacheCode(type + ":" + mail);
-        setSender(type + ":" + mail + ":" + ip);
+    public Vo getMailVerifyCode(String email, String type, String ip) {
+        setCacheCode(type + ":" + email);
+        setSender(type + ":" + email + ":" + ip);
 
         Vo vo = new Vo();
 
@@ -82,9 +82,9 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> {
         rememberIp(ip);
 
         if (type.equals("register"))
-            getVerifyCodeByRegister(mail, type, vo);
+            getVerifyCodeByRegister(email, type, vo);
         else
-            getVerifyCodeByMailNoRegister(mail, type, vo);
+            getVerifyCodeByMailNoRegister(email, type, vo);
 
 
         return vo;
@@ -137,31 +137,31 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> {
         redisTemplate.opsForValue().set(getSender(), ip, 1, TimeUnit.MINUTES);
     }
 
-    private boolean isMailExist(String mail) {
-        return query().eq("email", mail).one() != null;
+    private boolean isMailExist(String email) {
+        return query().eq("email", email).one() != null;
     }
 
-    private void getVerifyCodeByMailNoRegister(String mail, String type, Vo vo) {
-        if (isMailExist(mail)) {
-            startWriteMail(mail, type, vo);
+    private void getVerifyCodeByMailNoRegister(String email, String type, Vo vo) {
+        if (isMailExist(email)) {
+            startWriteMail(email, type, vo);
         } else {
             vo.setMessage("邮箱未注册！");
             vo.setCode(HttpCode.ERROR);
         }
     }
 
-    private void getVerifyCodeByRegister(String mail, String type, Vo vo) {
-        if (!isMailExist(mail)) {
-            startWriteMail(mail, type, vo);
+    private void getVerifyCodeByRegister(String email, String type, Vo vo) {
+        if (!isMailExist(email)) {
+            startWriteMail(email, type, vo);
         } else {
             vo.setMessage("邮箱被注册！");
             vo.setCode(HttpCode.ERROR);
         }
     }
 
-    private void startWriteMail(String mail, String type, Vo vo) {
+    private void startWriteMail(String email, String type, Vo vo) {
         String code = generateCode();
-        boolean o = publishMailByType(mail, type, code);
+        boolean o = publishMailByType(email, type, code);
         vo.setMessage(o ? "验证码发送成功，请注意查收！" : "验证码发送失败，请重试！");
         vo.setCode(o ? HttpCode.SUCCESS : HttpCode.ERROR);
     }
@@ -172,11 +172,11 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> {
         return code;
     }
 
-    private boolean publishMailByType(String mail, String type, String code) {
+    private boolean publishMailByType(String email, String type, String code) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom(senderMailAddress);
-            message.setTo(mail);
+            message.setTo(email);
 
             if (Objects.equals(type, MailType.LOGIN)) {
                 message.setSubject("BleuOn：" + "账号登录验证码");
@@ -228,8 +228,8 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> {
         }
     }
 
-    private User findUserByEmail(String mail) {
-        return query().eq("email", mail).one();
+    private User findUserByEmail(String email) {
+        return query().eq("email", email).one();
     }
 
     public void startTransaction(Vo vo, User u) {

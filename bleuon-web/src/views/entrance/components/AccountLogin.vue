@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { UserApi } from "@/apis";
 import type { FormRules } from "element-plus";
-import { accountValidator, passwordValidator, submitForm } from "@/services/form-validators";
+import { accountValidator, passwordValidator, commitForm } from "@/services/form-validators";
 
 const isAccountCorrect = ref(false);
 const isPasswordCorrect = ref(false);
@@ -30,7 +30,7 @@ const formRules = reactive<FormRules>({
 });
 
 function confirmLogin() {
-  submitForm(formRef.value, async () => {
+  commitForm(formRef.value, async () => {
     await UserApi.AccountLogin(formData, () => {
       router.push("/home");
     });

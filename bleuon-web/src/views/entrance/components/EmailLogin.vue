@@ -4,7 +4,7 @@ import {
   emailValidator,
   verifyCodeValidator,
   getVerifyCode,
-  submitForm
+  commitForm
 } from "@/services/form-validators";
 import type { FormRules } from "element-plus";
 
@@ -45,8 +45,8 @@ function confirmGetVerifyCode() {
 
 const router = useRouter();
 
-async function confirmSubmitForm() {
-  await submitForm(formRef.value, async () => {
+function confirmSubmitForm() {
+  commitForm(formRef.value, async () => {
     await UserApi.verifyMailCode(formData, formData.code, "login", () => {
       router.push("/home");
     });

@@ -4,7 +4,7 @@ import {
   usernameValidator,
   passwordValidator,
   rePasswdValidator,
-  submitForm
+  commitForm
 } from "@/services/form-validators";
 import { UserApi } from "@/apis";
 
@@ -43,8 +43,8 @@ const formRules = reactive<FormRules>({
   ]
 });
 
-async function confirmRegister() {
-  await submitForm(formRef.value, async () => {
+function confirmRegister() {
+  commitForm(formRef.value, async () => {
     await UserApi.AccountRegister(formData, () => {
       ElMessage({
         type: "success",
