@@ -1,9 +1,8 @@
 export type ActiveItem =
-  | "auth-my-recent"
-  | "auth-my-files"
-  | "auth-my-shares"
-  | "auth-my-stars"
+  | "auth-history"
+  | "auth-diagrams"
+  | "auth-shares"
+  | "auth-stars"
   | "auth-templates"
   | "public-discussion"
-  | "auth-recycle"
-  | "auth-create-by-template";
+  | "auth-recycle";

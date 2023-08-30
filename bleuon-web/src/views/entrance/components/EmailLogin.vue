@@ -8,6 +8,8 @@ import {
 } from "@/services/form-validators";
 import type { FormRules } from "element-plus";
 
+const router = useRouter();
+
 let interval: number;
 const coudButtonCount = ref(60);
 const codeButtonDisabled = ref(false);
@@ -42,8 +44,6 @@ function confirmGetVerifyCode() {
     await UserApi.askMailVerifyCode(formData.email, "login", () => callback());
   });
 }
-
-const router = useRouter();
 
 function confirmSubmitForm() {
   commitForm(formRef.value, async () => {

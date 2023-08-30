@@ -1,8 +1,8 @@
 package com.bleuon.service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.bleuon.consts.HttpCode;
-import com.bleuon.consts.MailType;
+import com.bleuon.constant.HttpCode;
+import com.bleuon.constant.MailType;
 import com.bleuon.entity.User;
 import com.bleuon.entity.vo.AuthVo;
 import com.bleuon.entity.vo.Vo;

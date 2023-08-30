@@ -1,4 +1,4 @@
-package com.bleuon.consts;
+package com.bleuon.constant;
 
 public class MailType {
 

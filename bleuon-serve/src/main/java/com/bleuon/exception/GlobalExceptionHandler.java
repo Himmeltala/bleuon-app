@@ -1,6 +1,6 @@
 package com.bleuon.exception;
 
-import com.bleuon.consts.HttpCode;
+import com.bleuon.constant.HttpCode;
 import com.bleuon.entity.vo.Vo;
 import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;

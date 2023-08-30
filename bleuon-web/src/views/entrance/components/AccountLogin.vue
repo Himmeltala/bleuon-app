@@ -3,9 +3,10 @@ import { UserApi } from "@/apis";
 import type { FormRules } from "element-plus";
 import { accountValidator, passwordValidator, commitForm } from "@/services/form-validators";
 
+const router = useRouter();
+
 const isAccountCorrect = ref(false);
 const isPasswordCorrect = ref(false);
-const router = useRouter();
 
 const formRef = ref();
 const formData = reactive<IUser>({

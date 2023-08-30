@@ -1,7 +1,7 @@
 package com.bleuon.service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.bleuon.consts.HttpCode;
+import com.bleuon.constant.HttpCode;
 import com.bleuon.entity.User;
 import com.bleuon.entity.vo.Vo;
 import com.bleuon.mapper.AuthMapper;

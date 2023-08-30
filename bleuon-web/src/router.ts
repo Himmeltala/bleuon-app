@@ -12,32 +12,32 @@ const router = createRouter({
       name: "auth-home",
       meta: { title: "首页" },
       path: "/home",
-      redirect: "/home/myrecent",
+      redirect: "/home/history",
       component: () => import("@/views/home/Home.vue"),
       children: [
         {
-          name: "auth-my-recent",
+          name: "auth-history",
           meta: { title: "最近文件" },
-          path: "myrecent",
-          component: () => import("@/views/home/MyRecent.vue")
+          path: "history",
+          component: () => import("@/views/home/History.vue")
         },
         {
-          name: "auth-my-files",
+          name: "auth-diagrams",
           meta: { title: "我的文件" },
-          path: "myfiles",
-          component: () => import("@/views/home/MyFiles.vue")
+          path: "diagrams",
+          component: () => import("@/views/home/Diagrams.vue")
         },
         {
-          name: "auth-my-shares",
+          name: "auth-shares",
           meta: { title: "我的分享" },
-          path: "myshares",
-          component: () => import("@/views/home/MyShares.vue")
+          path: "shares",
+          component: () => import("@/views/home/Shares.vue")
         },
         {
-          name: "auth-my-stars",
+          name: "auth-stars",
           meta: { title: "我的收藏" },
-          path: "mystars",
-          component: () => import("@/views/home/MyStars.vue")
+          path: "stars",
+          component: () => import("@/views/home/Stars.vue")
         }
       ]
     },
@@ -47,7 +47,6 @@ const router = createRouter({
       path: "/entrance",
       component: () => import("@/views/entrance/Entrance.vue")
     },
-
     {
       path: "/u",
       children: [
@@ -64,6 +63,12 @@ const router = createRouter({
           component: () => import("@/views/user/Setting.vue")
         }
       ]
+    },
+    {
+      path: "/diagraming/:id",
+      name: "auth-diagraming",
+      meta: { title: "画图" },
+      component: () => import("@/views/diagraming/Diagraming.vue")
     }
   ],
   history: createWebHashHistory(),

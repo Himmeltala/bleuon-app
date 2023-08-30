@@ -18,8 +18,6 @@ const tabs = {
   EmailLogin
 };
 
-const router = useRouter();
-
 function changeTabIndex(name: TabIndexType) {
   tabIndex.value = name;
 }

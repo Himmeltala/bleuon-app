@@ -1,6 +1,6 @@
 package com.bleuon.entity.vo;
 
-import com.bleuon.consts.HttpCode;
+import com.bleuon.constant.HttpCode;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

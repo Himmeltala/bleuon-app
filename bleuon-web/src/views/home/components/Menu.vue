@@ -1,16 +1,14 @@
 <script setup lang="ts">
 import type { ActiveItem } from "../typings/home-typing";
 
+const router = useRouter();
 const props = defineProps({
   activeItem: {
     type: String as PropType<ActiveItem>,
     required: true
   }
 });
-
 const emits = defineEmits(["update:activeItem"]);
-
-const router = useRouter();
 
 function navigateTo(routerName: ActiveItem) {
   emits("update:activeItem", routerName);
@@ -24,6 +22,12 @@ onBeforeMount(() => {
 });
 
 const disabled = ref(false);
+
+function createNewDiagram() {
+  // 1. 生成随机的 id
+  // 2. 将 id 以及其他基本信息发送给服务器，服务器创建这个实体存储数据库中
+  router.push("/diagraming/123");
+}
 </script>
 
 <template>
@@ -38,7 +42,7 @@ const disabled = ref(false);
           class="options__panel select-none p-2 z-2 absolute top-12 left-0 w-65 bg-white rd-2"
           :class="disabled ? 'block' : 'hidden'">
           <div class="f-c-b flex-wrap flex-gap-5">
-            <div class="item">
+            <div class="item" @click="createNewDiagram">
               <div></div>
               <div>流程图</div>
             </div>
@@ -57,36 +61,29 @@ const disabled = ref(false);
     <div class="menu__body mt-10 pb-5 b-b-1 b-b-solid b-b-#e4e4e4">
       <div
         class="menu__item f-c-s"
-        :class="{ active: activeItem == 'auth-create-by-template' }"
-        @click="navigateTo('auth-create-by-template')">
-        <div class="mr-2 i-tabler-apps"></div>
-        从模板新建
-      </div>
-      <div
-        class="menu__item f-c-s"
-        :class="{ active: activeItem == 'auth-my-recent' }"
-        @click="navigateTo('auth-my-recent')">
+        :class="{ active: activeItem == 'auth-history' }"
+        @click="navigateTo('auth-history')">
         <div class="mr-2 i-tabler-clock-hour-3"></div>
         最近文件
       </div>
       <div
         class="menu__item f-c-s"
-        :class="{ active: activeItem == 'auth-my-files' }"
-        @click="navigateTo('auth-my-files')">
+        :class="{ active: activeItem == 'auth-diagrams' }"
+        @click="navigateTo('auth-diagrams')">
         <div class="mr-2 i-tabler-folder"></div>
         我的文件
       </div>
       <div
         class="menu__item f-c-s"
-        :class="{ active: activeItem == 'auth-my-shares' }"
-        @click="navigateTo('auth-my-shares')">
+        :class="{ active: activeItem == 'auth-shares' }"
+        @click="navigateTo('auth-shares')">
         <div class="mr-2 i-tabler-share"></div>
         我的分享
       </div>
       <div
         class="menu__item f-c-s"
-        :class="{ active: activeItem == 'auth-my-stars' }"
-        @click="navigateTo('auth-my-stars')">
+        :class="{ active: activeItem == 'auth-stars' }"
+        @click="navigateTo('auth-stars')">
         <div class="mr-2 i-tabler-star"></div>
         我的收藏
       </div>
@@ -137,7 +134,7 @@ const disabled = ref(false);
 
   .item {
     flex: 0 1 45% !important;
-    --uno: cursor-pointer px-4 py-2 rd-2 transition-all-300;
+    --uno: cursor-pointer px-4 py-2 rd-2 transition-all-300 text-center;
 
     &:hover {
       --uno: bg-#F3F5F9;

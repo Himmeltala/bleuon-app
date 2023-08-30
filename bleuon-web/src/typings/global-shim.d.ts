@@ -20,8 +20,3 @@ declare interface ResponseEntity {
   expire: number; // 毫秒数
   token: string;
 }
-
-declare interface Storage {
-  setStorageWithAge: (key: string, token: string, maxAge: number) => void;
-  getStorageWithAge: (key: string) => string | undefined;
-}

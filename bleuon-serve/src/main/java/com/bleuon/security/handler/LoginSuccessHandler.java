@@ -1,7 +1,7 @@
 package com.bleuon.security.handler;
 
 import com.alibaba.fastjson2.JSON;
-import com.bleuon.consts.HttpCode;
+import com.bleuon.constant.HttpCode;
 import com.bleuon.entity.vo.AuthVo;
 import com.bleuon.entity.vo.Vo;
 import com.bleuon.utils.JwtUtil;
