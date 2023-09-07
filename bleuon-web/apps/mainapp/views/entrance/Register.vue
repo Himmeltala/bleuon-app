@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import AccountRegister from "./AccountRegister.vue";
-import EmailRegister from "./EmailRegister.vue";
+import AccountRegister from "./components/AccountRegister.vue";
+import EmailRegister from "./components/EmailRegister.vue";
 
 defineProps({
   dynamicCompName: {

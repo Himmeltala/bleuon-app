@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import FindAccountVerifyCode from "./FindAccountVerifyCode.vue";
-import FindAccountRsetPassword from "./FindAccountResetPassword.vue";
+import FindAccountVerifyCode from "./components/FindAccountVerifyCode.vue";
+import FindAccountRsetPassword from "./components/FindAccountResetPassword.vue";
 
 defineProps({
   dynamicCompName: {

@@ -1,12 +1,12 @@
 /* Import Vue */
-import App from "@/App.vue";
-import router from "@/router";
+import App from "@mainapp/App.vue";
+import router from "@mainapp/router";
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 /* Import CSS */
 import "uno.css";
-import "@/style.scss";
-import "@/utils/local-storage";
+import "@mainapp/style.scss";
+import "@mainapp/utils/local-storage";
 
 const app = createApp(App);
 app.use(router);

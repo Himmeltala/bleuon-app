@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import Login from "./components/Login.vue";
-import Register from "./components/Register.vue";
-import FindAccount from "./components/FindAccount.vue";
+import Login from "./Login.vue";
+import Register from "./Register.vue";
+import FindAccount from "./FindAccount.vue";
 
 const tabs = {
   Login,

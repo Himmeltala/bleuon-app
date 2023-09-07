@@ -1,4 +1,4 @@
-package com.bleuon.security.service;
+package com.bleuon.security;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bleuon.mapper.UserMapper;

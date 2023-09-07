@@ -6,38 +6,38 @@ const router = createRouter({
       name: "public-welcome",
       meta: { title: "欢迎" },
       path: "/",
-      component: () => import("@/views/Welcome.vue")
+      component: () => import("@mainapp/views/Welcome.vue")
     },
     {
       name: "auth-home",
       meta: { title: "首页" },
       path: "/home",
       redirect: "/home/history",
-      component: () => import("@/views/home/Home.vue"),
+      component: () => import("@mainapp/views/home/Home.vue"),
       children: [
         {
           name: "auth-history",
           meta: { title: "最近文件" },
           path: "history",
-          component: () => import("@/views/home/History.vue")
+          component: () => import("@mainapp/views/home/History.vue")
         },
         {
           name: "auth-diagrams",
           meta: { title: "我的文件" },
           path: "diagrams",
-          component: () => import("@/views/home/Diagrams.vue")
+          component: () => import("@mainapp/views/home/Diagrams.vue")
         },
         {
           name: "auth-shares",
           meta: { title: "我的分享" },
           path: "shares",
-          component: () => import("@/views/home/Shares.vue")
+          component: () => import("@mainapp/views/home/Shares.vue")
         },
         {
           name: "auth-stars",
           meta: { title: "我的收藏" },
           path: "stars",
-          component: () => import("@/views/home/Stars.vue")
+          component: () => import("@mainapp/views/home/Stars.vue")
         }
       ]
     },
@@ -45,7 +45,7 @@ const router = createRouter({
       name: "enter-entrance",
       meta: { title: "入口" },
       path: "/entrance",
-      component: () => import("@/views/entrance/Entrance.vue")
+      component: () => import("@mainapp/views/entrance/Entrance.vue")
     },
     {
       path: "/u",
@@ -54,13 +54,13 @@ const router = createRouter({
           name: "public-profile",
           meta: { title: "个人空间" },
           path: "profile/:uid",
-          component: () => import("@/views/user/Profile.vue")
+          component: () => import("@mainapp/views/user/Profile.vue")
         },
         {
           name: "auth-setting",
           meta: { title: "个人设置" },
           path: "setting",
-          component: () => import("@/views/user/Setting.vue")
+          component: () => import("@mainapp/views/user/Setting.vue")
         }
       ]
     },
@@ -68,7 +68,7 @@ const router = createRouter({
       path: "/diagraming/:id",
       name: "auth-diagraming",
       meta: { title: "画图" },
-      component: () => import("@/views/diagraming/Diagraming.vue")
+      component: () => import("@mainapp/views/diagraming/Diagraming.vue")
     }
   ],
   history: createWebHashHistory(),
@@ -82,7 +82,7 @@ const router = createRouter({
 });
 
 function isAuthenticated() {
-  return !!localStorage.getStorageWithAge("BleuOn-Token");
+  return !!localStorage.getStorageWithAge(KeyVals.MAINAPP_TOKEN_KEY);
 }
 
 router.beforeEach((to, from, next) => {
@@ -90,15 +90,15 @@ router.beforeEach((to, from, next) => {
     document.title = ("BleuOn - " + to.meta.title) as string;
   }
 
-  const toName = to.name.toString();
+  const name = to.name as string;
   const isAuth = isAuthenticated();
 
-  if (toName.startsWith("auth-") && !isAuth) {
+  if (name.startsWith("auth-") && !isAuth) {
     next("/entrance");
     ElMessage.error("您未进行登录！已导航至登录页");
-  } else if (toName.startsWith("public-")) {
+  } else if (name.startsWith("public-")) {
     next();
-  } else if (toName.startsWith("enter-") && isAuth) {
+  } else if (name.startsWith("enter-") && isAuth) {
     next("/home");
     ElMessage.warning("您已经登陆！已导航至首页");
   } else {

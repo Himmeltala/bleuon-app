@@ -1,29 +1,25 @@
 <script setup lang="ts">
-import type { FormRules } from "element-plus";
+import { UserApi } from "@mainapp/apis";
 import {
   emailValidator,
   verifyCodeValidator,
-  passwordValidator,
-  rePasswdValidator,
   getVerifyCode,
   commitForm
-} from "@/services/form-validators";
-import { UserApi } from "@/apis";
+} from "@mainapp/services/form-validators";
+import type { FormRules } from "element-plus";
 
-const coudButtonCount = ref(60);
+const router = useRouter();
+
 let interval: number;
+const coudButtonCount = ref(60);
 const codeButtonDisabled = ref(false);
 const isEmailCorrect = ref(false);
 const isCodeCorrect = ref(false);
-const isPasswordCorrect = ref(false);
-const isRePasswdCorrect = ref(false);
 
 const formRef = ref();
 const formData = reactive({
   email: "",
-  code: "",
-  password: "",
-  rePasswd: ""
+  code: ""
 });
 
 const formRules = reactive<FormRules>({
@@ -40,41 +36,19 @@ const formRules = reactive<FormRules>({
     },
     { validator: verifyCodeValidator(isCodeCorrect), trigger: "change" },
     { validator: verifyCodeValidator(isCodeCorrect), trigger: "blur" }
-  ],
-  password: [
-    {
-      required: true,
-      message: "请输入密码",
-      trigger: "blur"
-    },
-    { validator: passwordValidator(isPasswordCorrect), trigger: "change" },
-    { validator: passwordValidator(isPasswordCorrect), trigger: "blur" }
-  ],
-  rePasswd: [
-    {
-      required: true,
-      message: "请确认密码",
-      trigger: "blur"
-    },
-    { validator: rePasswdValidator(isRePasswdCorrect, formData), trigger: "change" },
-    { validator: rePasswdValidator(isRePasswdCorrect, formData), trigger: "blur" }
   ]
 });
 
 function confirmGetVerifyCode() {
   getVerifyCode(interval, coudButtonCount, codeButtonDisabled, async (callback: any) => {
-    await UserApi.askMailVerifyCode(formData.email, "register", () => callback());
+    await UserApi.askMailVerifyCode(formData.email, "login", () => callback());
   });
 }
 
 function confirmSubmitForm() {
   commitForm(formRef.value, async () => {
-    await UserApi.verifyMailCode(formData, formData.code, "register", () => {
-      ElMessage({
-        type: "success",
-        message: "恭喜您，请返回登录页面进行邮箱登录！",
-        grouping: true
-      });
+    await UserApi.verifyMailCode(formData, formData.code, "login", () => {
+      router.push("/home");
     });
   });
 }
@@ -111,38 +85,17 @@ function confirmSubmitForm() {
           </div>
         </div>
       </el-form-item>
-      <el-form-item prop="password">
-        <el-input
-          clearable
-          :maxlength="16"
-          :minlength="8"
-          size="large"
-          v-model="formData.password"
-          placeholder="设置密码：支持任何字符"
-          show-password />
-      </el-form-item>
-      <el-form-item prop="rePasswd">
-        <el-input
-          clearable
-          :maxlength="16"
-          :minlength="8"
-          size="large"
-          v-model="formData.rePasswd"
-          placeholder="确认密码：两次密码保持一致"
-          show-password />
-      </el-form-item>
       <el-form-item>
         <el-button
           @click="confirmSubmitForm"
-          :disabled="!isEmailCorrect || !isCodeCorrect || !isPasswordCorrect || !isRePasswdCorrect"
+          :disabled="!isEmailCorrect || !isCodeCorrect"
           size="large"
           class="w-100%"
           type="primary">
-          <span class="font-bold">注册</span>
+          <span class="font-bold">登录</span>
         </el-button>
       </el-form-item>
     </el-form>
-    <div class="text-b text-0.8rem text-end mb-4">注：注册后可立即前往登录。</div>
   </div>
 </template>
 

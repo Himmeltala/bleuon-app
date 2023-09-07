@@ -1,14 +1,23 @@
 <script setup lang="ts">
-import { UserApi } from "@/apis";
+import { UserApi } from "@mainapp/apis";
 import {
   emailValidator,
   verifyCodeValidator,
   getVerifyCode,
   commitForm
-} from "@/services/form-validators";
+} from "@mainapp/services/form-validators";
 import type { FormRules } from "element-plus";
 
-const router = useRouter();
+defineProps({
+  dynamicCompName: {
+    type: String,
+    required: true
+  },
+  email: {
+    type: String
+  }
+});
+const emits = defineEmits(["update:dynamicCompName", "update:email"]);
 
 let interval: number;
 const coudButtonCount = ref(60);
@@ -41,14 +50,17 @@ const formRules = reactive<FormRules>({
 
 function confirmGetVerifyCode() {
   getVerifyCode(interval, coudButtonCount, codeButtonDisabled, async (callback: any) => {
-    await UserApi.askMailVerifyCode(formData.email, "login", () => callback());
+    await UserApi.askMailVerifyCode(formData.email, "reset", () => callback());
   });
 }
 
+const isVerifySuccess = ref(false);
+
 function confirmSubmitForm() {
   commitForm(formRef.value, async () => {
-    await UserApi.verifyMailCode(formData, formData.code, "login", () => {
-      router.push("/home");
+    await UserApi.verifyMailCode(formData, formData.code, "reset", () => {
+      isVerifySuccess.value = true;
+      emits("update:email", formData.email);
     });
   });
 }
@@ -87,12 +99,22 @@ function confirmSubmitForm() {
       </el-form-item>
       <el-form-item>
         <el-button
+          v-if="!isVerifySuccess"
           @click="confirmSubmitForm"
           :disabled="!isEmailCorrect || !isCodeCorrect"
           size="large"
           class="w-100%"
           type="primary">
-          <span class="font-bold">登录</span>
+          <span class="font-bold">点击校验</span>
+        </el-button>
+        <el-button
+          v-else
+          @click="$emit('update:dynamicCompName', 'FindAccountRsetPassword')"
+          :disabled="!isEmailCorrect || !isCodeCorrect"
+          size="large"
+          class="w-100%"
+          type="success">
+          <span class="font-bold">点击下一步</span>
         </el-button>
       </el-form-item>
     </el-form>

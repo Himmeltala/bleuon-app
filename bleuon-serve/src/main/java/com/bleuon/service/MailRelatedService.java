@@ -197,7 +197,7 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> {
         }
     }
 
-    public void verifyRegisterMailCode(User user, AuthVo vo) {
+    private void verifyRegisterMailCode(User user, AuthVo vo) {
         if (findUserByEmail(user.getEmail()) == null) {
             startTransaction(vo, user);
         } else {
@@ -232,7 +232,7 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> {
         return query().eq("email", email).one();
     }
 
-    public void startTransaction(Vo vo, User u) {
+    private void startTransaction(Vo vo, User u) {
         User user = createUser(u);
 
         boolean o = save(user);

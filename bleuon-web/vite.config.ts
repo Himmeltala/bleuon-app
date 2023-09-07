@@ -6,13 +6,14 @@ import Icons from "unplugin-icons/vite";
 import IconsResolver from "unplugin-icons/resolver";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 import UnoCSS from "unocss/vite";
+import { resolve } from "path";
 
 export default defineConfig(({ mode }) => {
   return {
     plugins: [
       vue(),
       UnoCSS({
-        configFile: "./uno.config.ts"
+        configFile: "uno.config.ts"
       }),
       AutoImport({
         include: [
@@ -39,6 +40,9 @@ export default defineConfig(({ mode }) => {
             from: "@vueuse/core",
             imports: ["RemovableRef"],
             type: true
+          },
+          {
+            "@common/constants": ["KeyVals"]
           }
         ],
         resolvers: [
@@ -57,21 +61,40 @@ export default defineConfig(({ mode }) => {
             enabledCollections: ["ep"]
           })
         ],
-        dirs: ["./src/views/**", "./src/components/**"]
+        dirs: ["common/components"]
       }),
       Icons({
         autoInstall: true
       })
     ],
+    build: {
+      target: "modules",
+      outDir: "dist/",
+      assetsDir: "static",
+      sourcemap: true,
+      rollupOptions: {
+        input: {
+          mainapp: resolve(__dirname, "index.html"),
+          subapp: resolve(__dirname, "apps/subapp/index.html")
+        },
+        output: {
+          entryFileNames: "static/js/[name]-[hash].js",
+          chunkFileNames: "static/js/[name]-[hash].js",
+          assetFileNames: "static/[ext]/name-[hash].[ext]"
+        }
+      }
+    },
     resolve: {
       alias: {
-        "@": "/src"
+        "@mainapp": resolve(__dirname, "apps/mainapp"),
+        "@subapp": resolve(__dirname, "apps/subapp"),
+        "@common": resolve(__dirname, "common")
       }
     },
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: `@use "@/scss/mixins.scss" as *; @use "sass:math";`
+          additionalData: `@use "@mainapp/scss/mixins.scss" as *; @use "sass:math";`
         }
       }
     }

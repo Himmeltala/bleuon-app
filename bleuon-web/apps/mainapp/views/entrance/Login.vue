@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import AccountLogin from "./AccountLogin.vue";
-import EmailLogin from "./EmailLogin.vue";
+import AccountLogin from "./components/AccountLogin.vue";
+import EmailLogin from "./components/EmailLogin.vue";
 
 defineProps({
   dynamicCompName: {

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import Avatar from "@mainapp/components/Avatar.vue";
+
 const props = defineProps({
   activeName: {
     type: String as PropType<"personal" | "recommend" | "template">,

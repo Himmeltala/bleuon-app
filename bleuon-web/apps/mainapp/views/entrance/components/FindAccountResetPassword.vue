@@ -1,28 +1,29 @@
 <script setup lang="ts">
 import type { FormRules } from "element-plus";
 import {
-  usernameValidator,
   passwordValidator,
   rePasswdValidator,
   commitForm
-} from "@/services/form-validators";
-import { UserApi } from "@/apis";
+} from "@mainapp/services/form-validators";
+import { UserApi } from "@mainapp/apis";
 
+const props = defineProps({
+  email: {
+    type: String
+  }
+});
+
+const formRef = ref();
 const formData = reactive({
-  username: "",
+  email: "",
   password: "",
   rePasswd: ""
 });
-const isUnameCorrect = ref(false);
+
 const isPasswordCorrect = ref(false);
 const isRePasswdCorrect = ref(false);
-const formRef = ref();
+
 const formRules = reactive<FormRules>({
-  username: [
-    { required: true, message: "请输入用户名", trigger: "blur" },
-    { validator: usernameValidator(isUnameCorrect), trigger: "change" },
-    { validator: usernameValidator(isUnameCorrect), trigger: "blur" }
-  ],
   password: [
     {
       required: true,
@@ -43,14 +44,14 @@ const formRules = reactive<FormRules>({
   ]
 });
 
-function confirmRegister() {
+onMounted(() => {
+  formData.email = props.email;
+});
+
+function confirmSubmitForm() {
   commitForm(formRef.value, async () => {
-    await UserApi.AccountRegister(formData, () => {
-      ElMessage({
-        type: "success",
-        message: "恭喜您，请返回登录页面进行登录！",
-        grouping: true
-      });
+    await UserApi.resetPassword(formData, () => {
+      ElMessage.success("密码重置成功，请返回登录！");
     });
   });
 }
@@ -59,14 +60,8 @@ function confirmRegister() {
 <template>
   <div>
     <el-form ref="formRef" :model="formData" :rules="formRules">
-      <el-form-item prop="username">
-        <el-input
-          :maxlength="16"
-          :minlength="4"
-          clearable
-          size="large"
-          v-model="formData.username"
-          placeholder="请输入用户名" />
+      <el-form-item prop="email">
+        <el-input disabled clearable size="large" v-model="formData.email" />
       </el-form-item>
       <el-form-item prop="password">
         <el-input
@@ -90,16 +85,16 @@ function confirmRegister() {
       </el-form-item>
       <el-form-item>
         <el-button
-          :disabled="!isUnameCorrect || !isPasswordCorrect || !isRePasswdCorrect"
-          @click="confirmRegister"
+          @click="confirmSubmitForm"
+          :disabled="!isPasswordCorrect || !isRePasswdCorrect"
           size="large"
           class="w-100%"
           type="primary">
-          <span class="font-bold">注册</span>
+          <span class="font-bold">确定重置密码</span>
         </el-button>
       </el-form-item>
     </el-form>
-    <div class="text-b text-0.8rem text-end mb-4">注：注册后请尽快绑定邮箱，以防账号丢失。</div>
+    <div class="text-b text-0.8rem text-end mb-4">注：重置后可立即前往登录。</div>
   </div>
 </template>
 

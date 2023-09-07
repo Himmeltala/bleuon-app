@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import Avatar from "@mainapp/components/Avatar.vue";
+
 const searchVal = ref("");
 const searchType = ref("file");
 const disabled = ref(false);
