@@ -7,7 +7,8 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.crypto.SecretKey;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
 
 public class JwtUtil {
 

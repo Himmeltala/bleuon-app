@@ -1,7 +1,7 @@
 package com.bleuon.exception;
 
-import com.bleuon.constant.HttpCode;
-import com.bleuon.entity.vo.Vo;
+import com.bleuon.constant.JdbcExpType;
+import com.bleuon.utils.http.R;
 import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,15 +14,27 @@ import javax.naming.AuthenticationException;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler({ValidationException.class})
-    public Vo handleValidationException(ValidationException e) {
-        log.warn("ValidationException [{}: {}]", e.getClass().getName(), e.getMessage());
-        return Vo.error(HttpCode.ERROR, e.getMessage());
+    public R<Void> handleValidationException(ValidationException e) {
+        log.error(e.getMessage(), e.getCause());
+        return R.error(e.getMessage());
     }
 
     @ExceptionHandler({AuthenticationException.class})
-    public Vo handleAuthenticationException(AuthenticationException e) {
-        log.warn("AuthenticationException [{}: {}]", e.getClass().getName(), e.getMessage());
-        return Vo.error(HttpCode.ERROR, e.getMessage());
+    public R<Void> handleAuthenticationException(AuthenticationException e) {
+        log.error(e.getMessage(), e.getCause());
+        return R.error(e.getMessage());
+    }
+
+    @ExceptionHandler({JdbcErrorException.class})
+    public R<Void> handleJdbcErrorException(JdbcErrorException e) {
+        log.error(e.getMessage(), e.getCause());
+        return R.error(JdbcExpType.ERROR);
+    }
+
+    @ExceptionHandler({JdbcFailedException.class})
+    public R<Void> handleJdbcOperationException(JdbcFailedException e) {
+        log.warn(e.getMessage(), e.getCause());
+        return R.error(JdbcExpType.FAILED);
     }
 
 }

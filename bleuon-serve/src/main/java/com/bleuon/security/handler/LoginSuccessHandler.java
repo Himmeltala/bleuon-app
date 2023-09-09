@@ -1,10 +1,9 @@
 package com.bleuon.security.handler;
 
 import com.alibaba.fastjson2.JSON;
-import com.bleuon.constant.HttpCode;
 import com.bleuon.entity.vo.AuthVo;
-import com.bleuon.entity.vo.Vo;
 import com.bleuon.utils.JwtUtil;
+import com.bleuon.utils.http.R;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -42,9 +41,9 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         redisTemplate.opsForValue().set(jwtUuid, token, expire, TimeUnit.SECONDS);
 
-        Vo vo = AuthVo.success(HttpCode.SUCCESS, "登录成功！", expire, token);
+        R<AuthVo> success = R.success("登录成功！", new AuthVo(expire, token));
         response.getWriter()
-                .write(JSON.toJSONString(vo));
+                .write(JSON.toJSONString(success));
     }
 
 }

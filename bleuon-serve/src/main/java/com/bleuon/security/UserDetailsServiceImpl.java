@@ -1,8 +1,8 @@
 package com.bleuon.security;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.bleuon.mapper.UserMapper;
 import com.bleuon.entity.User;
+import com.bleuon.mapper.UserMapper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

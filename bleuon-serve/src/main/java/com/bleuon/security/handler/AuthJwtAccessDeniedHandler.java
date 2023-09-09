@@ -1,9 +1,7 @@
 package com.bleuon.security.handler;
 
 import com.alibaba.fastjson2.JSON;
-import com.bleuon.constant.HttpCode;
-import com.bleuon.entity.vo.AuthVo;
-import com.bleuon.entity.vo.Vo;
+import com.bleuon.utils.http.R;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,11 +27,11 @@ public class AuthJwtAccessDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException e) throws IOException, ServletException {
         response.setContentType("application/json;charset=utf-8");
 
-        log.warn("AccessDeniedException [{}: {}]", e.getClass().getName(), e.getMessage());
+        log.error(e.getMessage(), e.getCause());
 
-        Vo vo = AuthVo.error(HttpCode.ERROR, e.getMessage());
+        R<Void> error = R.error(e.getMessage());
         response.getWriter()
-                .write(JSON.toJSONString(vo));
+                .write(JSON.toJSONString(error));
     }
 
 }

@@ -1,9 +1,7 @@
 package com.bleuon.security.handler;
 
 import com.alibaba.fastjson2.JSON;
-import com.bleuon.constant.HttpCode;
-import com.bleuon.entity.vo.AuthVo;
-import com.bleuon.entity.vo.Vo;
+import com.bleuon.utils.http.R;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,9 +23,9 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         response.setContentType("application/json;charset=utf-8");
 
-        Vo vo = AuthVo.error(HttpCode.ERROR, "用户名或密码错误！");
+        R<Void> failed = R.failed("用户名或密码错误！");
         response.getWriter()
-                .write(JSON.toJSONString(vo));
+                .write(JSON.toJSONString(failed));
     }
 
 }

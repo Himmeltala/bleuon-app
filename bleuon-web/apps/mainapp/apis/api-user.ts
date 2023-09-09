@@ -20,7 +20,7 @@ export async function AccountLogin(entity: IUser, success: Function, error?: Fun
       }
     );
 
-    localStorage.setStorageWithAge("BleuOn-Token", data.token, data.expire);
+    localStorage.setStorageWithAge("BleuOn-Token", data.data.token, data.data.expire);
     success(data);
   } catch (err) {
     error && error();
@@ -99,7 +99,7 @@ export async function verifyMailCode(
       }
     );
     if (type === "login") {
-      localStorage.setStorageWithAge("BleuOn-Token", data.token, data.expire);
+      localStorage.setStorageWithAge("BleuOn-Token", data.data.token, data.data.expire);
     }
     success(data);
   } catch (err) {

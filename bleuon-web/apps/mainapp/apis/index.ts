@@ -1,3 +1,3 @@
-import * as UserApi from "./user-api";
+import * as UserApi from "./api-user";
 
 export { UserApi };

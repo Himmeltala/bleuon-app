@@ -1,14 +1,14 @@
-package com.bleuon.utils;
+package com.bleuon.utils.http;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-public class HttpUtil {
+public class IpUtil {
 
-    public static String getIpAddr(HttpServletRequest request) {
-        String ipAddress = null;
+    public static String getIp(HttpServletRequest request) {
+        String ipAddress;
         try {
             ipAddress = request.getHeader("x-forwarded-for");
             if (ipAddress == null || ipAddress.isEmpty() || "unknown".equalsIgnoreCase(ipAddress)) {

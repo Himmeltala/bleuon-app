@@ -1,6 +1,6 @@
 package com.bleuon.entity.vo;
 
-import com.bleuon.constant.HttpCode;
+import com.bleuon.utils.http.HttpCode;
 import lombok.Data;
 
 import java.io.Serializable;
