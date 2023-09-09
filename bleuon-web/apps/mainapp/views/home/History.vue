@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import File from "./components/File.vue";
-import { UserApi } from "@mainapp/apis";
+import { USER_API } from "@mainapp/apis";
 
 const lastFileIndex = ref(-1);
 

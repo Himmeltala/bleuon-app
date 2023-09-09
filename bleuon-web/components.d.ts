@@ -17,6 +17,7 @@ declare module 'vue' {
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
     ElInput: typeof import('element-plus/es')['ElInput']
     ElOption: typeof import('element-plus/es')['ElOption']
+    ElPopconfirm: typeof import('element-plus/es')['ElPopconfirm']
     ElSelect: typeof import('element-plus/es')['ElSelect']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     EmailLogin: typeof import('./apps/mainapp/views/entrance/components/EmailLogin.vue')['default']

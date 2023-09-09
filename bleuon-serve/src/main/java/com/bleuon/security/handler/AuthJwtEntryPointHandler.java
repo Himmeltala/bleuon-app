@@ -1,6 +1,7 @@
 package com.bleuon.security.handler;
 
 import com.alibaba.fastjson2.JSON;
+import com.bleuon.utils.http.HttpCode;
 import com.bleuon.utils.http.R;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,9 +28,10 @@ public class AuthJwtEntryPointHandler implements AuthenticationEntryPoint {
 
         log.error(e.getMessage(), e.getCause());
 
-        R<Void> error = R.error(e.getMessage());
+        R<Void> failed = R.build(HttpCode.NO_AUTHORITY.getCode(), "认证失败或服务器错误！");
+
         response.getWriter()
-                .write(JSON.toJSONString(error));
+                .write(JSON.toJSONString(failed));
     }
 
 }

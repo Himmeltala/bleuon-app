@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import Avatar from "@mainapp/components/Avatar.vue";
+import MenuAvatar from "@mainapp/components/MenuAvatar.vue";
 
 const searchVal = ref("");
 const searchType = ref("file");
-const disabled = ref(false);
 </script>
 
 <template>
@@ -29,7 +28,7 @@ const disabled = ref(false);
           </template>
         </el-button>
       </div>
-      <Avatar></Avatar>
+      <MenuAvatar></MenuAvatar>
     </div>
   </div>
 </template>

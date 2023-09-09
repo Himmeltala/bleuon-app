@@ -5,7 +5,7 @@ import {
   rePasswdValidator,
   commitForm
 } from "@mainapp/services/form-validators";
-import { UserApi } from "@mainapp/apis";
+import { USER_API } from "@mainapp/apis";
 
 const props = defineProps({
   email: {
@@ -50,7 +50,7 @@ onMounted(() => {
 
 function confirmSubmitForm() {
   commitForm(formRef.value, async () => {
-    await UserApi.resetPassword(formData, () => {
+    await USER_API.resetPassword(formData, () => {
       ElMessage.success("密码重置成功，请返回登录！");
     });
   });

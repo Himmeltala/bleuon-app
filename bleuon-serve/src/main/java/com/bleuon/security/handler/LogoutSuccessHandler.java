@@ -31,24 +31,20 @@ public class LogoutSuccessHandler implements org.springframework.security.web.au
         String authToken = request.getHeader("Authorization");
         Claims claims = JwtUtil.parseJwt(authToken);
 
+        R<Void> success = R.success("退出成功！");
+
         if (claims != null) {
             String jwtUuid = claims.getId();
             Boolean hasKey = redisTemplate.hasKey(jwtUuid);
             if (Boolean.TRUE.equals(hasKey)) {
                 redisTemplate.delete(jwtUuid);
-
-                R<Void> success = R.success("退出成功！");
-                response.getWriter()
-                        .write(JSON.toJSONString(success));
-            } else {
-                R<Void> failed = R.failed("Token 已经过期或不存在，无法退出！");
-                response.getWriter()
-                        .write(JSON.toJSONString(failed));
             }
-        } else {
-            R<Void> failed = R.failed("没有携带 Token，无法退出！");
+
             response.getWriter()
-                    .write(JSON.toJSONString(failed));
+                    .write(JSON.toJSONString(success));
+        } else {
+            response.getWriter()
+                    .write(JSON.toJSONString(success));
         }
     }
 

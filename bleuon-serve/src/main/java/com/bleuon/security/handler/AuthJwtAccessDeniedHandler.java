@@ -1,6 +1,7 @@
 package com.bleuon.security.handler;
 
 import com.alibaba.fastjson2.JSON;
+import com.bleuon.utils.http.HttpCode;
 import com.bleuon.utils.http.R;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,9 +30,10 @@ public class AuthJwtAccessDeniedHandler implements AccessDeniedHandler {
 
         log.error(e.getMessage(), e.getCause());
 
-        R<Void> error = R.error(e.getMessage());
+        R<Void> failed = R.build(HttpCode.NO_AUTHORITY.getCode(), "权限不足！");
+
         response.getWriter()
-                .write(JSON.toJSONString(error));
+                .write(JSON.toJSONString(failed));
     }
 
 }

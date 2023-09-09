@@ -5,18 +5,13 @@ declare interface Element {
   offsetTop?: number;
 }
 
-type ResponseBody = {
-  token: string;
-  expire: number;
+type R<T = any> = {
+  code: number;
+  data: T;
   message: string;
-  username: string;
-  authorities: string[];
 };
 
-declare interface ResponseEntity {
-  code: number;
-  message: string;
-  data: any;
-  expire: number; // 毫秒数
+type TokenR = {
+  expire: number;
   token: string;
-}
+};

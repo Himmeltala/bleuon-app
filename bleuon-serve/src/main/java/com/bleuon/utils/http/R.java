@@ -27,6 +27,18 @@ public class R<T> {
         this.message = message;
     }
 
+    public static <T> R<T> build(Integer code, String message, T data) {
+        return new R<>(code, message, data);
+    }
+
+    public static <T> R<T> build(Integer code, T data) {
+        return new R<>(code, data);
+    }
+
+    public static R<Void> build(Integer code, String message) {
+        return new R<>(code, message);
+    }
+
     public static R<Void> error(String message) {
         return new R<>(HttpCode.ERROR.getCode(), message);
     }

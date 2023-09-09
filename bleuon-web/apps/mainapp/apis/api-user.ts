@@ -5,22 +5,20 @@ import request from "./use-axios";
  *
  * @param entity 用户实体类
  */
-export async function AccountLogin(entity: IUser, success: Function, error?: Function) {
+export async function accountLogin(entity: IUser, success: Function, error?: Function) {
   try {
-    const { data } = await request.post<ResponseEntity>(
-      "/auth/login",
-      {
-        username: entity.username,
-        password: entity.password
-      },
-      {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
-      }
-    );
+    const body = {
+      username: entity.username,
+      password: entity.password
+    };
 
-    localStorage.setStorageWithAge("BleuOn-Token", data.data.token, data.data.expire);
+    const headers = {
+      "Content-Type": "application/x-www-form-urlencoded"
+    };
+
+    const { data } = await request.post<R<TokenR>>("/auth/login", body, { headers });
+
+    localStorage.setStorageWithAge(KeyVals.MAINAPP_TOKEN_KEY, data.data.token, data.data.expire);
     success(data);
   } catch (err) {
     error && error();
@@ -32,12 +30,14 @@ export async function AccountLogin(entity: IUser, success: Function, error?: Fun
  *
  * @param entity 用户实体类
  */
-export async function AccountRegister(entity: IUser, success?: Function, error?: Function) {
+export async function accountRegister(entity: IUser, success?: Function, error?: Function) {
   try {
-    const { data } = await request.post<ResponseEntity>("/auth/account-register", {
+    const body = {
       username: entity.username,
       password: entity.password
-    });
+    };
+
+    const { data } = await request.post<R>("/auth/account-register", body);
 
     success && success(data);
   } catch (err) {
@@ -58,12 +58,9 @@ export async function askMailVerifyCode(
   error?: Function
 ) {
   try {
-    const { data } = await request.get<ResponseEntity>("/auth/aks-mail-verify-code", {
-      params: {
-        type,
-        email
-      }
-    });
+    const params = { type, email };
+
+    const { data } = await request.get<R>("/auth/aks-mail-verify-code", { params });
     success && success(data);
   } catch (err) {
     error && error();
@@ -73,33 +70,29 @@ export async function askMailVerifyCode(
 /**
  * 校验邮箱验证码
  *
- * @param user 用户实体类
+ * @param entity 用户实体类
  * @param code 验证码
  * @param type login（登录）、reset（重置）、register（注册）
  */
 export async function verifyMailCode(
-  user: IUser,
+  entity: IUser,
   code: string,
   type: "login" | "register" | "reset",
   success: Function,
   error?: Function
 ) {
   try {
-    const { data } = await request.post<ResponseEntity>(
-      "/auth/verify-mail-code",
-      {
-        email: user.email,
-        password: user.password
-      },
-      {
-        params: {
-          type,
-          code
-        }
-      }
-    );
+    const body = {
+      email: entity.email,
+      password: entity.password
+    };
+
+    const params = { type, code };
+
+    const { data } = await request.post<R<TokenR>>("/auth/verify-mail-code", body, { params });
+
     if (type === "login") {
-      localStorage.setStorageWithAge("BleuOn-Token", data.data.token, data.data.expire);
+      localStorage.setStorageWithAge(KeyVals.MAINAPP_TOKEN_KEY, data.data.token, data.data.expire);
     }
     success(data);
   } catch (err) {
@@ -107,13 +100,38 @@ export async function verifyMailCode(
   }
 }
 
-export async function resetPassword(user: IUser, success: Function, error?: Function) {
+/**
+ * 重置密码
+ *
+ * @param entity 用户实体类
+ */
+export async function resetPassword(entity: IUser, success: Function, error?: Function) {
   try {
-    const { data } = await request.post<ResponseEntity>("/auth/reset-password", {
-      email: user.email,
-      password: user.password
-    });
+    const body = {
+      email: entity.email,
+      password: entity.password
+    };
+
+    const { data } = await request.post<R>("/auth/reset-password", body);
     success(data);
+  } catch (err) {
+    error && error();
+  }
+}
+
+/**
+ * 请求退出登录
+ *
+ * @param success 退出登录成功回调函数
+ * @param error 退出登录失败回调函数
+ */
+export async function logout(success: Function, error?: Function) {
+  try {
+    const { data } = await request.post<R>("/auth/logout");
+    if (data.code === 200) {
+      localStorage.removeItem(KeyVals.MAINAPP_TOKEN_KEY);
+      success && success(data);
+    } else error && error();
   } catch (err) {
     error && error();
   }

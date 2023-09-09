@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Avatar from "@mainapp/components/Avatar.vue";
+import MenuAvatar from "@mainapp/components/MenuAvatar.vue";
 
 const props = defineProps({
   activeName: {
@@ -35,7 +35,7 @@ const props = defineProps({
       </div>
     </div>
     <div class="flex-grow-1 f-c-e">
-      <Avatar></Avatar>
+      <MenuAvatar></MenuAvatar>
     </div>
   </div>
 </template>

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { notInterceptUrl } from "@common/utils/interceptor";
 
 const request = axios.create({
   baseURL: `http://localhost:8080/api`
@@ -22,26 +23,21 @@ request.interceptors.response.use(
   config => {
     const { data } = config;
 
-    if (data.code === 200) {
-      ElMessage.success(data.message);
-      return config;
-    }
-
-    if (data.code === 400) {
-      ElMessage.warning(data.message);
-      return config;
-    }
-
-    if (data.code === 403) {
-      localStorage.removeItem("BleuOn-Token");
-      setTimeout(location.reload, 500);
-      return config;
-    }
-
     if (data.code === 500) {
       ElMessage.error(data.message);
       return Promise.reject(data.message);
+    } else if (data.code === 400) {
+      ElMessage.warning(data.message);
+    } else if (data.code === 403) {
+      localStorage.removeItem("BleuOn-Token");
+      setTimeout(location.reload, 500);
     }
+
+    if (data.code === 200 && !notInterceptUrl(data, { fuzzy: ["query"] })) {
+      ElMessage.success(data.message);
+    }
+
+    return config;
   },
   error => {
     ElMessage.error("啊哦，发生了错误！");

@@ -8,7 +8,7 @@ import {
   getVerifyCode,
   commitForm
 } from "@mainapp/services/form-validators";
-import { UserApi } from "@mainapp/apis";
+import { USER_API } from "@mainapp/apis";
 
 const coudButtonCount = ref(60);
 let interval: number;
@@ -63,13 +63,13 @@ const formRules = reactive<FormRules>({
 
 function confirmGetVerifyCode() {
   getVerifyCode(interval, coudButtonCount, codeButtonDisabled, async (callback: any) => {
-    await UserApi.askMailVerifyCode(formData.email, "register", () => callback());
+    await USER_API.askMailVerifyCode(formData.email, "register", () => callback());
   });
 }
 
 function confirmSubmitForm() {
   commitForm(formRef.value, async () => {
-    await UserApi.verifyMailCode(formData, formData.code, "register", () => {
+    await USER_API.verifyMailCode(formData, formData.code, "register", () => {
       ElMessage({
         type: "success",
         message: "恭喜您，请返回登录页面进行邮箱登录！",

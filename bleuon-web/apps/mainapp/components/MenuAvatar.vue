@@ -1,5 +1,13 @@
 <script setup lang="ts">
+import { USER_API } from "@mainapp/apis";
+
 const disabled = ref(false);
+
+function confirmLogout() {
+  USER_API.logout(() => {
+    location.reload();
+  });
+}
 </script>
 
 <template>
@@ -32,10 +40,14 @@ const disabled = ref(false);
         </div>
       </div>
       <div class="py-1">
-        <div class="item text-0.9rem f-c-s">
-          <div class="i-tabler-logout mr-2"></div>
-          退出登录
-        </div>
+        <el-popconfirm @confirm="confirmLogout" title="是否确定退出登录？">
+          <template #reference>
+            <div class="item text-0.9rem f-c-s">
+              <div class="i-tabler-logout mr-2"></div>
+              退出登录
+            </div>
+          </template>
+        </el-popconfirm>
       </div>
     </div>
   </div>

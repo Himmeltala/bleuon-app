@@ -6,7 +6,7 @@ import {
   rePasswdValidator,
   commitForm
 } from "@mainapp/services/form-validators";
-import { UserApi } from "@mainapp/apis";
+import { USER_API } from "@mainapp/apis";
 
 const formData = reactive({
   username: "",
@@ -45,7 +45,7 @@ const formRules = reactive<FormRules>({
 
 function confirmRegister() {
   commitForm(formRef.value, async () => {
-    await UserApi.AccountRegister(formData, () => {
+    await USER_API.accountRegister(formData, () => {
       ElMessage({
         type: "success",
         message: "恭喜您，请返回登录页面进行登录！",
