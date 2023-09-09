@@ -95,12 +95,12 @@ router.beforeEach((to, from, next) => {
 
   if (name.startsWith("auth-") && !isAuth) {
     next("/entrance");
-    ElMessage.error("您未进行登录！已导航至登录页");
+    ElMessage.error("您未登录！已导航至登录页");
   } else if (name.startsWith("public-")) {
     next();
   } else if (name.startsWith("enter-") && isAuth) {
     next("/home");
-    ElMessage.warning("您已经登陆！已导航至首页");
+    ElMessage.warning("您已登陆！已导航至首页");
   } else {
     next();
   }
