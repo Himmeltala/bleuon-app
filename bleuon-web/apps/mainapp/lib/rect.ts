@@ -1,19 +1,52 @@
-import { shapes, dia } from "jointjs";
+import { dia } from "jointjs";
+
+const BleuonRect = dia.Element.define(
+  "standard.bleuon.Rectangle",
+  {
+    attrs: {
+      body: {
+        width: "calc(w)",
+        height: "calc(h)",
+        strokeWidth: 2,
+        stroke: "#000000",
+        fill: "#FFFFFF"
+      },
+      label: {
+        textVerticalAnchor: "middle",
+        textAnchor: "middle",
+        x: "calc(0.5*w)",
+        y: "calc(0.5*h)",
+        fontSize: 12,
+        fill: "#333333"
+      }
+    }
+  },
+  {
+    markup: [
+      {
+        tagName: "rect",
+        selector: "body"
+      },
+      {
+        tagName: "text",
+        selector: "label"
+      }
+    ]
+  }
+);
 
 function generatePortsConfig() {
   const port = {
     attrs: {
-      portBody: {
+      body: {
         magnet: true,
-        r: 4,
-        fill: "black",
-        stroke: "black"
+        r: 5
       }
     },
     markup: [
       {
         tagName: "circle",
-        selector: "portBody"
+        selector: "body"
       }
     ]
   };
@@ -24,13 +57,6 @@ function generatePortsConfig() {
   const rightPort = Object.assign({ position: { name: "right" } }, port);
 
   return { topPort, bottomPort, leftPort, rightPort };
-}
-
-function addRectPointermoveEvent(rect: any) {
-  rect.on("cell:pointermove", function () {
-    // 当鼠标指针悬停在rect元素上时触发此事件
-    console.log("鼠标悬停在rect元素上");
-  });
 }
 
 export function createRect(
@@ -44,23 +70,9 @@ export function createRect(
 ) {
   const { topPort, bottomPort, leftPort, rightPort } = generatePortsConfig();
 
-  const rect = new shapes.standard.Rectangle({
+  const rect = new BleuonRect({
     position: { x: config?.x || 30, y: config?.y || 30 },
     size: { width: config?.width || 90, height: config?.height || 90 },
-    attrs: {
-      root: {
-        magnet: false
-      },
-      body: {
-        event: "element:rect:pointer",
-        fill: "#8ECAE6"
-      },
-      label: {
-        text: "",
-        fontSize: 16,
-        y: -10
-      }
-    },
     ports: {
       groups: {
         top: topPort,
@@ -71,20 +83,7 @@ export function createRect(
     }
   });
 
-  rect.addPorts([
-    {
-      group: "top"
-    },
-    {
-      group: "bottom"
-    },
-    {
-      group: "left"
-    },
-    {
-      group: "right"
-    }
-  ]);
+  rect.addPorts([{ group: "top" }, { group: "bottom" }, { group: "left" }, { group: "right" }]);
 
   rect.addTo(graph);
 }

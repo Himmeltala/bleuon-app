@@ -1,10 +1,16 @@
 import { dia, shapes, linkTools } from "jointjs";
 
-export function initJointJs(config?: {
-  isPreventLinkFromInputPorts: boolean;
-  isPreventLinkFromOutputToInputWithinOneElement: boolean;
-  isPreventLinkToOutputPorts: boolean;
-}) {
+export function initJointJs(
+  config: {
+    isPreventLinkFromInputPorts: boolean;
+    isPreventLinkFromOutputToInputWithinOneElement: boolean;
+    isPreventLinkToOutputPorts: boolean;
+  } = {
+    isPreventLinkFromInputPorts: false,
+    isPreventLinkFromOutputToInputWithinOneElement: true,
+    isPreventLinkToOutputPorts: false
+  }
+) {
   const namespace = shapes;
   const graph = new dia.Graph({}, { cellNamespace: namespace });
 

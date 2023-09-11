@@ -28,10 +28,6 @@ onMounted(() => {
   paper.on("link:mouseleave", linkView => {
     linkView.removeTools();
   });
-
-  paper.on("element:rect:pointer", () => {
-    console.log("e");
-  });
 });
 </script>
 
@@ -48,13 +44,20 @@ onMounted(() => {
 </template>
 
 <style lang="scss">
-/* port styling */
-.available-magnet {
-  fill: #5da271;
-}
+.joint-element {
+  .joint-port {
+    circle {
+      --uno: transition-all-300;
+      fill: transparent;
+    }
+  }
 
-/* element styling */
-.available-cell rect {
-  stroke-dasharray: 5, 2;
+  &:hover {
+    .joint-port {
+      circle {
+        fill: black !important;
+      }
+    }
+  }
 }
 </style>
