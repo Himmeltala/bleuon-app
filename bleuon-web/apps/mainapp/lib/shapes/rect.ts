@@ -1,23 +1,32 @@
 import { dia } from "jointjs";
+import { BaseShape } from "../init";
+import { PRIMARY_RECTANGLE } from "../constants/key-vals";
 
-const BleuonRect = dia.Element.define(
-  "standard.bleuon.Rectangle",
+/**
+ * 基础正方形
+ */
+const PrimaryRectangleShape = BaseShape.define(
+  PRIMARY_RECTANGLE,
   {
+    size: { width: 140, height: 70 },
     attrs: {
       body: {
         width: "calc(w)",
         height: "calc(h)",
+        fill: "#FCFCFC",
+        stroke: "#333333",
         strokeWidth: 2,
-        stroke: "#000000",
-        fill: "#FFFFFF"
+        cursor: "grab"
       },
       label: {
+        text: "",
         textVerticalAnchor: "middle",
         textAnchor: "middle",
-        x: "calc(0.5*w)",
-        y: "calc(0.5*h)",
-        fontSize: 12,
-        fill: "#333333"
+        x: "calc(.5*w)",
+        y: "calc(.5*h)",
+        fill: "#333333",
+        fontSize: 18,
+        pointerEvents: "none"
       }
     }
   },
@@ -59,7 +68,13 @@ function generatePortsConfig() {
   return { topPort, bottomPort, leftPort, rightPort };
 }
 
-export function createRect(
+/**
+ * 创建基础正方形
+ *
+ * @param graph joint.Graph 对象
+ * @param config 图形配置项
+ */
+export function createPrimaryRectangle(
   graph: dia.Graph,
   config?: {
     x?: number;
@@ -70,9 +85,9 @@ export function createRect(
 ) {
   const { topPort, bottomPort, leftPort, rightPort } = generatePortsConfig();
 
-  const rect = new BleuonRect({
+  const primaryRectangle = new PrimaryRectangleShape({
     position: { x: config?.x || 30, y: config?.y || 30 },
-    size: { width: config?.width || 90, height: config?.height || 90 },
+    size: { width: config?.width || 140, height: config?.height || 70 },
     ports: {
       groups: {
         top: topPort,
@@ -83,7 +98,12 @@ export function createRect(
     }
   });
 
-  rect.addPorts([{ group: "top" }, { group: "bottom" }, { group: "left" }, { group: "right" }]);
+  primaryRectangle.addPorts([
+    { group: "top" },
+    { group: "bottom" },
+    { group: "left" },
+    { group: "right" }
+  ]);
 
-  rect.addTo(graph);
+  primaryRectangle.addTo(graph);
 }
