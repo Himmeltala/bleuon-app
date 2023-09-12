@@ -1,32 +1,29 @@
-package com.bleuon.service;
+package com.bleuon.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bleuon.constant.AuthorityType;
 import com.bleuon.entity.User;
 import com.bleuon.mapper.AuthMapper;
 import com.bleuon.mapper.UserMapper;
+import com.bleuon.service.IAccountRegisterService;
 import com.bleuon.utils.http.R;
-import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
-@Service
-public class AccountRegisterService extends ServiceImpl<UserMapper, User> {
+@Service("AccountRegisterService")
+@RequiredArgsConstructor
+public class AccountRegisterService extends ServiceImpl<UserMapper, User> implements IAccountRegisterService {
 
-    @Resource
-    private BCryptPasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    @Resource
-    private AuthMapper authMapper;
-
-    private boolean hasExistUser(String username) {
-        return query().eq("username", username).one() != null;
-    }
+    private final AuthMapper authMapper;
 
     @Transactional
+    @Override
     public R<Void> register(User user) {
         try {
             if (hasExistUser(user.getUsername()))
@@ -36,6 +33,10 @@ public class AccountRegisterService extends ServiceImpl<UserMapper, User> {
         } catch (Exception e) {
             throw new RuntimeException();
         }
+    }
+
+    private boolean hasExistUser(String username) {
+        return query().eq("username", username).one() != null;
     }
 
     private R<Void> saveUser(User user) {

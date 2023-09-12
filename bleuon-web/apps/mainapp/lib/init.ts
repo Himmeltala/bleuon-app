@@ -1,7 +1,6 @@
-import { dia, shapes, connectors, elementTools } from "jointjs";
-import { BASE_SHAPE } from "./constants/key-vals";
 import { PrimaryLink } from "./shapes/link";
-import { addTools, removeTools } from "./tools";
+import { dia, shapes, connectors } from "jointjs";
+import { addTools, removeTools, addClickedTools } from "./tools";
 
 export function initJointJs(
   config: {
@@ -25,7 +24,7 @@ export function initJointJs(
     gridSize: 10,
     drawGrid: true,
     background: {
-      color: "rgba(0, 255, 0, 0.3)"
+      color: "#F3F7F6"
     },
     cellViewNamespace: namespace,
     defaultLink: () => new PrimaryLink(),
@@ -71,6 +70,9 @@ export function initJointJs(
     },
     "cell:mouseleave": view => {
       removeTools(view);
+    },
+    "cell:pointerclick": view => {
+      addClickedTools(view);
     }
   });
 
@@ -79,26 +81,3 @@ export function initJointJs(
     graph
   };
 }
-
-export const BaseShape = dia.Element.define(
-  BASE_SHAPE,
-  {},
-  {
-    getCurveDirection() {
-      return connectors.curve.TangentDirections.AUTO;
-    },
-    getTools() {
-      return [
-        new elementTools.Connect({
-          focusOpacity: 0,
-          markup: [
-            {
-              tagName: "rect",
-              attributes: {}
-            }
-          ]
-        })
-      ];
-    }
-  }
-);

@@ -1,4 +1,4 @@
-package com.bleuon.service;
+package com.bleuon.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bleuon.constant.AuthorityType;
@@ -7,11 +7,13 @@ import com.bleuon.entity.User;
 import com.bleuon.entity.vo.AuthVo;
 import com.bleuon.mapper.AuthMapper;
 import com.bleuon.mapper.UserMapper;
+import com.bleuon.service.IMailRelatedService;
 import com.bleuon.utils.JwtUtil;
 import com.bleuon.utils.NumbersUtil;
 import com.bleuon.utils.http.R;
 import jakarta.annotation.Resource;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -34,20 +36,17 @@ import java.util.concurrent.TimeUnit;
  *
  * @author zheng
  */
-@Service
-public class MailRelatedService extends ServiceImpl<UserMapper, User> {
+@Service("MailRelatedService")
+@RequiredArgsConstructor
+public class MailRelatedService extends ServiceImpl<UserMapper, User> implements IMailRelatedService {
 
-    @Resource
-    private JavaMailSender mailSender;
+    private final JavaMailSender mailSender;
 
-    @Resource
-    private BCryptPasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    @Resource
-    private RedisTemplate<String, String> redisTemplate;
+    private final RedisTemplate<String, String> redisTemplate;
 
-    @Resource
-    private AuthMapper authMapper;
+    private final AuthMapper authMapper;
 
     @Value("${spring.mail.sender}")
     private String senderMailAddress;
@@ -67,6 +66,7 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> {
      * @param type  验证码类型
      * @param ip    请求 IP
      */
+    @Override
     public R<Void> getMailVerifyCode(String email, String type, String ip) {
         setCacheCode(type + ":" + email);
         setSender(type + ":" + email + ":" + ip);
@@ -90,6 +90,7 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> {
      * @param code 验证码
      */
     @Transactional
+    @Override
     public R<AuthVo> verifyMailCode(User user, String type, String code) {
         setCacheCode(type + ":" + user.getEmail());
         String cacheCode = redisTemplate.opsForValue().get(getCacheCode());

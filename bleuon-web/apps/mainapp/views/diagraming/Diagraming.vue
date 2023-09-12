@@ -11,7 +11,7 @@ const createX = ref(30);
 const createY = ref(30);
 
 function addPrimaryRectangle() {
-  createPrimaryRectangle(graph, { x: createX.value, y: createY.value });
+  createPrimaryRectangle(graph, paper, { x: createX.value, y: createY.value });
   createX.value += 30;
   createY.value += 50;
 }

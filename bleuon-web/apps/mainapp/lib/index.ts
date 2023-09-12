@@ -1,4 +1,4 @@
-export { initJointJs, BaseShape } from "./init";
+export { initJointJs } from "./init";
 
 export * from "./shapes/link";
 export * from "./shapes/rect";

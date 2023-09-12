@@ -1,5 +1,5 @@
 import { dia } from "jointjs";
-import { BaseShape } from "../init";
+import { BaseShape } from "./base";
 import { PRIMARY_RECTANGLE } from "../constants/key-vals";
 
 /**
@@ -44,6 +44,9 @@ const PrimaryRectangleShape = BaseShape.define(
   }
 );
 
+/**
+ * 生成 ports 配置对象
+ */
 function generatePortsConfig() {
   const port = {
     attrs: {
@@ -76,6 +79,7 @@ function generatePortsConfig() {
  */
 export function createPrimaryRectangle(
   graph: dia.Graph,
+  paper: dia.Paper,
   config?: {
     x?: number;
     y?: number;

@@ -1,6 +1,9 @@
 import { shapes, linkTools } from "jointjs";
 import { PRIMARY_LINK } from "../constants/key-vals";
 
+/**
+ * 基础 Link
+ */
 export const PrimaryLink = shapes.standard.Link.define(
   PRIMARY_LINK,
   {
