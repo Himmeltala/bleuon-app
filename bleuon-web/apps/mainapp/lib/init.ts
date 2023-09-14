@@ -1,35 +1,35 @@
-import { PrimaryLink, SecondaryLink } from "./shapes/link";
+import { PrimaryLink } from "./shapes/link";
 import { dia, shapes } from "jointjs";
+
+function addTools(view: any) {
+  // @ts-ignore
+  const { model } = view;
+  if (model?.addTools) {
+    model.addTools(view);
+  }
+}
+
+function removeTools(view: any) {
+  // @ts-ignore
+  const { model } = view;
+  if (model?.removeTools) {
+    model.removeTools(view);
+  }
+}
 
 function addJointPaperEvents(paper: dia.Paper) {
   paper.on({
     "cell:mouseenter": view => {
-      // @ts-ignore
-      const { model } = view;
-      if (model?.addTools) {
-        model.addTools(view);
-      }
+      addTools(view);
     },
     "cell:mouseleave": view => {
-      // @ts-ignore
-      const { model } = view;
-      if (model?.addTools) {
-        model.removeTools(view);
-      }
+      removeTools(view);
     },
     "link:mouseenter": view => {
-      // @ts-ignore
-      const { model } = view;
-      if (model?.addTools) {
-        model.addTools(view);
-      }
+      addTools(view);
     },
     "link:mouseleave": view => {
-      // @ts-ignore
-      const { model } = view;
-      if (model?.removeTools) {
-        model.removeTools(view);
-      }
+      removeTools(view);
     }
   });
 }

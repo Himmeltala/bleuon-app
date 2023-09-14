@@ -40,6 +40,14 @@ onMounted(() => {
 
   // 这个属性可以更改连线的路由模式
   paper.options.defaultRouter = linkRouter.value;
+
+  paper.on({
+    "cell:pointerdblclick": (view: any) => {
+      // 打开图形中的输入框
+      // const { model } = view;
+      // model.attr({ label: { text: "My Label" } });
+    }
+  });
 });
 </script>
 

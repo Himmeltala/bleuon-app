@@ -49,7 +49,7 @@ export const SecondaryLink = shapes.standard.Link.define(
     }
   },
   {
-    addTools(linkView: any) {
+    addTools(linkView: dia.LinkView) {
       const tools = [
         new linkTools.Vertices({ stopPropagation: false }),
         new linkTools.Segments({ stopPropagation: false })
@@ -61,7 +61,7 @@ export const SecondaryLink = shapes.standard.Link.define(
         })
       );
     },
-    removeTools(linkView: any) {
+    removeTools(linkView: dia.LinkView) {
       if (linkView.hasTools("secondary-link")) {
         linkView.removeTools();
       }

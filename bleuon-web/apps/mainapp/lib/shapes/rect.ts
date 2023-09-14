@@ -59,11 +59,9 @@ const PrimaryRectangleShape = shapes.standard.Rectangle.define(
         cursor: "grab"
       },
       label: {
-        text: "",
+        text: "Hello",
         textVerticalAnchor: "middle",
         textAnchor: "middle",
-        x: "calc(.5*w)",
-        y: "calc(.5*h)",
         fill: "#333333",
         fontSize: 18,
         pointerEvents: "none"
@@ -71,17 +69,7 @@ const PrimaryRectangleShape = shapes.standard.Rectangle.define(
     }
   },
   {
-    markup: [
-      {
-        tagName: "rect",
-        selector: "body"
-      },
-      {
-        tagName: "text",
-        selector: "label"
-      }
-    ],
-    addTools(cellView: any) {
+    addTools(cellView: dia.CellView) {
       cellView.addTools(
         new dia.ToolsView({
           name: "resize-tools",
@@ -93,7 +81,7 @@ const PrimaryRectangleShape = shapes.standard.Rectangle.define(
         })
       );
     },
-    removeTools(cellView: any) {
+    removeTools(cellView: dia.CellView) {
       if (cellView.hasTools("resize-tools")) {
         cellView.removeTools();
       }
@@ -147,7 +135,6 @@ export function createPrimaryRectangle(
 
   const primaryRectangle = new PrimaryRectangleShape({
     position: { x: config?.x || 30, y: config?.y || 30 },
-    size: { width: config?.width || 140, height: config?.height || 70 },
     ports: {
       groups: {
         top: topPort,
@@ -157,6 +144,8 @@ export function createPrimaryRectangle(
       }
     }
   });
+
+  primaryRectangle.resize(config?.width || 140, config?.height || 70);
 
   primaryRectangle.addPorts([
     { group: "top" },
