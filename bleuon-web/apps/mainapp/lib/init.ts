@@ -1,6 +1,38 @@
-import { PrimaryLink } from "./shapes/link";
-import { dia, shapes, connectors } from "jointjs";
-import { addTools, removeTools, addClickedTools } from "./tools";
+import { PrimaryLink, SecondaryLink } from "./shapes/link";
+import { dia, shapes } from "jointjs";
+
+function addJointPaperEvents(paper: dia.Paper) {
+  paper.on({
+    "cell:mouseenter": view => {
+      // @ts-ignore
+      const { model } = view;
+      if (model?.addTools) {
+        model.addTools(view);
+      }
+    },
+    "cell:mouseleave": view => {
+      // @ts-ignore
+      const { model } = view;
+      if (model?.addTools) {
+        model.removeTools(view);
+      }
+    },
+    "link:mouseenter": view => {
+      // @ts-ignore
+      const { model } = view;
+      if (model?.addTools) {
+        model.addTools(view);
+      }
+    },
+    "link:mouseleave": view => {
+      // @ts-ignore
+      const { model } = view;
+      if (model?.removeTools) {
+        model.removeTools(view);
+      }
+    }
+  });
+}
 
 export function initJointJs(
   config: {
@@ -46,35 +78,10 @@ export function initJointJs(
     },
     markAvailable: true,
     snapLinks: { radius: 5 },
-    efaultConnectionPoint: { name: "anchor" },
-    defaultConnector: function (sourcePoint, targetPoint, route, _, linkView) {
-      // @ts-ignore
-      const { model } = linkView;
-      const targetElement = model.getTargetElement();
-      const sourceElement = model.getSourceElement();
-      const options = {
-        targetDirection: targetElement
-          ? targetElement.getCurveDirection(targetPoint)
-          : connectors.curve.TangentDirections.AUTO,
-        sourceDirection: sourceElement
-          ? sourceElement.getCurveDirection(sourcePoint)
-          : connectors.curve.TangentDirections.AUTO
-      };
-      return connectors.curve(sourcePoint, targetPoint, route, options, linkView);
-    }
+    efaultConnectionPoint: { name: "anchor" }
   });
 
-  paper.on({
-    "cell:mouseenter": view => {
-      addTools(view);
-    },
-    "cell:mouseleave": view => {
-      removeTools(view);
-    },
-    "cell:pointerclick": view => {
-      addClickedTools(view);
-    }
-  });
+  addJointPaperEvents(paper);
 
   return {
     paper,

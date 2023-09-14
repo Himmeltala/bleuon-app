@@ -1,17 +1,30 @@
 <script setup lang="ts">
-import { initJointJs, createPrimaryRectangle } from "@mainapp/lib";
-import type { Paper, Graph } from "@mainapp/lib";
+import { dia, initJointJs, createPrimaryRectangle } from "@mainapp/lib";
 import "jointjs/css/layout.css";
 import "jointjs/css/themes/default.css";
 
-let paper: Paper = null;
-let graph: Graph = null;
+let paper: dia.Paper = null;
+let graph: dia.Graph = null;
 
 const createX = ref(30);
 const createY = ref(30);
 
+const linkRouter = ref({
+  name: "manhattan"
+  // args: {
+  //   padding: 10
+  // }
+});
+const linkConnector = ref({
+  name: "straight",
+  args: {
+    // cornerType: "line",
+    // cornerRadius: 20
+  }
+});
+
 function addPrimaryRectangle() {
-  createPrimaryRectangle(graph, paper, { x: createX.value, y: createY.value });
+  createPrimaryRectangle(graph, { x: createX.value, y: createY.value });
   createX.value += 30;
   createY.value += 50;
 }
@@ -21,6 +34,12 @@ onMounted(() => {
 
   paper = jointjs.paper;
   graph = jointjs.graph;
+
+  // 这个属性可以更改连线类型
+  paper.options.defaultConnector = linkConnector.value;
+
+  // 这个属性可以更改连线的路由模式
+  paper.options.defaultRouter = linkRouter.value;
 });
 </script>
 
