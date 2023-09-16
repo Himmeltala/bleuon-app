@@ -23,6 +23,8 @@ const linkConnector = ref({
   }
 });
 
+const eleInput = ref();
+
 function addPrimaryRectangle() {
   createPrimaryRectangle(graph, { x: createX.value, y: createY.value });
   createX.value += 30;
@@ -41,24 +43,29 @@ onMounted(() => {
   // 这个属性可以更改连线的路由模式
   paper.options.defaultRouter = linkRouter.value;
 
-  paper.on({
-    "cell:pointerdblclick": (view: any) => {
-      // 打开图形中的输入框
-      // const { model } = view;
-      // model.attr({ label: { text: "My Label" } });
+  paper.on("cell:pointerdblclick", function (cellView) {
+    // @ts-ignore
+    const { model } = cellView;
+    if (model?.updateText) {
+      model.updateText(cellView, eleInput);
     }
   });
 });
 </script>
 
 <template>
-  <div>
-    <div class="header bg-amber h-15vh"></div>
-    <div class="f-c-b">
-      <div class="sidebar relative bg-blue w-15vw h-85vh">
+  <div class="bleuon__diagraming-container">
+    <div class="bleuon__diagraming-header bg-amber h-15vh"></div>
+    <div class="bleuon__diagraming-wrapper f-c-b">
+      <div class="bleuon__diagraming-sidebar relative bg-blue w-15vw h-85vh">
         <el-button @click="addPrimaryRectangle">基础正方形</el-button>
       </div>
-      <div id="diagraming"></div>
+      <div class="bleu__diagraming-body relative">
+        <div id="bleu__diagraming-content"></div>
+        <div class="bleuon__diagraming-tools">
+          <input ref="eleInput" type="text" class="bleuon__diagraming-input absolute hidden" />
+        </div>
+      </div>
     </div>
   </div>
 </template>

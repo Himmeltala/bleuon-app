@@ -37,11 +37,6 @@ export default defineConfig(({ mode }) => {
             type: true
           },
           {
-            from: "@vueuse/core",
-            imports: ["RemovableRef"],
-            type: true
-          },
-          {
             "@common/constants": ["KeyVals"]
           }
         ],

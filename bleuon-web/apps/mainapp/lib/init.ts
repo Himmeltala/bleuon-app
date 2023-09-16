@@ -49,7 +49,7 @@ export function initJointJs(
   const graph = new dia.Graph({}, { cellNamespace: namespace });
 
   const paper = new dia.Paper({
-    el: document.getElementById("diagraming"),
+    el: document.getElementById("bleu__diagraming-content"),
     model: graph,
     height: "85vh",
     width: "85vw",
