@@ -64,18 +64,17 @@ export const BaseShape = dia.Element.define(
         textAnchor: "middle",
         fill: "#333333",
         fontSize: 18,
-        pointerEvents: "none",
         refX: "50%",
         refY: "50%"
       }
     }
   },
   {
-    updateText(cellView: dia.CellView, eleInput: Ref<HTMLInputElement>) {
-      editCellViewText(cellView, eleInput);
+    updateText(elementView: dia.ElementView, textInput: HTMLInputElement) {
+      editCellViewText(elementView, textInput);
     },
-    addTools(cellView: dia.CellView) {
-      cellView.addTools(
+    addTools(elementView: dia.ElementView) {
+      elementView.addTools(
         new dia.ToolsView({
           name: "resize-tools",
           tools: [
@@ -86,9 +85,9 @@ export const BaseShape = dia.Element.define(
         })
       );
     },
-    removeTools(cellView: dia.CellView) {
-      if (cellView.hasTools("resize-tools")) {
-        cellView.removeTools();
+    removeTools(elementView: dia.ElementView) {
+      if (elementView.hasTools("resize-tools")) {
+        elementView.removeTools();
       }
     }
   }

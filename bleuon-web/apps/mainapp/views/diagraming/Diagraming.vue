@@ -2,18 +2,13 @@
 import { dia, initJointJs } from "@mainapp/lib";
 import "jointjs/css/layout.css";
 import "jointjs/css/themes/default.css";
-import {
-  linkConnectorOptions,
-  linkRouterOptions,
-  linkConnectorConfig,
-  linkRouterConfig
-} from "./data/config-data";
-import { addPrimaryRectangle, watchLinkConnectorConfig, watchLinkRouterConfig } from "./service";
+import * as DATA from "./data/config-data";
+import * as SERVICE from "./service";
 
 let paper: dia.Paper = null;
 let graph: dia.Graph = null;
 
-const eleTextInput = ref<HTMLInputElement>();
+const textInputElement = ref<HTMLInputElement>();
 
 onMounted(() => {
   const jointjs = initJointJs();
@@ -21,48 +16,96 @@ onMounted(() => {
   paper = jointjs.paper;
   graph = jointjs.graph;
 
-  paper.options.defaultConnector = linkConnectorConfig.value;
-  paper.options.defaultRouter = linkRouterConfig.value;
+  paper.options.defaultConnector = DATA.linkConnectorConfig.value;
+  paper.options.defaultRouter = DATA.linkRouterConfig.value;
 
-  paper.on("cell:pointerdblclick", function (cellView) {
-    // @ts-ignore
-    const { model } = cellView;
-    if (model?.updateText) {
-      model.updateText(cellView, eleTextInput);
+  paper.on({
+    "element:mouseenter": view => {},
+    "element:mouseleave": view => {},
+    "element:pointerclick": view => {
+      SERVICE.insShapeTools(view, DATA.clickedLastElementView);
+    },
+    "element:pointerdblclick": view => {
+      SERVICE.updateShapeText(view, textInputElement.value);
+    },
+    "blank:pointerclick": view => {
+      SERVICE.uniShapeTools(DATA.clickedLastElementView);
+    },
+    "link:mouseenter": view => {
+      SERVICE.insLinkTools(view);
+    },
+    "link:mouseleave": view => {
+      SERVICE.uniLinkTools(view);
     }
   });
 });
 
-watchLinkConnectorConfig(linkConnectorConfig, paper);
-watchLinkRouterConfig(linkRouterConfig, paper);
+SERVICE.watchLinkConnectorConfig(DATA.linkConnectorConfig, paper);
+SERVICE.watchLinkRouterConfig(DATA.linkRouterConfig, paper);
 </script>
 
 <template>
   <div class="bleuon__diagraming-container">
     <div class="bleuon__diagraming-header bg-amber h-15vh">
-      <el-select v-model="linkRouterConfig.name" placeholder="请选择路由模式" size="large">
-        <el-option
-          v-for="item in linkRouterOptions"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value" />
-      </el-select>
-      <el-select v-model="linkConnectorConfig.name" placeholder="请选择连接端样式" size="large">
-        <el-option
-          v-for="item in linkConnectorOptions"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value" />
-      </el-select>
+      <div></div>
+      <div class="f-c-s">
+        <div>
+          <el-select
+            v-model="DATA.linkRouterConfig.value.name"
+            placeholder="请选择路由模式"
+            size="large">
+            <el-option
+              v-for="item in DATA.linkRouterOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value" />
+          </el-select>
+          <el-select
+            v-model="DATA.linkConnectorConfig.value.name"
+            placeholder="请选择连接端样式"
+            size="large">
+            <el-option
+              v-for="item in DATA.linkConnectorOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value" />
+          </el-select>
+        </div>
+        <div class="f-c-s">
+          <el-button text bg>
+            <template #icon>
+              <div class="i-tabler-bold"></div>
+            </template>
+          </el-button>
+          <el-button text bg>
+            <template #icon>
+              <div class="i-tabler-italic"></div>
+            </template>
+          </el-button>
+          <el-button text bg>
+            <template #icon>
+              <div class="i-tabler-underline"></div>
+            </template>
+          </el-button>
+          <el-button text bg>
+            <template #icon>
+              <div class="i-tabler-text-color"></div>
+            </template>
+          </el-button>
+        </div>
+      </div>
     </div>
     <div class="bleuon__diagraming-wrapper f-c-b">
       <div class="bleuon__diagraming-sidebar relative bg-blue w-15vw h-85vh">
-        <el-button @click="addPrimaryRectangle(graph)">基础正方形</el-button>
+        <el-button @click="SERVICE.addPrimaryRectangle(graph)">基础正方形</el-button>
       </div>
       <div class="bleu__diagraming-body relative">
         <div id="bleu__diagraming-content"></div>
         <div class="bleuon__diagraming-tools">
-          <input ref="eleTextInput" type="text" class="bleuon__diagraming-input absolute hidden" />
+          <input
+            ref="textInputElement"
+            type="text"
+            class="bleuon__diagraming-input absolute hidden" />
         </div>
       </div>
     </div>

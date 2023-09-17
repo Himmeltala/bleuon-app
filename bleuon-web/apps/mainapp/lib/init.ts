@@ -1,39 +1,6 @@
 import { PrimaryLink } from "./shapes/link";
 import { dia, shapes } from "jointjs";
 
-function addTools(view: any) {
-  // @ts-ignore
-  const { model } = view;
-  if (model?.addTools) {
-    model.addTools(view);
-  }
-}
-
-function removeTools(view: any) {
-  // @ts-ignore
-  const { model } = view;
-  if (model?.removeTools) {
-    model.removeTools(view);
-  }
-}
-
-function addJointPaperEvents(paper: dia.Paper) {
-  paper.on({
-    "cell:mouseenter": view => {
-      addTools(view);
-    },
-    "cell:mouseleave": view => {
-      removeTools(view);
-    },
-    "link:mouseenter": view => {
-      addTools(view);
-    },
-    "link:mouseleave": view => {
-      removeTools(view);
-    }
-  });
-}
-
 export function initJointJs(
   config: {
     isPreventLinkFromInputPorts: boolean;
@@ -80,8 +47,6 @@ export function initJointJs(
     snapLinks: { radius: 5 },
     efaultConnectionPoint: { name: "anchor" }
   });
-
-  addJointPaperEvents(paper);
 
   return {
     paper,

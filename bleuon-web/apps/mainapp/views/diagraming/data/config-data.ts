@@ -48,9 +48,24 @@ export const linkRouterOptions = [
   }
 ];
 
+/**
+ * 路由配置
+ */
 export const linkRouterConfig = ref({
   name: "normal"
 });
+
+/**
+ * 连接配置
+ */
 export const linkConnectorConfig = ref({
   name: "normal"
+});
+
+/**
+ * 上次点击的图形，包含图形 view 和图形下的 model
+ */
+export const clickedLastElementView = ref({
+  view: null,
+  model: null
 });
