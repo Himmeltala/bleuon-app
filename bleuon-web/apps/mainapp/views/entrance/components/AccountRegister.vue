@@ -5,7 +5,7 @@ import {
   passwordValidator,
   rePasswdValidator,
   commitForm
-} from "@mainapp/services/form-validators";
+} from "@mainapp/utils/form-validators";
 import { USER_API } from "@mainapp/apis";
 
 const formData = reactive({

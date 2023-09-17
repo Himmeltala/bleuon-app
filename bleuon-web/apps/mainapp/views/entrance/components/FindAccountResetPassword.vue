@@ -1,10 +1,6 @@
 <script setup lang="ts">
 import type { FormRules } from "element-plus";
-import {
-  passwordValidator,
-  rePasswdValidator,
-  commitForm
-} from "@mainapp/services/form-validators";
+import { passwordValidator, rePasswdValidator, commitForm } from "@mainapp/utils/form-validators";
 import { USER_API } from "@mainapp/apis";
 
 const props = defineProps({

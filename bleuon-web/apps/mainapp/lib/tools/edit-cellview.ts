@@ -1,6 +1,6 @@
 import { dia } from "jointjs";
 
-export function editCellViewText(cellView: dia.CellView, eleInput: Ref) {
+export function editCellViewText(cellView: dia.CellView, eleInput: Ref<HTMLInputElement>) {
   // @ts-ignore
   const { model } = cellView;
   const { position, size } = model.attributes;

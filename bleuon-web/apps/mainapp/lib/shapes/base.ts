@@ -71,7 +71,7 @@ export const BaseShape = dia.Element.define(
     }
   },
   {
-    updateText(cellView: dia.CellView, eleInput: Ref) {
+    updateText(cellView: dia.CellView, eleInput: Ref<HTMLInputElement>) {
       editCellViewText(cellView, eleInput);
     },
     addTools(cellView: dia.CellView) {
