@@ -2,7 +2,7 @@
 import { dia, initJointJs } from "@mainapp/lib";
 import "jointjs/css/layout.css";
 import "jointjs/css/themes/default.css";
-import * as DATA from "./data/config-data";
+import * as DATA from "./data";
 import * as SERVICE from "./service";
 
 let paper: dia.Paper = null;
@@ -23,13 +23,14 @@ onMounted(() => {
     "element:mouseenter": view => {},
     "element:mouseleave": view => {},
     "element:pointerclick": view => {
-      SERVICE.insShapeTools(view, DATA.clickedLastElementView);
+      DATA.clickedCurrView.value = view;
+      SERVICE.insShapeTools(view, DATA.clickedLastView);
     },
     "element:pointerdblclick": view => {
       SERVICE.updateShapeText(view, textInputElement.value);
     },
     "blank:pointerclick": view => {
-      SERVICE.uniShapeTools(DATA.clickedLastElementView);
+      SERVICE.uniShapeTools(DATA.clickedLastView);
     },
     "link:mouseenter": view => {
       SERVICE.insLinkTools(view);
@@ -72,26 +73,32 @@ SERVICE.watchLinkRouterConfig(DATA.linkRouterConfig, paper);
           </el-select>
         </div>
         <div class="f-c-s">
-          <el-button text bg>
-            <template #icon>
-              <div class="i-tabler-bold"></div>
-            </template>
-          </el-button>
-          <el-button text bg>
-            <template #icon>
-              <div class="i-tabler-italic"></div>
-            </template>
-          </el-button>
-          <el-button text bg>
-            <template #icon>
-              <div class="i-tabler-underline"></div>
-            </template>
-          </el-button>
-          <el-button text bg>
-            <template #icon>
-              <div class="i-tabler-text-color"></div>
-            </template>
-          </el-button>
+          <div>
+            <el-button text bg @click="SERVICE.changeTextBold(DATA.clickedCurrView.value)">
+              <template #icon>
+                <div class="i-tabler-bold"></div>
+              </template>
+            </el-button>
+          </div>
+          <div class="ml-4">
+            <el-button text bg @click="SERVICE.changeTextItalic(DATA.clickedCurrView.value)">
+              <template #icon>
+                <div class="i-tabler-italic"></div>
+              </template>
+            </el-button>
+          </div>
+          <div class="ml-4">
+            <el-button text bg @click="SERVICE.changeTextUnderline(DATA.clickedCurrView.value)">
+              <template #icon>
+                <div class="i-tabler-underline"></div>
+              </template>
+            </el-button>
+          </div>
+          <div class="ml-4">
+            <el-color-picker
+              @change="value => SERVICE.changeTextColor(DATA.clickedCurrView.value, value)"
+              v-model="DATA.selectColor.value" />
+          </div>
         </div>
       </div>
     </div>

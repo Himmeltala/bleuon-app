@@ -13,6 +13,7 @@ declare module 'vue' {
     Diagraming: typeof import('./apps/mainapp/views/diagraming/Diagraming.vue')['default']
     Diagrams: typeof import('./apps/mainapp/views/home/Diagrams.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
+    ElColorPicker: typeof import('element-plus/es')['ElColorPicker']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
     ElInput: typeof import('element-plus/es')['ElInput']

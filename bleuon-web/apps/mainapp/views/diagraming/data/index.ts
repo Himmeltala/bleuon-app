@@ -25,6 +25,9 @@ export const linkConnectorOptions = [
   }
 ];
 
+/**
+ * Link 路由 name 下拉框
+ */
 export const linkRouterOptions = [
   {
     value: "manhattan",
@@ -49,23 +52,33 @@ export const linkRouterOptions = [
 ];
 
 /**
- * 路由配置
+ * Link 路由配置
  */
 export const linkRouterConfig = ref({
   name: "normal"
 });
 
 /**
- * 连接配置
+ * Link 两端连接配置
  */
 export const linkConnectorConfig = ref({
   name: "normal"
 });
 
 /**
- * 上次点击的图形，包含图形 view 和图形下的 model
+ * 点击的上一次图形 View，包含图形 View 对象和图形的 model 对象
  */
-export const clickedLastElementView = ref({
+export const clickedLastView = ref({
   view: null,
   model: null
 });
+
+/**
+ * 点击的当前图形 View
+ */
+export const clickedCurrView = ref();
+
+/**
+ * 颜色选择器的值
+ */
+export const selectColor = ref();

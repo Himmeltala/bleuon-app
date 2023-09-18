@@ -51,21 +51,21 @@ export function uniLinkTools(view: any) {
  * 安装图形工具
  *
  * @param view
- * @param lastView
+ * @param clickedLastView
  */
 export function insShapeTools(
   view: dia.ElementView,
-  lastView: Ref<{ model: any; view: dia.ElementView }>
+  clickedLastView: Ref<{ model: any; view: dia.ElementView }>
 ) {
   // @ts-ignore
   const { model } = view;
-  if (lastView.value.model) {
-    lastView.value.model.removeTools(lastView.value.view);
+  if (clickedLastView.value.model) {
+    clickedLastView.value.model.removeTools(clickedLastView.value.view);
   }
 
   model.addTools(view);
 
-  lastView.value = {
+  clickedLastView.value = {
     model,
     view
   };
@@ -99,4 +99,66 @@ export function updateShapeText(view: dia.ElementView, input: HTMLInputElement) 
   if (model?.updateText) {
     model.updateText(view, input);
   }
+}
+
+/**
+ * 修改点击的文本粗细
+ *
+ * @param currView
+ */
+export function changeTextBold(currView: dia.ElementView) {
+  // @ts-ignore
+  const model = currView.model;
+  const weight = model.attr("label/fontWeight");
+
+  if (weight === "bold") {
+    model.attr("label/fontWeight", "normal");
+  } else {
+    model.attr("label/fontWeight", "bold");
+  }
+}
+
+/**
+ * 修改点击的文本斜体
+ *
+ * @param currView
+ */
+export function changeTextItalic(currView: dia.ElementView) {
+  // @ts-ignore
+  const model = currView.model;
+  const style = model.attr("label/fontStyle");
+
+  if (style === "italic") {
+    model.attr("label/fontStyle", "normal");
+  } else {
+    model.attr("label/fontStyle", "italic");
+  }
+}
+
+/**
+ * 修改点击的文本下划线
+ *
+ * @param currView
+ */
+export function changeTextUnderline(currView: dia.ElementView) {
+  // @ts-ignore
+  const model = currView.model;
+  const style = model.attr("label/textDecoration");
+
+  if (style === "underline") {
+    model.attr("label/textDecoration", "normal");
+  } else {
+    model.attr("label/textDecoration", "underline");
+  }
+}
+
+/**
+ * 修改点击的文本颜色
+ *
+ * @param currView
+ */
+export function changeTextColor(currView: dia.ElementView, color: string) {
+  // @ts-ignore
+  const model = currView.model;
+  model.attr("label/fill", color);
 }

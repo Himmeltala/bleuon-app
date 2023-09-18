@@ -1,6 +1,5 @@
 import { dia, elementTools } from "jointjs";
 import { BASE_SHAPE } from "../constants/key-vals";
-import { editCellViewText } from "../tools";
 
 /**
  * Shape 的扩大工具
@@ -71,7 +70,31 @@ export const BaseShape = dia.Element.define(
   },
   {
     updateText(elementView: dia.ElementView, textInput: HTMLInputElement) {
-      editCellViewText(elementView, textInput);
+      // @ts-ignore
+      const { model } = elementView;
+      const { position, size } = model.attributes;
+
+      const cellText = model.attr("label/text");
+      textInput.value = cellText;
+
+      textInput.style.top = position.y + "px";
+      textInput.style.left = position.x + "px";
+      textInput.style.width = size.width + "px";
+      textInput.style.height = size.height + "px";
+      textInput.style.display = "block";
+
+      function handleKeydownEvent(event: any) {
+        if (event.key === "Enter") {
+          let newCellText = textInput.value;
+          model.attr("label/text", newCellText);
+          textInput.style.display = "none";
+          textInput.removeEventListener("keydown", handleKeydownEvent);
+        }
+      }
+
+      textInput.addEventListener("keydown", handleKeydownEvent);
+
+      textInput.focus();
     },
     addTools(elementView: dia.ElementView) {
       elementView.addTools(
