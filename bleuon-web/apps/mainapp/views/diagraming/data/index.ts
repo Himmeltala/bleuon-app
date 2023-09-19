@@ -91,7 +91,7 @@ export const textSize = ref(14);
 /**
  * 字体样式
  */
-export const fontFamily = [
+export const fontFamilyOptions = [
   {
     value: "微软雅黑",
     label: "微软雅黑"
@@ -138,4 +138,58 @@ export const fontFamily = [
   }
 ];
 
-export const textStyle = ref("微软雅黑");
+export const fontFamily = ref("微软雅黑");
+
+/**
+ * 图形边框线条粗细
+ */
+export const shapeStrokeWidthOptions = [
+  {
+    value: 0,
+    label: "0px"
+  },
+  {
+    value: 0.5,
+    label: "0.5px"
+  },
+  {
+    value: 1,
+    label: "1px"
+  },
+  {
+    value: 1.5,
+    label: "1.5px"
+  },
+  {
+    value: 2,
+    label: "2px"
+  },
+  {
+    value: 3,
+    label: "3px"
+  },
+  {
+    value: 4,
+    label: "4px"
+  },
+  {
+    value: 5,
+    label: "5px"
+  },
+  {
+    value: 6,
+    label: "6px"
+  },
+  {
+    value: 8,
+    label: "8px"
+  },
+  {
+    value: 10,
+    label: "10px"
+  }
+];
+
+export const shapeStrokeWidth = ref(1.5);
+
+export const shapeBackground = ref("white");

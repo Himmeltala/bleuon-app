@@ -27,16 +27,6 @@ export default defineConfig(({ mode }) => {
           "vue-router",
           "@vueuse/core",
           {
-            from: "vue-router",
-            imports: ["Router"],
-            type: true
-          },
-          {
-            from: "vue",
-            imports: ["PropType"],
-            type: true
-          },
-          {
             "@common/constants": ["KeyVals"]
           }
         ],
@@ -69,8 +59,7 @@ export default defineConfig(({ mode }) => {
       sourcemap: true,
       rollupOptions: {
         input: {
-          mainapp: resolve(__dirname, "index.html"),
-          subapp: resolve(__dirname, "apps/subapp/index.html")
+          mainapp: resolve(__dirname, "index.html")
         },
         output: {
           entryFileNames: "static/js/[name]-[hash].js",
@@ -82,7 +71,6 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: {
         "@mainapp": resolve(__dirname, "apps/mainapp"),
-        "@subapp": resolve(__dirname, "apps/subapp"),
         "@common": resolve(__dirname, "common")
       }
     },

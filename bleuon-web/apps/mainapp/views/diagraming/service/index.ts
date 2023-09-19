@@ -195,3 +195,15 @@ export function changeTextFamily(currView: dia.ElementView, family: string) {
   const model = currView.model;
   model.attr("label/fontFamily", family);
 }
+
+export function changeShapeStrokeWidth(currView: dia.ElementView, strokeWidth: number) {
+  // @ts-ignore
+  const model = currView.model;
+  model.attr("body/strokeWidth", strokeWidth);
+}
+
+export function changeShapeBackground(currView: dia.ElementView, color: string) {
+  // @ts-ignore
+  const model = currView.model;
+  model.attr("body/fill", color);
+}

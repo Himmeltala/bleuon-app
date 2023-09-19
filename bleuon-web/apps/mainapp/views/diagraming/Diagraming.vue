@@ -2,13 +2,15 @@
 import { dia, initJointJs } from "@mainapp/lib";
 import "jointjs/css/layout.css";
 import "jointjs/css/themes/default.css";
-import * as DATA from "./data";
-import * as SERVICE from "./service";
+import * as Data from "./data";
+import * as Service from "./service";
 
 let paper: dia.Paper = null;
 let graph: dia.Graph = null;
 
 const textInputElement = ref<HTMLInputElement>();
+const textColorPickerRef = ref();
+const shapeBackgroundColorPickerRef = ref();
 
 onMounted(() => {
   const jointjs = initJointJs();
@@ -16,30 +18,36 @@ onMounted(() => {
   paper = jointjs.paper;
   graph = jointjs.graph;
 
-  paper.options.defaultConnector = DATA.linkConnectorConfig.value;
-  paper.options.defaultRouter = DATA.linkRouterConfig.value;
+  paper.options.defaultConnector = Data.linkConnectorConfig.value;
+  paper.options.defaultRouter = Data.linkRouterConfig.value;
 
   paper.on({
     "element:mouseenter": view => {},
     "element:mouseleave": view => {},
     "element:pointerclick": view => {
-      DATA.clickedCurrView.value = view;
-      SERVICE.insShapeTools(view, DATA.clickedLastView);
+      Data.clickedCurrView.value = view;
+      Service.insShapeTools(view, Data.clickedLastView);
     },
     "element:pointerdblclick": view => {
-      SERVICE.updateShapeText(view, textInputElement.value);
+      Service.updateShapeText(view, textInputElement.value);
     },
     "blank:pointerclick": view => {
-      SERVICE.uniShapeTools(DATA.clickedLastView);
+      Service.uniShapeTools(Data.clickedLastView);
     },
     "link:mouseenter": view => {
-      SERVICE.insLinkTools(view);
+      Service.insLinkTools(view);
     },
     "link:mouseleave": view => {
-      SERVICE.uniLinkTools(view);
+      Service.uniLinkTools(view);
     }
   });
+
 });
+
+function open() {
+  // console.log(textColorPickerRef.value.show);
+  textColorPickerRef.value.show();
+}
 </script>
 
 <template>
@@ -51,11 +59,12 @@ onMounted(() => {
           <div>
             <el-tooltip content="字体" placement="bottom">
               <el-select
-                @change="value => SERVICE.changeTextFamily(DATA.clickedCurrView.value, value)"
-                v-model="DATA.textStyle.value"
+                style="width: 100px"
+                @change="value => Service.changeTextFamily(Data.clickedCurrView.value, value)"
+                v-model="Data.fontFamily.value"
                 placeholder="请选择字体">
                 <el-option
-                  v-for="item in DATA.fontFamily"
+                  v-for="item in Data.fontFamilyOptions"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value" />
@@ -64,7 +73,7 @@ onMounted(() => {
           </div>
           <div class="ml-2">
             <el-tooltip content="加粗" placement="bottom">
-              <el-button text bg @click="SERVICE.changeTextBold(DATA.clickedCurrView.value)">
+              <el-button text bg @click="Service.changeTextBold(Data.clickedCurrView.value)">
                 <template #icon>
                   <div class="i-tabler-bold"></div>
                 </template>
@@ -73,7 +82,7 @@ onMounted(() => {
           </div>
           <div class="ml-2">
             <el-tooltip content="斜体" placement="bottom">
-              <el-button text bg @click="SERVICE.changeTextItalic(DATA.clickedCurrView.value)">
+              <el-button text bg @click="Service.changeTextItalic(Data.clickedCurrView.value)">
                 <template #icon>
                   <div class="i-tabler-italic"></div>
                 </template>
@@ -82,7 +91,7 @@ onMounted(() => {
           </div>
           <div class="ml-2">
             <el-tooltip content="下划线" placement="bottom">
-              <el-button text bg @click="SERVICE.changeTextUnderline(DATA.clickedCurrView.value)">
+              <el-button text bg @click="Service.changeTextUnderline(Data.clickedCurrView.value)">
                 <template #icon>
                   <div class="i-tabler-underline"></div>
                 </template>
@@ -90,18 +99,29 @@ onMounted(() => {
             </el-tooltip>
           </div>
           <div class="ml-2">
-            <el-color-picker
-              @change="value => SERVICE.changeTextColor(DATA.clickedCurrView.value, value)"
-              v-model="DATA.textColor.value" />
+            <el-tooltip content="字体颜色" placement="bottom">
+              <el-button text bg @click="open">
+                <template #icon>
+                  <div class="i-tabler-edit"></div>
+                </template>
+              </el-button>
+            </el-tooltip>
+            <div class="hidden">
+              <el-color-picker
+                ref="textColorPickerRef"
+                @change="value => Service.changeTextColor(Data.clickedCurrView.value, value)"
+                v-model="Data.textColor.value" />
+            </div>
           </div>
           <div class="ml-2">
             <el-tooltip content="字号(px)" placement="bottom">
               <el-input-number
-                v-model="DATA.textSize.value"
+                style="width: 85px"
+                v-model="Data.textSize.value"
                 :min="14"
                 :max="30"
                 controls-position="right"
-                @change="value => SERVICE.changeTextSize(DATA.clickedCurrView.value, value)" />
+                @change="value => Service.changeTextSize(Data.clickedCurrView.value, value)" />
             </el-tooltip>
           </div>
         </div>
@@ -110,11 +130,12 @@ onMounted(() => {
           <div>
             <el-tooltip content="路由模式" placement="bottom">
               <el-select
-                @change="SERVICE.changeLinkRouterConfig(DATA.linkRouterConfig, paper)"
-                v-model="DATA.linkRouterConfig.value.name"
+                style="width: 85px"
+                @change="Service.changeLinkRouterConfig(Data.linkRouterConfig, paper)"
+                v-model="Data.linkRouterConfig.value.name"
                 placeholder="请选择路由模式">
                 <el-option
-                  v-for="item in DATA.linkRouterOptions"
+                  v-for="item in Data.linkRouterOptions"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value" />
@@ -124,11 +145,12 @@ onMounted(() => {
           <div class="ml-2">
             <el-tooltip content="连接端样式" placement="bottom">
               <el-select
-                @change="SERVICE.changeConnectorConfig(DATA.linkConnectorConfig, paper)"
-                v-model="DATA.linkConnectorConfig.value.name"
+                style="width: 85px"
+                @change="Service.changeConnectorConfig(Data.linkConnectorConfig, paper)"
+                v-model="Data.linkConnectorConfig.value.name"
                 placeholder="请选择连接端样式">
                 <el-option
-                  v-for="item in DATA.linkConnectorOptions"
+                  v-for="item in Data.linkConnectorOptions"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value" />
@@ -136,11 +158,52 @@ onMounted(() => {
             </el-tooltip>
           </div>
         </div>
+        <div class="mx-4 left-divider"></div>
+        <div class="f-c-c">
+          <div>
+            <el-tooltip content="边框粗细" placement="bottom">
+              <el-select
+                style="width: 85px"
+                @change="value => Service.changeShapeStrokeWidth(Data.clickedCurrView.value, value)"
+                v-model="Data.shapeStrokeWidth.value"
+                placeholder="请选择边框粗细">
+                <el-option
+                  v-for="item in Data.shapeStrokeWidthOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value" />
+              </el-select>
+            </el-tooltip>
+          </div>
+          <!--  -->
+          <div class="ml-2">
+            <el-tooltip content="边框样式" placement="bottom">
+              <el-select
+                style="width: 85px"
+                @change="value => Service.changeShapeStrokeWidth(Data.clickedCurrView.value, value)"
+                v-model="Data.shapeStrokeWidth.value"
+                placeholder="请选择边框样式">
+                <el-option
+                  v-for="item in Data.shapeStrokeWidthOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value" />
+              </el-select>
+            </el-tooltip>
+          </div>
+          <!--  -->
+          <div class="ml-2">
+            <el-color-picker
+              ref="shapeBackgroundColorPickerRef"
+              @change="value => Service.changeShapeBackground(Data.clickedCurrView.value, value)"
+              v-model="Data.shapeBackground.value" />
+          </div>
+        </div>
       </div>
     </div>
     <div class="bleuon__diagraming-wrapper f-c-b">
       <div class="bleuon__diagraming-sidebar relative bg-blue w-15vw h-85vh">
-        <el-button @click="SERVICE.addPrimaryRectangle(graph)">基础正方形</el-button>
+        <el-button @click="Service.addPrimaryRectangle(graph)">基础正方形</el-button>
       </div>
       <div class="bleu__diagraming-body relative">
         <div id="bleu__diagraming-content"></div>

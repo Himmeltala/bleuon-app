@@ -54,8 +54,9 @@ export const BaseShape = dia.Element.define(
         height: "calc(h)",
         fill: "#FCFCFC",
         stroke: "#333333",
-        strokeWidth: 2,
-        cursor: "grab"
+        strokeWidth: 1.5,
+        cursor: "grab",
+        "stroke-dasharray": "none"
       },
       label: {
         text: "",
