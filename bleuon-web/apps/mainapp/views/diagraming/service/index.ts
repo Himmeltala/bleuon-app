@@ -9,16 +9,24 @@ export function addPrimaryRectangle(graph: dia.Graph) {
   createPrimaryRectangle(graph, { x: 30, y: 30 });
 }
 
-export function watchLinkRouterConfig(config: Ref<any>, paper: dia.Paper) {
-  return watch(config, (newVal, oldVal) => {
-    paper.options.defaultRouter = newVal;
-  });
+/**
+ * 修改路由样式
+ *
+ * @param config
+ * @param paper
+ */
+export function changeLinkRouterConfig(config: Ref<any>, paper: dia.Paper) {
+  paper.options.defaultRouter = config.value;
 }
 
-export function watchLinkConnectorConfig(config: Ref<any>, paper: dia.Paper) {
-  return watch(config, (newVal, oldVal) => {
-    paper.options.defaultConnector = newVal;
-  });
+/**
+ * 修改连线样式
+ *
+ * @param config
+ * @param paper
+ */
+export function changeConnectorConfig(config: Ref<any>, paper: dia.Paper) {
+  paper.options.defaultConnector = config.value;
 }
 
 /**
@@ -156,9 +164,34 @@ export function changeTextUnderline(currView: dia.ElementView) {
  * 修改点击的文本颜色
  *
  * @param currView
+ * @param color
  */
 export function changeTextColor(currView: dia.ElementView, color: string) {
   // @ts-ignore
   const model = currView.model;
   model.attr("label/fill", color);
+}
+
+/**
+ * 修改文本大小
+ *
+ * @param currView
+ * @param size
+ */
+export function changeTextSize(currView: dia.ElementView, size: number) {
+  // @ts-ignore
+  const model = currView.model;
+  model.attr("label/fontSize", size);
+}
+
+/**
+ * 修改字体
+ *
+ * @param currView
+ * @param family
+ */
+export function changeTextFamily(currView: dia.ElementView, family: string) {
+  // @ts-ignore
+  const model = currView.model;
+  model.attr("label/fontFamily", family);
 }

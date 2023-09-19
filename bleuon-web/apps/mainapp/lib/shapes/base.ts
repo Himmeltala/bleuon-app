@@ -63,6 +63,7 @@ export const BaseShape = dia.Element.define(
         textAnchor: "middle",
         fill: "#333333",
         fontSize: 18,
+        fontFamily: "微软雅黑",
         refX: "50%",
         refY: "50%"
       }

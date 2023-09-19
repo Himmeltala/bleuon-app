@@ -79,6 +79,63 @@ export const clickedLastView = ref({
 export const clickedCurrView = ref();
 
 /**
- * 颜色选择器的值
+ * 字体颜色
  */
-export const selectColor = ref();
+export const textColor = ref();
+
+/**
+ * 字体大小
+ */
+export const textSize = ref(14);
+
+/**
+ * 字体样式
+ */
+export const fontFamily = [
+  {
+    value: "微软雅黑",
+    label: "微软雅黑"
+  },
+  {
+    value: "Arial",
+    label: "Arial"
+  },
+  {
+    value: "Bahnschrift",
+    label: "Bahnschrift"
+  },
+  {
+    value: "BIZ UDGothic",
+    label: "BIZ UDGothic"
+  },
+  {
+    value: "Calibri",
+    label: "Calibri"
+  },
+  {
+    value: "Cambria",
+    label: "Cambria"
+  },
+  {
+    value: "Candara",
+    label: "Candara"
+  },
+  {
+    value: "Comic Sans MS",
+    label: "Comic Sans MS"
+  },
+  {
+    value: "Consolas",
+    label: "Consolas"
+  },
+  {
+    value: "Constantia",
+    label: "Constantia"
+  },
+  {
+    value: "Corbel",
+    label: "Corbel"
+  }
+];
+
+export const textStyle = ref("微软雅黑");

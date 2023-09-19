@@ -40,9 +40,6 @@ onMounted(() => {
     }
   });
 });
-
-SERVICE.watchLinkConnectorConfig(DATA.linkConnectorConfig, paper);
-SERVICE.watchLinkRouterConfig(DATA.linkRouterConfig, paper);
 </script>
 
 <template>
@@ -50,54 +47,93 @@ SERVICE.watchLinkRouterConfig(DATA.linkRouterConfig, paper);
     <div class="bleuon__diagraming-header bg-amber h-15vh">
       <div></div>
       <div class="f-c-s">
-        <div>
-          <el-select
-            v-model="DATA.linkRouterConfig.value.name"
-            placeholder="请选择路由模式"
-            size="large">
-            <el-option
-              v-for="item in DATA.linkRouterOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value" />
-          </el-select>
-          <el-select
-            v-model="DATA.linkConnectorConfig.value.name"
-            placeholder="请选择连接端样式"
-            size="large">
-            <el-option
-              v-for="item in DATA.linkConnectorOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value" />
-          </el-select>
-        </div>
-        <div class="f-c-s">
+        <div class="f-c-c">
           <div>
-            <el-button text bg @click="SERVICE.changeTextBold(DATA.clickedCurrView.value)">
-              <template #icon>
-                <div class="i-tabler-bold"></div>
-              </template>
-            </el-button>
+            <el-tooltip content="字体" placement="bottom">
+              <el-select
+                @change="value => SERVICE.changeTextFamily(DATA.clickedCurrView.value, value)"
+                v-model="DATA.textStyle.value"
+                placeholder="请选择字体">
+                <el-option
+                  v-for="item in DATA.fontFamily"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value" />
+              </el-select>
+            </el-tooltip>
           </div>
-          <div class="ml-4">
-            <el-button text bg @click="SERVICE.changeTextItalic(DATA.clickedCurrView.value)">
-              <template #icon>
-                <div class="i-tabler-italic"></div>
-              </template>
-            </el-button>
+          <div class="ml-2">
+            <el-tooltip content="加粗" placement="bottom">
+              <el-button text bg @click="SERVICE.changeTextBold(DATA.clickedCurrView.value)">
+                <template #icon>
+                  <div class="i-tabler-bold"></div>
+                </template>
+              </el-button>
+            </el-tooltip>
           </div>
-          <div class="ml-4">
-            <el-button text bg @click="SERVICE.changeTextUnderline(DATA.clickedCurrView.value)">
-              <template #icon>
-                <div class="i-tabler-underline"></div>
-              </template>
-            </el-button>
+          <div class="ml-2">
+            <el-tooltip content="斜体" placement="bottom">
+              <el-button text bg @click="SERVICE.changeTextItalic(DATA.clickedCurrView.value)">
+                <template #icon>
+                  <div class="i-tabler-italic"></div>
+                </template>
+              </el-button>
+            </el-tooltip>
           </div>
-          <div class="ml-4">
+          <div class="ml-2">
+            <el-tooltip content="下划线" placement="bottom">
+              <el-button text bg @click="SERVICE.changeTextUnderline(DATA.clickedCurrView.value)">
+                <template #icon>
+                  <div class="i-tabler-underline"></div>
+                </template>
+              </el-button>
+            </el-tooltip>
+          </div>
+          <div class="ml-2">
             <el-color-picker
               @change="value => SERVICE.changeTextColor(DATA.clickedCurrView.value, value)"
-              v-model="DATA.selectColor.value" />
+              v-model="DATA.textColor.value" />
+          </div>
+          <div class="ml-2">
+            <el-tooltip content="字号(px)" placement="bottom">
+              <el-input-number
+                v-model="DATA.textSize.value"
+                :min="14"
+                :max="30"
+                controls-position="right"
+                @change="value => SERVICE.changeTextSize(DATA.clickedCurrView.value, value)" />
+            </el-tooltip>
+          </div>
+        </div>
+        <div class="mx-4 left-divider"></div>
+        <div class="f-c-c">
+          <div>
+            <el-tooltip content="路由模式" placement="bottom">
+              <el-select
+                @change="SERVICE.changeLinkRouterConfig(DATA.linkRouterConfig, paper)"
+                v-model="DATA.linkRouterConfig.value.name"
+                placeholder="请选择路由模式">
+                <el-option
+                  v-for="item in DATA.linkRouterOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value" />
+              </el-select>
+            </el-tooltip>
+          </div>
+          <div class="ml-2">
+            <el-tooltip content="连接端样式" placement="bottom">
+              <el-select
+                @change="SERVICE.changeConnectorConfig(DATA.linkConnectorConfig, paper)"
+                v-model="DATA.linkConnectorConfig.value.name"
+                placeholder="请选择连接端样式">
+                <el-option
+                  v-for="item in DATA.linkConnectorOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value" />
+              </el-select>
+            </el-tooltip>
           </div>
         </div>
       </div>
@@ -147,5 +183,13 @@ SERVICE.watchLinkRouterConfig(DATA.linkRouterConfig, paper);
 
 .active [joint-selector="line"] {
   stroke: #4666e5;
+}
+</style>
+
+<style scoped lang="scss">
+.left-divider {
+  height: 20px;
+  width: 0;
+  border-left: 1px solid #dfe2e5;
 }
 </style>
