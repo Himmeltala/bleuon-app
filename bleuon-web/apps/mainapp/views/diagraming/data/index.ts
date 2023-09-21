@@ -193,3 +193,5 @@ export const shapeStrokeWidthOptions = [
 export const shapeStrokeWidth = ref(1.5);
 
 export const shapeBackground = ref("white");
+
+export const shapeBorderStyle = ref("solid");

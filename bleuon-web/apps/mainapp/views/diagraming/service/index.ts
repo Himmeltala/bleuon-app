@@ -58,38 +58,38 @@ export function uniLinkTools(view: any) {
 /**
  * 安装图形工具
  *
- * @param view
- * @param clickedLastView
+ * @param currView 当前点击的图形
+ * @param clickedLastView 保存当前点击的图形作为上一次点击的图形
  */
 export function insShapeTools(
-  view: dia.ElementView,
+  currView: dia.ElementView,
   clickedLastView: Ref<{ model: any; view: dia.ElementView }>
 ) {
   // @ts-ignore
-  const { model } = view;
+  const { model } = currView;
   if (clickedLastView.value.model) {
     clickedLastView.value.model.removeTools(clickedLastView.value.view);
   }
 
-  model.addTools(view);
+  model.addTools(currView);
 
   clickedLastView.value = {
     model,
-    view
+    view: currView
   };
 }
 
 /**
  * 卸载图形工具
  *
- * @param lastView
+ * @param clickedLastView 上一次点击的图形
  */
-export function uniShapeTools(lastView: Ref<{ model: any; view: dia.ElementView }>) {
-  if (lastView.value.model) {
-    lastView.value.model.removeTools(lastView.value.view);
+export function uniShapeTools(clickedLastView: Ref<{ model: any; view: dia.ElementView }>) {
+  if (clickedLastView.value.model) {
+    clickedLastView.value.model.removeTools(clickedLastView.value.view);
   }
 
-  lastView.value = {
+  clickedLastView.value = {
     model: null,
     view: null
   };
@@ -98,21 +98,21 @@ export function uniShapeTools(lastView: Ref<{ model: any; view: dia.ElementView 
 /**
  * 更新图形文本内容
  *
- * @param view
+ * @param currView 点击的图形
  * @param input
  */
-export function updateShapeText(view: dia.ElementView, input: HTMLInputElement) {
+export function updateShapeText(currView: dia.ElementView, input: HTMLInputElement) {
   // @ts-ignore
-  const { model } = view;
+  const { model } = currView;
   if (model?.updateText) {
-    model.updateText(view, input);
+    model.updateText(currView, input);
   }
 }
 
 /**
  * 修改点击的文本粗细
  *
- * @param currView
+ * @param currView 点击的图形
  */
 export function changeTextBold(currView: dia.ElementView) {
   // @ts-ignore
@@ -129,7 +129,7 @@ export function changeTextBold(currView: dia.ElementView) {
 /**
  * 修改点击的文本斜体
  *
- * @param currView
+ * @param currView 点击的图形
  */
 export function changeTextItalic(currView: dia.ElementView) {
   // @ts-ignore
@@ -146,7 +146,7 @@ export function changeTextItalic(currView: dia.ElementView) {
 /**
  * 修改点击的文本下划线
  *
- * @param currView
+ * @param currView 点击的图形
  */
 export function changeTextUnderline(currView: dia.ElementView) {
   // @ts-ignore
@@ -163,21 +163,19 @@ export function changeTextUnderline(currView: dia.ElementView) {
 /**
  * 修改点击的文本颜色
  *
- * @param currView
+ * @param currView 点击的图形
  * @param color
  */
-export function changeTextColor(currView: dia.ElementView, color: string, el: any) {
+export function changeTextColor(currView: dia.ElementView, color: string) {
   // @ts-ignore
   const model = currView.model;
   model.attr("label/fill", color);
-
-  closeColorPicker(el);
 }
 
 /**
  * 修改文本大小
  *
- * @param currView
+ * @param currView 点击的图形
  * @param size
  */
 export function changeTextSize(currView: dia.ElementView, size: number) {
@@ -189,7 +187,7 @@ export function changeTextSize(currView: dia.ElementView, size: number) {
 /**
  * 修改字体
  *
- * @param currView
+ * @param currView 点击的图形
  * @param family
  */
 export function changeTextFamily(currView: dia.ElementView, family: string) {
@@ -198,12 +196,47 @@ export function changeTextFamily(currView: dia.ElementView, family: string) {
   model.attr("label/fontFamily", family);
 }
 
+/**
+ * 修改边框粗细
+ *
+ * @param currView 点击的图形
+ * @param strokeWidth
+ */
 export function changeShapeStrokeWidth(currView: dia.ElementView, strokeWidth: number) {
   // @ts-ignore
   const model = currView.model;
   model.attr("body/strokeWidth", strokeWidth);
 }
 
+/**
+ * 修改边框样式
+ *
+ * @param currView 点击的图形
+ * @param style "solid" | "dashed" | "dotted" | "dashed-dotted"
+ */
+export function changeShapeBorderStyle(
+  currView: dia.ElementView,
+  style: "solid" | "dashed" | "dotted" | "dashed-dotted"
+) {
+  // @ts-ignore
+  const model = currView.model;
+  if (style === "solid") {
+    model.attr("body/strokeDasharray", "none");
+  } else if (style === "dashed") {
+    model.attr("body/strokeDasharray", "5,2");
+  } else if (style === "dotted") {
+    model.attr("body/strokeDasharray", "1,2");
+  } else {
+    model.attr("body/strokeDasharray", "5,2,1,2");
+  }
+}
+
+/**
+ * 修改图形背景颜色
+ *
+ * @param currView 点击的图形
+ * @param color rgb、十六进制、rgba
+ */
 export function changeShapeBackground(currView: dia.ElementView, color: string) {
   // @ts-ignore
   const model = currView.model;
@@ -213,7 +246,7 @@ export function changeShapeBackground(currView: dia.ElementView, color: string) 
 /**
  * 打开颜色选择器
  *
- * @param el
+ * @param el ref 模板引用
  */
 export function openColorPicker(el: any) {
   setTimeout(() => {
@@ -228,4 +261,14 @@ export function closeColorPicker(el: any) {
   setTimeout(() => {
     el.hide();
   }, 200);
+}
+
+/**
+ * 修改点击的文本颜色
+ *
+ * @param currView 点击的连线
+ * @param color rgb、十六进制、rgba
+ */
+export function changeLinkColor(currView: dia.ElementView, color: string) {
+  // @ts-ignore
 }
