@@ -166,10 +166,12 @@ export function changeTextUnderline(currView: dia.ElementView) {
  * @param currView
  * @param color
  */
-export function changeTextColor(currView: dia.ElementView, color: string) {
+export function changeTextColor(currView: dia.ElementView, color: string, el: any) {
   // @ts-ignore
   const model = currView.model;
   model.attr("label/fill", color);
+
+  closeColorPicker(el);
 }
 
 /**
@@ -206,4 +208,24 @@ export function changeShapeBackground(currView: dia.ElementView, color: string) 
   // @ts-ignore
   const model = currView.model;
   model.attr("body/fill", color);
+}
+
+/**
+ * 打开颜色选择器
+ *
+ * @param el
+ */
+export function openColorPicker(el: any) {
+  setTimeout(() => {
+    el.show();
+  }, 100);
+}
+
+/**
+ * 关闭颜色选择器
+ */
+export function closeColorPicker(el: any) {
+  setTimeout(() => {
+    el.hide();
+  }, 200);
 }

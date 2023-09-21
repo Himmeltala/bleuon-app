@@ -1,43 +1,41 @@
 import { PrimaryLink } from "./shapes/link";
 import { dia, shapes } from "jointjs";
 
-export function initJointJs(
-  config: {
-    isPreventLinkFromInputPorts: boolean;
-    isPreventLinkFromOutputToInputWithinOneElement: boolean;
-    isPreventLinkToOutputPorts: boolean;
-  } = {
-    isPreventLinkFromInputPorts: false,
-    isPreventLinkFromOutputToInputWithinOneElement: true,
-    isPreventLinkToOutputPorts: false
-  }
-) {
+export function initJointJs(config: {
+  el: string;
+  backgroundColor: string;
+  height: string;
+  width: string;
+  isPreventLinkFromInputPorts?: boolean;
+  isPreventLinkFromOutputToInputWithinOneElement?: boolean;
+  isPreventLinkToOutputPorts?: boolean;
+}) {
   const namespace = shapes;
   const graph = new dia.Graph({}, { cellNamespace: namespace });
 
   const paper = new dia.Paper({
-    el: document.getElementById("bleu__diagraming-content"),
+    el: document.getElementById(config.el),
     model: graph,
-    height: "85vh",
-    width: "85vw",
+    height: config.height,
+    width: config.width,
     gridSize: 10,
     drawGrid: true,
     background: {
-      color: "#F3F7F6"
+      color: config.backgroundColor
     },
     cellViewNamespace: namespace,
     defaultLink: () => new PrimaryLink(),
     defaultConnectionPoint: { name: "boundary" },
     validateConnection: function (cellViewS, magnetS, cellViewT, magnetT, end, linkView) {
-      if (config?.isPreventLinkFromInputPorts) {
+      if (config?.isPreventLinkFromInputPorts || false) {
         if (magnetS && magnetS.getAttribute("port-group") === "in") return false;
       }
 
-      if (config?.isPreventLinkFromOutputToInputWithinOneElement) {
+      if (config?.isPreventLinkFromOutputToInputWithinOneElement || true) {
         if (cellViewS === cellViewT) return false;
       }
 
-      if (config?.isPreventLinkToOutputPorts) {
+      if (config?.isPreventLinkToOutputPorts || false) {
         return magnetT && magnetT.getAttribute("port-group") === "in";
       }
 
