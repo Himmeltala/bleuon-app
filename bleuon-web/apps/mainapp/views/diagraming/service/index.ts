@@ -1,4 +1,6 @@
 import { dia, createPrimaryRectangle } from "@mainapp/lib";
+import { PRIMARY_LINK } from "@mainapp/lib/constants/key-vals";
+import { getShpeType } from "./utils";
 
 /**
  * 在创建图形时还会有其他更多的业务处理
@@ -32,26 +34,47 @@ export function changeConnectorConfig(config: Ref<any>, paper: dia.Paper) {
 /**
  * 安装 Link 工具
  *
- * @param view
+ * @param currView 当前点击的 Link
  */
-export function insLinkTools(view: any) {
-  // @ts-ignore
-  const { model } = view;
-  if (model?.addTools) {
-    model.addTools(view);
+export function installLinkTools(
+  currView: dia.LinkView,
+  clickedLastView: Ref<{ model: any; view: dia.LinkView }>
+) {
+  try {
+    if (clickedLastView.value.model) {
+      clickedLastView.value.model.removeTools(clickedLastView.value.view);
+    }
+
+    // @ts-ignore
+    currView.model.addTools(currView);
+
+    clickedLastView.value = {
+      // @ts-ignore
+      model: currView.model,
+      view: currView
+    };
+  } catch (e) {
+    console.error("clickedLastView 不存在，是否选中图形？", e);
   }
 }
 
 /**
  * 卸载 Link 工具
  *
- * @param view
+ * @param clickedLastView 上一次点击的 Link
  */
-export function uniLinkTools(view: any) {
-  // @ts-ignore
-  const { model } = view;
-  if (model?.removeTools) {
-    model.removeTools(view);
+export function uninstallLinkTools(clickedLastView: Ref<{ model: any; view: dia.ElementView }>) {
+  try {
+    if (clickedLastView.value.model) {
+      clickedLastView.value.model.removeTools(clickedLastView.value.view);
+    }
+
+    clickedLastView.value = {
+      model: null,
+      view: null
+    };
+  } catch (e) {
+    console.error("clickedLastView 不存在，是否选中图形？", e);
   }
 }
 
@@ -61,22 +84,26 @@ export function uniLinkTools(view: any) {
  * @param currView 当前点击的图形
  * @param clickedLastView 保存当前点击的图形作为上一次点击的图形
  */
-export function insShapeTools(
+export function installShapeTools(
   currView: dia.ElementView,
   clickedLastView: Ref<{ model: any; view: dia.ElementView }>
 ) {
-  // @ts-ignore
-  const { model } = currView;
-  if (clickedLastView.value.model) {
-    clickedLastView.value.model.removeTools(clickedLastView.value.view);
+  try {
+    if (clickedLastView.value.model) {
+      clickedLastView.value.model.removeTools(clickedLastView.value.view);
+    }
+
+    // @ts-ignore
+    currView.model.addTools(currView);
+
+    clickedLastView.value = {
+      // @ts-ignore
+      model: currView.model,
+      view: currView
+    };
+  } catch (e) {
+    console.error("clickedLastView 不存在，是否选中图形？", e);
   }
-
-  model.addTools(currView);
-
-  clickedLastView.value = {
-    model,
-    view: currView
-  };
 }
 
 /**
@@ -84,15 +111,19 @@ export function insShapeTools(
  *
  * @param clickedLastView 上一次点击的图形
  */
-export function uniShapeTools(clickedLastView: Ref<{ model: any; view: dia.ElementView }>) {
-  if (clickedLastView.value.model) {
-    clickedLastView.value.model.removeTools(clickedLastView.value.view);
-  }
+export function uninstallShapeTools(clickedLastView: Ref<{ model: any; view: dia.ElementView }>) {
+  try {
+    if (clickedLastView.value.model) {
+      clickedLastView.value.model.removeTools(clickedLastView.value.view);
+    }
 
-  clickedLastView.value = {
-    model: null,
-    view: null
-  };
+    clickedLastView.value = {
+      model: null,
+      view: null
+    };
+  } catch (e) {
+    console.error("clickedLastView 不存在，是否选中图形？", e);
+  }
 }
 
 /**
@@ -110,7 +141,7 @@ export function updateShapeText(currView: dia.ElementView, input: HTMLInputEleme
 }
 
 /**
- * 修改点击的文本粗细
+ * 修改文本粗细
  *
  * @param currView 点击的图形
  */
@@ -127,7 +158,7 @@ export function changeTextBold(currView: dia.ElementView) {
 }
 
 /**
- * 修改点击的文本斜体
+ * 修改文本斜体
  *
  * @param currView 点击的图形
  */
@@ -144,7 +175,7 @@ export function changeTextItalic(currView: dia.ElementView) {
 }
 
 /**
- * 修改点击的文本下划线
+ * 修改文本下划线
  *
  * @param currView 点击的图形
  */
@@ -161,7 +192,7 @@ export function changeTextUnderline(currView: dia.ElementView) {
 }
 
 /**
- * 修改点击的文本颜色
+ * 修改文本颜色
  *
  * @param currView 点击的图形
  * @param color
@@ -173,7 +204,7 @@ export function changeTextColor(currView: dia.ElementView, color: string) {
 }
 
 /**
- * 修改文本大小
+ * 修改字号
  *
  * @param currView 点击的图形
  * @param size
@@ -197,7 +228,7 @@ export function changeTextFamily(currView: dia.ElementView, family: string) {
 }
 
 /**
- * 修改边框粗细
+ * 修改连线粗细
  *
  * @param currView 点击的图形
  * @param strokeWidth
@@ -205,11 +236,13 @@ export function changeTextFamily(currView: dia.ElementView, family: string) {
 export function changeShapeStrokeWidth(currView: dia.ElementView, strokeWidth: number) {
   // @ts-ignore
   const model = currView.model;
-  model.attr("body/strokeWidth", strokeWidth);
+
+  const attrKey = getShpeType(model.attributes.type, "strokeWidth");
+  model.attr(attrKey, strokeWidth);
 }
 
 /**
- * 修改边框样式
+ * 修改连线样式
  *
  * @param currView 点击的图形
  * @param style "solid" | "dashed" | "dotted" | "dashed-dotted"
@@ -220,15 +253,21 @@ export function changeShapeBorderStyle(
 ) {
   // @ts-ignore
   const model = currView.model;
-  if (style === "solid") {
-    model.attr("body/strokeDasharray", "none");
-  } else if (style === "dashed") {
-    model.attr("body/strokeDasharray", "5,2");
+  const attrKey = getShpeType(model.attributes.type, "strokeDasharray");
+
+  let value = "none";
+
+  if (style === "dashed-dotted") {
+    value = "5,2,1,2";
   } else if (style === "dotted") {
-    model.attr("body/strokeDasharray", "1,2");
+    value = "1,2";
+  } else if (style === "dashed") {
+    value = "5,2";
   } else {
-    model.attr("body/strokeDasharray", "5,2,1,2");
+    value = "none";
   }
+
+  model.attr(attrKey, value);
 }
 
 /**
@@ -264,11 +303,15 @@ export function closeColorPicker(el: any) {
 }
 
 /**
- * 修改点击的文本颜色
+ * 修改 Link 色
  *
  * @param currView 点击的连线
  * @param color rgb、十六进制、rgba
  */
 export function changeLinkColor(currView: dia.ElementView, color: string) {
   // @ts-ignore
+  const model = currView.model;
+
+  const attrKey = getShpeType(model.attributes.type, "stroke");
+  model.attr(attrKey, color);
 }

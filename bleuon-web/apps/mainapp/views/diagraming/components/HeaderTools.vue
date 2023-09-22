@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { dia } from "@mainapp/lib";
-import * as Data from "./data";
-import * as Service from "./service";
+import * as Data from "../data";
+import * as Service from "../service";
 
 defineProps({
   paper: {
@@ -97,12 +97,12 @@ const shapeBackgroundColorPickerRef = ref();
       <div class="tools__title">编辑图形样式</div>
       <div class="tools__items f-c-c">
         <div class="border-bold-tool">
-          <el-tooltip content="边框粗细" placement="bottom">
+          <el-tooltip content="连线粗细" placement="bottom">
             <el-select
               style="width: 85px"
               @change="value => Service.changeShapeStrokeWidth(Data.clickedCurrView.value, value)"
               v-model="Data.shapeStrokeWidth.value"
-              placeholder="请选择边框粗细">
+              placeholder="请选择连线粗细">
               <el-option
                 v-for="item in Data.shapeStrokeWidthOptions"
                 :key="item.value"
@@ -112,12 +112,12 @@ const shapeBackgroundColorPickerRef = ref();
           </el-tooltip>
         </div>
         <div class="border-style-tool ml-2">
-          <el-tooltip content="边框样式" placement="bottom">
+          <el-tooltip content="连线样式" placement="bottom">
             <el-select
               style="width: 130px"
               @change="value => Service.changeShapeBorderStyle(Data.clickedCurrView.value, value)"
               v-model="Data.shapeBorderStyle.value"
-              placeholder="请选择边框样式">
+              placeholder="请选择连线样式">
               <el-option label="实线" value="solid">
                 <img
                   class="object-cover w-100% h-100%"
@@ -156,12 +156,6 @@ const shapeBackgroundColorPickerRef = ref();
               v-model="Data.shapeBackground.value" />
           </div>
         </div>
-      </div>
-    </div>
-    <div class="mx-4 left-divider"></div>
-    <div class="tools__config">
-      <div class="tools__title">编辑连线样式</div>
-      <div class="tools__items f-c-c">
         <div class="link-color-tool ml-2">
           <el-tooltip content="连线颜色" placement="bottom">
             <el-button text bg @click="Service.openColorPicker(linkColorPickerRef)">

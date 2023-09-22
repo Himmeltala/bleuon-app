@@ -4,8 +4,7 @@ import "jointjs/css/layout.css";
 import "jointjs/css/themes/default.css";
 import * as Data from "./data";
 import * as Service from "./service";
-// components
-import HeaderTools from "./HeaderTools.vue";
+import HeaderTools from "./components/HeaderTools.vue";
 
 let paper: dia.Paper = null;
 let graph: dia.Graph = null;
@@ -27,23 +26,20 @@ onMounted(() => {
   paper.options.defaultRouter = Data.linkRouterConfig.value;
 
   paper.on({
-    "element:mouseenter": view => {},
-    "element:mouseleave": view => {},
     "element:pointerclick": view => {
       Data.clickedCurrView.value = view;
-      Service.insShapeTools(view, Data.clickedLastView);
+      Service.installShapeTools(view, Data.clickedLastView);
     },
     "element:pointerdblclick": view => {
       Service.updateShapeText(view, textInputElement.value);
     },
     "blank:pointerclick": view => {
-      Service.uniShapeTools(Data.clickedLastView);
+      Service.uninstallShapeTools(Data.clickedLastView);
+      Service.uninstallLinkTools(Data.clickedLastView);
     },
-    "link:mouseenter": view => {
-      Service.insLinkTools(view);
-    },
-    "link:mouseleave": view => {
-      Service.uniLinkTools(view);
+    "link:pointerclick": view => {
+      Data.clickedCurrView.value = view;
+      Service.installLinkTools(view, Data.clickedLastView);
     }
   });
 });
