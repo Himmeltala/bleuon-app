@@ -1,53 +1,18 @@
-import { shapes, linkTools, dia } from "jointjs";
+import { linkTools, dia } from "jointjs";
+import { BaseLink } from "./base";
 import { PRIMARY_LINK, SECONDARY_LINK } from "../constants/key-vals";
 
 /**
- * 基础 Link
+ * Primary Link
  */
-export const PrimaryLink = shapes.standard.Link.define(
-  PRIMARY_LINK,
-  {
-    router: { name: "manhattan" },
-    attrs: {
-      line: {
-        stroke: "#333333",
-        strokeWidth: 2
-      }
-    }
-  },
-  {
-    addTools(linkView: any) {
-      const tools = [
-        new linkTools.Vertices(),
-        new linkTools.Remove(),
-        new linkTools.SourceArrowhead(),
-        new linkTools.TargetArrowhead()
-      ];
-      linkView.addTools(
-        new dia.ToolsView({
-          name: "primary-tools",
-          tools: tools
-        })
-      );
-    },
-    removeTools(linkView: any) {
-      if (linkView.hasTools("primary-tools")) {
-        linkView.removeTools();
-      }
-    }
-  }
-);
+export const PrimaryLink = BaseLink.define(PRIMARY_LINK, {}, {});
 
-export const SecondaryLink = shapes.standard.Link.define(
+/**
+ * Secondary Link
+ */
+export const SecondaryLink = BaseLink.define(
   SECONDARY_LINK,
-  {
-    attrs: {
-      line: {
-        stroke: "#3c4260",
-        strokeWidth: 2
-      }
-    }
-  },
+  {},
   {
     addTools(linkView: dia.LinkView) {
       const tools = [
@@ -56,13 +21,13 @@ export const SecondaryLink = shapes.standard.Link.define(
       ];
       linkView.addTools(
         new dia.ToolsView({
-          name: "secondary-link",
+          name: "link-tools",
           tools: tools
         })
       );
     },
     removeTools(linkView: dia.LinkView) {
-      if (linkView.hasTools("secondary-link")) {
+      if (linkView.hasTools("link-tools")) {
         linkView.removeTools();
       }
     }

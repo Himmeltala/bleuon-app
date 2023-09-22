@@ -40,6 +40,9 @@ onMounted(() => {
     "link:pointerclick": view => {
       Data.clickedCurrView.value = view;
       Service.installLinkTools(view, Data.clickedLastView);
+    },
+    "link:pointerdblclick": view => {
+      Service.updateShapeText(view, textInputElement.value);
     }
   });
 });
@@ -57,7 +60,7 @@ onMounted(() => {
       </div>
       <div class="bleu__diagraming-body relative">
         <div id="bleu__diagraming-content"></div>
-        <div class="bleuon__diagraming-tools">
+        <div class="bleuon__diagraming-extra">
           <input
             ref="textInputElement"
             type="text"

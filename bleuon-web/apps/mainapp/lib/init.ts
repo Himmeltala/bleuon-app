@@ -23,19 +23,29 @@ export function initJointJs(config: {
     background: {
       color: config.backgroundColor
     },
+    snapLabels: true,
+    interactive: {
+      linkMove: false,
+      labelMove: true,
+      arrowheadMove: false,
+      vertexMove: false,
+      vertexAdd: false,
+      vertexRemove: false,
+      useLinkTools: false
+    },
     cellViewNamespace: namespace,
     defaultLink: () => new PrimaryLink(),
     defaultConnectionPoint: { name: "boundary" },
     validateConnection: function (cellViewS, magnetS, cellViewT, magnetT, end, linkView) {
-      if (config?.isPreventLinkFromInputPorts || false) {
+      if (config.isPreventLinkFromInputPorts || false) {
         if (magnetS && magnetS.getAttribute("port-group") === "in") return false;
       }
 
-      if (config?.isPreventLinkFromOutputToInputWithinOneElement || true) {
+      if (config.isPreventLinkFromOutputToInputWithinOneElement || true) {
         if (cellViewS === cellViewT) return false;
       }
 
-      if (config?.isPreventLinkToOutputPorts || false) {
+      if (config.isPreventLinkToOutputPorts || false) {
         return magnetT && magnetT.getAttribute("port-group") === "in";
       }
 

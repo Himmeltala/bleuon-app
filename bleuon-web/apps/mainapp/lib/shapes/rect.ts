@@ -3,9 +3,9 @@ import { BaseShape } from "./base";
 import { PRIMARY_RECTANGLE } from "../constants/key-vals";
 
 /**
- * 基础正方形
+ * Primary 矩形
  */
-const PrimaryRectangleShape = BaseShape.define(
+const PrimaryRectangle = BaseShape.define(
   PRIMARY_RECTANGLE,
   {},
   {
@@ -23,9 +23,20 @@ const PrimaryRectangleShape = BaseShape.define(
 );
 
 /**
- * 生成 ports 配置对象
+ * 创建 Primary 矩形
+ *
+ * @param graph joint.Graph 对象
+ * @param config 图形配置项
  */
-function generatePortsConfig() {
+export function createPrimaryRectangle(
+  graph: dia.Graph,
+  config?: {
+    x?: number;
+    y?: number;
+    width?: number;
+    height?: number;
+  }
+) {
   const port = {
     attrs: {
       body: {
@@ -46,27 +57,7 @@ function generatePortsConfig() {
   const leftPort = Object.assign({ position: { name: "left" } }, port);
   const rightPort = Object.assign({ position: { name: "right" } }, port);
 
-  return { topPort, bottomPort, leftPort, rightPort };
-}
-
-/**
- * 创建基础正方形
- *
- * @param graph joint.Graph 对象
- * @param config 图形配置项
- */
-export function createPrimaryRectangle(
-  graph: dia.Graph,
-  config?: {
-    x?: number;
-    y?: number;
-    width?: number;
-    height?: number;
-  }
-) {
-  const { topPort, bottomPort, leftPort, rightPort } = generatePortsConfig();
-
-  const primaryRectangle = new PrimaryRectangleShape({
+  const primaryRectangle = new PrimaryRectangle({
     position: { x: config?.x || 30, y: config?.y || 30 },
     ports: {
       groups: {

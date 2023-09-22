@@ -180,7 +180,7 @@ const shapeBackgroundColorPickerRef = ref();
         <div class="router-config-tool">
           <el-tooltip content="路由模式" placement="bottom">
             <el-select
-              style="width: 85px"
+              style="width: 90px"
               @change="Service.changeLinkRouterConfig(Data.linkRouterConfig, paper)"
               v-model="Data.linkRouterConfig.value.name"
               placeholder="请选择路由模式">
@@ -195,7 +195,7 @@ const shapeBackgroundColorPickerRef = ref();
         <div class="link-config-tool ml-2">
           <el-tooltip content="连接端样式" placement="bottom">
             <el-select
-              style="width: 85px"
+              style="width: 90px"
               @change="Service.changeConnectorConfig(Data.linkConnectorConfig, paper)"
               v-model="Data.linkConnectorConfig.value.name"
               placeholder="请选择连接端样式">

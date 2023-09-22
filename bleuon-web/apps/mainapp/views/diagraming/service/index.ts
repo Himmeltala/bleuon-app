@@ -1,5 +1,4 @@
 import { dia, createPrimaryRectangle } from "@mainapp/lib";
-import { PRIMARY_LINK } from "@mainapp/lib/constants/key-vals";
 import { getShpeType } from "./utils";
 
 /**
@@ -18,6 +17,7 @@ export function addPrimaryRectangle(graph: dia.Graph) {
  * @param paper
  */
 export function changeLinkRouterConfig(config: Ref<any>, paper: dia.Paper) {
+  if (!paper?.options?.defaultRouter) return;
   paper.options.defaultRouter = config.value;
 }
 
@@ -28,6 +28,7 @@ export function changeLinkRouterConfig(config: Ref<any>, paper: dia.Paper) {
  * @param paper
  */
 export function changeConnectorConfig(config: Ref<any>, paper: dia.Paper) {
+  if (!paper?.options?.defaultConnector) return;
   paper.options.defaultConnector = config.value;
 }
 
@@ -132,7 +133,7 @@ export function uninstallShapeTools(clickedLastView: Ref<{ model: any; view: dia
  * @param currView 点击的图形
  * @param input
  */
-export function updateShapeText(currView: dia.ElementView, input: HTMLInputElement) {
+export function updateShapeText(currView: dia.ElementView | dia.LinkView, input: HTMLInputElement) {
   // @ts-ignore
   const { model } = currView;
   if (model?.updateText) {
