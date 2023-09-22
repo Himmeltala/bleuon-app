@@ -11,7 +11,7 @@ const ResizeTool = elementTools.Control.extend({
       tagName: "rect",
       selector: "handle",
       attributes: {
-        cursor: "pointer",
+        cursor: "nwse-resize",
         width: 10,
         height: 10,
         x: -10,

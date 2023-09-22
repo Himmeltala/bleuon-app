@@ -9,7 +9,9 @@ import HeaderTools from "./components/HeaderTools.vue";
 let paper: dia.Paper = null;
 let graph: dia.Graph = null;
 
-const textInputElement = ref<HTMLInputElement>();
+const isClickedLink = ref(false);
+const isClickedElement = ref(false);
+const textInputRef = ref<HTMLInputElement>();
 
 onMounted(() => {
   const jointjs = initJointJs({
@@ -27,22 +29,28 @@ onMounted(() => {
 
   paper.on({
     "element:pointerclick": view => {
+      isClickedElement.value = true;
+      isClickedLink.value = false;
       Data.clickedCurrView.value = view;
       Service.installShapeTools(view, Data.clickedLastView);
     },
     "element:pointerdblclick": view => {
-      Service.updateShapeText(view, textInputElement.value);
+      Service.updateShapeText(view, textInputRef.value);
     },
     "blank:pointerclick": view => {
+      isClickedElement.value = false;
+      isClickedLink.value = false;
       Service.uninstallShapeTools(Data.clickedLastView);
       Service.uninstallLinkTools(Data.clickedLastView);
     },
     "link:pointerclick": view => {
+      isClickedLink.value = true;
+      isClickedElement.value = false;
       Data.clickedCurrView.value = view;
       Service.installLinkTools(view, Data.clickedLastView);
     },
     "link:pointerdblclick": view => {
-      Service.updateShapeText(view, textInputElement.value);
+      Service.updateShapeText(view, textInputRef.value);
     }
   });
 });
@@ -52,7 +60,11 @@ onMounted(() => {
   <div class="bleuon__diagraming-container">
     <div class="bleuon__diagraming-header bg-amber h-20vh">
       <div></div>
-      <HeaderTools :paper="paper" :graph="graph" />
+      <HeaderTools
+        :paper="paper"
+        :graph="graph"
+        :clicked-element="isClickedElement"
+        :clicked-link="isClickedLink" />
     </div>
     <div class="bleuon__diagraming-wrapper f-c-b">
       <div class="bleuon__diagraming-sidebar relative bg-blue w-15vw h-80vh">
@@ -61,10 +73,7 @@ onMounted(() => {
       <div class="bleu__diagraming-body relative">
         <div id="bleu__diagraming-content"></div>
         <div class="bleuon__diagraming-extra">
-          <input
-            ref="textInputElement"
-            type="text"
-            class="bleuon__diagraming-input absolute hidden" />
+          <input ref="textInputRef" type="text" class="bleuon__diagraming-input absolute hidden" />
         </div>
       </div>
     </div>

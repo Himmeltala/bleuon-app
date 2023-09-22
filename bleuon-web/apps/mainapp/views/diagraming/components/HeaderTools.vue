@@ -9,12 +9,20 @@ defineProps({
   },
   graph: {
     type: dia.Graph
+  },
+  clickedElement: {
+    type: Boolean,
+    default: false
+  },
+  clickedLink: {
+    type: Boolean,
+    default: false
   }
 });
 
 const textColorPickerRef = ref();
 const linkColorPickerRef = ref();
-const shapeBackgroundColorPickerRef = ref();
+const shapeBgColorPickerRef = ref();
 </script>
 
 <template>
@@ -25,6 +33,7 @@ const shapeBackgroundColorPickerRef = ref();
         <div class="font-tool">
           <el-tooltip content="字体" placement="bottom">
             <el-select
+              :disabled="!clickedElement && !clickedLink"
               style="width: 100px"
               @change="value => Service.changeTextFamily(Data.clickedCurrView.value, value)"
               v-model="Data.fontFamily.value"
@@ -39,7 +48,11 @@ const shapeBackgroundColorPickerRef = ref();
         </div>
         <div class="bold-tool ml-2">
           <el-tooltip content="加粗" placement="bottom">
-            <el-button text bg @click="Service.changeTextBold(Data.clickedCurrView.value)">
+            <el-button
+              :disabled="!clickedElement && !clickedLink"
+              text
+              bg
+              @click="Service.changeTextBold(Data.clickedCurrView.value)">
               <template #icon>
                 <div class="i-tabler-bold"></div>
               </template>
@@ -48,7 +61,11 @@ const shapeBackgroundColorPickerRef = ref();
         </div>
         <div class="italic-tool ml-2">
           <el-tooltip content="斜体" placement="bottom">
-            <el-button text bg @click="Service.changeTextItalic(Data.clickedCurrView.value)">
+            <el-button
+              :disabled="!clickedElement && !clickedLink"
+              text
+              bg
+              @click="Service.changeTextItalic(Data.clickedCurrView.value)">
               <template #icon>
                 <div class="i-tabler-italic"></div>
               </template>
@@ -57,7 +74,11 @@ const shapeBackgroundColorPickerRef = ref();
         </div>
         <div class="underline-tool ml-2">
           <el-tooltip content="下划线" placement="bottom">
-            <el-button text bg @click="Service.changeTextUnderline(Data.clickedCurrView.value)">
+            <el-button
+              :disabled="!clickedElement && !clickedLink"
+              text
+              bg
+              @click="Service.changeTextUnderline(Data.clickedCurrView.value)">
               <template #icon>
                 <div class="i-tabler-underline"></div>
               </template>
@@ -66,7 +87,11 @@ const shapeBackgroundColorPickerRef = ref();
         </div>
         <div class="font-color-tool ml-2">
           <el-tooltip content="字体颜色" placement="bottom">
-            <el-button text bg @click="Service.openColorPicker(textColorPickerRef)">
+            <el-button
+              :disabled="!clickedElement && !clickedLink"
+              text
+              bg
+              @click="Service.openColorPicker(textColorPickerRef)">
               <template #icon>
                 <div class="i-tabler-text-color"></div>
               </template>
@@ -82,6 +107,7 @@ const shapeBackgroundColorPickerRef = ref();
         <div class="font-size-tool ml-2">
           <el-tooltip content="字号(px)" placement="bottom">
             <el-input-number
+              :disabled="!clickedElement && !clickedLink"
               style="width: 85px"
               v-model="Data.textSize.value"
               :min="14"
@@ -99,6 +125,7 @@ const shapeBackgroundColorPickerRef = ref();
         <div class="border-bold-tool">
           <el-tooltip content="连线粗细" placement="bottom">
             <el-select
+              :disabled="!clickedElement && !clickedLink"
               style="width: 85px"
               @change="value => Service.changeShapeStrokeWidth(Data.clickedCurrView.value, value)"
               v-model="Data.shapeStrokeWidth.value"
@@ -114,6 +141,7 @@ const shapeBackgroundColorPickerRef = ref();
         <div class="border-style-tool ml-2">
           <el-tooltip content="连线样式" placement="bottom">
             <el-select
+              :disabled="!clickedElement && !clickedLink"
               style="width: 130px"
               @change="value => Service.changeShapeBorderStyle(Data.clickedCurrView.value, value)"
               v-model="Data.shapeBorderStyle.value"
@@ -143,7 +171,11 @@ const shapeBackgroundColorPickerRef = ref();
         </div>
         <div class="shape-bg-tool ml-2">
           <el-tooltip content="图形背景色" placement="bottom">
-            <el-button text bg @click="Service.openColorPicker(shapeBackgroundColorPickerRef)">
+            <el-button
+              :disabled="!clickedElement"
+              text
+              bg
+              @click="Service.openColorPicker(shapeBgColorPickerRef)">
               <template #icon>
                 <div class="i-tabler-paint"></div>
               </template>
@@ -151,14 +183,18 @@ const shapeBackgroundColorPickerRef = ref();
           </el-tooltip>
           <div class="hidden">
             <el-color-picker
-              ref="shapeBackgroundColorPickerRef"
+              ref="shapeBgColorPickerRef"
               @change="value => Service.changeShapeBackground(Data.clickedCurrView.value, value)"
               v-model="Data.shapeBackground.value" />
           </div>
         </div>
         <div class="link-color-tool ml-2">
           <el-tooltip content="连线颜色" placement="bottom">
-            <el-button text bg @click="Service.openColorPicker(linkColorPickerRef)">
+            <el-button
+              :disabled="!clickedElement && !clickedLink"
+              text
+              bg
+              @click="Service.openColorPicker(linkColorPickerRef)">
               <template #icon>
                 <div class="i-tabler-pencil-minus"></div>
               </template>
