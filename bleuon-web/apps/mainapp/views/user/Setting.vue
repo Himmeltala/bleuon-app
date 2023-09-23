@@ -1,4 +1,11 @@
 <script setup lang="ts">
+/**
+ * @description 设置
+ * @author 郑人滏 42020306
+ * @since 2023/8/23
+ * @link https://github.com/himmelbleu/bleuon-app
+ */
+
 import Header from "./components/Header.vue";
 
 const formData = reactive({

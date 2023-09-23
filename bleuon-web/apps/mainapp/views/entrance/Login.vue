@@ -1,4 +1,11 @@
 <script setup lang="ts">
+/**
+ * @description 登录页
+ * @author 郑人滏 42020306
+ * @since 2023/8/23
+ * @link https://github.com/himmelbleu/bleuon-app
+ */
+
 import AccountLogin from "./components/AccountLogin.vue";
 import EmailLogin from "./components/EmailLogin.vue";
 

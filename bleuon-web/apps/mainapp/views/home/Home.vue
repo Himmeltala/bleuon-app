@@ -1,4 +1,11 @@
 <script setup lang="ts">
+/**
+ * @description 工作台页
+ * @author 郑人滏 42020306
+ * @since 2023/8/23
+ * @link https://github.com/himmelbleu/bleuon-app
+ */
+
 import type { ActiveItem } from "./typings/home-typing";
 import Menu from "./components/Menu.vue";
 import Header from "./components/Header.vue";

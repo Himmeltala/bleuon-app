@@ -1,3 +1,10 @@
+/**
+ * @description 定义 link 图形
+ * @author 郑人滏 42020306
+ * @since 2023/9/16
+ * @link https://github.com/himmelbleu/bleuon-app
+ */
+
 import { linkTools, dia } from "jointjs";
 import { BaseLink } from "./base";
 import { PRIMARY_LINK, SECONDARY_LINK } from "../constants/key-vals";

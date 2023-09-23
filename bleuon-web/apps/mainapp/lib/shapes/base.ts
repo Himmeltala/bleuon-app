@@ -1,3 +1,10 @@
+/**
+ * @description 定义 jointjs 基础图形
+ * @author 郑人滏 42020306
+ * @since 2023/9/9
+ * @link https://github.com/himmelbleu/bleuon-app
+ */
+
 import { dia, shapes, elementTools, linkTools } from "jointjs";
 import { BASE_SHAPE, BASE_LINK } from "../constants/key-vals";
 
@@ -63,6 +70,7 @@ export const BaseShape = dia.Element.define(
         textVerticalAnchor: "middle",
         textAnchor: "middle",
         fill: "#333333",
+        fontWeight: "normal",
         fontSize: 18,
         fontFamily: "微软雅黑",
         refX: "50%",
@@ -137,8 +145,8 @@ export const BaseLink = shapes.standard.Link.define(
     updateText(linkView: dia.LinkView, textInput: HTMLInputElement) {
       // @ts-ignore
       const { model } = linkView;
-      const label0 = model.label(0);
-      const cellText = label0?.attrs.text.text || "";
+      const label = model.label(0);
+      const cellText = label?.attrs?.text?.text || "";
 
       const bbox = linkView.getBBox();
       const centerX = bbox.x + bbox.width / 2;

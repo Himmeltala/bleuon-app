@@ -1,4 +1,11 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+/**
+ * @description 欢迎页
+ * @author 郑人滏 42020306
+ * @since 2023/8/23
+ * @link https://github.com/himmelbleu/bleuon-app
+ */
+</script>
 
 <template>
   <div class="welcome">

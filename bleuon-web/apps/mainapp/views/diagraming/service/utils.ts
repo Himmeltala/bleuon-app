@@ -1,11 +1,15 @@
-export function getShpeType(type: string, attrKey: string) {
-  const lowerCaseType = type.toLowerCase();
+/**
+ * @description Diagraming 工具
+ * @author 郑人滏 42020306
+ * @since 2023/9/22
+ * @link https://github.com/himmelbleu/bleuon-app
+ */
 
-  if (lowerCaseType.includes("link")) {
+export function getLinkOrElementAttr(model: any, attrKey: string) {
+  if (model.isLink()) {
     attrKey = "line/" + attrKey;
-  } else if (lowerCaseType.includes("element")) {
+  } else {
     attrKey = "body/" + attrKey;
   }
-
   return attrKey;
 }

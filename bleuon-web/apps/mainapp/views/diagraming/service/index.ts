@@ -1,5 +1,12 @@
+/**
+ * @description Diagraming 业务层
+ * @author 郑人滏 42020306
+ * @since 2023/9/18
+ * @link https://github.com/himmelbleu/bleuon-app
+ */
+
 import { dia, createPrimaryRectangle } from "@mainapp/lib";
-import { getShpeType } from "./utils";
+import { getLinkOrElementAttr } from "./utils";
 
 /**
  * 在创建图形时还会有其他更多的业务处理
@@ -41,22 +48,18 @@ export function installLinkTools(
   currView: dia.LinkView,
   clickedLastView: Ref<{ model: any; view: dia.LinkView }>
 ) {
-  try {
-    if (clickedLastView.value.model) {
-      clickedLastView.value.model.removeTools(clickedLastView.value.view);
-    }
-
-    // @ts-ignore
-    currView.model.addTools(currView);
-
-    clickedLastView.value = {
-      // @ts-ignore
-      model: currView.model,
-      view: currView
-    };
-  } catch (e) {
-    console.error("clickedLastView 不存在，是否选中图形？", e);
+  if (clickedLastView.value.model) {
+    clickedLastView.value.model.removeTools(clickedLastView.value.view);
   }
+
+  // @ts-ignore
+  currView.model.addTools(currView);
+
+  clickedLastView.value = {
+    // @ts-ignore
+    model: currView.model,
+    view: currView
+  };
 }
 
 /**
@@ -65,18 +68,14 @@ export function installLinkTools(
  * @param clickedLastView 上一次点击的 Link
  */
 export function uninstallLinkTools(clickedLastView: Ref<{ model: any; view: dia.ElementView }>) {
-  try {
-    if (clickedLastView.value.model) {
-      clickedLastView.value.model.removeTools(clickedLastView.value.view);
-    }
-
-    clickedLastView.value = {
-      model: null,
-      view: null
-    };
-  } catch (e) {
-    console.error("clickedLastView 不存在，是否选中图形？", e);
+  if (clickedLastView.value.model) {
+    clickedLastView.value.model.removeTools(clickedLastView.value.view);
   }
+
+  clickedLastView.value = {
+    model: null,
+    view: null
+  };
 }
 
 /**
@@ -89,22 +88,18 @@ export function installShapeTools(
   currView: dia.ElementView,
   clickedLastView: Ref<{ model: any; view: dia.ElementView }>
 ) {
-  try {
-    if (clickedLastView.value.model) {
-      clickedLastView.value.model.removeTools(clickedLastView.value.view);
-    }
-
-    // @ts-ignore
-    currView.model.addTools(currView);
-
-    clickedLastView.value = {
-      // @ts-ignore
-      model: currView.model,
-      view: currView
-    };
-  } catch (e) {
-    console.error("clickedLastView 不存在，是否选中图形？", e);
+  if (clickedLastView.value.model) {
+    clickedLastView.value.model.removeTools(clickedLastView.value.view);
   }
+
+  // @ts-ignore
+  currView.model.addTools(currView);
+
+  clickedLastView.value = {
+    // @ts-ignore
+    model: currView.model,
+    view: currView
+  };
 }
 
 /**
@@ -113,25 +108,21 @@ export function installShapeTools(
  * @param clickedLastView 上一次点击的图形
  */
 export function uninstallShapeTools(clickedLastView: Ref<{ model: any; view: dia.ElementView }>) {
-  try {
-    if (clickedLastView.value.model) {
-      clickedLastView.value.model.removeTools(clickedLastView.value.view);
-    }
-
-    clickedLastView.value = {
-      model: null,
-      view: null
-    };
-  } catch (e) {
-    console.error("clickedLastView 不存在，是否选中图形？", e);
+  if (clickedLastView.value.model) {
+    clickedLastView.value.model.removeTools(clickedLastView.value.view);
   }
+
+  clickedLastView.value = {
+    model: null,
+    view: null
+  };
 }
 
 /**
  * 更新图形文本内容
  *
  * @param currView 点击的图形
- * @param input
+ * @param input 输入框 DOM 对象
  */
 export function updateShapeText(currView: dia.ElementView | dia.LinkView, input: HTMLInputElement) {
   // @ts-ignore
@@ -142,6 +133,16 @@ export function updateShapeText(currView: dia.ElementView | dia.LinkView, input:
 }
 
 /**
+ * 更新 Link 文本内容
+ *
+ * @param currView 点击的 Link
+ * @param input 输入框 DOM 对象
+ */
+export function updateLinkText(currView: dia.LinkView, input: HTMLInputElement) {
+  updateShapeText(currView, input);
+}
+
+/**
  * 修改文本粗细
  *
  * @param currView 点击的图形
@@ -149,12 +150,29 @@ export function updateShapeText(currView: dia.ElementView | dia.LinkView, input:
 export function changeTextBold(currView: dia.ElementView) {
   // @ts-ignore
   const model = currView.model;
-  const weight = model.attr("label/fontWeight");
+  const isLink = model.isLink();
+  let weight = "normal";
+
+  if (isLink) {
+    weight = model.label(0).attrs.text.fontWeight || "normal";
+  } else {
+    weight = model.attr("label/fontWeight");
+  }
 
   if (weight === "bold") {
-    model.attr("label/fontWeight", "normal");
+    weight = "normal";
+  } else weight = "bold";
+
+  if (isLink) {
+    model.label(0, {
+      attrs: {
+        text: {
+          fontWeight: weight
+        }
+      }
+    });
   } else {
-    model.attr("label/fontWeight", "bold");
+    model.attr("label/fontWeight", weight);
   }
 }
 
@@ -166,12 +184,30 @@ export function changeTextBold(currView: dia.ElementView) {
 export function changeTextItalic(currView: dia.ElementView) {
   // @ts-ignore
   const model = currView.model;
-  const style = model.attr("label/fontStyle");
+  const isLink = model.isLink();
+
+  let style = "normal";
+
+  if (isLink) {
+    style = model.label(0).attrs.text.fontStyle || "normal";
+  } else {
+    style = model.attr("label/fontStyle");
+  }
 
   if (style === "italic") {
-    model.attr("label/fontStyle", "normal");
+    style = "normal";
+  } else style = "italic";
+
+  if (isLink) {
+    model.label(0, {
+      attrs: {
+        text: {
+          fontStyle: style
+        }
+      }
+    });
   } else {
-    model.attr("label/fontStyle", "italic");
+    model.attr("label/fontStyle", style);
   }
 }
 
@@ -183,12 +219,30 @@ export function changeTextItalic(currView: dia.ElementView) {
 export function changeTextUnderline(currView: dia.ElementView) {
   // @ts-ignore
   const model = currView.model;
-  const style = model.attr("label/textDecoration");
+  const isLink = model.isLink();
+
+  let style = "normal";
+
+  if (isLink) {
+    style = model.label(0).attrs.text.textDecoration || "normal";
+  } else {
+    style = model.attr("label/textDecoration");
+  }
 
   if (style === "underline") {
-    model.attr("label/textDecoration", "normal");
+    style = "normal";
+  } else style = "underline";
+
+  if (isLink) {
+    model.label(0, {
+      attrs: {
+        text: {
+          textDecoration: style
+        }
+      }
+    });
   } else {
-    model.attr("label/textDecoration", "underline");
+    model.attr("label/textDecoration", style);
   }
 }
 
@@ -238,7 +292,7 @@ export function changeShapeStrokeWidth(currView: dia.ElementView, strokeWidth: n
   // @ts-ignore
   const model = currView.model;
 
-  const attrKey = getShpeType(model.attributes.type, "strokeWidth");
+  const attrKey = getLinkOrElementAttr(model, "strokeWidth");
   model.attr(attrKey, strokeWidth);
 }
 
@@ -254,21 +308,21 @@ export function changeShapeBorderStyle(
 ) {
   // @ts-ignore
   const model = currView.model;
-  const attrKey = getShpeType(model.attributes.type, "strokeDasharray");
+  const attrKey = getLinkOrElementAttr(model, "strokeDasharray");
 
-  let value = "none";
+  let lattice = "none";
 
   if (style === "dashed-dotted") {
-    value = "5,2,1,2";
+    lattice = "5,2,1,2";
   } else if (style === "dotted") {
-    value = "1,2";
+    lattice = "1,2";
   } else if (style === "dashed") {
-    value = "5,2";
+    lattice = "5,2";
   } else {
-    value = "none";
+    lattice = "none";
   }
 
-  model.attr(attrKey, value);
+  model.attr(attrKey, lattice);
 }
 
 /**
@@ -313,6 +367,6 @@ export function changeLinkColor(currView: dia.ElementView, color: string) {
   // @ts-ignore
   const model = currView.model;
 
-  const attrKey = getShpeType(model.attributes.type, "stroke");
+  const attrKey = getLinkOrElementAttr(model, "stroke");
   model.attr(attrKey, color);
 }

@@ -1,4 +1,11 @@
 <script setup lang="ts">
+/**
+ * @description 可以点击出菜单的头像组件
+ * @author 郑人滏 42020306
+ * @since 2023/8/23
+ * @link https://github.com/himmelbleu/bleuon-app
+ */
+
 import { USER_API } from "@mainapp/apis";
 
 const disabled = ref(false);

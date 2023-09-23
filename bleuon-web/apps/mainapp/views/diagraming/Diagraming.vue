@@ -1,4 +1,11 @@
 <script setup lang="ts">
+/**
+ * @description Diagraming 路由组件
+ * @author 郑人滏 42020306
+ * @since 2023/9/9
+ * @link https://github.com/himmelbleu/bleuon-app
+ */
+
 import { dia, initJointJs } from "@mainapp/lib";
 import "jointjs/css/layout.css";
 import "jointjs/css/themes/default.css";
@@ -50,7 +57,7 @@ onMounted(() => {
       Service.installLinkTools(view, Data.clickedLastView);
     },
     "link:pointerdblclick": view => {
-      Service.updateShapeText(view, textInputRef.value);
+      Service.updateLinkText(view, textInputRef.value);
     }
   });
 });
@@ -63,8 +70,8 @@ onMounted(() => {
       <HeaderTools
         :paper="paper"
         :graph="graph"
-        :clicked-element="isClickedElement"
-        :clicked-link="isClickedLink" />
+        :is-clicked-element="isClickedElement"
+        :is-clicked-link="isClickedLink" />
     </div>
     <div class="bleuon__diagraming-wrapper f-c-b">
       <div class="bleuon__diagraming-sidebar relative bg-blue w-15vw h-80vh">

@@ -1,4 +1,11 @@
 <script setup lang="ts">
+/**
+ * @description 历史记录
+ * @author 郑人滏 42020306
+ * @since 2023/8/23
+ * @link https://github.com/himmelbleu/bleuon-app
+ */
+
 import File from "./components/File.vue";
 import { USER_API } from "@mainapp/apis";
 

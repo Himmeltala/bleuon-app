@@ -1,4 +1,11 @@
 <script setup lang="ts">
+/**
+ * @description 注册页
+ * @author 郑人滏 42020306
+ * @since 2023/8/23
+ * @link https://github.com/himmelbleu/bleuon-app
+ */
+
 import AccountRegister from "./components/AccountRegister.vue";
 import EmailRegister from "./components/EmailRegister.vue";
 

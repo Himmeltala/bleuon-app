@@ -1,3 +1,10 @@
+/**
+ * @description 定义矩形
+ * @author 郑人滏 42020306
+ * @since 2023/9/9
+ * @link https://github.com/himmelbleu/bleuon-app
+ */
+
 import { dia } from "jointjs";
 import { BaseShape } from "./base";
 import { PRIMARY_RECTANGLE } from "../constants/key-vals";

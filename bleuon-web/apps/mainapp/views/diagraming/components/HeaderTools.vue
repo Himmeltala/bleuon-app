@@ -1,20 +1,29 @@
 <script setup lang="ts">
+/**
+ * @description Diagraming 头部工具
+ * @author 郑人滏 42020306
+ * @since 2023/9/21
+ * @link https://github.com/himmelbleu/bleuon-app
+ */
+
 import { dia } from "@mainapp/lib";
 import * as Data from "../data";
 import * as Service from "../service";
 
 defineProps({
   paper: {
-    type: dia.Paper
+    type: dia.Paper,
+    default: null
   },
   graph: {
-    type: dia.Graph
+    type: dia.Graph,
+    default: null
   },
-  clickedElement: {
+  isClickedElement: {
     type: Boolean,
     default: false
   },
-  clickedLink: {
+  isClickedLink: {
     type: Boolean,
     default: false
   }
@@ -33,7 +42,7 @@ const shapeBgColorPickerRef = ref();
         <div class="font-tool">
           <el-tooltip content="字体" placement="bottom">
             <el-select
-              :disabled="!clickedElement && !clickedLink"
+              :disabled="!isClickedElement && !isClickedLink"
               style="width: 100px"
               @change="value => Service.changeTextFamily(Data.clickedCurrView.value, value)"
               v-model="Data.fontFamily.value"
@@ -49,7 +58,7 @@ const shapeBgColorPickerRef = ref();
         <div class="bold-tool ml-2">
           <el-tooltip content="加粗" placement="bottom">
             <el-button
-              :disabled="!clickedElement && !clickedLink"
+              :disabled="!isClickedElement && !isClickedLink"
               text
               bg
               @click="Service.changeTextBold(Data.clickedCurrView.value)">
@@ -62,7 +71,7 @@ const shapeBgColorPickerRef = ref();
         <div class="italic-tool ml-2">
           <el-tooltip content="斜体" placement="bottom">
             <el-button
-              :disabled="!clickedElement && !clickedLink"
+              :disabled="!isClickedElement && !isClickedLink"
               text
               bg
               @click="Service.changeTextItalic(Data.clickedCurrView.value)">
@@ -75,7 +84,7 @@ const shapeBgColorPickerRef = ref();
         <div class="underline-tool ml-2">
           <el-tooltip content="下划线" placement="bottom">
             <el-button
-              :disabled="!clickedElement && !clickedLink"
+              :disabled="!isClickedElement && !isClickedLink"
               text
               bg
               @click="Service.changeTextUnderline(Data.clickedCurrView.value)">
@@ -88,7 +97,7 @@ const shapeBgColorPickerRef = ref();
         <div class="font-color-tool ml-2">
           <el-tooltip content="字体颜色" placement="bottom">
             <el-button
-              :disabled="!clickedElement && !clickedLink"
+              :disabled="!isClickedElement && !isClickedLink"
               text
               bg
               @click="Service.openColorPicker(textColorPickerRef)">
@@ -107,7 +116,7 @@ const shapeBgColorPickerRef = ref();
         <div class="font-size-tool ml-2">
           <el-tooltip content="字号(px)" placement="bottom">
             <el-input-number
-              :disabled="!clickedElement && !clickedLink"
+              :disabled="!isClickedElement && !isClickedLink"
               style="width: 85px"
               v-model="Data.textSize.value"
               :min="14"
@@ -125,7 +134,7 @@ const shapeBgColorPickerRef = ref();
         <div class="border-bold-tool">
           <el-tooltip content="连线粗细" placement="bottom">
             <el-select
-              :disabled="!clickedElement && !clickedLink"
+              :disabled="!isClickedElement && !isClickedLink"
               style="width: 85px"
               @change="value => Service.changeShapeStrokeWidth(Data.clickedCurrView.value, value)"
               v-model="Data.shapeStrokeWidth.value"
@@ -141,7 +150,7 @@ const shapeBgColorPickerRef = ref();
         <div class="border-style-tool ml-2">
           <el-tooltip content="连线样式" placement="bottom">
             <el-select
-              :disabled="!clickedElement && !clickedLink"
+              :disabled="!isClickedElement && !isClickedLink"
               style="width: 130px"
               @change="value => Service.changeShapeBorderStyle(Data.clickedCurrView.value, value)"
               v-model="Data.shapeBorderStyle.value"
@@ -172,7 +181,7 @@ const shapeBgColorPickerRef = ref();
         <div class="shape-bg-tool ml-2">
           <el-tooltip content="图形背景色" placement="bottom">
             <el-button
-              :disabled="!clickedElement"
+              :disabled="!isClickedElement"
               text
               bg
               @click="Service.openColorPicker(shapeBgColorPickerRef)">
@@ -191,7 +200,7 @@ const shapeBgColorPickerRef = ref();
         <div class="link-color-tool ml-2">
           <el-tooltip content="连线颜色" placement="bottom">
             <el-button
-              :disabled="!clickedElement && !clickedLink"
+              :disabled="!isClickedElement && !isClickedLink"
               text
               bg
               @click="Service.openColorPicker(linkColorPickerRef)">

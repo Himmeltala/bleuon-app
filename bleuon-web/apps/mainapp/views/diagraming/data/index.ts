@@ -1,3 +1,10 @@
+/**
+ * @description Diagraming 数据
+ * @author 郑人滏 42020306
+ * @since 2023/9/18
+ * @link https://github.com/himmelbleu/bleuon-app
+ */
+
 export const linkConnectorOptions = [
   {
     value: "straight",

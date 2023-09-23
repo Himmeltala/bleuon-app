@@ -1,4 +1,11 @@
 <script setup lang="ts">
+/**
+ * @description 找回账号
+ * @author 郑人滏 42020306
+ * @since 2023/8/23
+ * @link https://github.com/himmelbleu/bleuon-app
+ */
+
 import FindAccountVerifyCode from "./components/FindAccountVerifyCode.vue";
 import FindAccountRsetPassword from "./components/FindAccountResetPassword.vue";
 

@@ -1,4 +1,11 @@
 <script setup lang="ts">
+/**
+ * @description user 页面下的头部组件
+ * @author 郑人滏 42020306
+ * @since 2023/8/23
+ * @link https://github.com/himmelbleu/bleuon-app
+ */
+
 import MenuAvatar from "@mainapp/components/MenuAvatar.vue";
 
 const props = defineProps({
