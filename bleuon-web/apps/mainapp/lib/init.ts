@@ -8,9 +8,15 @@
 import { PrimaryLink } from "./shapes/link";
 import { dia, shapes } from "jointjs";
 
+/**
+ * 初始化 jointjs
+ *
+ * @param config 配置 jointjs
+ * @returns paper, graph
+ */
 export function initJointJs(config: {
   el: string;
-  backgroundColor: string;
+  bgColor: string;
   height: string;
   width: string;
   isPreventLinkFromInputPorts?: boolean;
@@ -28,9 +34,10 @@ export function initJointJs(config: {
     gridSize: 10,
     drawGrid: true,
     background: {
-      color: config.backgroundColor
+      color: config.bgColor
     },
     snapLabels: true,
+    snapLinks: { radius: 5 },
     interactive: {
       linkMove: false,
       labelMove: true,
@@ -48,7 +55,7 @@ export function initJointJs(config: {
         if (magnetS && magnetS.getAttribute("port-group") === "in") return false;
       }
 
-      if (config.isPreventLinkFromOutputToInputWithinOneElement || true) {
+      if (config.isPreventLinkFromOutputToInputWithinOneElement || false) {
         if (cellViewS === cellViewT) return false;
       }
 
@@ -57,10 +64,7 @@ export function initJointJs(config: {
       }
 
       return true;
-    },
-    markAvailable: true,
-    snapLinks: { radius: 5 },
-    efaultConnectionPoint: { name: "anchor" }
+    }
   });
 
   return {

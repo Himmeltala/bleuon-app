@@ -5,6 +5,9 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
+/**
+ * Link 两端样式下拉框
+ */
 export const linkConnectorOptions = [
   {
     value: "straight",
@@ -31,6 +34,13 @@ export const linkConnectorOptions = [
     label: "curve"
   }
 ];
+
+/**
+ * Link 两端连接配置
+ */
+export const linkConnectorConfig = ref({
+  name: "normal"
+});
 
 /**
  * Link 路由 name 下拉框
@@ -66,13 +76,6 @@ export const linkRouterConfig = ref({
 });
 
 /**
- * Link 两端连接配置
- */
-export const linkConnectorConfig = ref({
-  name: "normal"
-});
-
-/**
  * 点击的上一次图形 View，包含图形 View 对象和图形的 model 对象
  */
 export const clickedLastView = ref({
@@ -83,12 +86,12 @@ export const clickedLastView = ref({
 /**
  * 点击的当前图形 View
  */
-export const clickedCurrView = ref();
+export const clickedCurrView = ref(null);
 
 /**
  * 字体颜色
  */
-export const textColor = ref();
+export const textColor = ref("");
 
 /**
  * 字体大小
@@ -145,6 +148,7 @@ export const fontFamilyOptions = [
   }
 ];
 
+// 文本字体
 export const fontFamily = ref("微软雅黑");
 
 /**
@@ -197,8 +201,20 @@ export const shapeStrokeWidthOptions = [
   }
 ];
 
+// 图形 stroke 宽度
 export const shapeStrokeWidth = ref(1.5);
-
+// 图形背景颜色
 export const shapeBackground = ref("white");
-
+// 图形 stroke 样式
 export const shapeBorderStyle = ref("solid");
+
+// 定义 paper 缩放比例
+export const currentScale = ref(1);
+// 定义 paper 水平偏移量
+export const currentOffsetX = ref(0);
+// 定义 paper 垂直偏移量
+export const currentOffsetY = ref(0);
+// 是否点击了 Link 元素
+export const isClickedLink = ref(false);
+// 是否点击了 Element 元素
+export const isClickedElement = ref(false);

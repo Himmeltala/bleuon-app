@@ -7,47 +7,7 @@
 
 import { dia, shapes, elementTools, linkTools } from "jointjs";
 import { BASE_SHAPE, BASE_LINK } from "../constants/key-vals";
-
-/**
- * Shape 的扩大工具
- */
-// @ts-ignore
-const ResizeTool = elementTools.Control.extend({
-  children: [
-    {
-      tagName: "rect",
-      selector: "handle",
-      attributes: {
-        cursor: "nwse-resize",
-        width: 10,
-        height: 10,
-        x: -10,
-        y: -10
-      }
-    },
-    {
-      tagName: "rect",
-      selector: "extras",
-      attributes: {
-        "pointer-events": "none",
-        fill: "none",
-        stroke: "#33334F",
-        "stroke-dasharray": "2,4",
-        rx: 5,
-        ry: 5
-      }
-    }
-  ],
-  getPosition: function (view: any) {
-    const model = view.model;
-    const { width, height } = model.size();
-    return { x: width, y: height };
-  },
-  setPosition: function (view: any, coordinates: any) {
-    const model = view.model;
-    model.resize(Math.max(coordinates.x - 10, 1), Math.max(coordinates.y - 10, 1));
-  }
-});
+import { ResizeTool, RotateTool } from "../eletools";
 
 /**
  * 所有图形的基础
@@ -59,7 +19,7 @@ export const BaseShape = dia.Element.define(
       body: {
         width: "calc(w)",
         height: "calc(h)",
-        fill: "#FCFCFC",
+        fill: "#fcfcfc",
         stroke: "#333333",
         strokeWidth: 1.5,
         cursor: "grab",
@@ -107,19 +67,19 @@ export const BaseShape = dia.Element.define(
       textInput.focus();
     },
     addTools(elementView: dia.ElementView) {
+      const boundaryTool = new elementTools.Boundary();
+      const resizeTool = new ResizeTool();
+      const rotateTool = new RotateTool();
+
       elementView.addTools(
         new dia.ToolsView({
-          name: "resize-tools",
-          tools: [
-            new ResizeTool({
-              selector: "body"
-            })
-          ]
+          name: "shape-tools",
+          tools: [boundaryTool, resizeTool, rotateTool]
         })
       );
     },
     removeTools(elementView: dia.ElementView) {
-      if (elementView.hasTools("resize-tools")) {
+      if (elementView.hasTools("shape-tools")) {
         elementView.removeTools();
       }
     }
@@ -185,10 +145,10 @@ export const BaseLink = shapes.standard.Link.define(
     addTools(linkView: any) {
       const tools = [
         // new linkTools.Vertices(),
-        new linkTools.Remove(),
         new linkTools.SourceArrowhead(),
         new linkTools.TargetArrowhead()
       ];
+
       linkView.addTools(
         new dia.ToolsView({
           name: "link-tools",

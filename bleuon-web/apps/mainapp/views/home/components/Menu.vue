@@ -26,7 +26,7 @@ const disabled = ref(false);
 function createNewDiagram() {
   // 1. 生成随机的 id
   // 2. 将 id 以及其他基本信息发送给服务器，服务器创建这个实体存储数据库中
-  router.push("/diagraming/123");
+  router.push("/flowchat/123");
 }
 </script>
 

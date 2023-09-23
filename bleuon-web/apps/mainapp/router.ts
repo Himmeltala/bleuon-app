@@ -72,10 +72,10 @@ const router = createRouter({
       ]
     },
     {
-      path: "/diagraming/:id",
-      name: "auth-diagraming",
-      meta: { title: "画图" },
-      component: () => import("@mainapp/views/diagraming/Diagraming.vue")
+      path: "/flowchat/:id",
+      name: "auth-flowchat",
+      meta: { title: "流程图" },
+      component: () => import("@mainapp/views/diagraming/FlowChat.vue")
     }
   ],
   history: createWebHashHistory(),
