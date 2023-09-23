@@ -255,7 +255,19 @@ export function changeTextUnderline(currView: dia.ElementView) {
 export function changeTextColor(currView: dia.ElementView, color: string) {
   // @ts-ignore
   const model = currView.model;
-  model.attr("label/fill", color);
+  const isLink = model.isLink();
+
+  if (isLink) {
+    model.label(0, {
+      attrs: {
+        text: {
+          fill: color
+        }
+      }
+    });
+  } else {
+    model.attr("label/fill", color);
+  }
 }
 
 /**
@@ -267,7 +279,19 @@ export function changeTextColor(currView: dia.ElementView, color: string) {
 export function changeTextSize(currView: dia.ElementView, size: number) {
   // @ts-ignore
   const model = currView.model;
-  model.attr("label/fontSize", size);
+  const isLink = model.isLink();
+
+  if (isLink) {
+    model.label(0, {
+      attrs: {
+        text: {
+          fontSize: size
+        }
+      }
+    });
+  } else {
+    model.attr("label/fontSize", size);
+  }
 }
 
 /**
@@ -279,7 +303,19 @@ export function changeTextSize(currView: dia.ElementView, size: number) {
 export function changeTextFamily(currView: dia.ElementView, family: string) {
   // @ts-ignore
   const model = currView.model;
-  model.attr("label/fontFamily", family);
+  const isLink = model.isLink();
+
+  if (isLink) {
+    model.label(0, {
+      attrs: {
+        text: {
+          fontFamily: family
+        }
+      }
+    });
+  } else {
+    model.attr("label/fontFamily", family);
+  }
 }
 
 /**
