@@ -5,22 +5,31 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import { dia, Rect, Circle } from "@mainapp/lib";
+import { dia, Rect, Circle, Polygon } from "@mainapp/lib";
 
 /**
- * 创建 primary 矩形
+ * 创建流程
  *
  * @param graph
  */
-export function addPrimaryRectangle(graph: dia.Graph) {
+export function addFlow(graph: dia.Graph) {
   Rect.createPrimaryRectangle(graph, { x: 30, y: 30 });
 }
 
 /**
- * 创建 primary 圆形
+ * 创建判定
  *
  * @param graph
  */
-export function addPrimaryCircle(graph: dia.Graph) {
+export function addDecision(graph: dia.Graph) {
+  Polygon.createPrimaryPolygon(graph, { x: 30, y: 30 });
+}
+
+/**
+ * 创建页面内引用
+ *
+ * @param graph
+ */
+export function addOnPageReference(graph: dia.Graph) {
   Circle.createPrimaryCircle(graph, { x: 30, y: 30 });
 }

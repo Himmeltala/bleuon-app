@@ -1,19 +1,19 @@
 /**
- * @description 定义圆形
+ * @description 定义菱形
  * @author 郑人滏 42020306
  * @since 2023/9/24
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
 import { dia, shapes, elementTools } from "jointjs";
-import { CircleResizeTool, RotateTool } from "../eletools";
-import { PRIMARY_CIRCLE } from "../constants/key-vals";
+import { NormalResizeTool, RotateTool } from "../eletools";
+import { PRIMARY_POLYGON } from "../constants/key-vals";
 
 /**
  * Primary 圆形
  */
-const PrimaryCircle = shapes.standard.Ellipse.define(
-  PRIMARY_CIRCLE,
+const PrimaryPolygon = shapes.standard.Polygon.define(
+  PRIMARY_POLYGON,
   {
     attrs: {
       body: {
@@ -23,7 +23,8 @@ const PrimaryCircle = shapes.standard.Ellipse.define(
         stroke: "#333333",
         strokeWidth: 1.5,
         cursor: "grab",
-        "stroke-dasharray": "none"
+        "stroke-dasharray": "none",
+        refPoints: "0,10 10,0 20,10 10,20"
       },
       label: {
         text: "",
@@ -68,25 +69,25 @@ const PrimaryCircle = shapes.standard.Ellipse.define(
     },
     addTools(elementView: dia.ElementView) {
       const boundaryTool = new elementTools.Boundary();
-      const resizeTool = new CircleResizeTool();
+      const resizeTool = new NormalResizeTool();
       const rotateTool = new RotateTool();
 
       elementView.addTools(
         new dia.ToolsView({
-          name: "circle-tools",
+          name: "polygon-tools",
           tools: [boundaryTool, resizeTool, rotateTool]
         })
       );
     },
     removeTools(elementView: dia.ElementView) {
-      if (elementView.hasTools("circle-tools")) {
+      if (elementView.hasTools("polygon-tools")) {
         elementView.removeTools();
       }
     }
   }
 );
 
-export function createPrimaryCircle(
+export function createPrimaryPolygon(
   graph: dia.Graph,
   config?: {
     x?: number;
@@ -115,7 +116,7 @@ export function createPrimaryCircle(
   const leftPort = Object.assign({ position: { name: "left" } }, port);
   const rightPort = Object.assign({ position: { name: "right" } }, port);
 
-  const circle = new PrimaryCircle({
+  const polygon = new PrimaryPolygon({
     position: { x: config?.x || 30, y: config?.y || 30 },
     ports: {
       groups: {
@@ -127,8 +128,8 @@ export function createPrimaryCircle(
     }
   });
 
-  circle.resize(config?.width || 80, config?.height || 80);
-  circle.addPorts([{ group: "top" }, { group: "bottom" }, { group: "left" }, { group: "right" }]);
+  polygon.resize(config?.width || 80, config?.height || 80);
+  polygon.addPorts([{ group: "top" }, { group: "bottom" }, { group: "left" }, { group: "right" }]);
 
-  graph.addCell(circle);
+  graph.addCell(polygon);
 }

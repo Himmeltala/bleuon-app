@@ -6,7 +6,7 @@
  */
 
 import { dia, shapes, elementTools } from "jointjs";
-import { RectResizeTool, RotateTool } from "../eletools";
+import { NormalResizeTool, RotateTool } from "../eletools";
 import { PRIMARY_RECTANGLE } from "../constants/key-vals";
 
 /**
@@ -68,7 +68,7 @@ export const PrimaryRect = shapes.standard.Rectangle.define(
     },
     addTools(elementView: dia.ElementView) {
       const boundaryTool = new elementTools.Boundary();
-      const resizeTool = new RectResizeTool();
+      const resizeTool = new NormalResizeTool();
       const rotateTool = new RotateTool();
 
       elementView.addTools(

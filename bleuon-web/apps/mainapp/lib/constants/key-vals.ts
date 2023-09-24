@@ -8,6 +8,7 @@
 // element
 export const PRIMARY_RECTANGLE = "BleuOn-Element-Primary-Rectangle";
 export const PRIMARY_CIRCLE = "BleuOn-Element-Primary-Circle";
+export const PRIMARY_POLYGON = "BleuOn-Element-Primary-Polygon";
 
 // link
 export const BASE_LINK = "BleuOn-Link-BaseLink";

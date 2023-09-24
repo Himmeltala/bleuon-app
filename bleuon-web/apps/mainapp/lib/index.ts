@@ -10,5 +10,6 @@ export { initJointJs } from "./init";
 export * as Link from "./shapes/link";
 export * as Rect from "./shapes/rect";
 export * as Circle from "./shapes/circle";
+export * as Polygon from "./shapes/polygon";
 export * from "./constants/key-vals";
 export { dia } from "jointjs";

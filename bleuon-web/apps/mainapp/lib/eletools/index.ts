@@ -12,7 +12,7 @@ import { dia, elementTools } from "jointjs";
  *
  * @link https://resources.jointjs.com/docs/jointjs/v3.7/joint.html#elementTools.Control
  */
-export class RectResizeTool extends elementTools.Control {
+export class NormalResizeTool extends elementTools.Control {
   constructor() {
     super();
 
