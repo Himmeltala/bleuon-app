@@ -8,5 +8,4 @@
 // export * as LinkService from "./link-service";
 // export * as ElemService from "./elem-service";
 export * as CellService from "./cell-service";
-export * as CreatorService from "./creator-service";
 export * as ListenerService from "./listener-service";

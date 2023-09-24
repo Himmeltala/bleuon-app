@@ -61,14 +61,14 @@ const PrimaryPath = shapes.standard.Path.define(
  * @param graph
  * @param config
  */
-export function createPrimaryPath(
+export function create(
   graph: dia.Graph,
   config?: {
+    d: string;
     x?: number;
     y?: number;
     width?: number;
     height?: number;
-    refD?: string;
   }
 ) {
   const polygon = new PrimaryPath({
@@ -78,7 +78,7 @@ export function createPrimaryPath(
     },
     attrs: {
       body: {
-        refD: config?.refD || ""
+        refD: config?.d || ""
       }
     }
   });
