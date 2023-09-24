@@ -8,11 +8,11 @@
 import { dia, elementTools } from "jointjs";
 
 /**
- * Shape 缩放工具
+ * Rect 缩放工具
  *
  * @link https://resources.jointjs.com/docs/jointjs/v3.7/joint.html#elementTools.Control
  */
-export class ResizeTool extends elementTools.Control {
+export class RectResizeTool extends elementTools.Control {
   constructor() {
     super();
 
@@ -43,6 +43,45 @@ export class ResizeTool extends elementTools.Control {
     // @ts-ignore
     const model = view.model;
     model.resize(Math.max(coordinates.x - 10, 1), Math.max(coordinates.y - 10, 1));
+  }
+}
+
+/**
+ * Circle 缩放工具
+ *
+ * @link https://resources.jointjs.com/docs/jointjs/v3.7/joint.html#elementTools.Control
+ */
+export class CircleResizeTool extends elementTools.Control {
+  constructor() {
+    super();
+
+    this.children = [
+      {
+        tagName: "rect",
+        selector: "handle",
+        attributes: {
+          cursor: "nwse-resize",
+          width: 10,
+          height: 10,
+          x: 0,
+          y: 0,
+          fill: "#001DFF"
+        }
+      }
+    ];
+  }
+
+  protected getPosition(view: dia.ElementView): dia.Point {
+    // @ts-ignore
+    const model = view.model;
+    const { width, height } = model.size();
+    return { x: width, y: height };
+  }
+
+  protected setPosition(view: dia.ElementView, coordinates: dia.Point): void {
+    // @ts-ignore
+    const model = view.model;
+    model.resize(coordinates.x, coordinates.y);
   }
 }
 

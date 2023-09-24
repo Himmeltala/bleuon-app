@@ -10,9 +10,10 @@ import { dia, initJointJs } from "@mainapp/lib";
 import "jointjs/css/layout.css";
 import "jointjs/css/themes/default.css";
 import * as Data from "./data";
-import { ListenerService, CellService, CreatorService } from "./service";
+import { ListenerService, CellService } from "./service";
 import FlowChatHeaderTools from "./components/FlowChatHeaderTools.vue";
 import FlowChatFooterTools from "./components/FlowChatFooterTools.vue";
+import FlowChatSidebar from "./components/FlowChatSidebar.vue";
 
 const paper = shallowRef<dia.Paper>(null);
 const graph = shallowRef<dia.Graph>(null);
@@ -24,7 +25,7 @@ onMounted(() => {
     el: "bleuon__flowchat-content",
     width: "85vw",
     height: "75vh",
-    bgColor: "#F3F7F6"
+    bgColor: "#ffffff"
   });
 
   paper.value = jointjs.paper;
@@ -38,13 +39,13 @@ onMounted(() => {
       ListenerService.onElemClick(view);
     },
     "element:pointerdblclick": view => {
-      CellService.updateInnerText(view, textInputRef.value);
+      ListenerService.onDbClickCell(view, textInputRef.value);
     },
     "link:pointerclick": view => {
       ListenerService.onLinkClick(view);
     },
     "link:pointerdblclick": view => {
-      CellService.updateInnerText(view, textInputRef.value);
+      ListenerService.onDbClickCell(view, textInputRef.value);
     },
     "blank:pointerclick": evt => {
       ListenerService.onBlankClick();
@@ -54,13 +55,13 @@ onMounted(() => {
     }
   });
 
-  ListenerService.onDelShape();
+  ListenerService.onDelCell();
 });
 </script>
 
 <template>
   <div class="bleuon__flowchat-container">
-    <div class="bleuon__flowchat-header bg-amber h-20vh">
+    <div class="bleuon__flowchat-header border-#dfe2e5 border-b-1 border-b-solid bg-#f6f7f8 h-20vh">
       <div></div>
       <FlowChatHeaderTools
         :paper="paper"
@@ -69,9 +70,7 @@ onMounted(() => {
         :is-clicked-link="Data.isClickedLink.value" />
     </div>
     <div class="bleuon__flowchat-wrapper f-c-b">
-      <div class="bleuon__flowchat-sidebar relative bg-blue w-15vw h-80vh">
-        <el-button @click="CreatorService.addPrimaryRectangle(graph)">基础正方形</el-button>
-      </div>
+      <FlowChatSidebar class="w-15vw h-80vh" :paper="paper" :graph="graph" />
       <div class="bleuon__flowchat-body relative">
         <div id="bleuon__flowchat-content"></div>
         <FlowChatFooterTools class="w-100% h-5vh" :paper="paper" :graph="graph" />

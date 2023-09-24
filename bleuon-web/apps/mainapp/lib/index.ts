@@ -7,7 +7,8 @@
 
 export { initJointJs } from "./init";
 
-export * from "./shapes/link";
-export * from "./shapes/rect";
+export * as Link from "./shapes/link";
+export * as Rect from "./shapes/rect";
+export * as Circle from "./shapes/circle";
 export * from "./constants/key-vals";
 export { dia } from "jointjs";

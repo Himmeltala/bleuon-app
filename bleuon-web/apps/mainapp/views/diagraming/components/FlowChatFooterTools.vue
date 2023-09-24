@@ -35,7 +35,8 @@ function resetSlider() {
 </script>
 
 <template>
-  <div class="bleuon__flowchat-footer-tools f-c-e px-4">
+  <div
+    class="bleuon__flowchat-footer-tools border-#dfe2e5 border-t-1 border-t-solid bg-#f6f7f8 f-c-e px-4">
     <div class="scale-tool f-c-c">
       <div class="w-50 mr-4">
         <el-slider

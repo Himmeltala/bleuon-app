@@ -5,7 +5,7 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import { dia, createPrimaryRectangle } from "@mainapp/lib";
+import { dia, Rect, Circle } from "@mainapp/lib";
 
 /**
  * 创建 primary 矩形
@@ -13,5 +13,14 @@ import { dia, createPrimaryRectangle } from "@mainapp/lib";
  * @param graph
  */
 export function addPrimaryRectangle(graph: dia.Graph) {
-  createPrimaryRectangle(graph, { x: 30, y: 30 });
+  Rect.createPrimaryRectangle(graph, { x: 30, y: 30 });
+}
+
+/**
+ * 创建 primary 圆形
+ *
+ * @param graph
+ */
+export function addPrimaryCircle(graph: dia.Graph) {
+  Circle.createPrimaryCircle(graph, { x: 30, y: 30 });
 }

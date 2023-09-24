@@ -1,43 +1,20 @@
 /**
- * @description 定义矩形
+ * @description 定义圆形
  * @author 郑人滏 42020306
- * @since 2023/9/9
+ * @since 2023/9/24
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
 import { dia, shapes, elementTools } from "jointjs";
-import { RectResizeTool, RotateTool } from "../eletools";
-import { PRIMARY_RECTANGLE } from "../constants/key-vals";
+import { CircleResizeTool, RotateTool } from "../eletools";
+import { PRIMARY_CIRCLE } from "../constants/key-vals";
 
 /**
- * 所有图形的基础
+ * Primary 圆形
  */
-export const PrimaryRect = shapes.standard.Rectangle.define(
-  PRIMARY_RECTANGLE,
-  {
-    attrs: {
-      body: {
-        width: "calc(w)",
-        height: "calc(h)",
-        fill: "#fcfcfc",
-        stroke: "#333333",
-        strokeWidth: 1.5,
-        cursor: "grab",
-        "stroke-dasharray": "none"
-      },
-      label: {
-        text: "",
-        textVerticalAnchor: "middle",
-        textAnchor: "middle",
-        fill: "#333333",
-        fontWeight: "normal",
-        fontSize: 18,
-        fontFamily: "微软雅黑",
-        refX: "50%",
-        refY: "50%"
-      }
-    }
-  },
+const PrimaryCircle = shapes.standard.Ellipse.define(
+  PRIMARY_CIRCLE,
+  {},
   {
     updateText(elementView: dia.ElementView, textInput: HTMLInputElement) {
       // @ts-ignore
@@ -68,31 +45,25 @@ export const PrimaryRect = shapes.standard.Rectangle.define(
     },
     addTools(elementView: dia.ElementView) {
       const boundaryTool = new elementTools.Boundary();
-      const resizeTool = new RectResizeTool();
+      const resizeTool = new CircleResizeTool();
       const rotateTool = new RotateTool();
 
       elementView.addTools(
         new dia.ToolsView({
-          name: "rect-tools",
+          name: "circle-tools",
           tools: [boundaryTool, resizeTool, rotateTool]
         })
       );
     },
     removeTools(elementView: dia.ElementView) {
-      if (elementView.hasTools("rect-tools")) {
+      if (elementView.hasTools("circle-tools")) {
         elementView.removeTools();
       }
     }
   }
 );
 
-/**
- * 创建 Primary 矩形
- *
- * @param graph joint.Graph 对象
- * @param config 图形配置项
- */
-export function createPrimaryRectangle(
+export function createPrimaryCircle(
   graph: dia.Graph,
   config?: {
     x?: number;
@@ -121,7 +92,7 @@ export function createPrimaryRectangle(
   const leftPort = Object.assign({ position: { name: "left" } }, port);
   const rightPort = Object.assign({ position: { name: "right" } }, port);
 
-  const rect = new PrimaryRect({
+  const circle = new PrimaryCircle({
     position: { x: config?.x || 30, y: config?.y || 30 },
     ports: {
       groups: {
@@ -133,8 +104,8 @@ export function createPrimaryRectangle(
     }
   });
 
-  rect.resize(config?.width || 140, config?.height || 70);
-  rect.addPorts([{ group: "top" }, { group: "bottom" }, { group: "left" }, { group: "right" }]);
+  circle.resize(config?.width || 80, config?.height || 80);
+  circle.addPorts([{ group: "top" }, { group: "bottom" }, { group: "left" }, { group: "right" }]);
 
-  graph.addCell(rect);
+  graph.addCell(circle);
 }

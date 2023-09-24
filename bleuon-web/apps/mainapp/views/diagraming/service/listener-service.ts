@@ -179,7 +179,7 @@ export function onBlankMousewheel(evt: any, paper: dia.Paper) {
 /**
  * 监听当按下键盘 delete 或回退键时删除选中的元素
  */
-export function onDelShape() {
+export function onDelCell() {
   document.addEventListener("keydown", event => {
     if (event.key === "Backspace" || event.key === "Delete") {
       if (Data.clickedCurrView.value?.model) {
@@ -189,4 +189,20 @@ export function onDelShape() {
       }
     }
   });
+}
+
+/**
+ * 双击时
+ *
+ * @param currView
+ * @param input
+ */
+export function onDbClickCell(currView: dia.ElementView | dia.LinkView, input: HTMLInputElement) {
+  Data.clickedCurrView.value = null;
+
+  // @ts-ignore
+  const { model } = currView;
+  if (model?.updateText) {
+    model.updateText(currView, input);
+  }
 }

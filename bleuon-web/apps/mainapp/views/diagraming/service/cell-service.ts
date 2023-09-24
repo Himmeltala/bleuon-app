@@ -294,17 +294,3 @@ export function openColorPicker(el: any) {
     el.show();
   }, 100);
 }
-
-/**
- * 更新图形文本内容
- *
- * @param currView 点击的图形
- * @param input 输入框 DOM 对象
- */
-export function updateInnerText(currView: dia.ElementView | dia.LinkView, input: HTMLInputElement) {
-  // @ts-ignore
-  const { model } = currView;
-  if (model?.updateText) {
-    model.updateText(currView, input);
-  }
-}

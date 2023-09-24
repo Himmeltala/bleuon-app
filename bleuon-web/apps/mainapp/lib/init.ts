@@ -31,7 +31,7 @@ export function initJointJs(config: {
     model: graph,
     height: config.height,
     width: config.width,
-    gridSize: 10,
+    gridSize: 15,
     drawGrid: true,
     background: {
       color: config.bgColor
