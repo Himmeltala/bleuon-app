@@ -6,13 +6,12 @@
  */
 
 import { linkTools, dia, shapes } from "jointjs";
-import { BASE_LINK, PRIMARY_LINK, SECONDARY_LINK } from "../constants/key-vals";
 
 /**
- * 所有 Link 的基础
+ * Primary Link
  */
-export const BaseLink = shapes.standard.Link.define(
-  BASE_LINK,
+export const PrimaryLink = shapes.standard.Link.define(
+  "PrimaryLink",
   {
     router: { name: "manhattan" },
     attrs: {
@@ -24,7 +23,7 @@ export const BaseLink = shapes.standard.Link.define(
     }
   },
   {
-    updateText(linkView: dia.LinkView, textInput: HTMLInputElement) {
+    updateLabelText(linkView: dia.LinkView, textInput: HTMLInputElement) {
       // @ts-ignore
       const { model } = linkView;
       const label = model.label(0);
@@ -48,11 +47,7 @@ export const BaseLink = shapes.standard.Link.define(
 
           model.label(0, {
             position: 0.5,
-            attrs: {
-              text: {
-                text: newCellText
-              }
-            }
+            attrs: { text: { text: newCellText } }
           });
 
           textInput.style.display = "none";
@@ -79,38 +74,6 @@ export const BaseLink = shapes.standard.Link.define(
       );
     },
     removeTools(linkView: any) {
-      if (linkView.hasTools("link-tools")) {
-        linkView.removeTools();
-      }
-    }
-  }
-);
-
-/**
- * Primary Link
- */
-export const PrimaryLink = BaseLink.define(PRIMARY_LINK, {}, {});
-
-/**
- * Secondary Link
- */
-export const SecondaryLink = BaseLink.define(
-  SECONDARY_LINK,
-  {},
-  {
-    addTools(linkView: dia.LinkView) {
-      const tools = [
-        new linkTools.Vertices({ stopPropagation: false }),
-        new linkTools.Segments({ stopPropagation: false })
-      ];
-      linkView.addTools(
-        new dia.ToolsView({
-          name: "link-tools",
-          tools: tools
-        })
-      );
-    },
-    removeTools(linkView: dia.LinkView) {
       if (linkView.hasTools("link-tools")) {
         linkView.removeTools();
       }

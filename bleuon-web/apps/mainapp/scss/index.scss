@@ -31,3 +31,31 @@ body {
     display: none;
   }
 }
+
+/* 细小的滑动块 */
+.slim-slider {
+  &::-webkit-scrollbar {
+    width: 10px;
+    height: 7px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #b5b5b5;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #999;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border: 1px solid #fff;
+    border-radius: 6px;
+    background: #c9c9c9;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border: 2px solid #fff;
+    border-radius: 6px;
+    background-color: #c6c6c6;
+  }
+}

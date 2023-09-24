@@ -6,14 +6,13 @@
  */
 
 import { dia, shapes, elementTools } from "jointjs";
-import { NormalResizeTool, RotateTool } from "../eletools";
-import { PRIMARY_POLYGON } from "../constants/key-vals";
+import { NormalResizeTool, RotateTool, getPorts, updateLabelText } from "../eletools";
 
 /**
  * Primary 圆形
  */
 const PrimaryPolygon = shapes.standard.Polygon.define(
-  PRIMARY_POLYGON,
+  "PrimaryPolygon",
   {
     attrs: {
       body: {
@@ -40,33 +39,7 @@ const PrimaryPolygon = shapes.standard.Polygon.define(
     }
   },
   {
-    updateText(elementView: dia.ElementView, textInput: HTMLInputElement) {
-      // @ts-ignore
-      const { model } = elementView;
-      const { position, size } = model.attributes;
-
-      const cellText = model.attr("label/text");
-      textInput.value = cellText;
-
-      textInput.style.top = position.y + "px";
-      textInput.style.left = position.x + "px";
-      textInput.style.width = size.width + "px";
-      textInput.style.height = size.height + "px";
-      textInput.style.display = "block";
-
-      function handleKeydownEvent(event: any) {
-        if (event.key === "Enter") {
-          let newCellText = textInput.value;
-          model.attr("label/text", newCellText);
-          textInput.style.display = "none";
-          textInput.removeEventListener("keydown", handleKeydownEvent);
-        }
-      }
-
-      textInput.value = "";
-      textInput.addEventListener("keydown", handleKeydownEvent);
-      textInput.focus();
-    },
+    updateLabelText,
     addTools(elementView: dia.ElementView) {
       const boundaryTool = new elementTools.Boundary();
       const resizeTool = new NormalResizeTool();
@@ -87,6 +60,12 @@ const PrimaryPolygon = shapes.standard.Polygon.define(
   }
 );
 
+/**
+ * 创建基础 polygon
+ * 
+ * @param graph 
+ * @param config 
+ */
 export function createPrimaryPolygon(
   graph: dia.Graph,
   config?: {
@@ -96,39 +75,14 @@ export function createPrimaryPolygon(
     height?: number;
   }
 ) {
-  const port = {
-    attrs: {
-      body: {
-        magnet: true,
-        r: 5
-      }
-    },
-    markup: [
-      {
-        tagName: "circle",
-        selector: "body"
-      }
-    ]
-  };
-
-  const topPort = Object.assign({ position: { name: "top" } }, port);
-  const bottomPort = Object.assign({ position: { name: "bottom" } }, port);
-  const leftPort = Object.assign({ position: { name: "left" } }, port);
-  const rightPort = Object.assign({ position: { name: "right" } }, port);
-
   const polygon = new PrimaryPolygon({
     position: { x: config?.x || 30, y: config?.y || 30 },
     ports: {
-      groups: {
-        top: topPort,
-        bottom: bottomPort,
-        left: leftPort,
-        right: rightPort
-      }
+      groups: getPorts()
     }
   });
 
-  polygon.resize(config?.width || 80, config?.height || 80);
+  polygon.resize(config?.width || 100, config?.height || 80);
   polygon.addPorts([{ group: "top" }, { group: "bottom" }, { group: "left" }, { group: "right" }]);
 
   graph.addCell(polygon);

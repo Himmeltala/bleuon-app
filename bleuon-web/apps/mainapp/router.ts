@@ -72,10 +72,10 @@ const router = createRouter({
       ]
     },
     {
-      path: "/flowchat/:id",
+      path: "/flowchart/:id",
       name: "auth-flowchat",
       meta: { title: "流程图" },
-      component: () => import("@mainapp/views/diagraming/FlowChat.vue")
+      component: () => import("@mainapp/views/diagraming/Flowchart.vue")
     },
     {
       path: "/canvas/:id",

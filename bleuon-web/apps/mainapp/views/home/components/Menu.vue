@@ -26,12 +26,12 @@ const disabled = ref(false);
 function createNewDiagram() {
   // 1. 生成随机的 id
   // 2. 将 id 以及其他基本信息发送给服务器，服务器创建这个实体存储数据库中
-  router.push("/flowchat/123");
+  router.push("/flowchart/123");
 }
 </script>
 
 <template>
-  <div class="menu h-100vh flow-auto px-5 b-r-1 b-r-solid b-r-#e4e4e4 bg-white">
+  <div class="menu slim-slider h-100vh flow-auto px-5 b-r-1 b-r-solid b-r-#e4e4e4 bg-white">
     <div class="menu__header">
       <div class="mt-5">
         <img src="/bleuon-icon.png" class="h-15 w-40 object-cover" />

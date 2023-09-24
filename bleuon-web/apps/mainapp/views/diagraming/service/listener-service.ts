@@ -202,7 +202,7 @@ export function onDbClickCell(currView: dia.ElementView | dia.LinkView, input: H
 
   // @ts-ignore
   const { model } = currView;
-  if (model?.updateText) {
-    model.updateText(currView, input);
+  if (model?.updateLabelText) {
+    model.updateLabelText(currView, input);
   }
 }

@@ -119,3 +119,51 @@ export class RotateTool extends elementTools.Control {
     model.rotate(degrees);
   }
 }
+
+export function getPorts() {
+  const port = {
+    attrs: { body: { magnet: true, r: 5 } },
+    markup: [{ tagName: "circle", selector: "body" }]
+  };
+
+  const top = Object.assign({ position: { name: "top" } }, port);
+  const bottom = Object.assign({ position: { name: "bottom" } }, port);
+  const left = Object.assign({ position: { name: "left" } }, port);
+  const right = Object.assign({ position: { name: "right" } }, port);
+
+  return { top, bottom, left, right };
+}
+
+/**
+ * 更新 label 文本
+ *
+ * @param elementView
+ * @param textInput
+ */
+export function updateLabelText(elementView: dia.ElementView, textInput: HTMLInputElement) {
+  // @ts-ignore
+  const { model } = elementView;
+  const { position, size } = model.attributes;
+
+  const cellText = model.attr("label/text");
+  textInput.value = cellText;
+
+  textInput.style.top = position.y + "px";
+  textInput.style.left = position.x + "px";
+  textInput.style.width = size.width + "px";
+  textInput.style.height = size.height + "px";
+  textInput.style.display = "block";
+
+  function handleKeydownEvent(event: any) {
+    if (event.key === "Enter") {
+      let newCellText = textInput.value;
+      model.attr("label/text", newCellText);
+      textInput.style.display = "none";
+      textInput.removeEventListener("keydown", handleKeydownEvent);
+    }
+  }
+
+  textInput.value = "";
+  textInput.addEventListener("keydown", handleKeydownEvent);
+  textInput.focus();
+}
