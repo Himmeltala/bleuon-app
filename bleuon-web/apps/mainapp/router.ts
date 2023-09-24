@@ -10,63 +10,63 @@ import { createRouter, createWebHashHistory } from "vue-router";
 const router = createRouter({
   routes: [
     {
+      path: "/",
       name: "public-welcome",
       meta: { title: "欢迎" },
-      path: "/",
       component: () => import("@mainapp/views/Welcome.vue")
     },
     {
+      path: "/home",
       name: "auth-home",
       meta: { title: "首页" },
-      path: "/home",
       redirect: "/home/history",
       component: () => import("@mainapp/views/home/Home.vue"),
       children: [
         {
+          path: "history",
           name: "auth-history",
           meta: { title: "最近文件" },
-          path: "history",
           component: () => import("@mainapp/views/home/History.vue")
         },
         {
+          path: "diagrams",
           name: "auth-diagrams",
           meta: { title: "我的文件" },
-          path: "diagrams",
           component: () => import("@mainapp/views/home/Diagrams.vue")
         },
         {
+          path: "shares",
           name: "auth-shares",
           meta: { title: "我的分享" },
-          path: "shares",
           component: () => import("@mainapp/views/home/Shares.vue")
         },
         {
+          path: "stars",
           name: "auth-stars",
           meta: { title: "我的收藏" },
-          path: "stars",
           component: () => import("@mainapp/views/home/Stars.vue")
         }
       ]
     },
     {
+      path: "/entrance",
       name: "enter-entrance",
       meta: { title: "入口" },
-      path: "/entrance",
       component: () => import("@mainapp/views/entrance/Entrance.vue")
     },
     {
       path: "/u",
       children: [
         {
+          path: "profile/:uid",
           name: "public-profile",
           meta: { title: "个人空间" },
-          path: "profile/:uid",
           component: () => import("@mainapp/views/user/Profile.vue")
         },
         {
+          path: "setting",
           name: "auth-setting",
           meta: { title: "个人设置" },
-          path: "setting",
           component: () => import("@mainapp/views/user/Setting.vue")
         }
       ]
@@ -76,6 +76,18 @@ const router = createRouter({
       name: "auth-flowchat",
       meta: { title: "流程图" },
       component: () => import("@mainapp/views/diagraming/FlowChat.vue")
+    },
+    {
+      path: "/canvas/:id",
+      name: "auth-canvas",
+      meta: { title: "画布" },
+      component: () => import("@mainapp/views/diagraming/Canvas.vue")
+    },
+    {
+      path: "/mind/:id",
+      name: "auth-mindmapping",
+      meta: { title: "思维导图" },
+      component: () => import("@mainapp/views/diagraming/MindMapping.vue")
     }
   ],
   history: createWebHashHistory(),

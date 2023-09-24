@@ -201,20 +201,54 @@ export const shapeStrokeWidthOptions = [
   }
 ];
 
-// 图形 stroke 宽度
+/**
+ * 图形 stroke 宽度
+ */
 export const shapeStrokeWidth = ref(1.5);
-// 图形背景颜色
+
+/**
+ * 图形背景颜色
+ */
 export const shapeBackground = ref("white");
-// 图形 stroke 样式
+
+/**
+ * 图形 stroke 样式
+ */
 export const shapeBorderStyle = ref("solid");
 
-// 定义 paper 缩放比例
+/**
+ * 定义 paper 缩放比例
+ */
 export const currentScale = ref(1);
-// 定义 paper 水平偏移量
+
+/**
+ * 计算当前缩放的值，适应 slider 显示
+ */
+export const calcCurrentScale = computed({
+  get() {
+    return Number((currentScale.value * 100).toFixed(0));
+  },
+  set(value) {
+    currentScale.value = value / 100;
+  }
+});
+
+/**
+ * 定义 paper 水平偏移量
+ */
 export const currentOffsetX = ref(0);
-// 定义 paper 垂直偏移量
+
+/**
+ * 定义 paper 垂直偏移量
+ */
 export const currentOffsetY = ref(0);
-// 是否点击了 Link 元素
+
+/**
+ * 是否点击了 Link 元素
+ */
 export const isClickedLink = ref(false);
-// 是否点击了 Element 元素
+
+/**
+ * 是否点击了 Element 元素
+ */
 export const isClickedElement = ref(false);

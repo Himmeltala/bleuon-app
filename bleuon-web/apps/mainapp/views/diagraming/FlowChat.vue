@@ -11,10 +11,11 @@ import "jointjs/css/layout.css";
 import "jointjs/css/themes/default.css";
 import * as Data from "./data";
 import { ListenerService, CellService, CreatorService } from "./service";
-import HeaderTools from "./components/HeaderTools.vue";
+import FlowChatHeaderTools from "./components/FlowChatHeaderTools.vue";
+import FlowChatFooterTools from "./components/FlowChatFooterTools.vue";
 
-let paper: dia.Paper = null;
-let graph: dia.Graph = null;
+const paper = shallowRef<dia.Paper>(null);
+const graph = shallowRef<dia.Graph>(null);
 
 const textInputRef = ref<HTMLInputElement>();
 
@@ -22,17 +23,17 @@ onMounted(() => {
   const jointjs = initJointJs({
     el: "bleuon__flowchat-content",
     width: "85vw",
-    height: "80vh",
+    height: "75vh",
     bgColor: "#F3F7F6"
   });
 
-  paper = jointjs.paper;
-  graph = jointjs.graph;
+  paper.value = jointjs.paper;
+  graph.value = jointjs.graph;
 
-  paper.options.defaultConnector = Data.linkConnectorConfig.value;
-  paper.options.defaultRouter = Data.linkRouterConfig.value;
+  paper.value.options.defaultConnector = Data.linkConnectorConfig.value;
+  paper.value.options.defaultRouter = Data.linkRouterConfig.value;
 
-  paper.on({
+  paper.value.on({
     "element:pointerclick": view => {
       ListenerService.onElemClick(view);
     },
@@ -49,7 +50,7 @@ onMounted(() => {
       ListenerService.onBlankClick();
     },
     "blank:mousewheel": evt => {
-      ListenerService.onBlankMousewheel(evt, paper);
+      ListenerService.onBlankMousewheel(evt, paper.value);
     }
   });
 
@@ -61,7 +62,7 @@ onMounted(() => {
   <div class="bleuon__flowchat-container">
     <div class="bleuon__flowchat-header bg-amber h-20vh">
       <div></div>
-      <HeaderTools
+      <FlowChatHeaderTools
         :paper="paper"
         :graph="graph"
         :is-clicked-element="Data.isClickedElement.value"
@@ -73,6 +74,7 @@ onMounted(() => {
       </div>
       <div class="bleuon__flowchat-body relative">
         <div id="bleuon__flowchat-content"></div>
+        <FlowChatFooterTools class="w-100% h-5vh" :paper="paper" :graph="graph" />
         <div class="bleuon__flowchat-extra">
           <input ref="textInputRef" type="text" class="bleuon__flowchat-input absolute hidden" />
         </div>

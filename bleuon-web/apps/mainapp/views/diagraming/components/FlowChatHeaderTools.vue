@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /**
- * @description Diagraming 头部工具
+ * @description Flowchat 头部工具
  * @author 郑人滏 42020306
  * @since 2023/9/21
  * @link https://github.com/himmelbleu/bleuon-app
@@ -12,12 +12,10 @@ import { CellService } from "../service";
 
 defineProps({
   paper: {
-    type: dia.Paper,
-    default: null
+    type: dia.Paper
   },
   graph: {
-    type: dia.Graph,
-    default: null
+    type: dia.Graph
   },
   isClickedElement: {
     type: Boolean,
@@ -35,7 +33,7 @@ const shapeBgColorPickerRef = ref();
 </script>
 
 <template>
-  <div class="f-c-s">
+  <div class="bleuon__flowchat-header-tools f-c-s px-4 py-4">
     <div class="tools__text">
       <div class="tools__title">编辑图形文本</div>
       <div class="tools__items f-c-c">
