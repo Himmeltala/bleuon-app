@@ -23,8 +23,11 @@ defineProps({
 <template>
   <div
     class="bleuon__flowchart-sidebar slim-slider h-100vh flow-auto bg-#f6f7f8 border-#dfe2e5 border-r-1 border-r-solid relative px-4 py-4">
-    <CellsForBasic :paper="paper" :graph="graph" />
-    <CellsForFlowchart class="bg-#f6f7f8 border-#dfe2e5 border-t-1 border-t-solid pt-4" :paper="paper" :graph="graph" />
+    <CellsForBasic class="mb-4" :paper="paper" :graph="graph" />
+    <CellsForFlowchart
+      class="bg-#f6f7f8 border-#dfe2e5 border-t-1 border-t-solid pt-4"
+      :paper="paper"
+      :graph="graph" />
   </div>
 </template>
 

@@ -26,8 +26,8 @@ defineProps({
       <SVG
         :graph="graph"
         content="流程"
-        view-box="-0.3 -0.3 13.6 7.6"
-        d="M 0 0 L 13 0 L 13 7 L 0 7 Z"></SVG>
+        view-box="-0.3 -0.3 13.6 8.6"
+        d="M 0 0 H 13 V 8 H 0 Z"></SVG>
       <SVG
         :graph="graph"
         content="判定"
