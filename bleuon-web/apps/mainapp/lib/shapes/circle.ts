@@ -6,7 +6,7 @@
  */
 
 import { dia, shapes, elementTools } from "jointjs";
-import { CircleResizeTool, RotateTool, getPorts, updateLabelText } from "../eletools";
+import { CircleResizeTool, RotateTool, getPorts, updateLabelText } from "../tools";
 
 /**
  * Primary 圆形
@@ -61,9 +61,9 @@ const PrimaryCircle = shapes.standard.Ellipse.define(
 
 /**
  * 创建基础 circle
- * 
- * @param graph 
- * @param config 
+ *
+ * @param graph
+ * @param config
  */
 export function createPrimaryCircle(
   graph: dia.Graph,

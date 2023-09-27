@@ -5,7 +5,7 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 import { dia, shapes, elementTools } from "jointjs";
-import { NormalResizeTool, RotateTool, getPorts, updateLabelText } from "../eletools";
+import { NormalResizeTool, RotateTool, getPorts, updateLabelText } from "../tools";
 
 const PrimaryPath = shapes.standard.Path.define(
   "PrimaryPath",
@@ -35,6 +35,17 @@ const PrimaryPath = shapes.standard.Path.define(
   },
   {
     updateLabelText,
+    setPorts(view: dia.ElementView) {
+      view.model.ports = {
+        groups: getPorts()
+      };
+      const e = view.model.addPorts([
+        { group: "top" },
+        { group: "bottom" },
+        { group: "left" },
+        { group: "right" }
+      ]);
+    },
     addTools(elementView: dia.ElementView) {
       const boundaryTool = new elementTools.Boundary();
       const resizeTool = new NormalResizeTool();
@@ -74,17 +85,22 @@ export function create(
   const keys = Object.keys(config.attrs || {});
   const markup = keys.map(v => ({ tagName: "path", selector: `${v}` }));
 
-  const polygon = new PrimaryPath({
+  const path = new PrimaryPath({
     position: { x: config.x || 30, y: config.y || 30 },
     ports: {
       groups: getPorts()
     },
     attrs: { ...(config.attrs || {}) },
-    markup: [...markup]
+    markup: [
+      ...markup,
+      {
+        tagName: "text",
+        selector: "label"
+      }
+    ]
   });
 
-  polygon.resize(config.width || 140, config.height || 70);
-  polygon.addPorts([{ group: "top" }, { group: "bottom" }, { group: "left" }, { group: "right" }]);
+  path.resize(config.width || 140, config.height || 70);
 
-  graph.addCell(polygon);
+  graph.addCell(path);
 }

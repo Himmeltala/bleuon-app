@@ -40,7 +40,7 @@ request.interceptors.response.use(
       setTimeout(location.reload, 500);
     }
 
-    if (data.code === 200 && !notInterceptUrl(data, { fuzzy: ["query"] })) {
+    if (data.code === 200 && !notInterceptUrl(config.config, { fuzzy: ["query"] })) {
       ElMessage.success(data.message);
     }
 

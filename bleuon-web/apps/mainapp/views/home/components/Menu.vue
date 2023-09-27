@@ -52,7 +52,7 @@ function createNewDiagram() {
             </div>
             <div class="item">
               <div></div>
-              <div>UML</div>
+              <div>画布</div>
             </div>
           </div>
         </div>

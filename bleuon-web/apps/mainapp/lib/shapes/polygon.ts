@@ -6,7 +6,7 @@
  */
 
 import { dia, shapes, elementTools } from "jointjs";
-import { NormalResizeTool, RotateTool, getPorts, updateLabelText } from "../eletools";
+import { NormalResizeTool, RotateTool, getPorts, updateLabelText } from "../tools";
 
 /**
  * Primary 圆形
@@ -62,9 +62,9 @@ const PrimaryPolygon = shapes.standard.Polygon.define(
 
 /**
  * 创建基础 polygon
- * 
- * @param graph 
- * @param config 
+ *
+ * @param graph
+ * @param config
  */
 export function createPrimaryPolygon(
   graph: dia.Graph,

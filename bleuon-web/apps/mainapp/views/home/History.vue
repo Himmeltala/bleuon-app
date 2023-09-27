@@ -7,7 +7,6 @@
  */
 
 import File from "./components/File.vue";
-import { USER_API } from "@mainapp/apis";
 
 const lastFileIndex = ref(-1);
 

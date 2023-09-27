@@ -11,7 +11,8 @@ import "jointjs/css/layout.css";
 import "jointjs/css/themes/default.css";
 import * as Data from "./data";
 import { ListenerService } from "./service";
-import FlowchartHeaderTools from "./components/FlowchartHeaderTools.vue";
+import FlowchartHeaderToolsBottom from "./components/FlowchartHeaderToolsBottom.vue";
+import FlowchartHeaderToolsTop from "./components/FlowchartHeaderToolsTop.vue";
 import FlowchartFooterTools from "./components/FlowchartFooterTools.vue";
 import FlowchartSidebar from "./components/FlowchartSidebar.vue";
 
@@ -41,6 +42,12 @@ onMounted(() => {
     "element:pointerclick": view => {
       ListenerService.onElemClick(view);
     },
+    "element:mouseover": view => {
+      view.model.setPorts(view);
+    },
+    "element:mouseout": view => {
+      view.model.removePorts();
+    },
     "element:pointerdblclick": view => {
       ListenerService.onDbClickCell(view, textInputRef.value);
     },
@@ -64,9 +71,10 @@ onMounted(() => {
 
 <template>
   <div class="bleuon__flowchat-container">
-    <div class="bleuon__flowchat-header border-#dfe2e5 border-b-1 border-b-solid bg-#f6f7f8 h-20vh">
-      <div></div>
-      <FlowchartHeaderTools
+    <div
+      class="bleuon__flowchat-header border-#dfe2e5 border-b-1 border-b-solid bg-#f6f7f8 h-20vh px-4 py-4">
+      <FlowchartHeaderToolsTop class="mb-4" />
+      <FlowchartHeaderToolsBottom
         :is-clicked-element="Data.isClickedElement.value"
         :is-clicked-link="Data.isClickedLink.value" />
     </div>

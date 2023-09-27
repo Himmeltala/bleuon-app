@@ -29,8 +29,7 @@ const shapeBgColorPickerRef = ref();
 </script>
 
 <template>
-  <div
-    class="bleuon__flowchat-header-tools border-#dfe2e5 border-b-1 border-b-solid f-c-s px-4 py-4">
+  <div class="bleuon__flowchat-header-tools border-#dfe2e5 border-b-1 border-b-solid f-c-s">
     <div class="tools__text">
       <div class="tools__title">编辑图形文本</div>
       <div class="tools__items f-c-c">

@@ -17,7 +17,7 @@ data.value = await queryAllCells("basic");
 <template>
   <div class="cells-for-flowchart">
     <div class="mb-4 font-bold">基础图形</div>
-    <div class="f-c-s flex-wrap flex-gap-5">
+    <div class="f-c-s flex-wrap flex-gap-3">
       <SVG
         v-if="data.length"
         v-for="item in data"

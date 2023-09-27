@@ -167,3 +167,37 @@ export function updateLabelText(elementView: dia.ElementView, textInput: HTMLInp
   textInput.addEventListener("keydown", handleKeydownEvent);
   textInput.focus();
 }
+
+/**
+ * 导出 SVG 为图片
+ *
+ * @param el svg
+ * @param type png、jpeg
+ */
+export function convertSvgToImage(
+  el: Element,
+  type: "png" | "jpeg",
+  config: { width: number; height: number; fill?: string }
+) {
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d");
+  const svg = new XMLSerializer().serializeToString(el);
+
+  const image = new Image();
+
+  image.onload = function () {
+    canvas.width = config.width;
+    canvas.height = config.height;
+    context.fillStyle = config.fill || "#ffffff";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.drawImage(image, 0, 0);
+
+    const dataURL = canvas.toDataURL(`image/${type}`);
+    const link = document.createElement("a");
+    link.href = dataURL;
+    link.download = `image.${type}`;
+    link.click();
+  };
+
+  image.src = "data:image/svg+xml," + encodeURIComponent(svg);
+}

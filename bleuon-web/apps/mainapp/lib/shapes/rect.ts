@@ -6,7 +6,7 @@
  */
 
 import { dia, shapes, elementTools } from "jointjs";
-import { NormalResizeTool, RotateTool, getPorts, updateLabelText } from "../eletools";
+import { NormalResizeTool, RotateTool, getPorts, updateLabelText } from "../tools";
 
 /**
  * 所有图形的基础
