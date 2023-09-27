@@ -63,27 +63,27 @@ const PrimaryPath = shapes.standard.Path.define(
  */
 export function create(
   graph: dia.Graph,
-  config?: {
-    d: string;
+  config: {
     x?: number;
     y?: number;
     width?: number;
     height?: number;
+    attrs?: any;
   }
 ) {
+  const keys = Object.keys(config.attrs || {});
+  const markup = keys.map(v => ({ tagName: "path", selector: `${v}` }));
+
   const polygon = new PrimaryPath({
-    position: { x: config?.x || 30, y: config?.y || 30 },
+    position: { x: config.x || 30, y: config.y || 30 },
     ports: {
       groups: getPorts()
     },
-    attrs: {
-      body: {
-        refD: config?.d || ""
-      }
-    }
+    attrs: { ...(config.attrs || {}) },
+    markup: [...markup]
   });
 
-  polygon.resize(config?.width || 140, config?.height || 70);
+  polygon.resize(config.width || 140, config.height || 70);
   polygon.addPorts([{ group: "top" }, { group: "bottom" }, { group: "left" }, { group: "right" }]);
 
   graph.addCell(polygon);

@@ -10,13 +10,9 @@ import { dia } from "@mainapp/lib";
 import * as Data from "../data";
 import { CellService } from "../service";
 
+const paper = inject<dia.Paper>("bleuonPaper");
+
 defineProps({
-  paper: {
-    type: dia.Paper
-  },
-  graph: {
-    type: dia.Graph
-  },
   isClickedElement: {
     type: Boolean,
     default: false

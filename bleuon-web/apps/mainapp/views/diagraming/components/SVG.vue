@@ -9,14 +9,7 @@
 import { dia, Path } from "@mainapp/lib";
 
 defineProps({
-  graph: {
-    type: dia.Graph
-  },
   viewBox: {
-    type: String,
-    required: true
-  },
-  d: {
     type: String,
     required: true
   },
@@ -24,13 +17,9 @@ defineProps({
     type: String,
     required: true
   },
-  strokeWidth: {
-    type: String,
-    default: "0.3"
-  },
-  stroke: {
-    type: String,
-    default: "#000000"
+  attrs: {
+    type: Object,
+    required: true
   },
   width: {
     type: Number,
@@ -45,16 +34,30 @@ defineProps({
     default: "0 1 15%"
   }
 });
+
+const graph = inject<dia.Graph>("bleuonGraph");
 </script>
 
 <template>
   <el-tooltip :content="content">
     <svg
       :style="{ flex: flex }"
-      @click="Path.create(graph, { d, width, height })"
-      xmlns="http://www.w3.org/2000/svg"
-      :viewBox="viewBox">
-      <path :d="d" :stroke="stroke" :stroke-width="strokeWidth" fill="#ffffff" />
+      :viewBox="viewBox"
+      @click="
+        Path.create(graph, {
+          width,
+          height,
+          attrs
+        })
+      "
+      xmlns="http://www.w3.org/2000/svg">
+      <path
+        v-for="(v, k) in attrs"
+        :key="k"
+        :d="v.refD"
+        :fill="v.fill || '#ffffff'"
+        :stroke-width="v.stwidth || '0.3'"
+        :stroke="v.stroke || '#333333'"></path>
     </svg>
   </el-tooltip>
 </template>

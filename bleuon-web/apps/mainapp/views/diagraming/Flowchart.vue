@@ -15,10 +15,13 @@ import FlowchartHeaderTools from "./components/FlowchartHeaderTools.vue";
 import FlowchartFooterTools from "./components/FlowchartFooterTools.vue";
 import FlowchartSidebar from "./components/FlowchartSidebar.vue";
 
-const paper = shallowRef<dia.Paper>(null);
-const graph = shallowRef<dia.Graph>(null);
+const paper = shallowRef<dia.Paper>();
+const graph = shallowRef<dia.Graph>();
 
-const textInputRef = ref<HTMLInputElement>();
+provide("bleuonPaper", paper);
+provide("bleuonGraph", graph);
+
+const textInputRef = shallowRef<HTMLInputElement>();
 
 onMounted(() => {
   const jointjs = initJointJs({
@@ -64,16 +67,14 @@ onMounted(() => {
     <div class="bleuon__flowchat-header border-#dfe2e5 border-b-1 border-b-solid bg-#f6f7f8 h-20vh">
       <div></div>
       <FlowchartHeaderTools
-        :paper="paper"
-        :graph="graph"
         :is-clicked-element="Data.isClickedElement.value"
         :is-clicked-link="Data.isClickedLink.value" />
     </div>
     <div class="bleuon__flowchat-wrapper f-c-b">
-      <FlowchartSidebar class="w-15vw h-80vh" :paper="paper" :graph="graph" />
+      <FlowchartSidebar class="w-15vw h-80vh" />
       <div class="bleuon__flowchat-body relative">
         <div id="bleuon__flowchat-content"></div>
-        <FlowchartFooterTools class="w-100% h-5vh" :paper="paper" :graph="graph" />
+        <FlowchartFooterTools class="w-100% h-5vh" />
         <div class="bleuon__flowchat-extra">
           <input ref="textInputRef" type="text" class="bleuon__flowchat-input absolute hidden" />
         </div>

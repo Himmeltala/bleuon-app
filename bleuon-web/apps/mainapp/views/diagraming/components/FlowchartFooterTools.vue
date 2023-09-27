@@ -9,20 +9,13 @@
 import { dia } from "@mainapp/lib";
 import * as Data from "../data";
 
-const props = defineProps({
-  paper: {
-    type: dia.Paper
-  },
-  graph: {
-    type: dia.Graph
-  }
-});
+const paper = inject<dia.Paper>("bleuonPaper");
 
 /**
  * 监听当 slider 组件变化时，重设置 paper 的 scale
  */
 function onSliderChange() {
-  props.paper.scale(Data.currentScale.value, Data.currentScale.value);
+  paper.scale(Data.currentScale.value, Data.currentScale.value);
 }
 
 /**
@@ -30,7 +23,7 @@ function onSliderChange() {
  */
 function resetSlider() {
   Data.currentScale.value = 1;
-  props.paper.scale(Data.currentScale.value, Data.currentScale.value);
+  paper.scale(Data.currentScale.value, Data.currentScale.value);
 }
 </script>
 

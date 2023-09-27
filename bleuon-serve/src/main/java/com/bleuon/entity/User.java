@@ -3,6 +3,7 @@ package com.bleuon.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.bleuon.constant.ValidRegexp;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -24,15 +25,15 @@ public class User implements Serializable {
     @TableId(value = "id")
     private String id;
 
-    @Pattern(regexp = "^(?![_-])[\\u4e00-\\u9fa5a-zA-Z][\\u4e00-\\u9fa5a-zA-Z0-9_-]{4,16}$", message = "字母、中文、-、_，不能以数字开头、-、_开头，长度在4~16")
+    @Pattern(regexp = ValidRegexp.USERNAME, message = "字母、中文、-、_，不能以数字开头、-、_开头，长度在4~16")
     @TableField(value = "username")
     private String username;
 
-    @Pattern(regexp = "^[a-zA-Z0-9.]{8,16}$", message = "英文、.、数字，长度在8~16")
+    @Pattern(regexp = ValidRegexp.PASSWORD, message = "英文、.、数字，长度在8~16")
     @TableField(value = "password")
     private String password;
 
-    @Pattern(regexp = "^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\\d{8}$", message = "不是一个合法的手机号码")
+    @Pattern(regexp = ValidRegexp.PHONE, message = "不是一个合法的手机号码")
     @TableField(value = "phone")
     private String phone;
 
