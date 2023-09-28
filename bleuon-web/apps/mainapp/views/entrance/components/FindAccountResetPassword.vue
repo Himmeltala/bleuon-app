@@ -45,8 +45,8 @@ onMounted(() => {
 });
 
 function confirmSubmitForm() {
-  commitForm(formRef.value, async () => {
-    await USER_API.resetPassword(formData, () => {
+  commitForm(formRef.value, () => {
+    USER_API.resetPassword(formData, () => {
       ElMessage.success("密码重置成功，请返回登录！");
     });
   });

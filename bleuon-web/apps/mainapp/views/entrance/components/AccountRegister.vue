@@ -45,7 +45,7 @@ const formRules = reactive<FormRules>({
 
 function confirmRegister() {
   commitForm(formRef.value, async () => {
-    await USER_API.accountRegister(formData, () => {
+    USER_API.accountRegister(formData, () => {
       ElMessage({
         type: "success",
         message: "恭喜您，请返回登录页面进行登录！",

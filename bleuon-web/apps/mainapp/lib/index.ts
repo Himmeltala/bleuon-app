@@ -5,8 +5,7 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-export { initJointJs } from "./init";
-
-export * as Link from "./shapes/link";
-export * as Path from "./shapes/path";
 export { dia } from "jointjs";
+
+export { initJointJs } from "./init";
+export * as Path from "./shapes/path";

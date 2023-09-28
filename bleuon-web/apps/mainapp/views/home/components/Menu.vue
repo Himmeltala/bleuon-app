@@ -26,7 +26,7 @@ const disabled = ref(false);
 function createNewDiagram() {
   // 1. 生成随机的 id
   // 2. 将 id 以及其他基本信息发送给服务器，服务器创建这个实体存储数据库中
-  router.push("/flowchart/123");
+  router.push("/flowchart/2c0afe24-ad8f-444e-b4d9-dc7583805f2b");
 }
 </script>
 

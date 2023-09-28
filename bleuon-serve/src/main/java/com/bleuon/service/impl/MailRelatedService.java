@@ -11,7 +11,6 @@ import com.bleuon.service.IMailRelatedService;
 import com.bleuon.utils.JwtUtil;
 import com.bleuon.utils.NumbersUtil;
 import com.bleuon.utils.http.R;
-import jakarta.annotation.Resource;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -24,6 +23,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -92,22 +93,26 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> implements
     @Transactional
     @Override
     public R<AuthVo> verifyMailCode(User user, String type, String code) {
-        setCacheCode(type + ":" + user.getEmail());
-        String cacheCode = redisTemplate.opsForValue().get(getCacheCode());
+        try {
+            setCacheCode(type + ":" + user.getEmail());
+            String cacheCode = redisTemplate.opsForValue().get(getCacheCode());
 
-        if (cacheCode == null)
-            return R.failed("验证码和邮箱不匹配！", null);
+            if (cacheCode == null)
+                return R.failed("验证码和邮箱不匹配！", null);
 
-        if (!cacheCode.equals(code))
-            return R.failed("验证码不存在，或与邮箱不匹配！", null);
+            if (!cacheCode.equals(code))
+                return R.failed("验证码不存在，或与邮箱不匹配！", null);
 
-        if (type.equals("register"))
-            return verifyRegisterMailCode(user);
-        else if (type.equals("login"))
-            return verifyLoginMailCode(user);
-        else
-            redisTemplate.delete(getCacheCode());
-        return R.success("验证成功，进行下一步！", null);
+            if (type.equals("register"))
+                return verifyRegisterMailCode(user);
+            else if (type.equals("login"))
+                return verifyLoginMailCode(user);
+            else
+                redisTemplate.delete(getCacheCode());
+            return R.success("验证成功，进行下一步！", null);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getCause());
+        }
     }
 
     private boolean isMultiGet() {
@@ -193,6 +198,7 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> implements
         user.setId(uuid);
         user.setUsername("用户_" + uuid);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRegisterDate(new Timestamp(new Date().getTime()));
         return user;
     }
 

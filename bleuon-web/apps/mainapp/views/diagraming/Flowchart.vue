@@ -11,6 +11,7 @@ import "jointjs/css/layout.css";
 import "jointjs/css/themes/default.css";
 import * as Data from "./data";
 import { ListenerService } from "./service";
+import * as FLOWCHART_API from "@mainapp/apis/api-flowchart";
 import FlowchartHeaderToolsBottom from "./components/FlowchartHeaderToolsBottom.vue";
 import FlowchartHeaderToolsTop from "./components/FlowchartHeaderToolsTop.vue";
 import FlowchartFooterTools from "./components/FlowchartFooterTools.vue";
@@ -18,10 +19,21 @@ import FlowchartSidebar from "./components/FlowchartSidebar.vue";
 
 const paper = shallowRef<dia.Paper>();
 const graph = shallowRef<dia.Graph>();
+const route = useRoute();
+
+const config = ref({
+  id: "",
+  json: "",
+  width: 1000,
+  height: 1000,
+  fileName: "未命名的文件"
+});
 
 provide("bleuonPaper", paper);
 provide("bleuonGraph", graph);
+provide("bleuonConfig", config);
 
+const data = shallowRef(await FLOWCHART_API.queryOne({ id: route.params.id.toString() }));
 const textInputRef = shallowRef<HTMLInputElement>();
 
 onMounted(() => {
@@ -34,6 +46,10 @@ onMounted(() => {
 
   paper.value = jointjs.paper;
   graph.value = jointjs.graph;
+
+  if (data.value.json) {
+    graph.value.fromJSON(JSON.parse(data.value.json));
+  }
 
   paper.value.options.defaultConnector = Data.linkConnectorConfig.value;
   paper.value.options.defaultRouter = Data.linkRouterConfig.value;
@@ -59,7 +75,16 @@ onMounted(() => {
     }
   });
 
-  ListenerService.onBackspaceInBlank();
+  ListenerService.onKeydown({
+    ctrlS: () => {
+      const { width, height } = paper.value.getArea();
+      config.value.width = width;
+      config.value.height = height;
+      config.value.id = route.params.id.toString();
+      config.value.json = JSON.stringify(graph.value.toJSON());
+      FLOWCHART_API.updateOne(config.value);
+    }
+  });
 });
 </script>
 

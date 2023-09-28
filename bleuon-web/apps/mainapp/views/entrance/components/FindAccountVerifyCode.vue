@@ -49,16 +49,16 @@ const formRules = reactive<FormRules>({
 });
 
 function confirmGetVerifyCode() {
-  getVerifyCode(interval, coudButtonCount, codeButtonDisabled, async (callback: any) => {
-    await USER_API.askMailVerifyCode(formData.email, "reset", () => callback());
+  getVerifyCode(interval, coudButtonCount, codeButtonDisabled, (callback: any) => {
+    USER_API.askMailVerifyCode(formData.email, "reset", () => callback());
   });
 }
 
 const isVerifySuccess = ref(false);
 
 function confirmSubmitForm() {
-  commitForm(formRef.value, async () => {
-    await USER_API.verifyMailCode(formData, formData.code, "reset", () => {
+  commitForm(formRef.value,  () => {
+    USER_API.verifyMailCode(formData, formData.code, "reset", () => {
       isVerifySuccess.value = true;
       emits("update:email", formData.email);
     });

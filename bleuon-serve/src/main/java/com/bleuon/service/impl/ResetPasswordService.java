@@ -6,7 +6,6 @@ import com.bleuon.entity.User;
 import com.bleuon.mapper.UserMapper;
 import com.bleuon.service.IResetPasswordService;
 import com.bleuon.utils.http.R;
-import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,9 +20,11 @@ public class ResetPasswordService extends ServiceImpl<UserMapper, User> implemen
     public R<Void> resetPassword(User user) {
         UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
         String password = passwordEncoder.encode(user.getPassword());
-        updateWrapper.eq("email", user.getEmail()).set("password", password);
-        boolean update = update(updateWrapper);
-        if (update) {
+        updateWrapper
+                .eq("email", user.getEmail())
+                .set("password", password);
+        boolean f = update(user, updateWrapper);
+        if (f) {
             return R.success("密码重置成功！");
         } else {
             return R.failed("密码重置失败！");

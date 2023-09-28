@@ -5,8 +5,8 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import { PrimaryLink } from "./shapes/link";
 import { dia, shapes } from "jointjs";
+import { defineNamespace } from "./namespace";
 
 /**
  * 初始化 jointjs
@@ -23,9 +23,8 @@ export function initJointJs(config: {
   isPreventLinkFromOutputToInputWithinOneElement?: boolean;
   isPreventLinkToOutputPorts?: boolean;
 }) {
-  const namespace = shapes;
+  const namespace = defineNamespace();
   const graph = new dia.Graph({}, { cellNamespace: namespace });
-
   const paper = new dia.Paper({
     el: document.getElementById(config.el),
     model: graph,
@@ -54,7 +53,8 @@ export function initJointJs(config: {
       useLinkTools: false
     },
     cellViewNamespace: namespace,
-    defaultLink: () => new PrimaryLink(),
+    // @ts-ignore
+    defaultLink: () => new shapes.bleuon.Link(),
     defaultConnectionPoint: { name: "boundary" },
     validateConnection: function (cellViewS, magnetS, cellViewT, magnetT, end, linkView) {
       if (config.isPreventLinkFromInputPorts || false) {

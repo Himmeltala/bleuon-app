@@ -5,14 +5,15 @@ import MenuAvatar from "@mainapp/components/MenuAvatar.vue";
 
 const paper = inject<Ref<dia.Paper>>("bleuonPaper");
 const graph = inject<Ref<dia.Graph>>("bleuonGraph");
+const config = inject<
+  Ref<{
+    height: number;
+    width: number;
+    fileName: string;
+  }>
+>("bleuonConfig");
 
 const editFile = ref(false);
-
-const config = ref({
-  height: 1000,
-  width: 1000,
-  fileName: "未命名的文件"
-});
 
 function download() {
   const { width, height } = paper.value.getArea();

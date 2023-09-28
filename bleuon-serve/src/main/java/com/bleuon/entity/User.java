@@ -22,45 +22,48 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class User implements Serializable {
 
-    @TableId(value = "id")
+    @TableId
     private String id;
 
     @Pattern(regexp = ValidRegexp.USERNAME, message = "字母、中文、-、_，不能以数字开头、-、_开头，长度在4~16")
-    @TableField(value = "username")
+    @TableField
     private String username;
 
     @Pattern(regexp = ValidRegexp.PASSWORD, message = "英文、.、数字，长度在8~16")
-    @TableField(value = "password")
+    @TableField
     private String password;
 
     @Pattern(regexp = ValidRegexp.PHONE, message = "不是一个合法的手机号码")
-    @TableField(value = "phone")
+    @TableField
     private String phone;
 
     @Email(message = "不是一个合法的电子邮箱地址")
-    @TableField(value = "email")
+    @TableField
     private String email;
 
-    @TableField(value = "profession")
+    @TableField
     private String profession;
 
-    @TableField(value = "company")
+    @TableField
     private String company;
 
-    @TableField(value = "position")
+    @TableField
     private String position;
 
-    @TableField(value = "avatar")
+    @TableField
     private String avatar;
 
-    @TableField(value = "signature")
+    @TableField
     private String signature;
 
     @Pattern(regexp = "(男|女|保密)", message = "性别可以是男、女或保密")
-    @TableField(value = "sex")
+    @TableField
     private String sex;
 
-    @TableField(value = "register_date")
+    @TableField("register_date")
     private Timestamp registerDate;
+
+    @TableField("modify_date")
+    private Timestamp modifyDate;
 
 }

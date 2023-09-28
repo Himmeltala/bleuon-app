@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
+
 /**
  * @description: 官方图形实体类
  * @package: com.bleuon.entity
@@ -21,27 +23,33 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class OfficialCell {
 
-    @TableId("id")
+    @TableId
     private Integer id;
 
-    @TableField("notes")
+    @TableField
     private String notes;
 
-    @TableField("width")
+    @TableField
     private Double width;
 
-    @TableField("height")
+    @TableField
     private Double height;
 
-    @TableField("attrs")
+    @TableField
     @Pattern(regexp = ValidRegexp.JSON, message = "似乎不是一个合法的 JSON 字符串！")
     private String attrs;
 
     @TableField("view_box")
     private String viewBox;
 
-    @TableField("type")
+    @TableField
     @Pattern(regexp = "official|custom", message = "图形类型只能是 official、custom！")
     private String type;
+
+    @TableField("create_date")
+    private Timestamp createDate;
+
+    @TableField("modify_date")
+    private Timestamp modifyDate;
 
 }

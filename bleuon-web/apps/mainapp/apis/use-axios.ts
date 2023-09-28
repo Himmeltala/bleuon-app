@@ -32,12 +32,11 @@ request.interceptors.response.use(
 
     if (data.code === 500) {
       ElMessage.error(data.message);
-      return Promise.reject(data.message);
     } else if (data.code === 400) {
       ElMessage.warning(data.message);
     } else if (data.code === 403) {
+      location.reload();
       localStorage.removeItem("BleuOn-Token");
-      setTimeout(location.reload, 500);
     }
 
     if (data.code === 200 && !notInterceptUrl(config.config, { fuzzy: ["query"] })) {

@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.UUID;
+
 @SpringBootTest
 class BleuonServeApplicationTests {
 
@@ -14,7 +16,8 @@ class BleuonServeApplicationTests {
 
     @Test
     public void test() {
-        System.out.println(passwordEncoder.encode("3333333333333333"));
+        String string = UUID.randomUUID().toString();
+        System.out.println(string);
     }
 
 }

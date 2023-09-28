@@ -62,14 +62,14 @@ const formRules = reactive<FormRules>({
 });
 
 function confirmGetVerifyCode() {
-  getVerifyCode(interval, coudButtonCount, codeButtonDisabled, async (callback: any) => {
-    await USER_API.askMailVerifyCode(formData.email, "register", () => callback());
+  getVerifyCode(interval, coudButtonCount, codeButtonDisabled, (callback: any) => {
+    USER_API.askMailVerifyCode(formData.email, "register", () => callback());
   });
 }
 
 function confirmSubmitForm() {
-  commitForm(formRef.value, async () => {
-    await USER_API.verifyMailCode(formData, formData.code, "register", () => {
+  commitForm(formRef.value,  () => {
+    USER_API.verifyMailCode(formData, formData.code, "register", () => {
       ElMessage({
         type: "success",
         message: "恭喜您，请返回登录页面进行邮箱登录！",

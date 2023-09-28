@@ -174,10 +174,20 @@ export function onMousewheelBlank(evt: any, paper: dia.Paper) {
 }
 
 /**
- * 监听当按下键盘 delete 或回退键时删除选中的元素
+ * 监听键盘按下的事件监听。
+ *
+ * 一：当按下键盘 delete 或回退键时删除选中的元素
+ * 二：当按下 Ctrl+S 保存数据到数据库中
  */
-export function onBackspaceInBlank() {
+export function onKeydown(shortcutKey: { ctrlS: Function }) {
   document.addEventListener("keydown", event => {
+    if (event.ctrlKey) {
+      if (event.key === "s") {
+        event.preventDefault();
+        shortcutKey.ctrlS();
+      }
+    }
+
     if (event.key === "Backspace" || event.key === "Delete") {
       if (Data.clickedCurrView.value?.model) {
         Data.isClickedElement.value = false;

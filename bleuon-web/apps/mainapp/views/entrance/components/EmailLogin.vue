@@ -40,14 +40,14 @@ const formRules = reactive<FormRules>({
 });
 
 function confirmGetVerifyCode() {
-  getVerifyCode(interval, coudButtonCount, codeButtonDisabled, async (callback: any) => {
-    await USER_API.askMailVerifyCode(formData.email, "login", () => callback());
+  getVerifyCode(interval, coudButtonCount, codeButtonDisabled, (callback: any) => {
+    USER_API.askMailVerifyCode(formData.email, "login", () => callback());
   });
 }
 
 function confirmSubmitForm() {
-  commitForm(formRef.value, async () => {
-    await USER_API.verifyMailCode(formData, formData.code, "login", () => {
+  commitForm(formRef.value, () => {
+    USER_API.verifyMailCode(formData, formData.code, "login", () => {
       router.push("/home");
     });
   });
