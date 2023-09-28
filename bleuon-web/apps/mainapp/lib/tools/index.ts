@@ -6,6 +6,7 @@
  */
 
 import { dia, elementTools } from "jointjs";
+import { formatted } from "@common/utils/date";
 
 /**
  * Rect 缩放工具
@@ -175,15 +176,22 @@ export function updateLabelText(elementView: dia.ElementView, textInput: HTMLInp
  * @param type png、jpeg
  */
 export function convertSvgToImage(
-  el: Element,
+  paper: dia.Paper,
+  graph: dia.Graph,
   type: "png" | "jpeg",
-  config: { width: number; height: number; fill?: string }
+  config: { width: number; height: number; fileName: string; fill?: string }
 ) {
   const canvas = document.createElement("canvas");
   const context = canvas.getContext("2d");
-  const svg = new XMLSerializer().serializeToString(el);
 
+  const elements = graph.getElements();
+  elements.forEach(v => {
+    v.removePorts();
+  });
+
+  const dataUri = new XMLSerializer().serializeToString(paper.childNodes.svg);
   const image = new Image();
+  image.src = "data:image/svg+xml," + encodeURIComponent(dataUri);
 
   image.onload = function () {
     canvas.width = config.width;
@@ -195,9 +203,7 @@ export function convertSvgToImage(
     const dataURL = canvas.toDataURL(`image/${type}`);
     const link = document.createElement("a");
     link.href = dataURL;
-    link.download = `image.${type}`;
+    link.download = `${config.fileName}-${formatted("yyyy-MM-dd HH_mm_ss")}.${type}`;
     link.click();
   };
-
-  image.src = "data:image/svg+xml," + encodeURIComponent(svg);
 }

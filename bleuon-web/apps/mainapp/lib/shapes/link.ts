@@ -59,21 +59,31 @@ export const PrimaryLink = shapes.standard.Link.define(
       textInput.addEventListener("keydown", handleKeydownEvent);
       textInput.focus();
     },
-    addTools(linkView: any) {
-      const tools = [
-        // new linkTools.Vertices(),
-        new linkTools.SourceArrowhead(),
-        new linkTools.TargetArrowhead()
-      ];
+    addClickedTools(linkView: any) {
+      // const verticesTool = new linkTools.Vertices();
+      // const segmentsTool = new linkTools.Segments();
+      // const sourceArrowheadTool = new linkTools.SourceArrowhead();
+      // const targetArrowheadTool = new linkTools.TargetArrowhead();
+      // const sourceAnchorTool = new linkTools.SourceAnchor();
+      // const targetAnchorTool = new linkTools.TargetAnchor();
+      const boundaryTool = new linkTools.Boundary();
 
       linkView.addTools(
         new dia.ToolsView({
           name: "link-tools",
-          tools: tools
+          tools: [
+            // verticesTool,
+            // segmentsTool,
+            boundaryTool
+            // sourceArrowheadTool,
+            // targetArrowheadTool,
+            // sourceAnchorTool,
+            // targetAnchorTool
+          ]
         })
       );
     },
-    removeTools(linkView: any) {
+    removeClickedTools(linkView: any) {
       if (linkView.hasTools("link-tools")) {
         linkView.removeTools();
       }

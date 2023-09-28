@@ -40,49 +40,43 @@ onMounted(() => {
 
   paper.value.on({
     "element:pointerclick": view => {
-      ListenerService.onElemClick(view);
-    },
-    "element:mouseover": view => {
-      view.model.setPorts(view);
-    },
-    "element:mouseout": view => {
-      view.model.removePorts();
+      ListenerService.onPointerClickElement(view);
     },
     "element:pointerdblclick": view => {
-      ListenerService.onDbClickCell(view, textInputRef.value);
+      ListenerService.onPointerDbclickElement(view, textInputRef.value);
     },
     "link:pointerclick": view => {
-      ListenerService.onLinkClick(view);
+      ListenerService.onPointerClickLink(view);
     },
     "link:pointerdblclick": view => {
-      ListenerService.onDbClickCell(view, textInputRef.value);
+      ListenerService.onPointerDbclickElement(view, textInputRef.value);
     },
     "blank:pointerclick": evt => {
-      ListenerService.onBlankClick();
+      ListenerService.onPointerClickBlank();
     },
     "blank:mousewheel": evt => {
-      ListenerService.onBlankMousewheel(evt, paper.value);
+      ListenerService.onMousewheelBlank(evt, paper.value);
     }
   });
 
-  ListenerService.onDelCell();
+  ListenerService.onBackspaceInBlank();
 });
 </script>
 
 <template>
   <div class="bleuon__flowchat-container">
     <div
-      class="bleuon__flowchat-header border-#dfe2e5 border-b-1 border-b-solid bg-#f6f7f8 h-20vh px-4 py-4">
+      class="bleuon__flowchat-header h-22vh border-#dfe2e5 border-b-1 border-b-solid bg-#f6f7f8 px-4 py-4">
       <FlowchartHeaderToolsTop class="mb-4" />
       <FlowchartHeaderToolsBottom
         :is-clicked-element="Data.isClickedElement.value"
         :is-clicked-link="Data.isClickedLink.value" />
     </div>
     <div class="bleuon__flowchat-wrapper f-c-b">
-      <FlowchartSidebar class="w-15vw h-80vh" />
+      <FlowchartSidebar class="w-15vw h-78vh" />
       <div class="bleuon__flowchat-body relative">
         <div id="bleuon__flowchat-content"></div>
-        <FlowchartFooterTools class="w-100% h-5vh" />
+        <FlowchartFooterTools class="w-100% h-3vh" />
         <div class="bleuon__flowchat-extra">
           <input ref="textInputRef" type="text" class="bleuon__flowchat-input absolute hidden" />
         </div>

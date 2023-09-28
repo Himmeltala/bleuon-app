@@ -29,7 +29,7 @@ const shapeBgColorPickerRef = ref();
 </script>
 
 <template>
-  <div class="bleuon__flowchat-header-tools border-#dfe2e5 border-b-1 border-b-solid f-c-s">
+  <div class="f-c-s">
     <div class="tools__text">
       <div class="tools__title">编辑图形文本</div>
       <div class="tools__items f-c-c">
@@ -259,6 +259,6 @@ const shapeBgColorPickerRef = ref();
 }
 
 .tools__title {
-  --uno: text-gray-700 mb-2;
+  --uno: text-gray-600 mb-2 text-0.8rem;
 }
 </style>

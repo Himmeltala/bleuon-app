@@ -13,16 +13,14 @@ import * as Data from "../data";
  *
  * @param currView 当前点击的 Link
  */
-export function installLinkTools(
+export function mountToolsLink(
   currView: dia.LinkView,
   clickedLastView: Ref<{ model: any; view: dia.LinkView }>
 ) {
-  if (clickedLastView.value.model) {
-    clickedLastView.value.model.removeTools(clickedLastView.value.view);
-  }
+  clickedLastView.value.model?.removeClickedTools(clickedLastView.value.view);
 
   // @ts-ignore
-  currView.model.addTools(currView);
+  currView.model.addClickedTools(currView);
 
   clickedLastView.value = {
     // @ts-ignore
@@ -36,10 +34,8 @@ export function installLinkTools(
  *
  * @param clickedLastView 上一次点击的 Link
  */
-export function uninstallLinkTools(clickedLastView: Ref<{ model: any; view: dia.ElementView }>) {
-  if (clickedLastView.value.model) {
-    clickedLastView.value.model.removeTools(clickedLastView.value.view);
-  }
+export function unmountToolsLink(clickedLastView: Ref<{ model: any; view: dia.ElementView }>) {
+  clickedLastView.value.model?.removeClickedTools(clickedLastView.value.view);
 
   clickedLastView.value = {
     model: null,
@@ -53,16 +49,14 @@ export function uninstallLinkTools(clickedLastView: Ref<{ model: any; view: dia.
  * @param currView 当前点击的图形
  * @param clickedLastView 保存当前点击的图形作为上一次点击的图形
  */
-export function installShapeTools(
+export function mountToolsElement(
   currView: dia.ElementView,
   clickedLastView: Ref<{ model: any; view: dia.ElementView }>
 ) {
-  if (clickedLastView.value.model) {
-    clickedLastView.value.model.removeTools(clickedLastView.value.view);
-  }
+  clickedLastView.value.model?.removeClickedTools(clickedLastView.value.view);
 
   // @ts-ignore
-  currView.model.addTools(currView);
+  currView.model.addClickedTools(currView);
 
   clickedLastView.value = {
     // @ts-ignore
@@ -76,10 +70,8 @@ export function installShapeTools(
  *
  * @param clickedLastView 上一次点击的图形
  */
-export function uninstallShapeTools(clickedLastView: Ref<{ model: any; view: dia.ElementView }>) {
-  if (clickedLastView.value.model) {
-    clickedLastView.value.model.removeTools(clickedLastView.value.view);
-  }
+export function unmountToolsElement(clickedLastView: Ref<{ model: any; view: dia.ElementView }>) {
+  clickedLastView.value.model?.removeClickedTools(clickedLastView.value.view);
 
   clickedLastView.value = {
     model: null,
@@ -90,13 +82,13 @@ export function uninstallShapeTools(clickedLastView: Ref<{ model: any; view: dia
 /**
  * 当鼠标点击了 paper 时，卸载元素和 Link 上的工具
  */
-export function onBlankClick() {
+export function onPointerClickBlank() {
   // 改变布尔变量，让头部工具根据这些变量设置 disabled
   Data.isClickedElement.value = false;
   Data.isClickedLink.value = false;
 
-  uninstallShapeTools(Data.clickedLastView);
-  uninstallLinkTools(Data.clickedLastView);
+  unmountToolsLink(Data.clickedLastView);
+  unmountToolsElement(Data.clickedLastView);
 }
 
 /**
@@ -104,7 +96,7 @@ export function onBlankClick() {
  *
  * @param view
  */
-export function onElemClick(view: dia.ElementView) {
+export function onPointerClickElement(view: dia.ElementView) {
   // 改变布尔变量，让头部工具根据这些变量设置 disabled
   Data.isClickedElement.value = true;
   Data.isClickedLink.value = false;
@@ -113,7 +105,7 @@ export function onElemClick(view: dia.ElementView) {
   Data.clickedCurrView.value = view;
 
   // 安装元素定义的工具
-  installShapeTools(view, Data.clickedLastView);
+  mountToolsElement(view, Data.clickedLastView);
 }
 
 /**
@@ -121,7 +113,7 @@ export function onElemClick(view: dia.ElementView) {
  *
  * @param view
  */
-export function onLinkClick(view: dia.LinkView) {
+export function onPointerClickLink(view: dia.LinkView) {
   // 改变布尔变量，让头部工具根据这些变量设置 disabled
   Data.isClickedLink.value = true;
   Data.isClickedElement.value = false;
@@ -129,7 +121,7 @@ export function onLinkClick(view: dia.LinkView) {
   // 存储当前点击的元素对象
   Data.clickedCurrView.value = view;
   // 安装 link 定义的工具
-  installLinkTools(view, Data.clickedLastView);
+  mountToolsLink(view, Data.clickedLastView);
 }
 
 /**
@@ -138,7 +130,7 @@ export function onLinkClick(view: dia.LinkView) {
  * @param evt
  * @param paper
  */
-export function onBlankMousewheel(evt: any, paper: dia.Paper) {
+export function onMousewheelBlank(evt: any, paper: dia.Paper) {
   evt.preventDefault(); // 防止浏览器默认滚动行为
   const delta = evt.originalEvent.deltaY; // 获取滚动方向
   const scrollFactor = 30; // 滚动因子
@@ -148,12 +140,17 @@ export function onBlankMousewheel(evt: any, paper: dia.Paper) {
     if (delta > 0) {
       // 向下滚动，缩小画布
       Data.currentScale.value -= scaleFactor;
+      if (Data.currentScale.value < 0.2) {
+        Data.currentScale.value = 0.2;
+      }
     } else {
       // 向上滚动，放大画布
       Data.currentScale.value += scaleFactor;
+      if (Data.currentScale.value > 2) {
+        Data.currentScale.value = 2;
+      }
     }
 
-    // 设置新的缩放级别，并更新画布
     paper.scale(Data.currentScale.value, Data.currentScale.value);
   } else if (evt.shiftKey) {
     if (delta > 0) {
@@ -179,7 +176,7 @@ export function onBlankMousewheel(evt: any, paper: dia.Paper) {
 /**
  * 监听当按下键盘 delete 或回退键时删除选中的元素
  */
-export function onDelCell() {
+export function onBackspaceInBlank() {
   document.addEventListener("keydown", event => {
     if (event.key === "Backspace" || event.key === "Delete") {
       if (Data.clickedCurrView.value?.model) {
@@ -197,7 +194,10 @@ export function onDelCell() {
  * @param currView
  * @param input
  */
-export function onDbClickCell(currView: dia.ElementView | dia.LinkView, input: HTMLInputElement) {
+export function onPointerDbclickElement(
+  currView: dia.ElementView | dia.LinkView,
+  input: HTMLInputElement
+) {
   Data.clickedCurrView.value = null;
 
   // @ts-ignore

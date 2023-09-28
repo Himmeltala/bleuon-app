@@ -8,8 +8,5 @@
 export { initJointJs } from "./init";
 
 export * as Link from "./shapes/link";
-export * as Rect from "./shapes/rect";
-export * as Circle from "./shapes/circle";
-export * as Polygon from "./shapes/polygon";
 export * as Path from "./shapes/path";
 export { dia } from "jointjs";

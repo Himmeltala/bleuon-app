@@ -31,8 +31,14 @@ export function initJointJs(config: {
     model: graph,
     height: config.height,
     width: config.width,
-    gridSize: 15,
-    drawGrid: true,
+    gridSize: 20,
+    drawGrid: {
+      name: "doubleMesh",
+      args: [
+        { color: "#333333", thickness: 1 },
+        { color: "gray", scaleFactor: 5, thickness: 5 }
+      ]
+    },
     background: {
       color: config.bgColor
     },

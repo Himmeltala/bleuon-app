@@ -35,31 +35,20 @@ const PrimaryPath = shapes.standard.Path.define(
   },
   {
     updateLabelText,
-    setPorts(view: dia.ElementView) {
-      view.model.ports = {
-        groups: getPorts()
-      };
-      const e = view.model.addPorts([
-        { group: "top" },
-        { group: "bottom" },
-        { group: "left" },
-        { group: "right" }
-      ]);
-    },
-    addTools(elementView: dia.ElementView) {
+    addClickedTools(elementView: dia.ElementView) {
       const boundaryTool = new elementTools.Boundary();
       const resizeTool = new NormalResizeTool();
       const rotateTool = new RotateTool();
 
       elementView.addTools(
         new dia.ToolsView({
-          name: "path-tools",
+          name: "path-clicked-tools",
           tools: [boundaryTool, resizeTool, rotateTool]
         })
       );
     },
-    removeTools(elementView: dia.ElementView) {
-      if (elementView.hasTools("path-tools")) {
+    removeClickedTools(elementView: dia.ElementView) {
+      if (elementView.hasTools("path-clicked-tools")) {
         elementView.removeTools();
       }
     }
@@ -101,6 +90,7 @@ export function create(
   });
 
   path.resize(config.width || 140, config.height || 70);
+  path.addPorts([{ group: "top" }, { group: "bottom" }, { group: "left" }, { group: "right" }]);
 
   graph.addCell(path);
 }

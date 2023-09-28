@@ -9,13 +9,13 @@
 import { dia } from "@mainapp/lib";
 import * as Data from "../data";
 
-const paper = inject<dia.Paper>("bleuonPaper");
+const paper = inject<Ref<dia.Paper>>("bleuonPaper");
 
 /**
  * 监听当 slider 组件变化时，重设置 paper 的 scale
  */
 function onSliderChange() {
-  paper.scale(Data.currentScale.value, Data.currentScale.value);
+  paper.value.scale(Data.currentScale.value, Data.currentScale.value);
 }
 
 /**
@@ -23,21 +23,22 @@ function onSliderChange() {
  */
 function resetSlider() {
   Data.currentScale.value = 1;
-  paper.scale(Data.currentScale.value, Data.currentScale.value);
+  paper.value.scale(Data.currentScale.value, Data.currentScale.value);
 }
 </script>
 
 <template>
   <div
-    class="bleuon__flowchat-footer-tools border-#dfe2e5 border-t-1 border-t-solid bg-#f6f7f8 f-c-e px-4">
+    class="bleuon__flowchat-footer-tools border-#dfe2e5 border-t-1 border-t-solid bg-#f6f7f8 f-c-e px-4 text-0.8rem">
     <div class="scale-tool f-c-c">
-      <div class="w-50 mr-4">
-        <el-slider
+      <div class="mr-4">
+        <input
+          type="range"
           @change="onSliderChange"
           v-model="Data.calcCurrentScale.value"
-          size="small"
-          :min="80"
-          :max="200" />
+          min="20"
+          max="200"
+          step="1" />
       </div>
       <el-tooltip content="重置缩放" placement="top">
         <div class="cursor-pointer" @click="resetSlider">{{ Data.calcCurrentScale.value }}%</div>
