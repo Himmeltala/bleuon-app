@@ -19,6 +19,8 @@ export function initJointJs(config: {
   bgColor: string;
   height: string;
   width: string;
+  gridSize: number;
+  drawGrid: boolean | dia.Paper.GridOptions | dia.Paper.GridOptions[];
   isPreventLinkFromInputPorts?: boolean;
   isPreventLinkFromOutputToInputWithinOneElement?: boolean;
   isPreventLinkToOutputPorts?: boolean;
@@ -30,14 +32,8 @@ export function initJointJs(config: {
     model: graph,
     height: config.height,
     width: config.width,
-    gridSize: 20,
-    drawGrid: {
-      name: "doubleMesh",
-      args: [
-        { color: "#333333", thickness: 1 },
-        { color: "gray", scaleFactor: 5, thickness: 5 }
-      ]
-    },
+    gridSize: config.gridSize,
+    drawGrid: config.drawGrid,
     background: {
       color: config.bgColor
     },

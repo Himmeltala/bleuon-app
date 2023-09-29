@@ -9,7 +9,7 @@
 import { dia } from "@mainapp/lib";
 import * as Data from "../data";
 
-const paper = inject<Ref<dia.Paper>>("bleuonPaper");
+const paper = inject<Ref<dia.Paper>>(KeyVals.BLEUON_FLOWCHART_PAPER);
 
 /**
  * 监听当 slider 组件变化时，重设置 paper 的 scale

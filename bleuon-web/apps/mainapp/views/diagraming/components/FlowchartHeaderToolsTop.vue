@@ -2,25 +2,38 @@
 import { dia } from "@mainapp/lib";
 import { convertSvgToImage } from "@mainapp/lib/tools";
 import MenuAvatar from "@mainapp/components/MenuAvatar.vue";
+import { formatted } from "@common/utils/date";
 
-const paper = inject<Ref<dia.Paper>>("bleuonPaper");
-const graph = inject<Ref<dia.Graph>>("bleuonGraph");
-const config = inject<
-  Ref<{
-    height: number;
-    width: number;
-    fileName: string;
-  }>
->("bleuonConfig");
+const paper = inject<Ref<dia.Paper>>(KeyVals.BLEUON_FLOWCHART_PAPER);
+const graph = inject<Ref<dia.Graph>>(KeyVals.BLEUON_FLOWCHART_GRAPH);
+const flowchartData = inject<Ref<FlowchartData>>(KeyVals.BLEUON_FLOWCHART_DATA);
 
 const editFile = ref(false);
 
+defineProps({
+  data: {
+    type: Object
+  }
+});
+
 function download() {
   const { width, height } = paper.value.getArea();
-  config.value.width = width;
-  config.value.height = height;
-  convertSvgToImage(paper.value, graph.value, "jpeg", config.value);
+  flowchartData.value.width = width;
+  flowchartData.value.height = height;
+  convertSvgToImage(paper.value, graph.value, "jpeg", flowchartData.value);
 }
+
+const calcFileName = computed({
+  get() {
+    if (!flowchartData.value.fileName) {
+      flowchartData.value.fileName = "未命名的文件";
+    }
+    return flowchartData.value.fileName;
+  },
+  set(value) {
+    flowchartData.value.fileName = value;
+  }
+});
 </script>
 
 <template>
@@ -35,11 +48,18 @@ function download() {
         @click="$router.push('/home')"
         src="/bleuon-icon.png"
         class="mr-4 w-30 h-15 object-cover cursor-pointer" />
-      <div v-show="editFile" @keyup.enter="editFile = !editFile">
-        <el-input v-model="config.fileName" size="small" placeholder="请输入文件名" />
-      </div>
-      <div class="text-1rem text-gray-700" v-show="!editFile" @click="editFile = !editFile">
-        {{ config.fileName }}
+      <div>
+        <div v-show="editFile" @keyup.enter="editFile = !editFile">
+          <el-input v-model="calcFileName" size="small" placeholder="请输入文件名" />
+        </div>
+        <div class="text-gray-700" v-show="!editFile" @click="editFile = !editFile">
+          {{ calcFileName }}
+        </div>
+        <div class="mt-2">
+          <div class="text-gray-500 text-0.8rem">
+            上次更新时间：{{ formatted("yyyy-MM-dd HH:mm:ss", new Date(flowchartData.modifyDate)) }}
+          </div>
+        </div>
       </div>
     </div>
     <div class="right f-c-s">

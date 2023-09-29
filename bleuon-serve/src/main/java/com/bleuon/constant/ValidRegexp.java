@@ -22,4 +22,6 @@ public class ValidRegexp {
      * JSON 字符串合法性
      */
     public static final String JSON = "\\{\"([a-zA-Z_]+)\":(.+)}";
+
+    public static final String CELL_TYPE = "(basic|flowchart)";
 }

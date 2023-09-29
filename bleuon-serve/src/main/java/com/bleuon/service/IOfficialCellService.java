@@ -13,6 +13,6 @@ import java.util.List;
  */
 public interface IOfficialCellService {
 
-    R<List<OfficialCell>> queryAllCells(String type);
+    R<List<OfficialCell>> queryAll(String type);
 
 }

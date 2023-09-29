@@ -11,7 +11,7 @@ import "jointjs/css/layout.css";
 import "jointjs/css/themes/default.css";
 import * as Data from "./data";
 import { ListenerService } from "./service";
-import * as FLOWCHART_API from "@mainapp/apis/api-flowchart";
+import { FlowchartApi } from "@mainapp/apis";
 import FlowchartHeaderToolsBottom from "./components/FlowchartHeaderToolsBottom.vue";
 import FlowchartHeaderToolsTop from "./components/FlowchartHeaderToolsTop.vue";
 import FlowchartFooterTools from "./components/FlowchartFooterTools.vue";
@@ -21,35 +21,50 @@ const paper = shallowRef<dia.Paper>();
 const graph = shallowRef<dia.Graph>();
 const route = useRoute();
 
-const config = ref({
-  id: "",
-  json: "",
+const flowchartData = ref<FlowchartData>({
   width: 1000,
   height: 1000,
   fileName: "未命名的文件"
 });
 
-provide("bleuonPaper", paper);
-provide("bleuonGraph", graph);
-provide("bleuonConfig", config);
+provide(KeyVals.BLEUON_FLOWCHART_PAPER, paper);
+provide(KeyVals.BLEUON_FLOWCHART_GRAPH, graph);
+provide(KeyVals.BLEUON_FLOWCHART_DATA, flowchartData);
 
-const data = shallowRef(await FLOWCHART_API.queryOne({ id: route.params.id.toString() }));
 const textInputRef = shallowRef<HTMLInputElement>();
+
+async function fetchData() {
+  const data = await FlowchartApi.queryOne({ id: route.params.id.toString() });
+  flowchartData.value = data;
+}
+
+await fetchData();
 
 onMounted(() => {
   const jointjs = initJointJs({
     el: "bleuon__flowchat-content",
     width: "85vw",
     height: "75vh",
-    bgColor: "#ffffff"
+    gridSize: flowchartData.value.gridSize,
+    bgColor: flowchartData.value.bgColor,
+    drawGrid: {
+      name: "doubleMesh",
+      args: [
+        { color: "#333333", thickness: 1 },
+        { color: "gray", scaleFactor: 5, thickness: 5 }
+      ]
+    }
   });
 
   paper.value = jointjs.paper;
   graph.value = jointjs.graph;
 
-  if (data.value.json) {
-    graph.value.fromJSON(JSON.parse(data.value.json));
+  if (flowchartData.value.json) {
+    graph.value.fromJSON(JSON.parse(flowchartData.value.json));
   }
+
+  Data.linkConnectorConfig.value = JSON.parse(flowchartData.value.connectorDefault);
+  Data.linkRouterConfig.value = JSON.parse(flowchartData.value.routerDefault);
 
   paper.value.options.defaultConnector = Data.linkConnectorConfig.value;
   paper.value.options.defaultRouter = Data.linkRouterConfig.value;
@@ -78,11 +93,13 @@ onMounted(() => {
   ListenerService.onKeydown({
     ctrlS: () => {
       const { width, height } = paper.value.getArea();
-      config.value.width = width;
-      config.value.height = height;
-      config.value.id = route.params.id.toString();
-      config.value.json = JSON.stringify(graph.value.toJSON());
-      FLOWCHART_API.updateOne(config.value);
+      flowchartData.value.width = width;
+      flowchartData.value.height = height;
+      flowchartData.value.id = route.params.id.toString();
+      flowchartData.value.json = JSON.stringify(graph.value.toJSON());
+      flowchartData.value.connectorDefault = JSON.stringify(Data.linkConnectorConfig.value);
+      flowchartData.value.routerDefault = JSON.stringify(Data.linkRouterConfig.value);
+      FlowchartApi.updateOne(flowchartData.value, () => {});
     }
   });
 });

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.bleuon.constant.ValidRegexp;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,9 +25,11 @@ import java.sql.Timestamp;
 public class OfficialCell {
 
     @TableId
+    @Max(40)
     private Integer id;
 
     @TableField
+    @Max(50)
     private String notes;
 
     @TableField
@@ -40,10 +43,11 @@ public class OfficialCell {
     private String attrs;
 
     @TableField("view_box")
+    @Max(100)
     private String viewBox;
 
     @TableField
-    @Pattern(regexp = "official|custom", message = "图形类型只能是 official、custom！")
+    @Pattern(regexp = ValidRegexp.CELL_TYPE, message = "图形类型错误！")
     private String type;
 
     @TableField("create_date")

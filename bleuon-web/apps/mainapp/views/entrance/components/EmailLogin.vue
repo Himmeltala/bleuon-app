@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { USER_API } from "@mainapp/apis";
+import { UserApi } from "@mainapp/apis";
 import {
   emailValidator,
   verifyCodeValidator,
@@ -41,13 +41,13 @@ const formRules = reactive<FormRules>({
 
 function confirmGetVerifyCode() {
   getVerifyCode(interval, coudButtonCount, codeButtonDisabled, (callback: any) => {
-    USER_API.askMailVerifyCode(formData.email, "login", () => callback());
+    UserApi.askMailVerifyCode(formData.email, "login", () => callback());
   });
 }
 
 function confirmSubmitForm() {
   commitForm(formRef.value, () => {
-    USER_API.verifyMailCode(formData, formData.code, "login", () => {
+    UserApi.verifyMailCode(formData, formData.code, "login", () => {
       router.push("/home");
     });
   });

@@ -5,13 +5,30 @@ declare interface Element {
   offsetTop?: number;
 }
 
-type R<T = any> = {
+declare type R<T = any> = {
   code: number;
   data: T;
   message: string;
 };
 
-type TokenR = {
+declare type TokenR = {
   expire: number;
   token: string;
 };
+
+declare type FlowchartData = Partial<{
+  id: string;
+  fileName: string;
+  json: string;
+  dataUri: string;
+  width: number;
+  height: number;
+  bgColor: string;
+  gridSize: number;
+  connectorDefault: string;
+  routerDefault: string;
+  isPublic: boolean;
+  createDate: Date;
+  modifyDate: Date;
+  userId: string;
+}>;

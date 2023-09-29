@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { FormRules } from "element-plus";
 import { passwordValidator, rePasswdValidator, commitForm } from "@mainapp/utils/form-validators";
-import { USER_API } from "@mainapp/apis";
+import { UserApi } from "@mainapp/apis";
 
 const props = defineProps({
   email: {
@@ -46,7 +46,7 @@ onMounted(() => {
 
 function confirmSubmitForm() {
   commitForm(formRef.value, () => {
-    USER_API.resetPassword(formData, () => {
+    UserApi.resetPassword(formData, () => {
       ElMessage.success("密码重置成功，请返回登录！");
     });
   });

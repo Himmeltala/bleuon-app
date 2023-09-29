@@ -35,7 +35,7 @@ defineProps({
   }
 });
 
-const graph = inject<dia.Graph>("bleuonGraph");
+const graph = inject<dia.Graph>(KeyVals.BLEUON_FLOWCHART_GRAPH);
 </script>
 
 <template>

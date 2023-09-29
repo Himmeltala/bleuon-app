@@ -6,12 +6,12 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import { queryAllCells } from "@mainapp/apis/api-official-cells";
+import { OfficialCellsApi } from "@mainapp/apis";
 import SVG from "./SVG.vue";
 
 const data = ref(null);
 
-data.value = await queryAllCells("basic");
+data.value = await OfficialCellsApi.queryAll("basic");
 </script>
 
 <template>

@@ -6,12 +6,12 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import { USER_API } from "@mainapp/apis";
+import { UserApi } from "@mainapp/apis";
 
 const disabled = ref(false);
 
 function confirmLogout() {
-  USER_API.logout(() => {
+  UserApi.logout(() => {
     location.reload();
   });
 }

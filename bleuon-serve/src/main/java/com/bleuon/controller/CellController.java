@@ -1,9 +1,11 @@
 package com.bleuon.controller;
 
 import com.bleuon.annotaion.RequestMappingPrefix;
+import com.bleuon.constant.ValidRegexp;
 import com.bleuon.entity.OfficialCell;
 import com.bleuon.service.IOfficialCellService;
 import com.bleuon.utils.http.R;
+import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,8 +27,11 @@ public class CellController {
     private final IOfficialCellService service;
 
     @GetMapping("/query/all")
-    public R<List<OfficialCell>> queryAllCells(@RequestParam String type) {
-        return service.queryAllCells(type);
+    public R<List<OfficialCell>> queryAll(
+            @Pattern(regexp = ValidRegexp.CELL_TYPE, message = "图形类型错误！")
+            @RequestParam String type
+    ) {
+        return service.queryAll(type);
     }
 
 }

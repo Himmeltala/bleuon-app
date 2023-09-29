@@ -21,7 +21,7 @@ import java.util.List;
 public class OfficialCellService extends ServiceImpl<OfficialCellMapper, OfficialCell> implements IOfficialCellService {
 
     @Override
-    public R<List<OfficialCell>> queryAllCells(String type) {
+    public R<List<OfficialCell>> queryAll(String type) {
         List<OfficialCell> list = this.query().eq("type", type).list();
         return R.success(list);
     }

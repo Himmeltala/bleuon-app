@@ -12,7 +12,7 @@ import request from "./use-axios";
  *
  * @param type 图形类型
  */
-export async function queryAllCells(type: "basic" | "flowchart") {
+export async function queryAll(type: "basic" | "flowchart") {
   const { data } = await request.get<R>("/cell/official/query/all", { params: { type } });
   return data.data;
 }

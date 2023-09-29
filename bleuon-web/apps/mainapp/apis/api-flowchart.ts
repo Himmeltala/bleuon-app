@@ -12,11 +12,7 @@ import request from "./use-axios";
  *
  * @param json
  */
-export function updateOne(
-  data: { json: string; id: string; fileName: string },
-  success?: Function,
-  error?: Function
-) {
+export function updateOne(data: FlowchartData, success?: Function, error?: Function) {
   request
     .post<R>("/flowchart/update/one", data)
     .then(({ data }) => {
@@ -31,6 +27,6 @@ export function updateOne(
  * 获取流程图存储的 json
  */
 export async function queryOne(params: { id: string }) {
-  const { data } = await request.get<R>("/flowchart/query/one", { params });
+  const { data } = await request.get<R<FlowchartData>>("/flowchart/query/one", { params });
   return data.data;
 }

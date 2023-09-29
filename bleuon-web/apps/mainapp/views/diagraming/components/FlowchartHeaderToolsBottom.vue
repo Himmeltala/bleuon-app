@@ -10,7 +10,7 @@ import { dia } from "@mainapp/lib";
 import * as Data from "../data";
 import { CellService } from "../service";
 
-const paper = inject<dia.Paper>("bleuonPaper");
+const paper = inject<dia.Paper>(KeyVals.BLEUON_FLOWCHART_PAPER);
 
 defineProps({
   isClickedElement: {

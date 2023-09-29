@@ -37,7 +37,7 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
                     .set("modify_date", new Timestamp(new Date().getTime()))
                     .set("width", data.getWidth())
                     .set("height", data.getHeight())
-                    .set("datauri", data.getDatauri() == null ? "" : data.getDatauri())
+                    .set("data_uri", data.getDataUri() == null ? "" : data.getDataUri())
                     .set("is_public", data.getIsPublic() == null ? 0 : data.getIsPublic());
 
             boolean f = update(data, updateWrapper);

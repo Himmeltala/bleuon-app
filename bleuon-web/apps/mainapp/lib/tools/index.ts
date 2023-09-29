@@ -179,7 +179,7 @@ export function convertSvgToImage(
   paper: dia.Paper,
   graph: dia.Graph,
   type: "png" | "jpeg",
-  config: { width: number; height: number; fileName: string; fill?: string }
+  config: FlowchartData
 ) {
   const canvas = document.createElement("canvas");
   const context = canvas.getContext("2d");
@@ -196,7 +196,7 @@ export function convertSvgToImage(
   image.onload = function () {
     canvas.width = config.width;
     canvas.height = config.height;
-    context.fillStyle = config.fill || "#ffffff";
+    context.fillStyle = config.bgColor || "#ffffff";
     context.fillRect(0, 0, canvas.width, canvas.height);
     context.drawImage(image, 0, 0);
 
