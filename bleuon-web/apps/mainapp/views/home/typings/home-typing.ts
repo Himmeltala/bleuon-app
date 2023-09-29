@@ -1,5 +1,5 @@
 export type ActiveItem =
-  | "auth-history"
+  | "auth-flowcharts"
   | "auth-diagrams"
   | "auth-shares"
   | "auth-stars"

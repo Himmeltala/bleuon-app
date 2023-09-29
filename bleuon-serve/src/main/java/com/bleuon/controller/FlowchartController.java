@@ -3,13 +3,14 @@ package com.bleuon.controller;
 import com.bleuon.annotaion.RequestMappingPrefix;
 import com.bleuon.entity.Flowchart;
 import com.bleuon.service.impl.FlowchartService;
+import com.bleuon.utils.JwtUtil;
 import com.bleuon.utils.http.R;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @description:
@@ -32,6 +33,20 @@ public class FlowchartController {
     @GetMapping("/query/one")
     public R<Flowchart> queryOne(@RequestParam String id) {
         return service.queryOne(id);
+    }
+
+    @GetMapping("/query/all")
+    public R<List<Flowchart>> queryAll(@RequestHeader("Authorization") String token) {
+        Claims claims = JwtUtil.parseJwt(token);
+        String userId = (String) claims.get("id");
+        return service.queryAll(userId);
+    }
+
+    @PostMapping("/create/one")
+    public R<Flowchart> createOne(@RequestHeader("Authorization") String token) {
+        Claims claims = JwtUtil.parseJwt(token);
+        String userId = (String) claims.get("id");
+        return service.createOne(userId);
     }
 
 }

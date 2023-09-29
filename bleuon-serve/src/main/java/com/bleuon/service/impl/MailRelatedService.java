@@ -3,6 +3,7 @@ package com.bleuon.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bleuon.constant.AuthorityType;
 import com.bleuon.constant.MailType;
+import com.bleuon.entity.CustomUserDetails;
 import com.bleuon.entity.User;
 import com.bleuon.entity.vo.AuthVo;
 import com.bleuon.mapper.AuthMapper;
@@ -208,7 +209,9 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> implements
         if (user != null) {
             String uuid = UUID.randomUUID().toString();
             Long expire = JwtUtil.getExpire();
-            String token = JwtUtil.createJwt(user, uuid, expire);
+
+            CustomUserDetails details = new CustomUserDetails(user.getUsername(), "******", null);
+            String token = JwtUtil.createJwt(details, uuid, expire);
 
             redisTemplate.opsForValue().set(uuid, token, expire, TimeUnit.SECONDS);
 

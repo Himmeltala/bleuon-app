@@ -1,12 +1,18 @@
 package com.bleuon.security;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.bleuon.entity.CustomUserDetails;
 import com.bleuon.entity.User;
+import com.bleuon.mapper.AuthMapper;
 import com.bleuon.mapper.UserMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 用户名密码登录 Service 实现类。
@@ -18,7 +24,10 @@ import org.springframework.stereotype.Service;
  * @author zheng
  */
 @Service
+@RequiredArgsConstructor
 public class UserDetailsServiceImpl extends ServiceImpl<UserMapper, User> implements UserDetailsService {
+
+    private final AuthMapper mapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -28,10 +37,11 @@ public class UserDetailsServiceImpl extends ServiceImpl<UserMapper, User> implem
             throw new UsernameNotFoundException("用户名或密码错误！");
         }
 
-        return org.springframework.security.core.userdetails.User
-                .withUsername(user.getUsername())
-                .password(user.getPassword())
-                .build();
+        List<String> authorities = mapper.getAuthority(Map.of("username", user.getUsername()));
+        CustomUserDetails details = new CustomUserDetails(user.getUsername(), user.getPassword(), authorities);
+        details.setId(user.getId());
+
+        return details;
     }
 
     private User findUserByFiled(String field) {

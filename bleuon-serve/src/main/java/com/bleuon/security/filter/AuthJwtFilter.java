@@ -1,19 +1,19 @@
 package com.bleuon.security.filter;
 
+import com.bleuon.entity.CustomUserDetails;
 import com.bleuon.mapper.AuthMapper;
 import com.bleuon.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
-import jakarta.annotation.Resource;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -30,13 +30,12 @@ import java.util.Map;
  * @author zheng
  */
 @Component
+@RequiredArgsConstructor
 public class AuthJwtFilter extends OncePerRequestFilter {
 
-    @Resource
-    private AuthMapper mapper;
+    private final AuthMapper mapper;
 
-    @Resource
-    private RedisTemplate<String, String> redisTemplate;
+    private final RedisTemplate<String, String> redisTemplate;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
@@ -48,8 +47,9 @@ public class AuthJwtFilter extends OncePerRequestFilter {
             Long expire = redisTemplate.getExpire(jwtId);
 
             if (expire != null && expire != -2) {
-                List<String> auth = mapper.getAuthority(Map.of("username", claims.get("username")));
-                UserDetails details = JwtUtil.toUserDetails(claims, auth);
+                List<String> authorities = mapper.getAuthority(Map.of("username", claims.get("username")));
+                CustomUserDetails details = new CustomUserDetails((String) claims.get("username"), "******", authorities);
+                details.setId((String) claims.get("id"));
                 SecurityContext context = SecurityContextHolder.createEmptyContext();
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(details, details.getPassword(), details.getAuthorities());

@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { ActiveItem } from "../typings/home-typing";
+import { FlowchartApi } from "@mainapp/apis";
 
 const router = useRouter();
-const props = defineProps({
+defineProps({
   activeItem: {
     type: String as PropType<ActiveItem>,
     required: true
@@ -24,9 +25,9 @@ onBeforeMount(() => {
 const disabled = ref(false);
 
 function createNewDiagram() {
-  // 1. 生成随机的 id
-  // 2. 将 id 以及其他基本信息发送给服务器，服务器创建这个实体存储数据库中
-  router.push("/flowchart/2c0afe24-ad8f-444e-b4d9-dc7583805f2b");
+  FlowchartApi.createOne(data => {
+    router.push(`/flowchart/${data.id}`);
+  });
 }
 </script>
 
@@ -61,17 +62,24 @@ function createNewDiagram() {
     <div class="menu__body mt-10 pb-5 b-b-1 b-b-solid b-b-#e4e4e4">
       <div
         class="menu__item f-c-s"
-        :class="{ active: activeItem == 'auth-history' }"
-        @click="navigateTo('auth-history')">
+        :class="{ active: activeItem == 'auth-flowcharts' }"
+        @click="navigateTo('auth-flowcharts')">
         <div class="mr-2 i-tabler-clock-hour-3"></div>
-        最近文件
+        流程图
       </div>
       <div
         class="menu__item f-c-s"
         :class="{ active: activeItem == 'auth-diagrams' }"
         @click="navigateTo('auth-diagrams')">
         <div class="mr-2 i-tabler-folder"></div>
-        我的文件
+        思维导图
+      </div>
+      <div
+        class="menu__item f-c-s"
+        :class="{ active: activeItem == 'auth-diagrams' }"
+        @click="navigateTo('auth-diagrams')">
+        <div class="mr-2 i-tabler-folder"></div>
+        画布
       </div>
       <div
         class="menu__item f-c-s"

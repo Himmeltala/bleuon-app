@@ -8,6 +8,10 @@ const props = defineProps({
     type: Number,
     required: true
   },
+  path: {
+    type: String,
+    required: true
+  },
   lastIndex: {
     type: Number,
     required: true
@@ -85,7 +89,7 @@ function handleClick() {
         删除
       </div>
     </div>
-    <div class="image h-50 rd-2">
+    <div class="image h-50 rd-2" @click="$router.push(path)">
       <img class="w-100% h-100% rd-2 object-cover cursor-pointer" :src="fileImage" />
     </div>
     <div class="f-c-s flex-nowrap mt-4 w-100%">

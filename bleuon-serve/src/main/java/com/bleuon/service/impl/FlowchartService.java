@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @description:
@@ -55,6 +57,32 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
     public R<Flowchart> queryOne(String id) {
         Flowchart flowchart = query().eq("id", id).one();
         return R.success(flowchart);
+    }
+
+    @Override
+    public R<List<Flowchart>> queryAll(String userId) {
+        List<Flowchart> list = query().eq("user_id", userId).list();
+        return R.success(list);
+    }
+
+    @Override
+    @Transactional
+    public R<Flowchart> createOne(String userId) {
+        try {
+            String uuid = UUID.randomUUID().toString();
+            // 创建表
+            Flowchart flowchart = new Flowchart();
+            flowchart.setId(uuid);
+            flowchart.setUserId(userId);
+            Timestamp timestamp = new Timestamp(new Date().getTime());
+            flowchart.setCreateDate(timestamp);
+            flowchart.setModifyDate(timestamp);
+            flowchart.setFileName("未命名的文件");
+            save(flowchart);
+            return R.success("创建流程图成功！", flowchart);
+        } catch (Exception e) {
+            throw new JdbcErrorException(e.getCause());
+        }
     }
 
 }

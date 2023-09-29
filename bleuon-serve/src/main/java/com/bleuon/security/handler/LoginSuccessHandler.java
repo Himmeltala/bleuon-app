@@ -1,6 +1,7 @@
 package com.bleuon.security.handler;
 
 import com.alibaba.fastjson2.JSON;
+import com.bleuon.entity.CustomUserDetails;
 import com.bleuon.entity.vo.AuthVo;
 import com.bleuon.utils.JwtUtil;
 import com.bleuon.utils.http.R;
@@ -33,7 +34,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         response.setContentType("application/json;charset=utf-8");
-        UserDetails details = (User) authentication.getPrincipal();
+        CustomUserDetails details = (CustomUserDetails) authentication.getPrincipal();
 
         String jwtUuid = UUID.randomUUID().toString();
         Long expire = JwtUtil.getExpire();

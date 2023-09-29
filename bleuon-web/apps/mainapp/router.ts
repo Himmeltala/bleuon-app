@@ -19,14 +19,14 @@ const router = createRouter({
       path: "/home",
       name: "auth-home",
       meta: { title: "首页" },
-      redirect: "/home/history",
+      redirect: "/home/flowcharts",
       component: () => import("@mainapp/views/home/Home.vue"),
       children: [
         {
-          path: "history",
-          name: "auth-history",
-          meta: { title: "最近文件" },
-          component: () => import("@mainapp/views/home/History.vue")
+          path: "flowcharts",
+          name: "auth-flowcharts",
+          meta: { title: "我的流程图" },
+          component: () => import("@mainapp/views/home/Flowcharts.vue")
         },
         {
           path: "diagrams",

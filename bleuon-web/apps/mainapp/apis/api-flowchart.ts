@@ -30,3 +30,29 @@ export async function queryOne(params: { id: string }) {
   const { data } = await request.get<R<FlowchartData>>("/flowchart/query/one", { params });
   return data.data;
 }
+
+/**
+ * 获取用户所有的流程图
+ *
+ * @param params userId
+ */
+export async function queryAll() {
+  const { data } = await request.get<R<FlowchartData[]>>("/flowchart/query/all");
+  return data.data;
+}
+
+/**
+ * 创建一个流程图
+ *
+ * @returns 返回创建的流程图数据
+ */
+export async function createOne(success: (data: FlowchartData) => void, error?: Function) {
+  request
+    .post<R<FlowchartData>>("/flowchart/create/one")
+    .then(({ data }) => {
+      success && success(data.data);
+    })
+    .catch(err => {
+      error && error(err);
+    });
+}

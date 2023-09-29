@@ -1,14 +1,18 @@
 <script setup lang="ts">
 /**
- * @description 历史记录
+ * @description flowcharts 流程图列表
  * @author 郑人滏 42020306
  * @since 2023/8/23
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
 import File from "./components/File.vue";
+import { FlowchartApi } from "@mainapp/apis";
+import { formatted } from "@common/utils/date";
 
 const lastFileIndex = ref(-1);
+
+const flowchartList = ref(await FlowchartApi.queryAll());
 
 function filterFiles() {}
 </script>
@@ -32,13 +36,15 @@ function filterFiles() {}
     <div class="mt-5 text-b text-0.9rem">文件</div>
     <div class="file-list mt-5 f-c-s flex-wrap flex-gap-5">
       <File
-        :file-name="'文件名'"
+        v-for="(item, index) in flowchartList"
+        :key="item.id"
+        :file-name="item.fileName"
         :file-image="'https://img2.baidu.com/it/u=1616455932,108201296&fm=253&fmt=auto&app=138&f=JPEG?w=281&h=500'"
-        :update-date="'2月前'"
+        :update-date="formatted('yyyy-MM-dd HH:mm:ss', new Date(item.modifyDate))"
         :index="index"
+        :path="'/flowchart/' + item.id"
         v-model:last-index="lastFileIndex"
-        :disabled="lastFileIndex == index"
-        v-for="(item, index) in 5"></File>
+        :disabled="lastFileIndex == index"></File>
     </div>
   </div>
 </template>
