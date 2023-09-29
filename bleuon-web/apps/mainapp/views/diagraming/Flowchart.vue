@@ -16,6 +16,7 @@ import FlowchartHeaderToolsBottom from "./components/FlowchartHeaderToolsBottom.
 import FlowchartHeaderToolsTop from "./components/FlowchartHeaderToolsTop.vue";
 import FlowchartFooterTools from "./components/FlowchartFooterTools.vue";
 import FlowchartSidebar from "./components/FlowchartSidebar.vue";
+import { throttle } from "@common/utils/prevent";
 
 const paper = shallowRef<dia.Paper>();
 const graph = shallowRef<dia.Graph>();
@@ -39,6 +40,19 @@ async function fetchData() {
 }
 
 await fetchData();
+
+function updateJointjs() {
+  const { width, height } = paper.value.getArea();
+  flowchartData.value.width = width;
+  flowchartData.value.height = height;
+  flowchartData.value.id = route.params.id.toString();
+  flowchartData.value.json = JSON.stringify(graph.value.toJSON());
+  flowchartData.value.connectorDefault = JSON.stringify(Data.linkConnectorConfig.value);
+  flowchartData.value.routerDefault = JSON.stringify(Data.linkRouterConfig.value);
+  FlowchartApi.updateOne(flowchartData.value, () => {});
+}
+
+const thr = throttle(updateJointjs, 5000);
 
 onMounted(() => {
   const jointjs = initJointJs({
@@ -90,17 +104,15 @@ onMounted(() => {
     }
   });
 
+  // @ts-ignore
+  graph.value.on("change", evt => thr());
+  // @ts-ignore
+  graph.value.on("add", evt => thr());
+  // @ts-ignore
+  graph.value.on("remove", evt => thr());
+
   ListenerService.onKeydown({
-    ctrlS: () => {
-      const { width, height } = paper.value.getArea();
-      flowchartData.value.width = width;
-      flowchartData.value.height = height;
-      flowchartData.value.id = route.params.id.toString();
-      flowchartData.value.json = JSON.stringify(graph.value.toJSON());
-      flowchartData.value.connectorDefault = JSON.stringify(Data.linkConnectorConfig.value);
-      flowchartData.value.routerDefault = JSON.stringify(Data.linkRouterConfig.value);
-      FlowchartApi.updateOne(flowchartData.value, () => {});
-    }
+    ctrlS: () => thr()
   });
 });
 </script>
@@ -109,7 +121,7 @@ onMounted(() => {
   <div class="bleuon__flowchat-container">
     <div
       class="bleuon__flowchat-header h-22vh border-#dfe2e5 border-b-1 border-b-solid bg-#f6f7f8 px-4 py-4">
-      <FlowchartHeaderToolsTop class="mb-4" />
+      <FlowchartHeaderToolsTop @change="thr" class="mb-4" />
       <FlowchartHeaderToolsBottom
         :is-clicked-element="Data.isClickedElement.value"
         :is-clicked-link="Data.isClickedLink.value" />

@@ -15,6 +15,7 @@ defineProps({
     type: Object
   }
 });
+const emits = defineEmits(["change"]);
 
 function download() {
   const { width, height } = paper.value.getArea();
@@ -34,6 +35,11 @@ const calcFileName = computed({
     flowchartData.value.fileName = value;
   }
 });
+
+function confirmChangeFileName() {
+  emits("change");
+  editFile.value = !editFile.value;
+}
 </script>
 
 <template>
@@ -49,7 +55,7 @@ const calcFileName = computed({
         src="/bleuon-icon.png"
         class="mr-4 w-30 h-15 object-cover cursor-pointer" />
       <div>
-        <div v-show="editFile" @keyup.enter="editFile = !editFile">
+        <div v-show="editFile" @keyup.enter="confirmChangeFileName">
           <el-input v-model="calcFileName" size="small" placeholder="请输入文件名" />
         </div>
         <div class="text-gray-700" v-show="!editFile" @click="editFile = !editFile">
