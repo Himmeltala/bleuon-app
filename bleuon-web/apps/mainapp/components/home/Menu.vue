@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ActiveItem } from "../typings/home-typing";
+import type { ActiveItem } from "./typings/home-typing";
 import { FlowchartApi } from "@mainapp/apis";
 
 const router = useRouter();
@@ -48,10 +48,6 @@ function createNewDiagram() {
               <div>流程图</div>
             </div>
             <div class="item">
-              <div class="i-tabler-list-check mr-1 text-theme-primary"></div>
-              <div>思维导图</div>
-            </div>
-            <div class="item">
               <div class="i-tabler-chalkboard mr-1 text-theme-primary"></div>
               <div>画布</div>
             </div>
@@ -69,31 +65,24 @@ function createNewDiagram() {
       </div>
       <div
         class="menu__item f-c-s"
-        :class="{ active: activeItem == 'auth-diagrams' }"
-        @click="navigateTo('auth-diagrams')">
-        <div class="mr-2 i-tabler-list-check"></div>
-        思维导图
+        :class="{ active: activeItem == 'auth-shares-flowchart' }"
+        @click="navigateTo('auth-shares-flowchart')">
+        <div class="mr-2 i-tabler-share"></div>
+        我分享的流程图
       </div>
       <div
         class="menu__item f-c-s"
-        :class="{ active: activeItem == 'auth-diagrams' }"
-        @click="navigateTo('auth-diagrams')">
+        :class="{ active: activeItem == 'auth-stars-flowchart' }"
+        @click="navigateTo('auth-stars-flowchart')">
+        <div class="mr-2 i-tabler-star"></div>
+        我收藏的流程图
+      </div>
+      <div
+        class="menu__item f-c-s"
+        :class="{ active: activeItem == 'auth-canvas-list' }"
+        @click="navigateTo('auth-canvas-list')">
         <div class="mr-2 i-tabler-chalkboard"></div>
         画布
-      </div>
-      <div
-        class="menu__item f-c-s"
-        :class="{ active: activeItem == 'auth-shares' }"
-        @click="navigateTo('auth-shares')">
-        <div class="mr-2 i-tabler-share"></div>
-        我的分享
-      </div>
-      <div
-        class="menu__item f-c-s"
-        :class="{ active: activeItem == 'auth-stars' }"
-        @click="navigateTo('auth-stars')">
-        <div class="mr-2 i-tabler-star"></div>
-        我的收藏
       </div>
     </div>
     <div class="mt-5 pb-5 b-b-1 b-b-solid b-border-primary">
@@ -141,7 +130,7 @@ function createNewDiagram() {
   box-shadow: 0 6px 16px 1px rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
 
   .item {
-    flex: 0 1 35% !important;
+    flex: 0 1 48% !important;
     --uno: cursor-pointer px-4 py-2 rd-2 transition-all-300 text-center f-c-s;
 
     &:hover {

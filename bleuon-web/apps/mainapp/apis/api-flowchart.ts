@@ -12,7 +12,7 @@ import request from "./use-axios";
  *
  * @param json
  */
-export function updateOne(data: FlowchartData, success?: Function, error?: Function) {
+export function updateOne(data: FlowchartData, success?: (data: R) => void, error?: Function) {
   request
     .post<R>("/flowchart/update/one", data)
     .then(({ data }) => {
@@ -34,9 +34,13 @@ export async function queryOne(params: { id: string }) {
 /**
  * 获取流程图
  */
-export async function exposeQueryOne(params: { id: string }) {
-  const { data } = await request.get<R<FlowchartData>>("/expose/flowchart/query/one", { params });
-  return data.data;
+export async function exposeQueryOne(params: { id: string }, error?: Function) {
+  try {
+    const { data } = await request.get<R<FlowchartData>>("/expose/flowchart/query/one", { params });
+    return data.data;
+  } catch (err) {
+    error && error(err);
+  }
 }
 
 /**

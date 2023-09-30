@@ -25,7 +25,13 @@ export function accountLogin(entity: IUser, success: Function, error?: Function)
   request
     .post<R<TokenR>>("/auth/login", body, { headers })
     .then(({ data }) => {
-      localStorage.setStorageWithAge(KeyVals.MAINAPP_TOKEN_KEY, data.data.token, data.data.expire);
+      localStorage.setStorageWithAge(
+        KeyVals.MAINAPP_TOKEN_KEY,
+        data.data.token,
+        data.data.expire,
+        data.data.username,
+        data.data.id
+      );
       success(data);
     })
     .catch(err => {
@@ -106,7 +112,9 @@ export function verifyMailCode(
         localStorage.setStorageWithAge(
           KeyVals.MAINAPP_TOKEN_KEY,
           data.data.token,
-          data.data.expire
+          data.data.expire,
+          data.data.username,
+          data.data.id
         );
       }
       success(data);

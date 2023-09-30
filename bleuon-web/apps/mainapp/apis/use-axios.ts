@@ -33,8 +33,10 @@ request.interceptors.response.use(
 
     if (data.code === 500) {
       ElMessage.error(data.message);
+      return Promise.reject();
     } else if (data.code === 400) {
       ElMessage.warning(data.message);
+      return Promise.reject();
     } else if (data.code === 403) {
       location.reload();
       localStorage.removeItem("BleuOn-Token");

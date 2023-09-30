@@ -219,6 +219,8 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> implements
 
             vo.setToken(token);
             vo.setExpire(JwtUtil.getExpire());
+            vo.setUsername(details.getUsername());
+            vo.setId(details.getId());
 
             redisTemplate.delete(getCacheCode());
 

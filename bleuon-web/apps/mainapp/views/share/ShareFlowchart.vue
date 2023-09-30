@@ -11,16 +11,31 @@ import "jointjs/css/layout.css";
 import "jointjs/css/themes/default.css";
 
 import { dia, initJointJs } from "@mainapp/lib";
-import { downloadWithDataUri } from "@mainapp/lib/tools";
 import { FlowchartApi } from "@mainapp/apis";
+import { ListenerService } from "@mainapp/service/diagraming/flowchart";
+import * as Data from "@mainapp/data/diagraming/flowchart";
 
-const flowchartData = shallowRef<FlowchartData>({});
+// components
+import HeaderToolsBottom from "@mainapp/components/diagraming/flowchart/HeaderToolsBottom.vue";
+import HeaderToolsTop from "@mainapp/components/diagraming/flowchart/HeaderToolsTop.vue";
+import FooterTools from "@mainapp/components/diagraming/flowchart/FooterTools.vue";
+
 const paper = shallowRef<dia.Paper>();
 const graph = shallowRef<dia.Graph>();
 const route = useRoute();
+const router = useRouter();
+
+const flowchartData = ref<FlowchartData>({});
+const textInputRef = shallowRef<HTMLInputElement>();
+
+provide(KeyVals.BLEUON_FLOWCHART_PAPER, paper);
+provide(KeyVals.BLEUON_FLOWCHART_GRAPH, graph);
+provide(KeyVals.BLEUON_FLOWCHART_DATA, flowchartData);
 
 async function fetchData() {
-  const data = await FlowchartApi.exposeQueryOne({ id: route.params.id.toString() });
+  const data = await FlowchartApi.exposeQueryOne({ id: route.params.id.toString() }, () => {
+    router.back();
+  });
   flowchartData.value = data;
 }
 
@@ -41,7 +56,7 @@ onMounted(() => {
   const jointjs = initJointJs({
     el: "bleuon__flowchart-content",
     width: "100vw",
-    height: "85vh",
+    height: "75vh",
     gridSize: flowchartData.value.gridSize,
     bgColor: flowchartData.value.bgColor,
     drawGrid: {
@@ -59,27 +74,46 @@ onMounted(() => {
   regainFromJson();
 
   paper.value.on({
+    "element:pointerclick": view => {
+      ListenerService.onPointerClickElement(view);
+    },
+    "element:pointerdblclick": view => {
+      ListenerService.onPointerDbclickElement(view, textInputRef.value);
+    },
+    "link:pointerclick": view => {
+      ListenerService.onPointerClickLink(view);
+    },
+    "link:pointerdblclick": view => {
+      ListenerService.onPointerDbclickElement(view, textInputRef.value);
+    },
+    "blank:pointerclick": evt => {
+      ListenerService.onPointerClickBlank();
+    },
     "blank:mousewheel": evt => {
       ListenerService.onMousewheelBlank(evt, paper.value);
     }
-  });
-
-  paper.value.setInteractivity({
-    elementMove: false,
-    elementResize: false,
-    linkMove: false,
-    linkVertexMove: false
   });
 });
 </script>
 
 <template>
-  <div class="bleuon__flowchart-wrapper">
-    <div class="bleuon__flochart-header h-15vh">
-      <!--  -->
+  <div class="bleuon__flowchart-container h-100vh">
+    <div
+      class="bleuon__flowchart-header h-22vh border-border-primary border-b-1 border-b-solid bg-#f6f7f8 px-4 py-4">
+      <HeaderToolsTop :type="'share'" class="mb-4" />
+      <HeaderToolsBottom
+        :is-clicked-element="Data.isClickedElement.value"
+        :is-clicked-link="Data.isClickedLink.value" />
     </div>
-    <div class="bleuon__flowchart-body h-85vh w-100vw">
-      <div id="bleuon__flowchart-content"></div>
+    <div class="bleuon__flowchart-wrapper f-c-b">
+      <div class="left"></div>
+      <div class="right">
+        <div id="bleuon__flowchart-content"></div>
+        <FooterTools class="h-3vh" />
+      </div>
+      <div class="bleuon__flowchart-extra">
+        <input ref="textInputRef" type="text" class="bleuon__flowchart-input absolute hidden" />
+      </div>
     </div>
   </div>
 </template>

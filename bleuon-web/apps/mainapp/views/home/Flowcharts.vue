@@ -6,7 +6,7 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import File from "./components/File.vue";
+import File from "@mainapp/components/home/File.vue";
 import { FlowchartApi } from "@mainapp/apis";
 import { downloadWithDataUri } from "@mainapp/lib/tools";
 import { formatted } from "@common/utils/date";

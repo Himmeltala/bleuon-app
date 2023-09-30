@@ -68,6 +68,9 @@ public class Flowchart {
     @TableField("modify_date")
     private Timestamp modifyDate;
 
+    @TableField("dead_share_date")
+    private Timestamp deadShareDate;
+
     @TableField("user_id")
     private String userId;
 }

@@ -40,7 +40,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         redisTemplate.opsForValue().set(jwtUuid, token, expire, TimeUnit.SECONDS);
 
-        R<AuthVo> success = R.success("登录成功！", new AuthVo(expire, token));
+        R<AuthVo> success = R.success("登录成功！", new AuthVo(expire, token, details.getUsername(), details.getId()));
         response.getWriter()
                 .write(JSON.toJSONString(success));
     }

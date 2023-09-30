@@ -14,6 +14,8 @@ public class AuthVo implements Serializable {
 
     private Long expire;
     private String token;
+    private String username;
+    private String id;
 
     public AuthVo() {
     }
@@ -21,6 +23,13 @@ public class AuthVo implements Serializable {
     public AuthVo(Long expire, String token) {
         this.expire = expire;
         this.token = token;
+    }
+
+    public AuthVo(Long expire, String token, String username, String id) {
+        this.expire = expire;
+        this.token = token;
+        this.username = username;
+        this.id = id;
     }
 
 }

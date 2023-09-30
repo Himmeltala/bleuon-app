@@ -7,6 +7,7 @@ import com.bleuon.entity.Flowchart;
 import com.bleuon.exception.JdbcErrorException;
 import com.bleuon.mapper.FlowchartMapper;
 import com.bleuon.service.IFlowchartService;
+import com.bleuon.utils.DateUtil;
 import com.bleuon.utils.http.R;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,8 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
                     .set("width", data.getWidth())
                     .set("height", data.getHeight())
                     .set("data_uri", data.getDataUri() == null ? "" : data.getDataUri())
-                    .set("is_public", data.getIsPublic() == null ? 0 : data.getIsPublic());
+                    .set("is_public", data.getIsPublic() == null ? 0 : data.getIsPublic())
+                    .set("dead_share_date", data.getDeadShareDate());
 
             boolean f = update(data, updateWrapper);
             if (f) {
@@ -64,6 +66,7 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
     }
 
     @Override
+    @Transactional
     public R<Flowchart> exposeQueryOne(String id) {
         Flowchart flowchart = query()
                 .eq("id", id)
@@ -71,7 +74,14 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
                 .one();
 
         if (Objects.isNull(flowchart)) {
-            return R.failed("查询失败，该流程图不是公开的！", null);
+            return R.failed("该流程图不是公开的！", null);
+        }
+
+        boolean isAfter = DateUtil.isAfter(flowchart.getDeadShareDate());
+        if (isAfter) {
+            flowchart.setDeadShareDate(null);
+            updateOne(flowchart);
+            return R.failed("该分享的流程图已经过期！", null);
         }
 
         return R.success(flowchart);

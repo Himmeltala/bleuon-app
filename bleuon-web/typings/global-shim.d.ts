@@ -6,7 +6,7 @@ declare interface Element {
 }
 
 declare type R<T = any> = {
-  code: number;
+  code: 200 | 403 | 500;
   data: T;
   message: string;
 };
@@ -14,6 +14,8 @@ declare type R<T = any> = {
 declare type TokenR = {
   expire: number;
   token: string;
+  username: string;
+  id: string;
 };
 
 declare type FlowchartData = Partial<{
@@ -27,7 +29,8 @@ declare type FlowchartData = Partial<{
   gridSize: number;
   connectorDefault: string;
   routerDefault: string;
-  isPublic: boolean;
+  isPublic: number;
+  deadShareDate: Date;
   createDate: Date;
   modifyDate: Date;
   userId: string;

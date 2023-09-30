@@ -7,8 +7,8 @@
  */
 
 import type { ActiveItem } from "./typings/home-typing";
-import Menu from "./components/Menu.vue";
-import Header from "./components/Header.vue";
+import Menu from "@mainapp/components/home/Menu.vue";
+import Header from "@mainapp/components/home/Header.vue";
 
 const activeItem = ref<ActiveItem>("auth-flowcharts");
 </script>

@@ -43,22 +43,22 @@ const router = createRouter({
           component: () => import("@mainapp/views/home/Flowcharts.vue")
         },
         {
-          path: "diagrams",
-          name: "auth-diagrams",
-          meta: { title: "我的文件" },
-          component: () => import("@mainapp/views/home/Diagrams.vue")
+          path: "shares-flowchart",
+          name: "auth-shares-flowchart",
+          meta: { title: "我分享的流程图" },
+          component: () => import("@mainapp/views/home/SharesFlowchart.vue")
         },
         {
-          path: "shares",
-          name: "auth-shares",
-          meta: { title: "我的分享" },
-          component: () => import("@mainapp/views/home/Shares.vue")
+          path: "stars-flowchart",
+          name: "auth-stars-flowchart",
+          meta: { title: "我收藏的流程图" },
+          component: () => import("@mainapp/views/home/StarsFlowchart.vue")
         },
         {
-          path: "stars",
-          name: "auth-stars",
-          meta: { title: "我的收藏" },
-          component: () => import("@mainapp/views/home/Stars.vue")
+          path: "canvas-list",
+          name: "auth-canvas-list",
+          meta: { title: "我的流程图" },
+          component: () => import("@mainapp/views/home/CanvasList.vue")
         }
       ]
     },

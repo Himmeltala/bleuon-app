@@ -18,26 +18,21 @@ import * as Data from "@mainapp/data/diagraming/flowchart";
 import { ListenerService } from "@mainapp/service/diagraming/flowchart";
 
 // components
-import FlowchartHeaderToolsBottom from "@mainapp/components/diagraming/flowchart/HeaderToolsBottom.vue";
-import FlowchartHeaderToolsTop from "@mainapp/components/diagraming/flowchart/HeaderToolsTop.vue";
-import FlowchartFooterTools from "@mainapp/components/diagraming/flowchart/FooterTools.vue";
-import FlowchartSidebar from "@mainapp/components/diagraming/flowchart/Sidebar.vue";
+import HeaderToolsBottom from "@mainapp/components/diagraming/flowchart/HeaderToolsBottom.vue";
+import HeaderToolsTop from "@mainapp/components/diagraming/flowchart/HeaderToolsTop.vue";
+import FooterTools from "@mainapp/components/diagraming/flowchart/FooterTools.vue";
+import Sidebar from "@mainapp/components/diagraming/flowchart/Sidebar.vue";
 
 const paper = shallowRef<dia.Paper>();
 const graph = shallowRef<dia.Graph>();
 const route = useRoute();
 
-const flowchartData = ref<FlowchartData>({
-  width: 1000,
-  height: 1000,
-  fileName: "未命名的文件"
-});
+const flowchartData = ref<FlowchartData>({});
+const textInputRef = shallowRef<HTMLInputElement>();
 
 provide(KeyVals.BLEUON_FLOWCHART_PAPER, paper);
 provide(KeyVals.BLEUON_FLOWCHART_GRAPH, graph);
 provide(KeyVals.BLEUON_FLOWCHART_DATA, flowchartData);
-
-const textInputRef = shallowRef<HTMLInputElement>();
 
 async function fetchData() {
   const data = await FlowchartApi.queryOne({ id: route.params.id.toString() });
@@ -130,22 +125,24 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="bleuon__flowchart-container">
+  <div class="bleuon__flowchart-container h-100vh">
     <div
       class="bleuon__flowchart-header h-22vh border-border-primary border-b-1 border-b-solid bg-#f6f7f8 px-4 py-4">
-      <FlowchartHeaderToolsTop @change="updateThrottle" class="mb-4" />
-      <FlowchartHeaderToolsBottom
+      <HeaderToolsTop @change="updateThrottle" class="mb-4" />
+      <HeaderToolsBottom
         :is-clicked-element="Data.isClickedElement.value"
         :is-clicked-link="Data.isClickedLink.value" />
     </div>
     <div class="bleuon__flowchart-wrapper f-c-b">
-      <FlowchartSidebar class="w-15vw h-78vh" />
-      <div class="bleuon__flowchart-body relative">
+      <div class="left">
+        <Sidebar class="h-78vh" />
+      </div>
+      <div class="right">
         <div id="bleuon__flowchart-content"></div>
-        <FlowchartFooterTools class="w-100% h-3vh" />
-        <div class="bleuon__flowchart-extra">
-          <input ref="textInputRef" type="text" class="bleuon__flowchart-input absolute hidden" />
-        </div>
+        <FooterTools class="h-3vh" />
+      </div>
+      <div class="bleuon__flowchart-extra">
+        <input ref="textInputRef" type="text" class="bleuon__flowchart-input absolute hidden" />
       </div>
     </div>
   </div>

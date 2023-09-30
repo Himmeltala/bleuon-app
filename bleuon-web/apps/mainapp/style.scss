@@ -24,3 +24,9 @@ html[class="light"] {
   // border
   --blueon-border-primary: #dfe2e5;
 }
+
+* {
+  color: inherit;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
