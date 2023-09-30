@@ -39,7 +39,9 @@ function changeTabIndex(name: TabIndexType) {
           @click="changeTabIndex('AccountLogin')"
           class="mr-10 cursor-pointer pb-4 text-1.1rem"
           :class="
-            tabIndex === 'AccountLogin' ? 'active font-bold b-b-solid b-b-primary b-b-2' : 'text-b'
+            tabIndex === 'AccountLogin'
+              ? 'active font-bold b-b-solid b-b-primary b-b-2'
+              : 'text-text-secondary'
           ">
           账号登录
         </div>
@@ -47,7 +49,9 @@ function changeTabIndex(name: TabIndexType) {
           @click="changeTabIndex('EmailLogin')"
           class="cursor-pointer pb-4 text-1.1rem"
           :class="
-            tabIndex === 'EmailLogin' ? 'active font-bold b-b-solid b-b-primary b-b-2' : 'text-b'
+            tabIndex === 'EmailLogin'
+              ? 'active font-bold b-b-solid b-b-primary b-b-2'
+              : 'text-text-secondary'
           ">
           邮箱登录
         </div>
@@ -56,7 +60,9 @@ function changeTabIndex(name: TabIndexType) {
         <component :is="tabs[tabIndex]"></component>
       </KeepAlive>
       <div class="f-c-b">
-        <div class="text-b cursor-pointer" @click="$emit('update:dynamicCompName', 'FindAccount')">
+        <div
+          class="text-text-secondary cursor-pointer"
+          @click="$emit('update:dynamicCompName', 'FindAccount')">
           忘记密码？
         </div>
         <div
@@ -65,11 +71,11 @@ function changeTabIndex(name: TabIndexType) {
           新用户账号注册
         </div>
       </div>
-      <div class="other-login mt-15 f-c-c text-b">
+      <div class="other-login mt-15 f-c-c text-text-secondary">
         <div>其他方式登录</div>
       </div>
     </div>
-    <div class="absolute text-center bottom-5 w-40% text-0.8rem text-b">
+    <div class="absolute text-center bottom-5 w-40% text-0.8rem text-text-secondary">
       登录即表示您已同意<span class="hover"><u>服务条款</u></span>
     </div>
   </div>

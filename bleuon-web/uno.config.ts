@@ -24,28 +24,22 @@ export default defineConfig({
   ],
   theme: {
     colors: {
-      a: "var(--text-a)",
-      b: "var(--text-b)",
-      c: "var(--text-c)",
-      primary: "var(--text-primary)",
-      dropA: "var(--bg-a)"
-    }
-  },
-  preflights: [
-    {
-      getCSS: ({ theme }) => {
-        return `
-          * {
-            color: inherit;
-            scroll-behavior: smooth;
-            word-break: break-all;
-            line-break: anywhere;
-            box-sizing: border-box;
-          }
-        `;
+      theme: {
+        primary: "var(--el-color-primary)"
+      },
+      text: {
+        primary: "var(--bleuon-text-primary)",
+        secondary: "var(--bleuon-text-secondary)",
+        thirdly: "var(--bleuon-text-thirdly)"
+      },
+      bg: {
+        primary: ""
+      },
+      border: {
+        primary: "var(--blueon-border-primary)"
       }
     }
-  ],
+  },
   rules: [
     [
       /^flow-(auto|hidden|inherit|initial|overlay|revert|scroll|unset|visible)$/,
@@ -77,31 +71,11 @@ export default defineConfig({
         return style;
       }
     ],
-    // fixed left-0 right-0
-    [
-      /^fixed-(l(t|b){0,1}|r(t|b){0,1}|(t|b))$/,
-      ([, g1]) => {
-        let style = `fixed `;
-        const temps = [
-          { k: "l", v: "left-0" },
-          { k: "r", v: "right-0" },
-          { k: "t", v: "top-0" },
-          { k: "b", v: "bottom-0" }
-        ];
-
-        for (let i = 0; i < g1.length; i++) {
-          const r = temps.find(r => r.k == g1[i]);
-          style += ` ${r?.v}`;
-        }
-
-        return style;
-      }
-    ],
     // 悬停改变字体颜色
     [
       /^hover$/,
       () => {
-        return `cursor-pointer hover:text-primary transition-all-300`;
+        return `cursor-pointer hover:text-theme-primary transition-all-300`;
       }
     ]
   ]

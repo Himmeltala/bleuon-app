@@ -7,7 +7,7 @@ import {
   rePasswdValidator,
   getVerifyCode,
   commitForm
-} from "@mainapp/utils/form-validators";
+} from "@common/utils/form-validators";
 import { UserApi } from "@mainapp/apis";
 
 const coudButtonCount = ref(60);
@@ -68,7 +68,7 @@ function confirmGetVerifyCode() {
 }
 
 function confirmSubmitForm() {
-  commitForm(formRef.value,  () => {
+  commitForm(formRef.value, () => {
     UserApi.verifyMailCode(formData, formData.code, "register", () => {
       ElMessage({
         type: "success",
@@ -142,7 +142,7 @@ function confirmSubmitForm() {
         </el-button>
       </el-form-item>
     </el-form>
-    <div class="text-b text-0.8rem text-end mb-4">注：注册后可立即前往登录。</div>
+    <div class="text-text-secondary text-0.8rem text-end mb-4">注：注册后可立即前往登录。</div>
   </div>
 </template>
 

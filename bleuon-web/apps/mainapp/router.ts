@@ -16,6 +16,20 @@ const router = createRouter({
       component: () => import("@mainapp/views/Welcome.vue")
     },
     {
+      path: "/share",
+      name: "public-share",
+      meta: { title: "分享" },
+      component: () => import("@mainapp/views/share/Share.vue"),
+      children: [
+        {
+          path: "flowchart/:id",
+          name: "public-share-flowchart",
+          meta: { title: "分享的流程图" },
+          component: () => import("@mainapp/views/share/ShareFlowchart.vue")
+        }
+      ]
+    },
+    {
       path: "/home",
       name: "auth-home",
       meta: { title: "首页" },

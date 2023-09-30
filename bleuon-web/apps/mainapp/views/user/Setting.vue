@@ -81,7 +81,7 @@ function resetBasicData() {}
               <el-form :model="formData" label-width="auto" label-position="left">
                 <el-form-item label="昵称">
                   <div class="f-c-c" v-if="!isEditUsername">
-                    <div class="mr-5 text-b">{{ formData.username }}</div>
+                    <div class="mr-5 text-text-secondary">{{ formData.username }}</div>
                     <div
                       class="i-tabler-pencil-minus hover"
                       @click="isEditUsername = !isEditUsername"></div>
@@ -147,7 +147,7 @@ function resetBasicData() {}
                 <div>手机号</div>
               </div>
               <div class="ml-10 f-c-c">
-                <div class="text-c">18508153489</div>
+                <div class="text-text-thirdly">18508153489</div>
                 <div class="ml-10 text-primary cursor-pointer">更换手机号</div>
               </div>
             </div>
@@ -158,7 +158,7 @@ function resetBasicData() {}
                 <div>邮箱号</div>
               </div>
               <div class="ml-10 f-c-c">
-                <div class="text-c">zhengrenfu@outlook.com</div>
+                <div class="text-text-thirdly">zhengrenfu@outlook.com</div>
                 <div class="ml-10 text-primary cursor-pointer">更换邮箱号</div>
               </div>
             </div>
@@ -168,7 +168,7 @@ function resetBasicData() {}
                 <div>密码</div>
               </div>
               <div class="ml-10 f-c-c">
-                <div class="text-c">******</div>
+                <div class="text-text-thirdly">******</div>
                 <div class="ml-10 text-primary cursor-pointer">更换密码</div>
               </div>
             </div>

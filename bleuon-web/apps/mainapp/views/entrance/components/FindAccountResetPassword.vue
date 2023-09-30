@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { FormRules } from "element-plus";
-import { passwordValidator, rePasswdValidator, commitForm } from "@mainapp/utils/form-validators";
+import { passwordValidator, rePasswdValidator, commitForm } from "@common/utils/form-validators";
 import { UserApi } from "@mainapp/apis";
 
 const props = defineProps({
@@ -90,7 +90,7 @@ function confirmSubmitForm() {
         </el-button>
       </el-form-item>
     </el-form>
-    <div class="text-b text-0.8rem text-end mb-4">注：重置后可立即前往登录。</div>
+    <div class="text-text-secondary text-0.8rem text-end mb-4">注：重置后可立即前往登录。</div>
   </div>
 </template>
 

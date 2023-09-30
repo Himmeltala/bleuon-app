@@ -32,7 +32,7 @@ function createNewDiagram() {
 </script>
 
 <template>
-  <div class="menu slim-slider h-100vh flow-auto px-5 b-r-1 b-r-solid b-r-#e4e4e4 bg-white">
+  <div class="menu slim-slider h-100vh flow-auto px-5 b-r-1 b-r-solid b-border-primary bg-white">
     <div class="menu__header">
       <div class="mt-5">
         <img src="/bleuon-icon.png" class="h-15 w-40 object-cover" />
@@ -42,43 +42,43 @@ function createNewDiagram() {
         <div
           class="options__panel select-none p-2 z-2 absolute top-12 left-0 w-65 bg-white rd-2"
           :class="disabled ? 'block' : 'hidden'">
-          <div class="f-c-b flex-wrap flex-gap-5">
+          <div class="f-s-b flex-wrap flex-gap-1">
             <div class="item" @click="createNewDiagram">
-              <div></div>
+              <div class="i-tabler-chart-grid-dots mr-1 text-theme-primary"></div>
               <div>流程图</div>
             </div>
             <div class="item">
-              <div></div>
+              <div class="i-tabler-list-check mr-1 text-theme-primary"></div>
               <div>思维导图</div>
             </div>
             <div class="item">
-              <div></div>
+              <div class="i-tabler-chalkboard mr-1 text-theme-primary"></div>
               <div>画布</div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="menu__body mt-10 pb-5 b-b-1 b-b-solid b-b-#e4e4e4">
+    <div class="menu__body mt-10 pb-5 b-b-1 b-b-solid b-border-primary">
       <div
         class="menu__item f-c-s"
         :class="{ active: activeItem == 'auth-flowcharts' }"
         @click="navigateTo('auth-flowcharts')">
-        <div class="mr-2 i-tabler-clock-hour-3"></div>
+        <div class="mr-2 i-tabler-chart-grid-dots"></div>
         流程图
       </div>
       <div
         class="menu__item f-c-s"
         :class="{ active: activeItem == 'auth-diagrams' }"
         @click="navigateTo('auth-diagrams')">
-        <div class="mr-2 i-tabler-folder"></div>
+        <div class="mr-2 i-tabler-list-check"></div>
         思维导图
       </div>
       <div
         class="menu__item f-c-s"
         :class="{ active: activeItem == 'auth-diagrams' }"
         @click="navigateTo('auth-diagrams')">
-        <div class="mr-2 i-tabler-folder"></div>
+        <div class="mr-2 i-tabler-chalkboard"></div>
         画布
       </div>
       <div
@@ -96,7 +96,7 @@ function createNewDiagram() {
         我的收藏
       </div>
     </div>
-    <div class="mt-5 pb-5 b-b-1 b-b-solid b-b-#e4e4e4">
+    <div class="mt-5 pb-5 b-b-1 b-b-solid b-border-primary">
       <div
         class="menu__item f-c-s"
         :class="{ active: activeItem == 'auth-templates' }"
@@ -141,8 +141,8 @@ function createNewDiagram() {
   box-shadow: 0 6px 16px 1px rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
 
   .item {
-    flex: 0 1 45% !important;
-    --uno: cursor-pointer px-4 py-2 rd-2 transition-all-300 text-center;
+    flex: 0 1 35% !important;
+    --uno: cursor-pointer px-4 py-2 rd-2 transition-all-300 text-center f-c-s;
 
     &:hover {
       --uno: bg-#F3F5F9;

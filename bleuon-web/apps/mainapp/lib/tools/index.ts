@@ -179,23 +179,26 @@ export function convertSvgToImage(
   paper: dia.Paper,
   graph: dia.Graph,
   type: "png" | "jpeg",
-  config: FlowchartData
+  config: {
+    width?: number;
+    height?: number;
+    bgColor?: string;
+    dataUri?: string;
+    fileName?: string;
+  },
+  success?: Function,
+  failure?: Function
 ) {
   const canvas = document.createElement("canvas");
   const context = canvas.getContext("2d");
 
-  const elements = graph.getElements();
-  elements.forEach(v => {
-    v.removePorts();
-  });
-
-  const dataUri = new XMLSerializer().serializeToString(paper.childNodes.svg);
+  const dataUri = getDataUri(paper, graph);
   const image = new Image();
-  image.src = "data:image/svg+xml," + encodeURIComponent(dataUri);
+  image.src = dataUri;
 
   image.onload = function () {
-    canvas.width = config.width;
-    canvas.height = config.height;
+    canvas.width = config.width || 1000;
+    canvas.height = config.height || 1000;
     context.fillStyle = config.bgColor || "#ffffff";
     context.fillRect(0, 0, canvas.width, canvas.height);
     context.drawImage(image, 0, 0);
@@ -203,7 +206,70 @@ export function convertSvgToImage(
     const dataURL = canvas.toDataURL(`image/${type}`);
     const link = document.createElement("a");
     link.href = dataURL;
-    link.download = `${config.fileName}-${formatted("yyyy-MM-dd HH_mm_ss")}.${type}`;
+    link.download = `${config.fileName || "未命名的文件"}-${formatted(
+      "yyyy-MM-dd HH_mm_ss"
+    )}.${type}`;
     link.click();
+
+    success && success("下载成功！");
+  };
+}
+
+/**
+ * 获取 data uri
+ *
+ * @param paper
+ * @param graph
+ */
+export function getDataUri(paper: dia.Paper, graph: dia.Graph) {
+  // const elements = graph.getElements();
+  // elements.forEach(v => {
+  //   v.removePorts();
+  // });
+
+  const dataUri = new XMLSerializer().serializeToString(paper.childNodes.svg);
+  return "data:image/svg+xml," + encodeURIComponent(dataUri);
+}
+
+/**
+ * 通过 dataUri 下载图片
+ *
+ * @param data width、height、bgColor、dataUri
+ * @param type png、jpeg
+ */
+export function downloadWithDataUri(
+  data: { width?: number; height?: number; bgColor?: string; dataUri?: string; fileName?: string },
+  type: "png" | "jpeg",
+  success?: Function,
+  failure?: Function
+) {
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d");
+
+  const image = new Image();
+
+  if (!data.dataUri) {
+    failure && failure("dataUri 为空，下载失败！");
+    return;
+  }
+
+  image.src = data.dataUri;
+
+  image.onload = function () {
+    canvas.width = data.width || 1000;
+    canvas.height = data.height || 1000;
+    context.fillStyle = data.bgColor || "#ffffff";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.drawImage(image, 0, 0);
+
+    const dataURL = canvas.toDataURL(`image/${type}`);
+    const link = document.createElement("a");
+    link.href = dataURL;
+    link.download = `${data.fileName || "未命名的文件"}-${formatted(
+      "yyyy-MM-dd HH_mm_ss"
+    )}.${type}`;
+    link.click();
+
+    success && success("下载成功！");
   };
 }

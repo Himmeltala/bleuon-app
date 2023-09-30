@@ -17,7 +17,13 @@ public interface IFlowchartService {
 
     R<Flowchart> queryOne(String id);
 
-    R<List<Flowchart>> queryAll(String userId);
+    R<Flowchart> exposeQueryOne(String id);
+
+    R<List<Flowchart>> queryAll(String userId, String type, String[] cols);
 
     R<Flowchart> createOne(String userId);
+
+    R<Flowchart> copyOne(Flowchart data, String userId);
+
+    R<Void> deleteOne(String id);
 }

@@ -7,7 +7,7 @@
  */
 
 import { OfficialCellsApi } from "@mainapp/apis";
-import SVG from "./SVG.vue";
+import SVG from "../SVG.vue";
 
 const data = ref(null);
 
@@ -16,7 +16,7 @@ data.value = await OfficialCellsApi.queryAll("flowchart");
 
 <template>
   <div class="cells-for-flowchart">
-    <div class="mb-4 font-bold">Flowchart 图形</div>
+    <div class="mb-4 text-0.8rem font-bold">Flowchart 图形</div>
     <div class="f-c-s flex-wrap flex-gap-3">
       <SVG
         v-if="data.length"

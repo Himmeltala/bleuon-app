@@ -9,25 +9,27 @@
 
 <template>
   <div class="welcome">
-    <div class="header fixed-lt w-100% f-c-b px-55 h-20 b-b-1 b-b-solid b-b-#e4e4e4 bg-white">
-      <div class="flex-grow-1 cursor-pointer f-c-s" @click="$router.push('/')">
-        <img src="/bleuon-icon.png" class="w-45 h-15 object-cover" />
-      </div>
-      <div class="flex-grow-2 f-c-b text-1.1rem">
-        <div class="hover">推荐</div>
-        <div class="hover">模板</div>
-        <div class="hover">专题</div>
-      </div>
-      <div class="flex-grow-1 f-c-e">
-        <el-button text @click="$router.push('/entrance')">
-          <span class="text-primary">登录</span>
-        </el-button>
-        <el-button type="primary" @click="$router.push('/entrance')">免费注册</el-button>
+    <div class="header fixed right-0 top-0 w-100%">
+      <div class="px-55 f-c-b h-20 b-b-1 b-b-solid b-border-primary bg-white">
+        <div class="flex-grow-1 cursor-pointer f-c-s" @click="$router.push('/')">
+          <img src="/bleuon-icon.png" class="w-45 h-15 object-cover" />
+        </div>
+        <div class="flex-grow-2 f-c-b text-1.1rem">
+          <div class="hover">推荐</div>
+          <div class="hover">模板</div>
+          <div class="hover">专题</div>
+        </div>
+        <div class="flex-grow-1 f-c-e">
+          <el-button text @click="$router.push('/entrance')">
+            <span class="text-primary">登录</span>
+          </el-button>
+          <el-button type="primary" @click="$router.push('/entrance')">免费注册</el-button>
+        </div>
       </div>
     </div>
     <div class="mt-70">
       <div class="text-center text-3rem font-bold">免费在线流程图思维导图</div>
-      <div class="text-center text-1.5rem mt-4 text-b">
+      <div class="text-center text-1.5rem mt-4 text-text-secondary">
         一款在线作图工具，支持原型图、UML、BPMN、网络拓扑图等多种图形绘制
       </div>
       <div class="text-center mt-20">
@@ -47,15 +49,15 @@
         <div class="w-35%">
           <div class="mb-4 pb-4 cursor-pointer b-b-1 b-b-solid b-b-#e4e4e4">
             <div class="text-1.3rem font-bold">图片导出</div>
-            <div class="text-b text-1.1rem mt-4">支出 png 格式导出</div>
+            <div class="text-text-secondary text-1.1rem mt-4">支出 png 格式导出</div>
           </div>
           <div class="mb-4 pb-4 cursor-pointer b-b-1 b-b-solid b-b-#e4e4e4">
             <div class="text-1.3rem font-bold">云端存储</div>
-            <div class="text-b text-1.1rem mt-4">支出 png 格式导出</div>
+            <div class="text-text-secondary text-1.1rem mt-4">支出 png 格式导出</div>
           </div>
           <div class="pb-4 cursor-pointer b-b-1 b-b-solid b-b-#e4e4e4">
             <div class="text-1.3rem font-bold">多人共享</div>
-            <div class="text-b text-1.1rem mt-4">支出 png 格式导出</div>
+            <div class="text-text-secondary text-1.1rem mt-4">支出 png 格式导出</div>
           </div>
         </div>
       </div>

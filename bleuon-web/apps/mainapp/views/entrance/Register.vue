@@ -33,7 +33,9 @@ const tabs = {
           @click="tabIndex = 'EmailRegister'"
           class="mr-10 cursor-pointer pb-4 text-1.1rem"
           :class="
-            tabIndex === 'EmailRegister' ? 'active font-bold b-b-solid b-b-primary b-b-2' : 'text-b'
+            tabIndex === 'EmailRegister'
+              ? 'active font-bold b-b-solid b-b-primary b-b-2'
+              : 'text-text-secondary'
           ">
           邮箱注册
         </div>
@@ -43,7 +45,7 @@ const tabs = {
           :class="
             tabIndex === 'AccountRegister'
               ? 'active font-bold b-b-solid b-b-primary b-b-2'
-              : 'text-b'
+              : 'text-text-secondary'
           ">
           账号注册
         </div>
@@ -57,7 +59,7 @@ const tabs = {
         已经有账号？
       </div>
     </div>
-    <div class="absolute text-center bottom-5 w-40% text-0.8rem text-b">
+    <div class="absolute text-center bottom-5 w-40% text-0.8rem text-text-secondary">
       登录即表示您已同意<span class="hover"><u>服务条款</u></span>
     </div>
   </div>

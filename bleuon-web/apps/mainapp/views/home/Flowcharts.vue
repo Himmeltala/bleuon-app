@@ -8,19 +8,75 @@
 
 import File from "./components/File.vue";
 import { FlowchartApi } from "@mainapp/apis";
+import { downloadWithDataUri } from "@mainapp/lib/tools";
 import { formatted } from "@common/utils/date";
+import { fileNameValidator } from "@common/utils/form-validators";
 
+const operateFlowchart = ref<FlowchartData>({});
+const flowchartList = ref(
+  await FlowchartApi.queryAll({ type: "desc", cols: ["modify_date", "create_date"] })
+);
 const lastFileIndex = ref(-1);
 
-const flowchartList = ref(await FlowchartApi.queryAll());
-
 function filterFiles() {}
+
+const updateFileNameDialogVisible = ref(false);
+const isFileNameCorrect = ref(false);
+const fileNameRules = reactive({
+  fileName: [
+    { validator: fileNameValidator(isFileNameCorrect), trigger: "blur" },
+    { validator: fileNameValidator(isFileNameCorrect), trigger: "change" }
+  ]
+});
+
+function updateFileName() {
+  FlowchartApi.updateOne(operateFlowchart.value, () => {
+    updateFileNameDialogVisible.value = !updateFileNameDialogVisible.value;
+  });
+}
+
+function downloadFlowchart() {
+  downloadWithDataUri(
+    operateFlowchart.value,
+    "jpeg",
+    () => {
+      ElMessage.success("下载成功！");
+    },
+    () => {
+      ElMessage.error("下载失败！");
+    }
+  );
+}
+
+function copyFlowchart() {
+  operateFlowchart.value.fileName = "复制_" + operateFlowchart.value.fileName;
+  FlowchartApi.copyOne(operateFlowchart.value, async () => {
+    flowchartList.value = await FlowchartApi.queryAll({
+      type: "desc",
+      cols: ["modify_date", "create_date"]
+    });
+  });
+}
+
+function deleteFlowchart() {
+  FlowchartApi.deleteOne(
+    {
+      id: operateFlowchart.value.id
+    },
+    async () => {
+      flowchartList.value = await FlowchartApi.queryAll({
+        type: "desc",
+        cols: ["modify_date", "create_date"]
+      });
+    }
+  );
+}
 </script>
 
 <template>
   <div class="myrecent h-100%">
     <div class="f-c-b">
-      <div>最近</div>
+      <div>我的流程图</div>
       <div class="f-c-c">
         <div>
           <el-tooltip content="筛选" placement="bottom">
@@ -33,19 +89,47 @@ function filterFiles() {}
         </div>
       </div>
     </div>
-    <div class="mt-5 text-b text-0.9rem">文件</div>
+    <div class="mt-5 text-text-secondary text-0.9rem">文件</div>
     <div class="file-list mt-5 f-c-s flex-wrap flex-gap-5">
       <File
         v-for="(item, index) in flowchartList"
         :key="item.id"
-        :file-name="item.fileName"
-        :file-image="'https://img2.baidu.com/it/u=1616455932,108201296&fm=253&fmt=auto&app=138&f=JPEG?w=281&h=500'"
-        :update-date="formatted('yyyy-MM-dd HH:mm:ss', new Date(item.modifyDate))"
         :index="index"
-        :path="'/flowchart/' + item.id"
+        :disabled="lastFileIndex == index"
         v-model:last-index="lastFileIndex"
-        :disabled="lastFileIndex == index"></File>
+        :file-name="item.fileName"
+        :file-image="item.dataUri"
+        :modify-date="formatted('MM-dd HH:mm:ss', new Date(item.modifyDate))"
+        :path="'/flowchart/' + item.id"
+        @download="downloadFlowchart"
+        @copy="copyFlowchart"
+        @delete="deleteFlowchart"
+        @clicked="operateFlowchart = flowchartList[index]"
+        @reset-file-name="updateFileNameDialogVisible = !updateFileNameDialogVisible"></File>
     </div>
+    <el-dialog v-model="updateFileNameDialogVisible" title="修改文件名称" width="30%">
+      <el-form :model="operateFlowchart" :rules="fileNameRules">
+        <el-form-item prop="fileName">
+          <el-input v-model="operateFlowchart.fileName" placeholder="请输入文件名称" />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button :disabled="!isFileNameCorrect" type="primary" @click="updateFileName">
+            <template #icon>
+              <div class="i-tabler-check"></div>
+            </template>
+            确定
+          </el-button>
+          <el-button @click="updateFileNameDialogVisible = false">
+            <template #icon>
+              <div class="i-tabler-x"></div>
+            </template>
+            取消
+          </el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 

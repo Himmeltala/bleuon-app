@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { UserApi } from "@mainapp/apis";
 import type { FormRules } from "element-plus";
-import { accountValidator, passwordValidator, commitForm } from "@mainapp/utils/form-validators";
+import { accountValidator, passwordValidator, commitForm } from "@common/utils/form-validators";
 
 const router = useRouter();
 

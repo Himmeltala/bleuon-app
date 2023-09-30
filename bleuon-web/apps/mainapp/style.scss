@@ -9,20 +9,18 @@
 @import "@mainapp/scss/index";
 
 html[class="dark"] {
-  --bg-a: #222222;
   // 主题规定的文字颜色
-  --text-a: #a7a7a7;
-  --text-b: #999999;
-  --text-c: #7c7c7c;
-  --text-primary: #409eff;
+  --bleuon-text-primary: #a7a7a7;
+  --bleuon-text-secondary: #999999;
+  --bleuon-text-thirdly: #7c7c7c;
 }
 
 html[class="light"] {
-  --bg-a: #ffffff;
   // 主题规定的文字颜色
-  --text-a: #383838;
-  --text-b: #686868;
-  --text-c: #969696;
-  --text-d: #dedede;
-  --text-primary: #409eff;
+  --bleuon-text-primary: #383838;
+  --bleuon-text-secondary: #686868;
+  --bleuon-text-thirdly: #969696;
+
+  // border
+  --blueon-border-primary: #dfe2e5;
 }

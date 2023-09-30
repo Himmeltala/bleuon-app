@@ -15,7 +15,7 @@ const searchType = ref("file");
         <template #prepend>
           <el-select v-model="searchType" placeholder="搜索的类型" style="width: 115px">
             <el-option label="文件" value="file" />
-            <el-option label="文件夹" value="folder" />
+            <!-- <el-option label="文件夹" value="folder" /> -->
           </el-select>
         </template>
       </el-input>

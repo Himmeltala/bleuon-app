@@ -34,7 +34,7 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
               <el-tag type="warning" class="mr-4">本科</el-tag>
               <el-tag>计算机科学与技术</el-tag>
             </div>
-            <div class="signature text-b">Time tick away, dream faded away!</div>
+            <div class="signature text-text-secondary">Time tick away, dream faded away!</div>
           </div>
         </div>
         <div class="f-c-b">

@@ -6,17 +6,22 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import { dia, initJointJs } from "@mainapp/lib";
+// jointjs css
 import "jointjs/css/layout.css";
 import "jointjs/css/themes/default.css";
-import * as Data from "./data";
-import { ListenerService } from "./service";
-import { FlowchartApi } from "@mainapp/apis";
-import FlowchartHeaderToolsBottom from "./components/FlowchartHeaderToolsBottom.vue";
-import FlowchartHeaderToolsTop from "./components/FlowchartHeaderToolsTop.vue";
-import FlowchartFooterTools from "./components/FlowchartFooterTools.vue";
-import FlowchartSidebar from "./components/FlowchartSidebar.vue";
+
 import { throttle } from "@common/utils/prevent";
+import { dia, initJointJs } from "@mainapp/lib";
+import { getDataUri } from "@mainapp/lib/tools";
+import { FlowchartApi } from "@mainapp/apis";
+import * as Data from "@mainapp/data/diagraming/flowchart";
+import { ListenerService } from "@mainapp/service/diagraming/flowchart";
+
+// components
+import FlowchartHeaderToolsBottom from "@mainapp/components/diagraming/flowchart/HeaderToolsBottom.vue";
+import FlowchartHeaderToolsTop from "@mainapp/components/diagraming/flowchart/HeaderToolsTop.vue";
+import FlowchartFooterTools from "@mainapp/components/diagraming/flowchart/FooterTools.vue";
+import FlowchartSidebar from "@mainapp/components/diagraming/flowchart/Sidebar.vue";
 
 const paper = shallowRef<dia.Paper>();
 const graph = shallowRef<dia.Graph>();
@@ -39,9 +44,7 @@ async function fetchData() {
   flowchartData.value = data;
 }
 
-await fetchData();
-
-function updateJointjs() {
+function updateFlowchartData() {
   const { width, height } = paper.value.getArea();
   flowchartData.value.width = width;
   flowchartData.value.height = height;
@@ -49,14 +52,31 @@ function updateJointjs() {
   flowchartData.value.json = JSON.stringify(graph.value.toJSON());
   flowchartData.value.connectorDefault = JSON.stringify(Data.linkConnectorConfig.value);
   flowchartData.value.routerDefault = JSON.stringify(Data.linkRouterConfig.value);
+  flowchartData.value.dataUri = getDataUri(paper.value, graph.value);
   FlowchartApi.updateOne(flowchartData.value, () => {});
 }
 
-const thr = throttle(updateJointjs, 5000);
+const updateThrottle = throttle(updateFlowchartData, 3000);
+
+function regainFromJson() {
+  if (flowchartData.value.json) {
+    paper.value.freeze();
+    graph.value.fromJSON(JSON.parse(flowchartData.value.json));
+    paper.value.unfreeze();
+  }
+
+  Data.linkConnectorConfig.value = JSON.parse(flowchartData.value.connectorDefault);
+  Data.linkRouterConfig.value = JSON.parse(flowchartData.value.routerDefault);
+
+  paper.value.options.defaultConnector = Data.linkConnectorConfig.value;
+  paper.value.options.defaultRouter = Data.linkRouterConfig.value;
+}
+
+await fetchData();
 
 onMounted(() => {
   const jointjs = initJointJs({
-    el: "bleuon__flowchat-content",
+    el: "bleuon__flowchart-content",
     width: "85vw",
     height: "75vh",
     gridSize: flowchartData.value.gridSize,
@@ -73,15 +93,7 @@ onMounted(() => {
   paper.value = jointjs.paper;
   graph.value = jointjs.graph;
 
-  if (flowchartData.value.json) {
-    graph.value.fromJSON(JSON.parse(flowchartData.value.json));
-  }
-
-  Data.linkConnectorConfig.value = JSON.parse(flowchartData.value.connectorDefault);
-  Data.linkRouterConfig.value = JSON.parse(flowchartData.value.routerDefault);
-
-  paper.value.options.defaultConnector = Data.linkConnectorConfig.value;
-  paper.value.options.defaultRouter = Data.linkRouterConfig.value;
+  regainFromJson();
 
   paper.value.on({
     "element:pointerclick": view => {
@@ -105,34 +117,34 @@ onMounted(() => {
   });
 
   // @ts-ignore
-  graph.value.on("change", evt => thr());
+  graph.value.on("change", updateThrottle);
   // @ts-ignore
-  graph.value.on("add", evt => thr());
+  graph.value.on("add", updateThrottle);
   // @ts-ignore
-  graph.value.on("remove", evt => thr());
+  graph.value.on("remove", updateThrottle);
 
   ListenerService.onKeydown({
-    ctrlS: () => thr()
+    ctrlS: updateThrottle
   });
 });
 </script>
 
 <template>
-  <div class="bleuon__flowchat-container">
+  <div class="bleuon__flowchart-container">
     <div
-      class="bleuon__flowchat-header h-22vh border-#dfe2e5 border-b-1 border-b-solid bg-#f6f7f8 px-4 py-4">
-      <FlowchartHeaderToolsTop @change="thr" class="mb-4" />
+      class="bleuon__flowchart-header h-22vh border-border-primary border-b-1 border-b-solid bg-#f6f7f8 px-4 py-4">
+      <FlowchartHeaderToolsTop @change="updateThrottle" class="mb-4" />
       <FlowchartHeaderToolsBottom
         :is-clicked-element="Data.isClickedElement.value"
         :is-clicked-link="Data.isClickedLink.value" />
     </div>
-    <div class="bleuon__flowchat-wrapper f-c-b">
+    <div class="bleuon__flowchart-wrapper f-c-b">
       <FlowchartSidebar class="w-15vw h-78vh" />
-      <div class="bleuon__flowchat-body relative">
-        <div id="bleuon__flowchat-content"></div>
+      <div class="bleuon__flowchart-body relative">
+        <div id="bleuon__flowchart-content"></div>
         <FlowchartFooterTools class="w-100% h-3vh" />
-        <div class="bleuon__flowchat-extra">
-          <input ref="textInputRef" type="text" class="bleuon__flowchat-input absolute hidden" />
+        <div class="bleuon__flowchart-extra">
+          <input ref="textInputRef" type="text" class="bleuon__flowchart-input absolute hidden" />
         </div>
       </div>
     </div>

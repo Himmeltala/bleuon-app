@@ -1,5 +1,6 @@
 package com.bleuon.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bleuon.entity.Flowchart;
@@ -12,9 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @description:
@@ -56,12 +55,44 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
     @Override
     public R<Flowchart> queryOne(String id) {
         Flowchart flowchart = query().eq("id", id).one();
+
+        if (Objects.isNull(flowchart)) {
+            return R.failed("查询失败，没有该流程图！", null);
+        }
+
         return R.success(flowchart);
     }
 
     @Override
-    public R<List<Flowchart>> queryAll(String userId) {
-        List<Flowchart> list = query().eq("user_id", userId).list();
+    public R<Flowchart> exposeQueryOne(String id) {
+        Flowchart flowchart = query()
+                .eq("id", id)
+                .eq("is_public", 1)
+                .one();
+
+        if (Objects.isNull(flowchart)) {
+            return R.failed("查询失败，该流程图不是公开的！", null);
+        }
+
+        return R.success(flowchart);
+    }
+
+    @Override
+    public R<List<Flowchart>> queryAll(String userId, String type, String[] cols) {
+        QueryWrapper<Flowchart> wrapper = new QueryWrapper<>();
+        wrapper.eq("user_id", userId);
+        if (type.equals("asc")) {
+            wrapper.orderByAsc(Arrays.asList(cols));
+        } else {
+            wrapper.orderByDesc(Arrays.asList(cols));
+        }
+
+        List<Flowchart> list = list(wrapper);
+
+        if (list.isEmpty()) {
+            return R.failed("查询失败，该用户没有创建任何流程图！", null);
+        }
+
         return R.success(list);
     }
 
@@ -78,8 +109,59 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
             flowchart.setCreateDate(timestamp);
             flowchart.setModifyDate(timestamp);
             flowchart.setFileName("未命名的文件");
-            save(flowchart);
-            return R.success("创建流程图成功！", flowchart);
+            boolean f = save(flowchart);
+            if (f) {
+                return R.success("创建流程图成功！", flowchart);
+            } else {
+                return R.failed("创建流程图失败！", null);
+            }
+        } catch (Exception e) {
+            throw new JdbcErrorException(e.getCause());
+        }
+    }
+
+    @Override
+    @Transactional
+    public R<Flowchart> copyOne(Flowchart data, String userId) {
+        try {
+            String uuid = UUID.randomUUID().toString();
+            // 创建表
+            Flowchart copyFlowchart = new Flowchart();
+            copyFlowchart.setId(uuid);
+            copyFlowchart.setUserId(userId);
+            copyFlowchart.setCreateDate(new Timestamp(new Date().getTime()));
+            copyFlowchart.setModifyDate(data.getModifyDate());
+            copyFlowchart.setFileName(data.getFileName());
+            copyFlowchart.setJson(data.getJson());
+            copyFlowchart.setDataUri(data.getDataUri());
+            copyFlowchart.setWidth(data.getWidth());
+            copyFlowchart.setHeight(data.getHeight());
+            copyFlowchart.setBgColor(data.getBgColor());
+            copyFlowchart.setGridSize(data.getGridSize());
+            copyFlowchart.setRouterDefault(data.getRouterDefault());
+            copyFlowchart.setConnectorDefault(data.getConnectorDefault());
+            copyFlowchart.setIsPublic(data.getIsPublic());
+            boolean f = save(copyFlowchart);
+            if (f) {
+                return R.success("复制流程图成功！", copyFlowchart);
+            } else {
+                return R.failed("复制流程图失败！", null);
+            }
+        } catch (Exception e) {
+            throw new JdbcErrorException(e.getCause());
+        }
+    }
+
+    @Override
+    @Transactional
+    public R<Void> deleteOne(String id) {
+        try {
+            boolean f = removeById(id);
+            if (f) {
+                return R.success("删除流程图成功！");
+            } else {
+                return R.failed("删除流程图失败！");
+            }
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());
         }

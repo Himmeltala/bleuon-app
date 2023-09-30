@@ -5,7 +5,7 @@ import {
   verifyCodeValidator,
   getVerifyCode,
   commitForm
-} from "@mainapp/utils/form-validators";
+} from "@common/utils/form-validators";
 import type { FormRules } from "element-plus";
 
 const router = useRouter();

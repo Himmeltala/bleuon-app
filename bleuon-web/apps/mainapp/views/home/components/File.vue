@@ -17,20 +17,31 @@ const props = defineProps({
     required: true
   },
   fileImage: {
-    type: String,
-    required: true
+    type: String
   },
   fileName: {
     type: String,
     required: true
   },
-  updateDate: {
+  modifyDate: {
     type: String,
     required: true
+  },
+  createDate: {
+    type: String
   }
 });
 
-const emits = defineEmits(["update:lastIndex"]);
+const emits = defineEmits([
+  "update:lastIndex",
+  "publish",
+  "clicked",
+  "download",
+  "copy",
+  "delete",
+  "resetFileName",
+  "share"
+]);
 const times = ref(1);
 
 function handleClick() {
@@ -40,6 +51,7 @@ function handleClick() {
   } else {
     times.value++;
   }
+  emits("clicked");
   emits("update:lastIndex", props.index);
 }
 </script>
@@ -56,47 +68,54 @@ function handleClick() {
     <div
       class="options__panel select-none p-1 z-2 absolute top-10 right-2 w-80% bg-white rd-2"
       :class="disabled && times <= 0 ? 'block' : 'hidden'">
-      <div class="text-0.9rem f-c-s">
+      <div class="text-0.9rem f-c-s" @click="$router.push(path)">
         <div class="i-tabler-eye mr-2"></div>
         预览
       </div>
-      <div class="text-0.9rem f-c-s">
+      <div class="text-0.9rem f-c-s" @click="$emit('resetFileName')">
         <div class="i-tabler-edit mr-2"></div>
         重命名
       </div>
-      <div class="text-0.9rem f-c-s">
+      <div class="text-0.9rem f-c-s" @click="$emit('share')">
         <div class="i-tabler-share mr-2"></div>
         分享
       </div>
-      <div class="text-0.9rem f-c-s">
+      <div class="text-0.9rem f-c-s" @click="$emit('publish')">
         <div class="i-tabler-send mr-2"></div>
-        发布和公开
+        发布
       </div>
-      <div class="text-0.9rem f-c-s">
+      <div class="text-0.9rem f-c-s" @click="$emit('download')">
         <div class="i-tabler-download mr-2"></div>
         下载
       </div>
-      <div class="text-0.9rem f-c-s">
+      <div class="text-0.9rem f-c-s" @click="$emit('copy')">
         <div class="i-tabler-copy mr-2"></div>
         复制
       </div>
-      <div class="text-0.9rem f-c-s">
-        <div class="i-tabler-arrows-move mr-2"></div>
-        移动
-      </div>
-      <div class="text-0.9rem f-c-s">
+      <div class="text-0.9rem f-c-s" @click="$emit('delete')">
         <div class="i-tabler-trash-x mr-2"></div>
         删除
       </div>
     </div>
     <div class="image h-50 rd-2" @click="$router.push(path)">
-      <img class="w-100% h-100% rd-2 object-cover cursor-pointer" :src="fileImage" />
+      <img
+        v-if="fileImage"
+        class="w-100% h-100% rd-2 object-fill cursor-pointer bg-white"
+        :src="fileImage" />
+      <div v-else class="w-100% h-100% rd-2 cursor-pointer bg-white"></div>
     </div>
     <div class="f-c-s flex-nowrap mt-4 w-100%">
-      <div class="mr-2 i-tabler-chart-bubble text-primary"></div>
+      <div class="mr-2 i-tabler-chart-bubble text-theme-primary"></div>
       <div class="text-0.9rem text-ellipsis line-clamp-1">{{ fileName }}</div>
     </div>
-    <div class="text-b text-0.9rem mt-2">更新于 {{ updateDate }}</div>
+    <div class="text-text-secondary text-0.8rem mt-2 f-c-s">
+      <div class="i-tabler-clock-edit mr-1"></div>
+      更新于 {{ modifyDate }}
+    </div>
+    <div v-if="createDate" class="text-text-secondary text-0.8rem mt-1 f-c-s">
+      <div class="i-tabler-clock-edit mr-1"></div>
+      创建于 {{ createDate }}
+    </div>
   </div>
 </template>
 

@@ -7,8 +7,8 @@
  */
 
 import { dia } from "@mainapp/lib";
-import * as Data from "../data";
-import { CellService } from "../service";
+import * as Data from "@mainapp/data/diagraming/flowchart";
+import { CellService } from "@mainapp/service/diagraming/flowchart";
 
 const paper = inject<dia.Paper>(KeyVals.BLEUON_FLOWCHART_PAPER);
 
@@ -31,7 +31,10 @@ const shapeBgColorPickerRef = ref();
 <template>
   <div class="f-c-s">
     <div class="tools__text">
-      <div class="tools__title">编辑图形文本</div>
+      <div class="tools__title">
+        <div class="i-tabler-typography mr-1"></div>
+        编辑图形文本
+      </div>
       <div class="tools__items f-c-c">
         <div class="font-tool">
           <el-tooltip content="字体" placement="bottom">
@@ -123,7 +126,10 @@ const shapeBgColorPickerRef = ref();
     </div>
     <div class="mx-4 left-divider"></div>
     <div class="tools__cellview">
-      <div class="tools__title">编辑图形样式</div>
+      <div class="tools__title">
+        <div class="i-tabler-circles mr-1"></div>
+        编辑图形样式
+      </div>
       <div class="tools__items f-c-c">
         <div class="border-bold-tool">
           <el-tooltip content="连线粗细" placement="bottom">
@@ -214,7 +220,10 @@ const shapeBgColorPickerRef = ref();
     </div>
     <div class="mx-4 left-divider"></div>
     <div class="tools__config">
-      <div class="tools__title">全局设置</div>
+      <div class="tools__title">
+        <div class="i-tabler-world mr-1"></div>
+        全局设置
+      </div>
       <div class="tools__items f-c-c">
         <div class="router-config-tool">
           <el-tooltip content="路由模式" placement="bottom">
@@ -253,12 +262,12 @@ const shapeBgColorPickerRef = ref();
 
 <style scoped lang="scss">
 .left-divider {
-  height: 30px;
+  height: 50px;
   width: 0;
-  border-left: 1px solid #dfe2e5;
+  --uno: b-l-1 b-l-solid b-border-primary;
 }
 
 .tools__title {
-  --uno: text-gray-600 mb-2 text-0.8rem;
+  --uno: text-gray-600 mb-2 text-0.8rem f-c-s;
 }
 </style>

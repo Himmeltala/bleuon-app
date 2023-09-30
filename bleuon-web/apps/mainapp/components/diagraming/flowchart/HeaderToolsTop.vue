@@ -21,7 +21,18 @@ function download() {
   const { width, height } = paper.value.getArea();
   flowchartData.value.width = width;
   flowchartData.value.height = height;
-  convertSvgToImage(paper.value, graph.value, "jpeg", flowchartData.value);
+  convertSvgToImage(
+    paper.value,
+    graph.value,
+    "jpeg",
+    flowchartData.value,
+    () => {
+      ElMessage.success("下载成功！");
+    },
+    () => {
+      ElMessage.error("下载失败！");
+    }
+  );
 }
 
 const calcFileName = computed({
@@ -43,7 +54,7 @@ function confirmChangeFileName() {
 </script>
 
 <template>
-  <div class="border-#dfe2e5 border-b-1 border-b-solid f-c-b pb-4">
+  <div class="b-border-primary b-b-1 b-b-solid f-c-b pb-4">
     <div class="left f-c-s">
       <el-button @click="$router.back()" type="primary" bg text>
         <template #icon>
@@ -62,8 +73,9 @@ function confirmChangeFileName() {
           {{ calcFileName }}
         </div>
         <div class="mt-2">
-          <div class="text-gray-500 text-0.8rem">
-            上次更新时间：{{ formatted("yyyy-MM-dd HH:mm:ss", new Date(flowchartData.modifyDate)) }}
+          <div class="text-gray-500 text-0.8rem f-c-c">
+            <div class="i-tabler-clock mr-1"></div>
+            上次更新：{{ formatted("yyyy-MM-dd HH:mm:ss", new Date(flowchartData.modifyDate)) }}
           </div>
         </div>
       </div>

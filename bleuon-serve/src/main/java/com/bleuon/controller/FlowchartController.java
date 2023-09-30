@@ -30,16 +30,24 @@ public class FlowchartController {
         return service.updateOne(data);
     }
 
+    /**
+     * 查询一个流程图，必须要登录之后才可以查询，也就是私密的流程图
+     *
+     * @param id 流程图 ID
+     */
     @GetMapping("/query/one")
     public R<Flowchart> queryOne(@RequestParam String id) {
         return service.queryOne(id);
     }
 
     @GetMapping("/query/all")
-    public R<List<Flowchart>> queryAll(@RequestHeader("Authorization") String token) {
+    public R<List<Flowchart>> queryAll(@RequestHeader("Authorization") String token,
+                                       @RequestParam String[] cols,
+                                       @RequestParam String type) {
+        System.out.println(type);
         Claims claims = JwtUtil.parseJwt(token);
         String userId = (String) claims.get("id");
-        return service.queryAll(userId);
+        return service.queryAll(userId, type, cols);
     }
 
     @PostMapping("/create/one")
@@ -47,6 +55,18 @@ public class FlowchartController {
         Claims claims = JwtUtil.parseJwt(token);
         String userId = (String) claims.get("id");
         return service.createOne(userId);
+    }
+
+    @PostMapping("/copy/one")
+    public R<Flowchart> copyOne(@RequestHeader("Authorization") String token, @RequestBody Flowchart data) {
+        Claims claims = JwtUtil.parseJwt(token);
+        String userId = (String) claims.get("id");
+        return service.copyOne(data, userId);
+    }
+
+    @DeleteMapping("/delete/one")
+    public R<Void> deleteOne(@RequestParam String id) {
+        return service.deleteOne(id);
     }
 
 }

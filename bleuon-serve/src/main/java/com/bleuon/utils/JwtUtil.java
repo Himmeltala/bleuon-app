@@ -1,14 +1,12 @@
 package com.bleuon.utils;
 
 import com.bleuon.entity.CustomUserDetails;
-import com.bleuon.entity.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
-import java.util.List;
 
 public class JwtUtil {
 

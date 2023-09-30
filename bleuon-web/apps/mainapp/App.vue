@@ -10,11 +10,9 @@
 <template>
   <RouterView v-slot="{ Component }">
     <template v-if="Component">
-      <KeepAlive>
-        <Suspense>
-          <component :is="Component" />
-        </Suspense>
-      </KeepAlive>
+      <Suspense>
+        <component :is="Component" />
+      </Suspense>
     </template>
   </RouterView>
 </template>

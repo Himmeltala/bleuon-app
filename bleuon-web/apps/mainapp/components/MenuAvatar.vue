@@ -26,7 +26,7 @@ function confirmLogout() {
     <div
       class="options__panel select-none px-1 z-2 absolute top-10 right-0 w-50 bg-white rd-2"
       :class="disabled ? 'block' : 'hidden'">
-      <div class="py-1 b-b-1 b-b-solid b-b-#e4e4e4">
+      <div class="py-1 b-b-1 b-b-solid b-border-primary">
         <div class="item text-0.9rem f-c-s" @click="$router.push('/home/history')">
           <div class="i-tabler-files mr-2"></div>
           个人文件
@@ -40,7 +40,7 @@ function confirmLogout() {
           个人主页
         </div>
       </div>
-      <div class="py-1 b-b-1 b-b-solid b-b-#e4e4e4">
+      <div class="py-1 b-b-1 b-b-solid b-border-primary">
         <div class="item text-0.9rem f-c-s" @click="$router.push('/')">
           <div class="i-tabler-home mr-2"></div>
           官网首页

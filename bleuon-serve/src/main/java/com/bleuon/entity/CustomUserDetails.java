@@ -11,19 +11,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @description:
+ * @description: 自定义 UserDetails
  * @package: com.bleuon.entity
  * @author: zheng
  * @date: 2023/9/30
  */
 public class CustomUserDetails implements UserDetails {
 
-    @Getter
-    @Setter
-    private String id;
     private final String username;
     private final String password;
     private final Collection<? extends GrantedAuthority> authorities;
+
+    @Getter
+    @Setter
+    private String id;
 
     public CustomUserDetails(String username, String password, List<String> authorities) {
         this.username = username;

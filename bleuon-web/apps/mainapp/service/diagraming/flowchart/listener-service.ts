@@ -6,7 +6,7 @@
  */
 
 import { dia } from "@mainapp/lib";
-import * as Data from "../data";
+import * as Data from "@mainapp/data/diagraming/flowchart";
 
 /**
  * 安装 Link 工具

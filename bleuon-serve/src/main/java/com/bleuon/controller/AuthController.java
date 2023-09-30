@@ -19,6 +19,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/**
+ * @description: 获取邮箱验证码等行为，与认证有关的 API
+ * @package: com.bleuon.controller
+ * @author: zheng
+ * @date: 2023/8/25
+ */
 @Validated
 @RequiredArgsConstructor
 @RequestMappingPrefix("/auth")

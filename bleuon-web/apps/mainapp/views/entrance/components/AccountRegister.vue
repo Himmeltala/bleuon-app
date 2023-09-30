@@ -5,7 +5,7 @@ import {
   passwordValidator,
   rePasswdValidator,
   commitForm
-} from "@mainapp/utils/form-validators";
+} from "@common/utils/form-validators";
 import { UserApi } from "@mainapp/apis";
 
 const formData = reactive({
@@ -99,7 +99,9 @@ function confirmRegister() {
         </el-button>
       </el-form-item>
     </el-form>
-    <div class="text-b text-0.8rem text-end mb-4">注：注册后请尽快绑定邮箱，以防账号丢失。</div>
+    <div class="text-text-secondary text-0.8rem text-end mb-4">
+      注：注册后请尽快绑定邮箱，以防账号丢失。
+    </div>
   </div>
 </template>
 

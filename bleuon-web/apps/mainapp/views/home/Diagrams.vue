@@ -43,7 +43,7 @@ function sortFiles() {}
       </div>
     </div>
     <div>
-      <div class="mt-5 text-b text-0.9rem">文件夹</div>
+      <div class="mt-5 text-text-secondary text-0.9rem">文件夹</div>
       <div class="file-list mt-5 f-c-s flex-wrap flex-gap-5">
         <Folder
           :index="index"
@@ -54,12 +54,12 @@ function sortFiles() {}
       </div>
     </div>
     <div>
-      <div class="mt-5 text-b text-0.9rem">文件</div>
+      <div class="mt-5 text-text-secondary text-0.9rem">文件</div>
       <div class="file-list mt-5 f-c-s flex-wrap flex-gap-5">
         <File
           :file-name="'文件名'"
           :file-image="'https://img2.baidu.com/it/u=1616455932,108201296&fm=253&fmt=auto&app=138&f=JPEG?w=281&h=500'"
-          :update-date="'2月前'"
+          :modify-date="'2月前'"
           :index="index"
           v-model:last-index="lastFileIndex"
           :disabled="lastFileIndex == index"
