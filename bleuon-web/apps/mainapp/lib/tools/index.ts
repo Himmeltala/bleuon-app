@@ -222,9 +222,11 @@ export function convertSvgToImage(
  * @param graph
  */
 export function getDataUri(paper: dia.Paper, graph: dia.Graph) {
+  paper.hideTools();
+
   // const elements = graph.getElements();
   // elements.forEach(v => {
-  //   v.removePorts();
+  //   v.attr("port/port-body", "none");
   // });
 
   const dataUri = new XMLSerializer().serializeToString(paper.childNodes.svg);

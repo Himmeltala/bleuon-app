@@ -17,7 +17,6 @@ import FilterFilesVue from "@mainapp/components/home/FilterFiles.vue";
 
 const operateFlowchart = ref<FlowchartData>({});
 const flowchartList = ref(await FlowchartApi.queryAll());
-const lastFileIndex = ref(-1);
 
 const updateFileNameDialogVisible = ref(false);
 const isFileNameCorrect = ref(false);
@@ -65,20 +64,23 @@ const searchVal = ref("");
 async function searchFiles(fileName: string) {
   flowchartList.value = await FlowchartApi.queryAll({ fileName });
 }
+
+async function onDateCollateChange(collates: any) {
+  console.log(collates);
+
+  flowchartList.value = await FlowchartApi.queryAll({ fileName: searchVal.value, collates });
+}
 </script>
 
 <template>
   <div class="myrecent h-100%">
     <Header v-model:value="searchVal" @enter-search="searchFiles"></Header>
-    <FilterFilesVue title="我的流程图" />
+    <FilterFilesVue @date-collate-change="onDateCollateChange" title="我的流程图" />
     <div class="mt-5 text-text-secondary text-0.9rem">文件</div>
     <div class="file-list mt-5 f-c-s flex-wrap flex-gap-5">
       <File
-        v-for="(item, index) in flowchartList"
+        v-for="item in flowchartList"
         :key="item.id"
-        :index="index"
-        :disabled="lastFileIndex == index"
-        v-model:last-index="lastFileIndex"
         :file-name="item.fileName"
         :file-image="item.dataUri"
         :modify-date="formatted('MM-dd HH:mm:ss', new Date(item.modifyDate))"
@@ -86,7 +88,7 @@ async function searchFiles(fileName: string) {
         @download="downloadFlowchart(item)"
         @copy="copyFlowchart(item)"
         @delete="deleteFlowchart(item.id)"
-        @reset-file-name="updateFileNameDialogVisible = !updateFileNameDialogVisible"></File>
+        @reset="updateFileNameDialogVisible = !updateFileNameDialogVisible"></File>
     </div>
     <el-dialog v-model="updateFileNameDialogVisible" title="修改文件名称" width="30%">
       <el-form :model="operateFlowchart" :rules="fileNameRules">

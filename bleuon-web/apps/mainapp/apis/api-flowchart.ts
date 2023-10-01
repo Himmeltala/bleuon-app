@@ -46,17 +46,11 @@ export async function exposeQueryOne(params: { id: string }, error?: Function) {
 /**
  * 获取用户所有的流程图
  */
-export async function queryAll(params?: {
-  collate?: "asc" | "desc";
-  cols?: string[];
+export async function queryAll(body?: {
+  collates?: { isAsc: boolean; col: string }[];
   fileName?: string;
 }) {
-  const { data } = await request.get<R<FlowchartData[]>>("/flowchart/query/all", {
-    params,
-    paramsSerializer: params => {
-      return qs.stringify(params, { arrayFormat: "repeat" });
-    }
-  });
+  const { data } = await request.post<R<FlowchartData[]>>("/flowchart/query/all", body);
   return data.data;
 }
 

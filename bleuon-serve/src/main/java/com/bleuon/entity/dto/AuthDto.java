@@ -1,4 +1,4 @@
-package com.bleuon.entity.vo;
+package com.bleuon.entity.dto;
 
 import lombok.Data;
 
@@ -10,22 +10,22 @@ import java.io.Serializable;
  * @author zheng
  */
 @Data
-public class AuthVo implements Serializable {
+public class AuthDto implements Serializable {
 
     private Long expire;
     private String token;
     private String username;
     private String id;
 
-    public AuthVo() {
+    public AuthDto() {
     }
 
-    public AuthVo(Long expire, String token) {
+    public AuthDto(Long expire, String token) {
         this.expire = expire;
         this.token = token;
     }
 
-    public AuthVo(Long expire, String token, String username, String id) {
+    public AuthDto(Long expire, String token, String username, String id) {
         this.expire = expire;
         this.token = token;
         this.username = username;

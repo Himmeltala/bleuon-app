@@ -5,7 +5,7 @@ import com.bleuon.constant.AuthorityType;
 import com.bleuon.constant.MailType;
 import com.bleuon.entity.CustomUserDetails;
 import com.bleuon.entity.User;
-import com.bleuon.entity.vo.AuthVo;
+import com.bleuon.entity.dto.AuthDto;
 import com.bleuon.mapper.AuthMapper;
 import com.bleuon.mapper.UserMapper;
 import com.bleuon.service.IMailRelatedService;
@@ -93,7 +93,7 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> implements
      */
     @Transactional
     @Override
-    public R<AuthVo> verifyMailCode(User user, String type, String code) {
+    public R<AuthDto> verifyMailCode(User user, String type, String code) {
         try {
             setCacheCode(type + ":" + user.getEmail());
             String cacheCode = redisTemplate.opsForValue().get(getCacheCode());
@@ -178,7 +178,7 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> implements
         }
     }
 
-    private R<AuthVo> verifyRegisterMailCode(User user) {
+    private R<AuthDto> verifyRegisterMailCode(User user) {
         if (findUserByEmail(user.getEmail()) == null) {
             User u = createUser(user);
 
@@ -203,7 +203,7 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> implements
         return user;
     }
 
-    private R<AuthVo> verifyLoginMailCode(User u) {
+    private R<AuthDto> verifyLoginMailCode(User u) {
         User user = findUserByEmail(u.getEmail());
 
         if (user != null) {
@@ -215,7 +215,7 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> implements
 
             redisTemplate.opsForValue().set(uuid, token, expire, TimeUnit.SECONDS);
 
-            AuthVo vo = new AuthVo();
+            AuthDto vo = new AuthDto();
 
             vo.setToken(token);
             vo.setExpire(JwtUtil.getExpire());

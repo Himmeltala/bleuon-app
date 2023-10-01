@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bleuon.entity.Flowchart;
+import com.bleuon.entity.vo.Collate;
 import com.bleuon.exception.JdbcErrorException;
 import com.bleuon.mapper.FlowchartMapper;
 import com.bleuon.service.IFlowchartService;
@@ -91,9 +92,8 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
     @Override
     public R<List<Flowchart>> queryAll(Map<String, Object> params) {
         String uid = (String) params.get("uid");
-        String collate = (String) params.get("collate");
-        String[] cols = (String[]) params.get("cols");
         String fileName = (String) params.get("fileName");
+        List<Collate> collates = (List<Collate>) params.get("collates");
 
         QueryWrapper<Flowchart> wrapper = new QueryWrapper<>();
         wrapper.eq("user_id", uid);
@@ -102,10 +102,8 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
             wrapper.like("file_name", fileName);
         }
 
-        if (collate.equals("asc")) {
-            wrapper.orderByAsc(Arrays.asList(cols));
-        } else {
-            wrapper.orderByDesc(Arrays.asList(cols));
+        if (collates != null) {
+            collates.forEach(e -> wrapper.orderBy(true, e.getIsAsc(), e.getCol()));
         }
 
         List<Flowchart> list = super.list(wrapper);

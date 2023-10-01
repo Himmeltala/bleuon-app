@@ -40,52 +40,54 @@ function createFlowchart() {
 
 <template>
   <div class="menu slim-slider h-100vh flow-auto px-5 b-r-1 b-r-solid b-border-primary bg-white">
-    <div class="menu__header">
+    <div class="menu-header">
       <div class="mt-5">
         <img src="/bleuon-icon.png" class="h-15 w-40 object-cover" />
       </div>
-      <div class="mt-5 relative">
-        <el-button @click="disabled = !disabled" class="w-100%" type="primary">＋新建</el-button>
-        <div
-          class="options__panel select-none p-2 z-2 absolute top-12 left-0 w-65 bg-white rd-2"
-          :class="disabled ? 'block' : 'hidden'">
-          <div class="f-s-b flex-wrap flex-gap-1">
-            <div class="item" @click="createFlowchart">
-              <div class="i-tabler-chart-grid-dots mr-1 text-theme-primary"></div>
-              <div>流程图</div>
-            </div>
-            <div class="item">
-              <div class="i-tabler-chalkboard mr-1 text-theme-primary"></div>
-              <div>画布</div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <el-dropdown :teleported="false" trigger="click" class="mt-5 w-100%">
+        <el-button class="w-100%" type="primary">＋新建</el-button>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item>
+              <div class="w-40 f-c-s" @click="createFlowchart">
+                <div class="i-tabler-chart-grid-dots mr-4 text-theme-primary"></div>
+                <div>新建流程图</div>
+              </div>
+            </el-dropdown-item>
+            <el-dropdown-item>
+              <div class="w-40 f-c-s">
+                <div class="i-tabler-chalkboard mr-4 text-theme-primary"></div>
+                <div>新建画布</div>
+              </div>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
     </div>
-    <div class="menu__body mt-10 pb-5 b-b-1 b-b-solid b-border-primary">
+    <div class="menu-content mt-10 pb-5 b-b-1 b-b-solid b-border-primary">
       <div
-        class="menu__item f-c-s"
+        class="menu-item f-c-s"
         :class="{ active: activeItem == 'auth-flowcharts' }"
         @click="navigateTo('auth-flowcharts')">
         <div class="mr-2 i-tabler-chart-grid-dots"></div>
         流程图
       </div>
       <div
-        class="menu__item f-c-s"
+        class="menu-item f-c-s"
         :class="{ active: activeItem == 'auth-shares-flowchart' }"
         @click="navigateTo('auth-shares-flowchart')">
         <div class="mr-2 i-tabler-share"></div>
         我分享的流程图
       </div>
       <div
-        class="menu__item f-c-s"
+        class="menu-item f-c-s"
         :class="{ active: activeItem == 'auth-stars-flowchart' }"
         @click="navigateTo('auth-stars-flowchart')">
         <div class="mr-2 i-tabler-star"></div>
         我收藏的流程图
       </div>
       <div
-        class="menu__item f-c-s"
+        class="menu-item f-c-s"
         :class="{ active: activeItem == 'auth-canvas-list' }"
         @click="navigateTo('auth-canvas-list')">
         <div class="mr-2 i-tabler-chalkboard"></div>
@@ -94,14 +96,14 @@ function createFlowchart() {
     </div>
     <div class="mt-5 pb-5 b-b-1 b-b-solid b-border-primary">
       <div
-        class="menu__item f-c-s"
+        class="menu-item f-c-s"
         :class="{ active: activeItem == 'auth-templates' }"
         @click="navigateTo('auth-templates')">
         <div class="mr-2 i-tabler-template"></div>
         模板社区
       </div>
       <div
-        class="menu__item f-c-s"
+        class="menu-item f-c-s"
         :class="{ active: activeItem == 'public-discussion' }"
         @click="navigateTo('public-discussion')">
         <div class="mr-2 i-tabler-friends"></div>
@@ -110,7 +112,7 @@ function createFlowchart() {
     </div>
     <div class="mt-5 pb-5">
       <div
-        class="menu__item f-c-s"
+        class="menu-item f-c-s"
         :class="{ active: activeItem == 'auth-recycle' }"
         @click="navigateTo('auth-recycle')">
         <div class="mr-2 i-tabler-trash-x"></div>
@@ -121,7 +123,7 @@ function createFlowchart() {
 </template>
 
 <style scoped lang="scss">
-.menu__item {
+.menu-item {
   --uno: cursor-pointer select-none p-3 rd-2 transition-all-300;
 
   &.active {
@@ -130,19 +132,6 @@ function createFlowchart() {
 
   &:hover {
     --uno: bg-#F3F5F9;
-  }
-}
-
-.options__panel {
-  box-shadow: 0 6px 16px 1px rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
-
-  .item {
-    flex: 0 1 48% !important;
-    --uno: cursor-pointer px-4 py-2 rd-2 transition-all-300 text-center f-c-s;
-
-    &:hover {
-      --uno: bg-#F3F5F9;
-    }
   }
 }
 </style>

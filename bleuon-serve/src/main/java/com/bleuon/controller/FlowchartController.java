@@ -2,6 +2,7 @@ package com.bleuon.controller;
 
 import com.bleuon.annotaion.RequestMappingPrefix;
 import com.bleuon.entity.Flowchart;
+import com.bleuon.entity.vo.FlowchartVo;
 import com.bleuon.service.impl.FlowchartService;
 import com.bleuon.utils.JwtUtil;
 import com.bleuon.utils.http.R;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @description:
@@ -37,18 +39,16 @@ public class FlowchartController {
         return service.queryOne(id);
     }
 
-    @GetMapping("/query/all")
+    @PostMapping("/query/all")
     public R<List<Flowchart>> queryAll(@RequestHeader("Authorization") String token,
-                                       @RequestParam(required = false, defaultValue = "") String fileName,
-                                       @RequestParam(required = false, defaultValue = "modify_date") String[] cols,
-                                       @RequestParam(required = false, defaultValue = "desc") String collate) {
+                                       @RequestBody(required = false) FlowchartVo vo) {
         Map<String, Object> params = new HashMap<>();
         Claims claims = JwtUtil.parseJwt(token);
-        String uid = (String) claims.get("id");
-        params.put("uid", uid);
-        params.put("cols", cols);
-        params.put("collate", collate);
-        params.put("fileName", fileName);
+        params.put("uid", claims.get("id"));
+        if (!Objects.isNull(vo)) {
+            params.put("fileName", vo.getFileName());
+            params.put("collates", vo.getCollates());
+        }
         return service.queryAll(params);
     }
 
