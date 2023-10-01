@@ -66,8 +66,6 @@ async function searchFiles(fileName: string) {
 }
 
 async function onDateCollateChange(collates: any) {
-  console.log(collates);
-
   flowchartList.value = await FlowchartApi.queryAll({ fileName: searchVal.value, collates });
 }
 </script>
