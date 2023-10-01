@@ -1,6 +1,5 @@
 package com.bleuon.controller;
 
-import cn.hutool.core.bean.BeanUtil;
 import com.bleuon.annotaion.RequestMappingPrefix;
 import com.bleuon.entity.Flowchart;
 import com.bleuon.entity.vo.FlowchartVo;
@@ -9,13 +8,10 @@ import com.bleuon.utils.JwtUtil;
 import com.bleuon.utils.http.R;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -44,17 +40,12 @@ public class FlowchartController {
     @PostMapping("/query/all")
     public R<List<Flowchart>> queryAll(@RequestHeader("Authorization") String token,
                                        @RequestBody(required = false) FlowchartVo vo) {
-        Map<String, Object> params = new HashMap<>();
 
-        Map<String, Object> bean = BeanUtil.beanToMap(vo);
-        if (!Objects.isNull(bean)) {
-            params = bean;
-        }
-
+        if (Objects.isNull(vo)) vo = new FlowchartVo();
         Claims claims = JwtUtil.parseJwt(token);
-        params.put("uid", claims.get("id"));
+        vo.setUid((String) claims.get("id"));
 
-        return service.queryAll(params);
+        return service.queryAll(vo);
     }
 
     @PostMapping("/create/one")

@@ -33,7 +33,7 @@ const formRules = reactive<FormRules>({
 function confirmLogin() {
   commitForm(formRef.value, async () => {
     UserApi.accountLogin(formData, () => {
-      router.push("/home");
+      router.push("/workbench");
     });
   });
 }

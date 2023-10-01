@@ -1,8 +1,8 @@
 export type ActiveItem =
-  | "auth-flowcharts"
+  | "auth-flowchart-list"
   | "auth-canvas-list"
-  | "auth-shares-flowchart"
-  | "auth-stars-flowchart"
+  | "auth-flowchart-shares"
+  | "auth-flowchart-stars"
   | "auth-templates"
   | "public-discussion"
   | "auth-recycle";

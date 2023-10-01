@@ -87,12 +87,12 @@ async function confirmShare() {
     if (!formRef.value) return;
     await formRef.value.validate((valid, fields) => {
       if (valid) {
-        flowchartData.value.isPublic = 1;
+        flowchartData.value.isShare = 1;
         FlowchartApi.updateOne(flowchartData.value, data => {
           if (data.code === 200) {
             ElMessage.success("分享成功，复制链接浏览！");
           } else {
-            flowchartData.value.isPublic = 0;
+            flowchartData.value.isShare = 0;
             ElMessage.error("分享失败！");
           }
         });
@@ -102,13 +102,13 @@ async function confirmShare() {
 }
 
 function cancelShare() {
-  flowchartData.value.isPublic = 0;
+  flowchartData.value.isShare = 0;
   flowchartData.value.deadShareDate = null;
   FlowchartApi.updateOne(flowchartData.value, data => {
     if (data.code === 200) {
       ElMessage.success("取消分享成功！");
     } else {
-      flowchartData.value.isPublic = 1;
+      flowchartData.value.isShare = 1;
       ElMessage.error("取消分享失败！");
     }
   });
@@ -131,7 +131,7 @@ function importFlowchart() {
         </template>
       </el-button>
       <img
-        @click="$router.push('/home')"
+        @click="$router.push('/workbench')"
         src="/bleuon-icon.png"
         class="mr-4 w-30 h-15 object-cover cursor-pointer" />
       <div>
@@ -175,10 +175,10 @@ function importFlowchart() {
         label-width="100px"
         label-position="right">
         <el-form-item label="状态">
-          <div v-if="!flowchartData.isPublic">流程图没有公开，点击创建链接</div>
+          <div v-if="!flowchartData.isShare">流程图没有公开，点击创建链接</div>
           <div v-else>流程图已经公开，点击链接浏览</div>
         </el-form-item>
-        <el-form-item v-if="flowchartData.isPublic" label="链接地址">
+        <el-form-item v-if="flowchartData.isShare" label="链接地址">
           <el-link type="primary" @click="$router.push('/share/flowchart/' + flowchartData.id)">
             http://localhost:5173/#/share/flowchart/{{ flowchartData.id }}
           </el-link>
@@ -193,13 +193,13 @@ function importFlowchart() {
       </el-form>
       <template #footer>
         <span v-if="type === 'privacy'" class="dialog-footer">
-          <el-button :disabled="!!flowchartData.isPublic" type="primary" @click="confirmShare">
+          <el-button :disabled="!!flowchartData.isShare" type="primary" @click="confirmShare">
             <template #icon>
               <div class="i-tabler-check"></div>
             </template>
             确定公开
           </el-button>
-          <el-button :disabled="!flowchartData.isPublic" @click="cancelShare">
+          <el-button :disabled="!flowchartData.isShare" @click="cancelShare">
             <template #icon>
               <div class="i-tabler-x"></div>
             </template>

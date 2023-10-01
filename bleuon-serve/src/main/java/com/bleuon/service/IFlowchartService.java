@@ -1,10 +1,10 @@
 package com.bleuon.service;
 
 import com.bleuon.entity.Flowchart;
+import com.bleuon.entity.vo.FlowchartVo;
 import com.bleuon.utils.http.R;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @description:
@@ -20,7 +20,7 @@ public interface IFlowchartService {
 
     R<Flowchart> exposeQueryOne(String id);
 
-    R<List<Flowchart>> queryAll(Map<String, Object> params);
+    R<List<Flowchart>> queryAll(FlowchartVo vo);
 
     R<Flowchart> createOne(String userId);
 

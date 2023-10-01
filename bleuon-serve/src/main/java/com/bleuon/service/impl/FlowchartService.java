@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bleuon.entity.Flowchart;
 import com.bleuon.entity.vo.Collate;
+import com.bleuon.entity.vo.FlowchartVo;
 import com.bleuon.exception.JdbcErrorException;
 import com.bleuon.mapper.FlowchartMapper;
 import com.bleuon.service.IFlowchartService;
@@ -16,7 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * @description:
@@ -72,36 +76,33 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
     public R<Flowchart> exposeQueryOne(String id) {
         Flowchart flowchart = query()
                 .eq("id", id)
-                .eq("is_public", 1)
+                .eq("is_share", 1)
                 .one();
 
         if (Objects.isNull(flowchart)) {
-            return R.failed("该流程图不是公开的！", null);
+            return R.failed("该流程图没有公开分享！", null);
         }
 
         boolean isAfter = DateUtil.isAfter(flowchart.getDeadShareDate());
         if (isAfter) {
             flowchart.setDeadShareDate(null);
             updateOne(flowchart);
-            return R.failed("该分享的流程图已经过期！", null);
+            return R.failed("该流程图分享时间已过期！", null);
         }
 
         return R.success(flowchart);
     }
 
     @Override
-    public R<List<Flowchart>> queryAll(Map<String, Object> params) {
-        String uid = (String) params.get("uid");
-        String fileName = (String) params.get("fileName");
-        List<Collate> collates = (List<Collate>) params.get("collates");
-
+    public R<List<Flowchart>> queryAll(FlowchartVo vo) {
         QueryWrapper<Flowchart> wrapper = new QueryWrapper<>();
-        wrapper.eq("user_id", uid);
+        wrapper.eq("user_id", vo.getUid());
 
-        if (StringUtils.hasText(fileName)) {
-            wrapper.like("file_name", fileName);
+        if (StringUtils.hasText(vo.getFileName())) {
+            wrapper.like("file_name", vo.getFileName());
         }
 
+        List<Collate> collates = vo.getCollates();
         if (collates != null) {
             collates.forEach(e -> wrapper.orderBy(true, e.getIsAsc(), e.getCol()));
         }

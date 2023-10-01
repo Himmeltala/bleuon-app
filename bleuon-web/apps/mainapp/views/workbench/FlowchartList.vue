@@ -6,19 +6,19 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import File from "@mainapp/components/home/File.vue";
+import File from "@mainapp/components/workbench/File.vue";
 import { FlowchartApi } from "@mainapp/apis";
 import { downloadWithDataUri } from "@mainapp/lib/tools";
 import { formatted } from "@common/utils/date";
 import { fileNameValidator } from "@common/utils/form-validators";
 
-import Header from "@mainapp/components/home/Header.vue";
-import FilterFilesVue from "@mainapp/components/home/FilterFiles.vue";
+import Header from "@mainapp/components/workbench/Header.vue";
+import FilterFiles from "@mainapp/components/workbench/FilterFiles.vue";
 
-const operateFlowchart = ref<FlowchartData>({});
+const clickedIndex = ref(0);
 const flowchartList = ref(await FlowchartApi.queryAll());
 
-const updateFileNameDialogVisible = ref(false);
+const dialogVisible = ref(false);
 const isFileNameCorrect = ref(false);
 const fileNameRules = reactive({
   fileName: [
@@ -27,10 +27,15 @@ const fileNameRules = reactive({
   ]
 });
 
-function updateFileName() {
-  FlowchartApi.updateOne(operateFlowchart.value, () => {
-    updateFileNameDialogVisible.value = !updateFileNameDialogVisible.value;
+function updateFlowchart() {
+  FlowchartApi.updateOne(flowchartList.value[clickedIndex.value], () => {
+    dialogVisible.value = !dialogVisible.value;
   });
+}
+
+function resetFlowchart(index: number) {
+  dialogVisible.value = !dialogVisible.value;
+  clickedIndex.value = index;
 }
 
 function downloadFlowchart(data: FlowchartData) {
@@ -53,9 +58,9 @@ function copyFlowchart(data: FlowchartData) {
   });
 }
 
-function deleteFlowchart(id: string) {
+function deleteFlowchart(id: string, index: number) {
   FlowchartApi.deleteOne({ id }, async () => {
-    flowchartList.value = await FlowchartApi.queryAll();
+    flowchartList.value.splice(index, 1);
   });
 }
 
@@ -71,38 +76,38 @@ async function onDateCollateChange(collates: any) {
 </script>
 
 <template>
-  <div class="myrecent h-100%">
+  <div class="flowchart-list h-100vh">
     <Header v-model:value="searchVal" @enter-search="searchFiles"></Header>
-    <FilterFilesVue @date-collate-change="onDateCollateChange" title="我的流程图" />
+    <FilterFiles @date-collate-change="onDateCollateChange" title="我的流程图" />
     <div class="mt-5 text-text-secondary text-0.9rem">文件</div>
     <div class="file-list mt-5 f-c-s flex-wrap flex-gap-5">
       <File
-        v-for="item in flowchartList"
+        v-for="(item, index) in flowchartList"
         :key="item.id"
         :file-name="item.fileName"
         :file-image="item.dataUri"
         :modify-date="formatted('MM-dd HH:mm:ss', new Date(item.modifyDate))"
         :path="'/flowchart/' + item.id"
-        @download="downloadFlowchart(item)"
         @copy="copyFlowchart(item)"
-        @delete="deleteFlowchart(item.id)"
-        @reset="updateFileNameDialogVisible = !updateFileNameDialogVisible"></File>
+        @reset="resetFlowchart(index)"
+        @download="downloadFlowchart(item)"
+        @delete="deleteFlowchart(item.id, index)"></File>
     </div>
-    <el-dialog v-model="updateFileNameDialogVisible" title="修改文件名称" width="30%">
-      <el-form :model="operateFlowchart" :rules="fileNameRules">
+    <el-dialog v-model="dialogVisible" title="修改文件名称" width="30%">
+      <el-form :model="flowchartList[clickedIndex]" :rules="fileNameRules">
         <el-form-item prop="fileName">
-          <el-input v-model="operateFlowchart.fileName" placeholder="请输入文件名称" />
+          <el-input v-model="flowchartList[clickedIndex].fileName" placeholder="请输入文件名称" />
         </el-form-item>
       </el-form>
       <template #footer>
         <span class="dialog-footer">
-          <el-button :disabled="!isFileNameCorrect" type="primary" @click="updateFileName">
+          <el-button :disabled="!isFileNameCorrect" type="primary" @click="updateFlowchart">
             <template #icon>
               <div class="i-tabler-check"></div>
             </template>
             确定
           </el-button>
-          <el-button @click="updateFileNameDialogVisible = false">
+          <el-button @click="dialogVisible = false">
             <template #icon>
               <div class="i-tabler-x"></div>
             </template>

@@ -27,7 +27,7 @@ function confirmLogout() {
         <el-dropdown-menu>
           <div class="b-b-solid b-border-primary b-b-1 pb-2 mb-2">
             <el-dropdown-item>
-              <div class="f-c-s" @click="$router.push('/home')">
+              <div class="f-c-s" @click="$router.push('/workbench')">
                 <div class="i-tabler-files mr-2"></div>
                 个人文件
               </div>

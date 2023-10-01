@@ -17,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public class FlowchartVo {
 
+    private String uid;
     private String fileName;
     private List<Collate> collates;
 

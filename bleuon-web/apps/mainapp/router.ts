@@ -30,35 +30,35 @@ const router = createRouter({
       ]
     },
     {
-      path: "/home",
-      name: "auth-home",
+      path: "/workbench",
+      name: "auth-workbench",
       meta: { title: "首页" },
-      redirect: "/home/flowcharts",
-      component: () => import("@mainapp/views/home/Home.vue"),
+      redirect: "/workbench/flowchart-list",
+      component: () => import("@mainapp/views/workbench/Workbench.vue"),
       children: [
         {
-          path: "flowcharts",
-          name: "auth-flowcharts",
+          path: "flowchart-list",
+          name: "auth-flowchart-list",
           meta: { title: "我的流程图" },
-          component: () => import("@mainapp/views/home/Flowcharts.vue")
+          component: () => import("@mainapp/views/workbench/FlowchartList.vue")
         },
         {
-          path: "shares-flowchart",
-          name: "auth-shares-flowchart",
+          path: "flowchart-shares",
+          name: "auth-flowchart-shares",
           meta: { title: "我分享的流程图" },
-          component: () => import("@mainapp/views/home/SharesFlowchart.vue")
+          component: () => import("@mainapp/views/workbench/FlowchartShares.vue")
         },
         {
-          path: "stars-flowchart",
-          name: "auth-stars-flowchart",
+          path: "flowchart-stars",
+          name: "auth-flowchart-stars",
           meta: { title: "我收藏的流程图" },
-          component: () => import("@mainapp/views/home/StarsFlowchart.vue")
+          component: () => import("@mainapp/views/workbench/FlowchartStars.vue")
         },
         {
           path: "canvas-list",
           name: "auth-canvas-list",
           meta: { title: "我的流程图" },
-          component: () => import("@mainapp/views/home/CanvasList.vue")
+          component: () => import("@mainapp/views/workbench/CanvasList.vue")
         }
       ]
     },
@@ -132,7 +132,7 @@ router.beforeEach((to, from, next) => {
   } else if (name.startsWith("public-")) {
     next();
   } else if (name.startsWith("enter-") && isAuth) {
-    next("/home");
+    next("/workbench");
     ElMessage.warning("您已登陆！已导航至首页");
   } else {
     next();

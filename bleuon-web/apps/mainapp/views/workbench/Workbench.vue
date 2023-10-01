@@ -6,14 +6,14 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import type { ActiveItem } from "@mainapp/typings/home";
-import Menu from "@mainapp/components/home/Menu.vue";
+import type { ActiveItem } from "@mainapp/typings/workbench";
+import Menu from "@mainapp/components/workbench/Menu.vue";
 
-const activeItem = ref<ActiveItem>("auth-flowcharts");
+const activeItem = ref<ActiveItem>("auth-flowchart-list");
 </script>
 
 <template>
-  <div class="home f-s-c bg-#F6F7F8">
+  <div class="workbench f-s-c bg-#F6F7F8">
     <Menu class="w-17%" v-model:active-item="activeItem"></Menu>
     <div class="content h-100vh flow-auto px-10 pb-10 w-83%">
       <RouterView></RouterView>

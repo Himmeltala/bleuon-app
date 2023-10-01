@@ -48,7 +48,7 @@ function confirmGetVerifyCode() {
 function confirmSubmitForm() {
   commitForm(formRef.value, () => {
     UserApi.verifyMailCode(formData, formData.code, "login", () => {
-      router.push("/home");
+      router.push("/workbench");
     });
   });
 }

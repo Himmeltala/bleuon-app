@@ -30,6 +30,8 @@ declare type FlowchartData = Partial<{
   connectorDefault: string;
   routerDefault: string;
   isPublic: number;
+  isLegal: number;
+  isShare: number;
   deadShareDate: Date;
   createDate: Date;
   modifyDate: Date;
