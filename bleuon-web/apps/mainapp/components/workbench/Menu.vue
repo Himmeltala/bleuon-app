@@ -6,7 +6,7 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import type { ActiveItem } from "@mainapp/typings/home";
+import type { ActiveItem } from "@mainapp/typings/workbench";
 import { FlowchartApi } from "@mainapp/apis";
 
 const router = useRouter();
@@ -74,17 +74,10 @@ function createFlowchart() {
       </div>
       <div
         class="menu-item f-c-s"
-        :class="{ active: activeItem == 'auth-flowchart-shares' }"
-        @click="navigateTo('auth-flowchart-shares')">
-        <div class="mr-2 i-tabler-share"></div>
-        我分享的流程图
-      </div>
-      <div
-        class="menu-item f-c-s"
         :class="{ active: activeItem == 'auth-flowchart-stars' }"
         @click="navigateTo('auth-flowchart-stars')">
         <div class="mr-2 i-tabler-star"></div>
-        我收藏的流程图
+        收藏的流程图
       </div>
       <div
         class="menu-item f-c-s"

@@ -102,6 +102,18 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
             wrapper.like("file_name", vo.getFileName());
         }
 
+        if (vo.getIsShare() != null) {
+            wrapper.eq("is_share", vo.getIsShare());
+        }
+
+        if (vo.getIsPublic() != null) {
+            wrapper.eq("is_public", vo.getIsPublic());
+        }
+
+        if (vo.getIsLegal() != null) {
+            wrapper.eq("is_legal", vo.getIsLegal());
+        }
+
         List<Collate> collates = vo.getCollates();
         if (collates != null) {
             collates.forEach(e -> wrapper.orderBy(true, e.getIsAsc(), e.getCol()));

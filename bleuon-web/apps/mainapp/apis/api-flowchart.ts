@@ -4,7 +4,7 @@
  * @since 2023/9/28
  * @link https://github.com/himmelbleu/bleuon-app
  */
-import qs from "qs";
+// import qs from "qs";
 import request from "./use-axios";
 
 /**
@@ -49,6 +49,9 @@ export async function exposeQueryOne(params: { id: string }, error?: Function) {
 export async function queryAll(body?: {
   collates?: { isAsc: boolean; col: string }[];
   fileName?: string;
+  isPublic?: number;
+  isShare?: number;
+  isLegal?: number;
 }) {
   const { data } = await request.post<R<FlowchartData[]>>("/flowchart/query/all", body);
   return data.data;

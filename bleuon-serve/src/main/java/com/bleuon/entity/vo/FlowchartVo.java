@@ -19,6 +19,9 @@ public class FlowchartVo {
 
     private String uid;
     private String fileName;
+    private Integer isPublic;
+    private Integer isLegal;
+    private Integer isShare;
     private List<Collate> collates;
 
 }

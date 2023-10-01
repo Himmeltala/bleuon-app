@@ -43,12 +43,6 @@ const router = createRouter({
           component: () => import("@mainapp/views/workbench/FlowchartList.vue")
         },
         {
-          path: "flowchart-shares",
-          name: "auth-flowchart-shares",
-          meta: { title: "我分享的流程图" },
-          component: () => import("@mainapp/views/workbench/FlowchartShares.vue")
-        },
-        {
           path: "flowchart-stars",
           name: "auth-flowchart-stars",
           meta: { title: "我收藏的流程图" },

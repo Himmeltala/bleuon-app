@@ -13,7 +13,6 @@ import { formatted } from "@common/utils/date";
 import { fileNameValidator } from "@common/utils/form-validators";
 
 import Header from "@mainapp/components/workbench/Header.vue";
-import FilterFiles from "@mainapp/components/workbench/FilterFiles.vue";
 
 const clickedIndex = ref(0);
 const flowchartList = ref(await FlowchartApi.queryAll());
@@ -65,20 +64,130 @@ function deleteFlowchart(id: string, index: number) {
 }
 
 const searchVal = ref("");
+const isModifyDateAsc = ref(false);
+const isCreateDateAsc = ref(false);
 
-async function searchFiles(fileName: string) {
-  flowchartList.value = await FlowchartApi.queryAll({ fileName });
+function allFlowchart() {
+  doFileFilter({
+    fileName: searchVal.value
+  });
 }
 
-async function onDateCollateChange(collates: any) {
-  flowchartList.value = await FlowchartApi.queryAll({ fileName: searchVal.value, collates });
+function publicFlowchart() {
+  doFileFilter({
+    fileName: searchVal.value,
+    isPublic: 1
+  });
+}
+
+function shareFlowchart() {
+  doFileFilter({
+    fileName: searchVal.value,
+    isShare: 1
+  });
+}
+
+function legalFlowchart() {
+  doFileFilter({
+    fileName: searchVal.value,
+    isLegal: 1
+  });
+}
+
+function modifyDateFlowchart() {
+  isModifyDateAsc.value = !isModifyDateAsc.value;
+  doFileFilter({ collates: [{ col: "modify_date", isAsc: isModifyDateAsc.value }] });
+}
+
+function createDateFlowchart() {
+  isCreateDateAsc.value = !isCreateDateAsc.value;
+  doFileFilter({ collates: [{ col: "create_date", isAsc: isCreateDateAsc.value }] });
+}
+
+async function searchFiles() {
+  doFileFilter({ fileName: searchVal.value });
+}
+
+async function doFileFilter(params: any) {
+  flowchartList.value = await FlowchartApi.queryAll(params);
 }
 </script>
 
 <template>
   <div class="flowchart-list h-100vh">
     <Header v-model:value="searchVal" @enter-search="searchFiles"></Header>
-    <FilterFiles @date-collate-change="onDateCollateChange" title="我的流程图" />
+    <div class="f-c-b">
+      <div>流程图</div>
+      <div class="f-c-c">
+        <div>
+          <el-tooltip content="筛选" placement="top">
+            <el-dropdown :hide-on-click="false" :teleported="false" trigger="click">
+              <el-button @click="" size="small">
+                <template #icon>
+                  <div class="i-tabler-filter"></div>
+                </template>
+              </el-button>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item @click="modifyDateFlowchart">
+                    <div class="text-0.8rem f-c-s select-none">
+                      <div
+                        class="mr-2"
+                        :class="
+                          isModifyDateAsc
+                            ? 'i-tabler-sort-ascending-2'
+                            : 'i-tabler-sort-descending-2'
+                        "></div>
+                      <span>
+                        修改日期<span v-if="isModifyDateAsc">升序</span><span v-else>降序</span>
+                      </span>
+                    </div>
+                  </el-dropdown-item>
+                  <el-dropdown-item @click="createDateFlowchart">
+                    <div class="text-0.8rem f-c-s select-none">
+                      <div
+                        class="mr-2"
+                        :class="
+                          isCreateDateAsc
+                            ? 'i-tabler-sort-ascending-2'
+                            : 'i-tabler-sort-descending-2'
+                        "></div>
+                      <span>
+                        创建日期<span v-if="isCreateDateAsc">升序</span><span v-else>降序</span>
+                      </span>
+                    </div>
+                  </el-dropdown-item>
+                  <el-dropdown-item @click="allFlowchart">
+                    <div class="text-0.8rem f-c-s select-none">
+                      <div class="mr-2 i-tabler-border-all"></div>
+                      <span>所有流程图</span>
+                    </div>
+                  </el-dropdown-item>
+                  <el-dropdown-item @click="publicFlowchart">
+                    <div class="text-0.8rem f-c-s select-none">
+                      <div class="mr-2 i-tabler-eye-check"></div>
+                      <span>公开的流程图</span>
+                    </div>
+                  </el-dropdown-item>
+                  <el-dropdown-item @click="shareFlowchart">
+                    <div class="text-0.8rem f-c-s select-none">
+                      <div class="mr-2 i-tabler-brand-stackshare"></div>
+                      <span>分享的流程图</span>
+                    </div>
+                  </el-dropdown-item>
+                  <el-dropdown-item @click="legalFlowchart">
+                    <div class="text-0.8rem f-c-s select-none">
+                      <div class="mr-2 i-tabler-lock-square"></div>
+                      <span>未审核的流程图</span>
+                    </div>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+          </el-tooltip>
+        </div>
+      </div>
+    </div>
     <div class="mt-5 text-text-secondary text-0.9rem">文件</div>
     <div class="file-list mt-5 f-c-s flex-wrap flex-gap-5">
       <File
