@@ -1,5 +1,12 @@
 <script setup lang="ts">
-import type { ActiveItem } from "./typings/home-typing";
+/**
+ * @description 工作台侧边栏菜单
+ * @author 郑人滏 42020306
+ * @since 2023/8/23
+ * @link https://github.com/himmelbleu/bleuon-app
+ */
+
+import type { ActiveItem } from "@mainapp/typings/home";
 import { FlowchartApi } from "@mainapp/apis";
 
 const router = useRouter();
@@ -24,7 +31,7 @@ onBeforeMount(() => {
 
 const disabled = ref(false);
 
-function createNewDiagram() {
+function createFlowchart() {
   FlowchartApi.createOne(data => {
     router.push(`/flowchart/${data.id}`);
   });
@@ -43,7 +50,7 @@ function createNewDiagram() {
           class="options__panel select-none p-2 z-2 absolute top-12 left-0 w-65 bg-white rd-2"
           :class="disabled ? 'block' : 'hidden'">
           <div class="f-s-b flex-wrap flex-gap-1">
-            <div class="item" @click="createNewDiagram">
+            <div class="item" @click="createFlowchart">
               <div class="i-tabler-chart-grid-dots mr-1 text-theme-primary"></div>
               <div>流程图</div>
             </div>

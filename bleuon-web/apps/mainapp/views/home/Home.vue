@@ -6,9 +6,8 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import type { ActiveItem } from "./typings/home-typing";
+import type { ActiveItem } from "@mainapp/typings/home";
 import Menu from "@mainapp/components/home/Menu.vue";
-import Header from "@mainapp/components/home/Header.vue";
 
 const activeItem = ref<ActiveItem>("auth-flowcharts");
 </script>
@@ -17,7 +16,6 @@ const activeItem = ref<ActiveItem>("auth-flowcharts");
   <div class="home f-s-c bg-#F6F7F8">
     <Menu class="w-17%" v-model:active-item="activeItem"></Menu>
     <div class="content h-100vh flow-auto px-10 pb-10 w-83%">
-      <Header></Header>
       <RouterView></RouterView>
     </div>
   </div>

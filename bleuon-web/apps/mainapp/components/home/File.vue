@@ -1,4 +1,11 @@
 <script setup lang="ts">
+/**
+ * @description 文件
+ * @author 郑人滏 42020306
+ * @since 2023/8/23
+ * @link https://github.com/himmelbleu/bleuon-app
+ */
+
 const props = defineProps({
   disabled: {
     type: Boolean,
@@ -35,7 +42,6 @@ const props = defineProps({
 const emits = defineEmits([
   "update:lastIndex",
   "publish",
-  "clicked",
   "download",
   "copy",
   "delete",
@@ -51,7 +57,6 @@ function handleClick() {
   } else {
     times.value++;
   }
-  emits("clicked");
   emits("update:lastIndex", props.index);
 }
 </script>

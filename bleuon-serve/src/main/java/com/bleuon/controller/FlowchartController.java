@@ -10,7 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @description:
@@ -30,11 +32,6 @@ public class FlowchartController {
         return service.updateOne(data);
     }
 
-    /**
-     * 查询一个流程图，必须要登录之后才可以查询，也就是私密的流程图
-     *
-     * @param id 流程图 ID
-     */
     @GetMapping("/query/one")
     public R<Flowchart> queryOne(@RequestParam String id) {
         return service.queryOne(id);
@@ -42,12 +39,17 @@ public class FlowchartController {
 
     @GetMapping("/query/all")
     public R<List<Flowchart>> queryAll(@RequestHeader("Authorization") String token,
-                                       @RequestParam String[] cols,
-                                       @RequestParam String type) {
-        System.out.println(type);
+                                       @RequestParam(required = false, defaultValue = "") String fileName,
+                                       @RequestParam(required = false, defaultValue = "modify_date") String[] cols,
+                                       @RequestParam(required = false, defaultValue = "desc") String collate) {
+        Map<String, Object> params = new HashMap<>();
         Claims claims = JwtUtil.parseJwt(token);
-        String userId = (String) claims.get("id");
-        return service.queryAll(userId, type, cols);
+        String uid = (String) claims.get("id");
+        params.put("uid", uid);
+        params.put("cols", cols);
+        params.put("collate", collate);
+        params.put("fileName", fileName);
+        return service.queryAll(params);
     }
 
     @PostMapping("/create/one")

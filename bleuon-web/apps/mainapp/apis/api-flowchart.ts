@@ -46,7 +46,11 @@ export async function exposeQueryOne(params: { id: string }, error?: Function) {
 /**
  * 获取用户所有的流程图
  */
-export async function queryAll(params: { type: "asc" | "desc"; cols: string[] }) {
+export async function queryAll(params?: {
+  collate?: "asc" | "desc";
+  cols?: string[];
+  fileName?: string;
+}) {
   const { data } = await request.get<R<FlowchartData[]>>("/flowchart/query/all", {
     params,
     paramsSerializer: params => {

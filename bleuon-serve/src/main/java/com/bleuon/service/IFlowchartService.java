@@ -4,6 +4,7 @@ import com.bleuon.entity.Flowchart;
 import com.bleuon.utils.http.R;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @description:
@@ -19,7 +20,7 @@ public interface IFlowchartService {
 
     R<Flowchart> exposeQueryOne(String id);
 
-    R<List<Flowchart>> queryAll(String userId, String type, String[] cols);
+    R<List<Flowchart>> queryAll(Map<String, Object> params);
 
     R<Flowchart> createOne(String userId);
 

@@ -1,3 +1,10 @@
+/**
+ * @description 防抖函数、节流函数等
+ * @author 郑人滏 42020306
+ * @since 2023/9/29
+ * @link https://github.com/himmelbleu/bleuon-app
+ */
+
 export function debounce<T extends (...args: any[]) => void>(
   func: T,
   delay: number

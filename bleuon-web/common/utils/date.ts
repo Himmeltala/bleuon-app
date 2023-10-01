@@ -1,3 +1,10 @@
+/**
+ * @description 日期工具
+ * @author 郑人滏 42020306
+ * @since 2023/9/29
+ * @link https://github.com/himmelbleu/bleuon-app
+ */
+
 export function formatted(format: string, date?: Date): string {
   if (!date) {
     date = new Date();

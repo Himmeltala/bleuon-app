@@ -1,3 +1,10 @@
+/**
+ * @description 拦截器
+ * @author 郑人滏 42020306
+ * @since 2023/9/17
+ * @link https://github.com/himmelbleu/bleuon-app
+ */
+
 import type { InternalAxiosRequestConfig } from "axios";
 
 /**

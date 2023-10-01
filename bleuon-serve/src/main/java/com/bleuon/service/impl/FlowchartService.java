@@ -12,6 +12,7 @@ import com.bleuon.utils.http.R;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -88,19 +89,29 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
     }
 
     @Override
-    public R<List<Flowchart>> queryAll(String userId, String type, String[] cols) {
+    public R<List<Flowchart>> queryAll(Map<String, Object> params) {
+        String uid = (String) params.get("uid");
+        String collate = (String) params.get("collate");
+        String[] cols = (String[]) params.get("cols");
+        String fileName = (String) params.get("fileName");
+
         QueryWrapper<Flowchart> wrapper = new QueryWrapper<>();
-        wrapper.eq("user_id", userId);
-        if (type.equals("asc")) {
+        wrapper.eq("user_id", uid);
+
+        if (StringUtils.hasText(fileName)) {
+            wrapper.like("file_name", fileName);
+        }
+
+        if (collate.equals("asc")) {
             wrapper.orderByAsc(Arrays.asList(cols));
         } else {
             wrapper.orderByDesc(Arrays.asList(cols));
         }
 
-        List<Flowchart> list = list(wrapper);
+        List<Flowchart> list = super.list(wrapper);
 
         if (list.isEmpty()) {
-            return R.failed("查询失败，该用户没有创建任何流程图！", null);
+            return R.failed("没有查询到流程图！", null);
         }
 
         return R.success(list);

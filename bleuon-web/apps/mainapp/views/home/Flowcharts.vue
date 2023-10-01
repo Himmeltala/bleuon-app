@@ -12,13 +12,12 @@ import { downloadWithDataUri } from "@mainapp/lib/tools";
 import { formatted } from "@common/utils/date";
 import { fileNameValidator } from "@common/utils/form-validators";
 
-const operateFlowchart = ref<FlowchartData>({});
-const flowchartList = ref(
-  await FlowchartApi.queryAll({ type: "desc", cols: ["modify_date", "create_date"] })
-);
-const lastFileIndex = ref(-1);
+import Header from "@mainapp/components/home/Header.vue";
+import FilterFilesVue from "@mainapp/components/home/FilterFiles.vue";
 
-function filterFiles() {}
+const operateFlowchart = ref<FlowchartData>({});
+const flowchartList = ref(await FlowchartApi.queryAll());
+const lastFileIndex = ref(-1);
 
 const updateFileNameDialogVisible = ref(false);
 const isFileNameCorrect = ref(false);
@@ -35,9 +34,9 @@ function updateFileName() {
   });
 }
 
-function downloadFlowchart() {
+function downloadFlowchart(data: FlowchartData) {
   downloadWithDataUri(
-    operateFlowchart.value,
+    data,
     "jpeg",
     () => {
       ElMessage.success("下载成功！");
@@ -48,47 +47,30 @@ function downloadFlowchart() {
   );
 }
 
-function copyFlowchart() {
-  operateFlowchart.value.fileName = "复制_" + operateFlowchart.value.fileName;
-  FlowchartApi.copyOne(operateFlowchart.value, async () => {
-    flowchartList.value = await FlowchartApi.queryAll({
-      type: "desc",
-      cols: ["modify_date", "create_date"]
-    });
+function copyFlowchart(data: FlowchartData) {
+  data.fileName = "复制_" + data.fileName;
+  FlowchartApi.copyOne(data, async () => {
+    flowchartList.value = await FlowchartApi.queryAll();
   });
 }
 
-function deleteFlowchart() {
-  FlowchartApi.deleteOne(
-    {
-      id: operateFlowchart.value.id
-    },
-    async () => {
-      flowchartList.value = await FlowchartApi.queryAll({
-        type: "desc",
-        cols: ["modify_date", "create_date"]
-      });
-    }
-  );
+function deleteFlowchart(id: string) {
+  FlowchartApi.deleteOne({ id }, async () => {
+    flowchartList.value = await FlowchartApi.queryAll();
+  });
+}
+
+const searchVal = ref("");
+
+async function searchFiles(fileName: string) {
+  flowchartList.value = await FlowchartApi.queryAll({ fileName });
 }
 </script>
 
 <template>
   <div class="myrecent h-100%">
-    <div class="f-c-b">
-      <div>我的流程图</div>
-      <div class="f-c-c">
-        <div>
-          <el-tooltip content="筛选" placement="bottom">
-            <el-button @click="filterFiles" size="small">
-              <template #icon>
-                <div class="i-tabler-filter"></div>
-              </template>
-            </el-button>
-          </el-tooltip>
-        </div>
-      </div>
-    </div>
+    <Header v-model:value="searchVal" @enter-search="searchFiles"></Header>
+    <FilterFilesVue title="我的流程图" />
     <div class="mt-5 text-text-secondary text-0.9rem">文件</div>
     <div class="file-list mt-5 f-c-s flex-wrap flex-gap-5">
       <File
@@ -101,10 +83,9 @@ function deleteFlowchart() {
         :file-image="item.dataUri"
         :modify-date="formatted('MM-dd HH:mm:ss', new Date(item.modifyDate))"
         :path="'/flowchart/' + item.id"
-        @download="downloadFlowchart"
-        @copy="copyFlowchart"
-        @delete="deleteFlowchart"
-        @clicked="operateFlowchart = flowchartList[index]"
+        @download="downloadFlowchart(item)"
+        @copy="copyFlowchart(item)"
+        @delete="deleteFlowchart(item.id)"
         @reset-file-name="updateFileNameDialogVisible = !updateFileNameDialogVisible"></File>
     </div>
     <el-dialog v-model="updateFileNameDialogVisible" title="修改文件名称" width="30%">

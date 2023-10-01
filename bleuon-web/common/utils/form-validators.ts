@@ -1,3 +1,10 @@
+/**
+ * @description 校验器
+ * @author 郑人滏 42020306
+ * @since 2023/10/1
+ * @link https://github.com/himmelbleu/bleuon-app
+ */
+
 import type { FormInstance } from "element-plus";
 
 /**
