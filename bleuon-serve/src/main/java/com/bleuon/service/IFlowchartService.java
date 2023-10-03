@@ -14,17 +14,17 @@ import java.util.List;
  */
 public interface IFlowchartService {
 
-    R<Void> updateOne(Flowchart data);
+    boolean updateOne(Flowchart data);
 
-    R<Flowchart> findOne(String id);
+    Flowchart findOne(String id);
 
     R<Flowchart> exposeFindOne(String id);
 
-    R<List<Flowchart>> findAll(FlowchartCondition vo);
+    List<Flowchart> findAll(FlowchartCondition vo);
 
-    R<Flowchart> createOne(String userId);
+    Flowchart createOne(String userId);
 
-    R<Flowchart> cloneOne(Flowchart data, String userId);
+    Flowchart cloneOne(Flowchart data, String userId);
 
-    R<Void> deleteOne(String id);
+    boolean deleteOne(String id);
 }

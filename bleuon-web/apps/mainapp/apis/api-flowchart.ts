@@ -76,11 +76,11 @@ export function createOne(success: (data: FlowchartData) => void, error?: Functi
  */
 export function cloneOne(
   data: FlowchartData,
-  success: (data: FlowchartData) => void,
+  success?: (data: FlowchartData) => void,
   error?: Function
 ) {
   request
-    .post<R<FlowchartData>>("/flowchart/copy/one", data)
+    .post<R<FlowchartData>>("/flowchart/clone/one", data)
     .then(({ data }) => {
       success && success(data.data);
     })
@@ -105,4 +105,19 @@ export function deleteOne(params: { id?: string }, success: Function, error?: Fu
     .catch(err => {
       error && error(err);
     });
+}
+
+/**
+ * 查询所有的收藏的流程图
+ */
+export async function findAllCollect(params: { uid: string }) {
+  const { data } = await request.get<R<any[]>>("/flowchart/find/all/collect", { params });
+  return data.data;
+}
+
+export async function deleteOneCollect(params: { id: string }, success?: Function) {
+  await request.delete<R<void>>("/flowchart/delete/one/collect", { params }).then(() => {
+    console.log("eee");
+    success && success();
+  });
 }

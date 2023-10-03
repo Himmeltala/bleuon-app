@@ -33,7 +33,7 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
 
     @Override
     @Transactional
-    public R<Void> updateOne(Flowchart data) {
+    public boolean updateOne(Flowchart data) {
         try {
             UpdateWrapper<Flowchart> updateWrapper = new UpdateWrapper<>();
 
@@ -48,26 +48,15 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
                     .set("is_public", data.getIsPublic() == null ? 0 : data.getIsPublic())
                     .set("dead_share_date", data.getDeadShareDate());
 
-            boolean f = update(data, updateWrapper);
-            if (f) {
-                return R.success("更新流程图成功！");
-            } else {
-                return R.failed("更新流程图失败！");
-            }
+            return update(data, updateWrapper);
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());
         }
     }
 
     @Override
-    public R<Flowchart> findOne(String id) {
-        Flowchart flowchart = query().eq("id", id).one();
-
-        if (Objects.isNull(flowchart)) {
-            return R.failed("该流程图不存在！", null);
-        }
-
-        return R.success(flowchart);
+    public Flowchart findOne(String id) {
+        return query().eq("id", id).one();
     }
 
     @Override
@@ -79,21 +68,20 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
                 .one();
 
         if (Objects.isNull(flowchart)) {
-            return R.failed("该流程图没有公开分享！", null);
+            return R.failed("该流程图未公开分享！", null);
         }
 
-        boolean isAfter = DateUtil.isAfter(flowchart.getDeadShareDate());
-        if (isAfter) {
+        if (DateUtil.isAfter(flowchart.getDeadShareDate())) {
             flowchart.setDeadShareDate(null);
             updateOne(flowchart);
-            return R.failed("该流程图分享时间已过期！", null);
+            return R.failed("该流程图分享已过期！", null);
         }
 
         return R.success(flowchart);
     }
 
     @Override
-    public R<List<Flowchart>> findAll(FlowchartCondition condition) {
+    public List<Flowchart> findAll(FlowchartCondition condition) {
         QueryWrapper<Flowchart> wrapper = new QueryWrapper<>();
         wrapper.eq("user_id", condition.getUid());
 
@@ -118,18 +106,12 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
             collates.forEach(e -> wrapper.orderBy(true, e.getIsAsc(), e.getCol()));
         }
 
-        List<Flowchart> list = super.list(wrapper);
-
-        if (list.isEmpty()) {
-            return R.failed("没有查询到流程图！", null);
-        }
-
-        return R.success(list);
+        return super.list(wrapper);
     }
 
     @Override
     @Transactional
-    public R<Flowchart> createOne(String userId) {
+    public Flowchart createOne(String userId) {
         try {
             String uuid = UUID.randomUUID().toString();
             // 创建表
@@ -140,12 +122,10 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
             flowchart.setCreateDate(timestamp);
             flowchart.setModifyDate(timestamp);
             flowchart.setFileName("未命名的文件");
-            boolean f = save(flowchart);
-            if (f) {
-                return R.success("创建流程图成功！", flowchart);
-            } else {
-                return R.failed("创建流程图失败！", null);
-            }
+
+            save(flowchart);
+
+            return flowchart;
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());
         }
@@ -153,7 +133,7 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
 
     @Override
     @Transactional
-    public R<Flowchart> cloneOne(Flowchart data, String userId) {
+    public Flowchart cloneOne(Flowchart data, String userId) {
         try {
             String uuid = UUID.randomUUID().toString();
             // 创建表
@@ -172,12 +152,10 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
             copyFlowchart.setRouterDefault(data.getRouterDefault());
             copyFlowchart.setConnectorDefault(data.getConnectorDefault());
             copyFlowchart.setIsPublic(data.getIsPublic());
-            boolean f = save(copyFlowchart);
-            if (f) {
-                return R.success("复制流程图成功！", copyFlowchart);
-            } else {
-                return R.failed("复制流程图失败！", null);
-            }
+
+            save(copyFlowchart);
+
+            return copyFlowchart;
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());
         }
@@ -185,14 +163,9 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
 
     @Override
     @Transactional
-    public R<Void> deleteOne(String id) {
+    public boolean deleteOne(String id) {
         try {
-            boolean f = removeById(id);
-            if (f) {
-                return R.success("删除流程图成功！");
-            } else {
-                return R.failed("删除流程图失败！");
-            }
+            return removeById(id);
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());
         }

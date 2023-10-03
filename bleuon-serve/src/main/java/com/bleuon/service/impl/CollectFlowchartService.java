@@ -3,7 +3,6 @@ package com.bleuon.service.impl;
 import com.bleuon.entity.dto.CollectFlowchart;
 import com.bleuon.mapper.CollectFlowchartMapper;
 import com.bleuon.service.ICollectFlowchartService;
-import com.bleuon.utils.http.R;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +21,13 @@ public class CollectFlowchartService implements ICollectFlowchartService {
     private final CollectFlowchartMapper mapper;
 
     @Override
-    public R<List<CollectFlowchart>> findAll(String uid) {
-        return R.success(mapper.queryAll(uid));
+    public List<CollectFlowchart> findAll(String uid) {
+        return mapper.findAll(uid);
+    }
+
+    @Override
+    public boolean deleteOne(String id) {
+        return mapper.deleteOne(id);
     }
 
 }

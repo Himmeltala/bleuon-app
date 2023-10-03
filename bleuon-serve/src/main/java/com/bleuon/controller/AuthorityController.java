@@ -31,9 +31,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class AuthorityController {
 
     private final MailRelatedService mailRelatedService;
-
     private final IAccountRegisterService registerService;
-
     private final ResetPasswordService resetPasswordService;
 
     @GetMapping("/aks-mail-verify-code")

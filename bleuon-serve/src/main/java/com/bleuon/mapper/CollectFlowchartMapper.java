@@ -14,6 +14,8 @@ import java.util.List;
 @Mapper
 public interface CollectFlowchartMapper {
 
-    List<CollectFlowchart> queryAll(String uid);
+    List<CollectFlowchart> findAll(String uid);
+
+    boolean deleteOne(String id);
 
 }

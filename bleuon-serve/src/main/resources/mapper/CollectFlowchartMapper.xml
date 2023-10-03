@@ -2,20 +2,34 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bleuon.mapper.CollectFlowchartMapper">
 
-    <resultMap id="mapOfQueryAll" type="com.bleuon.entity.dto.CollectFlowchart" autoMapping="true">
+    <resultMap id="mapOfFindAll" type="com.bleuon.entity.dto.CollectFlowchart">
         <id column="id" property="id"/>
-        <association javaType="com.bleuon.entity.dto.CollectFlowchart$User" property="user" autoMapping="true"
-                     columnPrefix="u_"/>
+        <association property="flowchart" javaType="com.bleuon.entity.dto.CollectFlowchart$Flowchart"
+                     select="findFlowchartById" column="flowchart_id"/>
+        <association property="user" javaType="com.bleuon.entity.dto.CollectFlowchart$User" select="findUserById"
+                     column="belong_uid"/>
     </resultMap>
-    <select id="queryAll" resultMap="mapOfQueryAll" resultType="com.bleuon.entity.dto.CollectFlowchart">
-        select f.*,
-               u.username u_username,
-               u.avatar u_avatar,
-               u.id u_id
-        from t_flowcharts f
-                 inner join co_collect_flowchart co on co.flowchart_id = f.id
-                 inner join t_users u on u.id = co.collect_uid
-        where co.collect_uid = #{uid};
+
+    <select id="findAll" resultMap="mapOfFindAll" resultType="com.bleuon.entity.dto.CollectFlowchart">
+        select *
+        from co_collect_flowchart
+        where collect_uid = #{uid};
     </select>
+
+    <select id="findFlowchartById" resultType="com.bleuon.entity.dto.CollectFlowchart$Flowchart">
+        select *
+        from t_flowcharts
+        where id = #{id}
+    </select>
+
+    <select id="findUserById" resultType="com.bleuon.entity.dto.CollectFlowchart$User">
+        select id, avatar, username
+        from t_users
+        where id = #{id};
+    </select>
+
+    <delete id="deleteOne">
+        delete from co_collect_flowchart where id = #{id};
+    </delete>
 
 </mapper>

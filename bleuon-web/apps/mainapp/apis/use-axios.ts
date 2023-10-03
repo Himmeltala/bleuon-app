@@ -41,7 +41,7 @@ request.interceptors.response.use(
       localStorage.removeItem(KeyVals.MAINAPP_TOKEN_KEY);
     }
 
-    if (data.code === 200 && !notInterceptUrl(config.config, { fuzzy: ["find"] })) {
+    if (data.code === 200 && !notInterceptUrl(config.config, { fuzzy: ["find", "clone"] })) {
       ElMessage.success(data.message);
     }
 

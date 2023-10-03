@@ -24,10 +24,14 @@ const props = defineProps({
   },
   createDate: {
     type: String
+  },
+  isReset: {
+    type: Boolean,
+    default: true
   }
 });
 
-const emits = defineEmits(["download", "copy", "delete", "reset"]);
+const emits = defineEmits(["download", "clone", "delete", "reset"]);
 </script>
 
 <template>
@@ -46,7 +50,7 @@ const emits = defineEmits(["download", "copy", "delete", "reset"]);
               预览
             </div>
           </el-dropdown-item>
-          <el-dropdown-item>
+          <el-dropdown-item v-if="isReset">
             <div class="f-c-s" @click="$emit('reset')">
               <div class="i-tabler-edit mr-2"></div>
               重命名
@@ -59,7 +63,7 @@ const emits = defineEmits(["download", "copy", "delete", "reset"]);
             </div>
           </el-dropdown-item>
           <el-dropdown-item>
-            <div class="f-c-s" @click="$emit('copy')">
+            <div class="f-c-s" @click="$emit('clone')">
               <div class="i-tabler-copy mr-2"></div>
               复制
             </div>

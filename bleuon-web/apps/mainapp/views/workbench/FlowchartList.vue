@@ -50,10 +50,10 @@ function downloadFlowchart(data: FlowchartData) {
   );
 }
 
-function copyFlowchart(data: FlowchartData) {
+function cloneFlowchart(data: FlowchartData) {
   data.fileName = "复制_" + data.fileName;
   FlowchartApi.cloneOne(data, async () => {
-    flowchartList.value = await FlowchartApi.findAll();
+    await fechData();
   });
 }
 
@@ -63,32 +63,36 @@ function deleteFlowchart(id: string, index: number) {
   });
 }
 
+async function fechData(params?: any) {
+  flowchartList.value = await FlowchartApi.findAll(params);
+}
+
 const searchVal = ref("");
 const isModifyDateAsc = ref(false);
 const isCreateDateAsc = ref(false);
 
 function allFlowchart() {
-  doFileFilter({
+  fechData({
     fileName: searchVal.value
   });
 }
 
 function publicFlowchart() {
-  doFileFilter({
+  fechData({
     fileName: searchVal.value,
     isPublic: 1
   });
 }
 
 function shareFlowchart() {
-  doFileFilter({
+  fechData({
     fileName: searchVal.value,
     isShare: 1
   });
 }
 
 function legalFlowchart() {
-  doFileFilter({
+  fechData({
     fileName: searchVal.value,
     isLegal: 1
   });
@@ -96,20 +100,16 @@ function legalFlowchart() {
 
 function modifyDateFlowchart() {
   isModifyDateAsc.value = !isModifyDateAsc.value;
-  doFileFilter({ collates: [{ col: "modify_date", isAsc: isModifyDateAsc.value }] });
+  fechData({ collates: [{ col: "modify_date", isAsc: isModifyDateAsc.value }] });
 }
 
 function createDateFlowchart() {
   isCreateDateAsc.value = !isCreateDateAsc.value;
-  doFileFilter({ collates: [{ col: "create_date", isAsc: isCreateDateAsc.value }] });
+  fechData({ collates: [{ col: "create_date", isAsc: isCreateDateAsc.value }] });
 }
 
 async function searchFiles() {
-  doFileFilter({ fileName: searchVal.value });
-}
-
-async function doFileFilter(params: any) {
-  flowchartList.value = await FlowchartApi.findAll(params);
+  fechData({ fileName: searchVal.value });
 }
 </script>
 
@@ -197,7 +197,7 @@ async function doFileFilter(params: any) {
         :file-image="item.dataUri"
         :modify-date="formatted('MM-dd HH:mm:ss', new Date(item.modifyDate))"
         :path="'/flowchart/' + item.id"
-        @copy="copyFlowchart(item)"
+        @clone="cloneFlowchart(item)"
         @reset="resetFlowchart(index)"
         @download="downloadFlowchart(item)"
         @delete="deleteFlowchart(item.id, index)"></File>

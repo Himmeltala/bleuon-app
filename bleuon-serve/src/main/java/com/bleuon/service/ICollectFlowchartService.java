@@ -1,7 +1,6 @@
 package com.bleuon.service;
 
 import com.bleuon.entity.dto.CollectFlowchart;
-import com.bleuon.utils.http.R;
 
 import java.util.List;
 
@@ -13,6 +12,8 @@ import java.util.List;
  */
 public interface ICollectFlowchartService {
 
-    R<List<CollectFlowchart>> findAll(String uid);
+    List<CollectFlowchart> findAll(String uid);
+
+    boolean deleteOne(String id);
 
 }

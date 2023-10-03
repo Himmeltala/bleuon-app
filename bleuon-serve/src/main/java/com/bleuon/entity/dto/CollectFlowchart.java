@@ -17,23 +17,8 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class CollectFlowchart {
 
-    private String id;
-    private String fileName;
-    private String json;
-    private String dataUri;
-    private Double width;
-    private Double height;
-    private String bgColor;
-    private Double gridSize;
-    private String connectorDefault;
-    private String routerDefault;
-    private Integer isPublic;
-    private Integer isLegal;
-    private Integer isShare;
-    private Timestamp createDate;
-    private Timestamp modifyDate;
-    private Timestamp deadShareDate;
-
+    private Integer id;
+    private Flowchart flowchart;
     private User user;
 
     @Data
@@ -43,5 +28,27 @@ public class CollectFlowchart {
         private String id;
         private String username;
         private String avatar;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    static class Flowchart {
+        private String id;
+        private String fileName;
+        private String json;
+        private String dataUri;
+        private Double width;
+        private Double height;
+        private String bgColor;
+        private Double gridSize;
+        private String connectorDefault;
+        private String routerDefault;
+        private Integer isPublic;
+        private Integer isLegal;
+        private Integer isShare;
+        private Timestamp createDate;
+        private Timestamp modifyDate;
+        private Timestamp deadShareDate;
     }
 }
