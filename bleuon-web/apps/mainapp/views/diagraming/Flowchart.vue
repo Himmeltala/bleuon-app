@@ -35,7 +35,7 @@ provide(KeyVals.BLEUON_FLOWCHART_GRAPH, graph);
 provide(KeyVals.BLEUON_FLOWCHART_DATA, flowchartData);
 
 async function fetchData() {
-  const data = await FlowchartApi.queryOne({ id: route.params.id.toString() });
+  const data = await FlowchartApi.findOne({ id: route.params.id.toString() });
   flowchartData.value = data;
 }
 

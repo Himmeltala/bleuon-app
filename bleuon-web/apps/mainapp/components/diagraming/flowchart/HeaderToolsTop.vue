@@ -11,7 +11,7 @@ import type { FormInstance, FormRules } from "element-plus";
 const paper = inject<Ref<dia.Paper>>(KeyVals.BLEUON_FLOWCHART_PAPER);
 const graph = inject<Ref<dia.Graph>>(KeyVals.BLEUON_FLOWCHART_GRAPH);
 const flowchartData = inject<Ref<FlowchartData>>(KeyVals.BLEUON_FLOWCHART_DATA);
-const token = localStorage.getStorageWithAge(KeyVals.MAINAPP_TOKEN_KEY);
+const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
 
 const editFile = ref(false);
 
@@ -116,7 +116,7 @@ function cancelShare() {
 
 function importFlowchart() {
   flowchartData.value.fileName = "导入模板_" + flowchartData.value.fileName;
-  FlowchartApi.copyOne(flowchartData.value, () => {
+  FlowchartApi.cloneOne(flowchartData.value, () => {
     ElMessage.success("导入成功，回到自己工作台查看吧！");
   });
 }

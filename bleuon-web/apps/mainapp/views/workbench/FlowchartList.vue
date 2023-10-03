@@ -15,7 +15,7 @@ import { fileNameValidator } from "@common/utils/form-validators";
 import Header from "@mainapp/components/workbench/Header.vue";
 
 const clickedIndex = ref(0);
-const flowchartList = ref(await FlowchartApi.queryAll());
+const flowchartList = ref(await FlowchartApi.findAll());
 
 const dialogVisible = ref(false);
 const isFileNameCorrect = ref(false);
@@ -52,8 +52,8 @@ function downloadFlowchart(data: FlowchartData) {
 
 function copyFlowchart(data: FlowchartData) {
   data.fileName = "复制_" + data.fileName;
-  FlowchartApi.copyOne(data, async () => {
-    flowchartList.value = await FlowchartApi.queryAll();
+  FlowchartApi.cloneOne(data, async () => {
+    flowchartList.value = await FlowchartApi.findAll();
   });
 }
 
@@ -109,7 +109,7 @@ async function searchFiles() {
 }
 
 async function doFileFilter(params: any) {
-  flowchartList.value = await FlowchartApi.queryAll(params);
+  flowchartList.value = await FlowchartApi.findAll(params);
 }
 </script>
 

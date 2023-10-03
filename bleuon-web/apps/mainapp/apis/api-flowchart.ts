@@ -26,17 +26,17 @@ export function updateOne(data: FlowchartData, success?: (data: R) => void, erro
 /**
  * 获取流程图
  */
-export async function queryOne(params: { id: string }) {
-  const { data } = await request.get<R<FlowchartData>>("/flowchart/query/one", { params });
+export async function findOne(params: { id: string }) {
+  const { data } = await request.get<R<FlowchartData>>("/flowchart/find/one", { params });
   return data.data;
 }
 
 /**
  * 获取流程图
  */
-export async function exposeQueryOne(params: { id: string }, error?: Function) {
+export async function exposeFindOne(params: { id: string }, error?: Function) {
   try {
-    const { data } = await request.get<R<FlowchartData>>("/expose/flowchart/query/one", { params });
+    const { data } = await request.get<R<FlowchartData>>("/expose/flowchart/find/one", { params });
     return data.data;
   } catch (err) {
     error && error(err);
@@ -46,14 +46,14 @@ export async function exposeQueryOne(params: { id: string }, error?: Function) {
 /**
  * 获取用户所有的流程图
  */
-export async function queryAll(body?: {
+export async function findAll(body?: {
   collates?: { isAsc: boolean; col: string }[];
   fileName?: string;
   isPublic?: number;
   isShare?: number;
   isLegal?: number;
 }) {
-  const { data } = await request.post<R<FlowchartData[]>>("/flowchart/query/all", body);
+  const { data } = await request.post<R<FlowchartData[]>>("/flowchart/find/all", body);
   return data.data;
 }
 
@@ -74,7 +74,7 @@ export function createOne(success: (data: FlowchartData) => void, error?: Functi
 /**
  * 复制一个流程图
  */
-export function copyOne(
+export function cloneOne(
   data: FlowchartData,
   success: (data: FlowchartData) => void,
   error?: Function

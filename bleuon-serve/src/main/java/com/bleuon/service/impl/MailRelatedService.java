@@ -5,8 +5,8 @@ import com.bleuon.constant.AuthorityType;
 import com.bleuon.constant.MailType;
 import com.bleuon.entity.CustomUserDetails;
 import com.bleuon.entity.User;
-import com.bleuon.entity.dto.AuthDto;
-import com.bleuon.mapper.AuthMapper;
+import com.bleuon.entity.dto.Token;
+import com.bleuon.mapper.AuthorityMapper;
 import com.bleuon.mapper.UserMapper;
 import com.bleuon.service.IMailRelatedService;
 import com.bleuon.utils.JwtUtil;
@@ -48,7 +48,7 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> implements
 
     private final RedisTemplate<String, String> redisTemplate;
 
-    private final AuthMapper authMapper;
+    private final AuthorityMapper authorityMapper;
 
     @Value("${spring.mail.sender}")
     private String senderMailAddress;
@@ -93,7 +93,7 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> implements
      */
     @Transactional
     @Override
-    public R<AuthDto> verifyMailCode(User user, String type, String code) {
+    public R<Token> verifyMailCode(User user, String type, String code) {
         try {
             setCacheCode(type + ":" + user.getEmail());
             String cacheCode = redisTemplate.opsForValue().get(getCacheCode());
@@ -178,12 +178,12 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> implements
         }
     }
 
-    private R<AuthDto> verifyRegisterMailCode(User user) {
+    private R<Token> verifyRegisterMailCode(User user) {
         if (findUserByEmail(user.getEmail()) == null) {
             User u = createUser(user);
 
             boolean f = save(u);
-            authMapper.setAuthority(u.getId(), AuthorityType.USER, u.getUsername());
+            authorityMapper.setAuthority(u.getId(), AuthorityType.USER, u.getUsername());
 
             if (f) {
                 redisTemplate.delete(getCacheCode());
@@ -203,7 +203,7 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> implements
         return user;
     }
 
-    private R<AuthDto> verifyLoginMailCode(User u) {
+    private R<Token> verifyLoginMailCode(User u) {
         User user = findUserByEmail(u.getEmail());
 
         if (user != null) {
@@ -211,20 +211,18 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> implements
             Long expire = JwtUtil.getExpire();
 
             CustomUserDetails details = new CustomUserDetails(user.getUsername(), "******", null);
-            String token = JwtUtil.createJwt(details, uuid, expire);
+            String value = JwtUtil.createJwt(details, uuid, expire);
 
-            redisTemplate.opsForValue().set(uuid, token, expire, TimeUnit.SECONDS);
+            redisTemplate.opsForValue().set(uuid, value, expire, TimeUnit.SECONDS);
 
-            AuthDto vo = new AuthDto();
-
-            vo.setToken(token);
-            vo.setExpire(JwtUtil.getExpire());
-            vo.setUsername(details.getUsername());
-            vo.setId(details.getId());
+            Token token = new Token();
+            token.setValue(value);
+            token.setExpire(JwtUtil.getExpire());
+            token.setUsername(details.getUsername());
+            token.setId(details.getId());
 
             redisTemplate.delete(getCacheCode());
-
-            return R.success("登录成功！", vo);
+            return R.success("登录成功！", token);
         } else {
             return R.failed("邮箱没有注册！", null);
         }

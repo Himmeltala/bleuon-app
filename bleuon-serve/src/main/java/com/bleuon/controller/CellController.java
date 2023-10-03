@@ -26,12 +26,12 @@ public class CellController {
 
     private final IOfficialCellService service;
 
-    @GetMapping("/query/all")
-    public R<List<OfficialCell>> queryAll(
+    @GetMapping("/find/all")
+    public R<List<OfficialCell>> findAll(
             @Pattern(regexp = ValidRegexp.CELL_TYPE, message = "图形类型错误！")
             @RequestParam String type
     ) {
-        return service.queryAll(type);
+        return service.findAll(type);
     }
 
 }

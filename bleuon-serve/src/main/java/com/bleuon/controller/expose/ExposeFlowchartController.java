@@ -20,9 +20,9 @@ public class ExposeFlowchartController {
 
     private final FlowchartService service;
 
-    @GetMapping("/query/one")
-    public R<Flowchart> exposeQueryOne(@RequestParam String id) {
-        return service.exposeQueryOne(id);
+    @GetMapping("/find/one")
+    public R<Flowchart> findOne(@RequestParam String id) {
+        return service.exposeFindOne(id);
     }
 
 }

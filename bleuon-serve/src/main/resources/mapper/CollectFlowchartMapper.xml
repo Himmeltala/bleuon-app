@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bleuon.mapper.CollectFlowchartMapper">
+
+    <resultMap id="mapOfQueryAll" type="com.bleuon.entity.dto.CollectFlowchart" autoMapping="true">
+        <id column="id" property="id"/>
+        <association javaType="com.bleuon.entity.dto.CollectFlowchart$User" property="user" autoMapping="true"
+                     columnPrefix="u_"/>
+    </resultMap>
+    <select id="queryAll" resultMap="mapOfQueryAll" resultType="com.bleuon.entity.dto.CollectFlowchart">
+        select f.*,
+               u.username u_username,
+               u.avatar u_avatar,
+               u.id u_id
+        from t_flowcharts f
+                 inner join co_collect_flowchart co on co.flowchart_id = f.id
+                 inner join t_users u on u.id = co.collect_uid
+        where co.collect_uid = #{uid};
+    </select>
+
+</mapper>

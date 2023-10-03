@@ -13,7 +13,7 @@ declare type R<T = any> = {
 
 declare type TokenR = {
   expire: number;
-  token: string;
+  value: string;
   username: string;
   id: string;
 };

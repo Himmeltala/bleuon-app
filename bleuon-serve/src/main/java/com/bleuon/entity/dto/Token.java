@@ -10,24 +10,24 @@ import java.io.Serializable;
  * @author zheng
  */
 @Data
-public class AuthDto implements Serializable {
+public class Token implements Serializable {
 
     private Long expire;
-    private String token;
+    private String value;
     private String username;
     private String id;
 
-    public AuthDto() {
+    public Token() {
     }
 
-    public AuthDto(Long expire, String token) {
+    public Token(Long expire, String value) {
         this.expire = expire;
-        this.token = token;
+        this.value = value;
     }
 
-    public AuthDto(Long expire, String token, String username, String id) {
+    public Token(Long expire, String value, String username, String id) {
         this.expire = expire;
-        this.token = token;
+        this.value = value;
         this.username = username;
         this.id = id;
     }

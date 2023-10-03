@@ -1,7 +1,7 @@
 package com.bleuon.service;
 
 import com.bleuon.entity.Flowchart;
-import com.bleuon.entity.vo.FlowchartVo;
+import com.bleuon.entity.vo.FlowchartCondition;
 import com.bleuon.utils.http.R;
 
 import java.util.List;
@@ -16,15 +16,15 @@ public interface IFlowchartService {
 
     R<Void> updateOne(Flowchart data);
 
-    R<Flowchart> queryOne(String id);
+    R<Flowchart> findOne(String id);
 
-    R<Flowchart> exposeQueryOne(String id);
+    R<Flowchart> exposeFindOne(String id);
 
-    R<List<Flowchart>> queryAll(FlowchartVo vo);
+    R<List<Flowchart>> findAll(FlowchartCondition vo);
 
     R<Flowchart> createOne(String userId);
 
-    R<Flowchart> copyOne(Flowchart data, String userId);
+    R<Flowchart> cloneOne(Flowchart data, String userId);
 
     R<Void> deleteOne(String id);
 }

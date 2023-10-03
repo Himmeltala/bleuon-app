@@ -15,7 +15,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FlowchartVo {
+public class FlowchartCondition {
 
     private String uid;
     private String fileName;
@@ -23,5 +23,22 @@ public class FlowchartVo {
     private Integer isLegal;
     private Integer isShare;
     private List<Collate> collates;
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Collate {
+
+        /**
+         * 是否升序
+         */
+        private Boolean isAsc;
+
+        /**
+         * 字段名称
+         */
+        private String col;
+
+    }
 
 }

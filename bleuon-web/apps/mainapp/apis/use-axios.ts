@@ -14,9 +14,10 @@ const request = axios.create({
 
 request.interceptors.request.use(
   config => {
-    const token = localStorage.getStorageWithAge("BleuOn-Token");
+    const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
+
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers.Authorization = `Bearer ${token.value}`;
     }
 
     return config;
@@ -37,10 +38,10 @@ request.interceptors.response.use(
       ElMessage.warning(data.message);
     } else if (data.code === 403) {
       location.reload();
-      localStorage.removeItem("BleuOn-Token");
+      localStorage.removeItem(KeyVals.MAINAPP_TOKEN_KEY);
     }
 
-    if (data.code === 200 && !notInterceptUrl(config.config, { fuzzy: ["query"] })) {
+    if (data.code === 200 && !notInterceptUrl(config.config, { fuzzy: ["find"] })) {
       ElMessage.success(data.message);
     }
 

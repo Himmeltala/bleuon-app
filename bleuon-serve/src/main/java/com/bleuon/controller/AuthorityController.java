@@ -3,7 +3,7 @@ package com.bleuon.controller;
 import com.bleuon.annotaion.RequestMappingPrefix;
 import com.bleuon.constant.ValidRegexp;
 import com.bleuon.entity.User;
-import com.bleuon.entity.dto.AuthDto;
+import com.bleuon.entity.dto.Token;
 import com.bleuon.service.IAccountRegisterService;
 import com.bleuon.service.impl.MailRelatedService;
 import com.bleuon.service.impl.ResetPasswordService;
@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Validated
 @RequiredArgsConstructor
 @RequestMappingPrefix("/auth")
-public class AuthController {
+public class AuthorityController {
 
     private final MailRelatedService mailRelatedService;
 
@@ -44,9 +44,9 @@ public class AuthController {
     }
 
     @PostMapping("/verify-mail-code")
-    public R<AuthDto> verifyMailCode(@RequestBody User user,
-                                     @RequestParam @Pattern(regexp = ValidRegexp.MAIL_CODE_TYPE, message = "发送验证码的类型是 register 或 login 或 reset！") String type,
-                                     @RequestParam @Pattern(regexp = ValidRegexp.DIGIT_6, message = "验证码必须是 6 位正整数！") String code) {
+    public R<Token> verifyMailCode(@RequestBody User user,
+                                   @RequestParam @Pattern(regexp = ValidRegexp.MAIL_CODE_TYPE, message = "发送验证码的类型是 register 或 login 或 reset！") String type,
+                                   @RequestParam @Pattern(regexp = ValidRegexp.DIGIT_6, message = "验证码必须是 6 位正整数！") String code) {
         return mailRelatedService.verifyMailCode(user, type, code);
     }
 

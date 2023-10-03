@@ -2,7 +2,7 @@ package com.bleuon.security.handler;
 
 import com.alibaba.fastjson2.JSON;
 import com.bleuon.entity.CustomUserDetails;
-import com.bleuon.entity.dto.AuthDto;
+import com.bleuon.entity.dto.Token;
 import com.bleuon.utils.JwtUtil;
 import com.bleuon.utils.http.R;
 import jakarta.annotation.Resource;
@@ -36,11 +36,17 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         String jwtUuid = UUID.randomUUID().toString();
         Long expire = JwtUtil.getExpire();
-        String token = JwtUtil.createJwt(details, jwtUuid, expire);
+        String value = JwtUtil.createJwt(details, jwtUuid, expire);
 
-        redisTemplate.opsForValue().set(jwtUuid, token, expire, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(jwtUuid, value, expire, TimeUnit.SECONDS);
 
-        R<AuthDto> success = R.success("登录成功！", new AuthDto(expire, token, details.getUsername(), details.getId()));
+        Token token = new Token();
+        token.setValue(value);
+        token.setExpire(JwtUtil.getExpire());
+        token.setUsername(details.getUsername());
+        token.setId(details.getId());
+
+        R<Token> success = R.success("登录成功！", token);
         response.getWriter()
                 .write(JSON.toJSONString(success));
     }

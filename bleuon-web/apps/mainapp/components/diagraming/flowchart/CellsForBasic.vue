@@ -11,7 +11,7 @@ import SVG from "../SVG.vue";
 
 const data = ref(null);
 
-data.value = await OfficialCellsApi.queryAll("basic");
+data.value = await OfficialCellsApi.findAll("basic");
 </script>
 
 <template>

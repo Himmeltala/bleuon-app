@@ -3,7 +3,7 @@ package com.bleuon.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bleuon.constant.AuthorityType;
 import com.bleuon.entity.User;
-import com.bleuon.mapper.AuthMapper;
+import com.bleuon.mapper.AuthorityMapper;
 import com.bleuon.mapper.UserMapper;
 import com.bleuon.service.IAccountRegisterService;
 import com.bleuon.utils.http.R;
@@ -20,7 +20,7 @@ public class AccountRegisterService extends ServiceImpl<UserMapper, User> implem
 
     private final BCryptPasswordEncoder passwordEncoder;
 
-    private final AuthMapper authMapper;
+    private final AuthorityMapper authorityMapper;
 
     @Transactional
     @Override
@@ -44,7 +44,7 @@ public class AccountRegisterService extends ServiceImpl<UserMapper, User> implem
         user.setId(UUID.randomUUID().toString());
 
         this.save(user);
-        authMapper.setAuthority(user.getId(), AuthorityType.USER, user.getUsername());
+        authorityMapper.setAuthority(user.getId(), AuthorityType.USER, user.getUsername());
 
         return R.success("恭喜你，注册用户成功！");
     }

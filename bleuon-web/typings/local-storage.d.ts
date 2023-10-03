@@ -1,4 +1,6 @@
 declare interface Storage {
-  setStorageWithAge: (key: string, token: string, maxAge: number, username: string, id: string) => void;
-  getStorageWithAge: (key: string) => string | undefined;
+  setStorageWithAge: <T>(key: string, value: T, expire: number) => void;
+  getStorageWithAge: <T>(key: string, value: T, expire: number) => T | undefined;
+  getToken: <T>(key: string) => T | undefined;
+  setToken: <T extends { expire: number }>(key: string, value: T) => void;
 }

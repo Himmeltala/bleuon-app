@@ -7,30 +7,28 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
 /**
- * 验证 Token 有效，但是权限不足。
- * <p>
- * 用于处理在已经通过身份验证的用户尝试访问受限资源时出现的拒绝访问情况。
+ * 认证失败的错误，可能会拦截其他报错。
  *
  * @author zheng
  */
 @Slf4j
 @Component
-public class AuthJwtAccessDeniedHandler implements AccessDeniedHandler {
+public class VerifyJwtEntryPointHandler implements AuthenticationEntryPoint {
 
     @Override
-    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException e) throws IOException, ServletException {
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
         response.setContentType("application/json;charset=utf-8");
 
         log.error(e.getMessage(), e.getCause());
 
-        R<Void> failed = R.build(HttpCode.NO_AUTHORITY.getCode(), "权限不足！");
+        R<Void> failed = R.build(HttpCode.NO_AUTHORITY.getCode(), "认证失败或服务器错误！");
 
         response.getWriter()
                 .write(JSON.toJSONString(failed));

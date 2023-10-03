@@ -1,6 +1,6 @@
 package com.bleuon.config;
 
-import com.bleuon.security.filter.AuthJwtFilter;
+import com.bleuon.security.filter.VerifyJwtFilter;
 import com.bleuon.security.handler.*;
 import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Bean;
@@ -20,7 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     @Resource
-    private AuthJwtFilter authJwtFilter;
+    private VerifyJwtFilter verifyJwtFilter;
 
     @Resource
     private LoginSuccessHandler loginSuccessHandler;
@@ -32,10 +32,10 @@ public class SecurityConfig {
     private LogoutSuccessHandler logoutSuccessHandler;
 
     @Resource
-    private AuthJwtEntryPointHandler authJwtEntryPointHandler;
+    private VerifyJwtEntryPointHandler verifyJwtEntryPointHandler;
 
     @Resource
-    private AuthJwtAccessDeniedHandler authJwtAccessDeniedHandler;
+    private VerifyJwtAccessDeniedHandler verifyJwtAccessDeniedHandler;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -62,15 +62,15 @@ public class SecurityConfig {
         );
 
         http.exceptionHandling(conf -> conf
-                .authenticationEntryPoint(authJwtEntryPointHandler)
-                .accessDeniedHandler(authJwtAccessDeniedHandler)
+                .authenticationEntryPoint(verifyJwtEntryPointHandler)
+                .accessDeniedHandler(verifyJwtAccessDeniedHandler)
         );
 
         http.csrf(AbstractHttpConfigurer::disable);
         http.cors(AbstractHttpConfigurer::disable);
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        http.addFilterBefore(authJwtFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(verifyJwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

@@ -4,8 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bleuon.entity.Flowchart;
-import com.bleuon.entity.vo.Collate;
-import com.bleuon.entity.vo.FlowchartVo;
+import com.bleuon.entity.vo.FlowchartCondition;
 import com.bleuon.exception.JdbcErrorException;
 import com.bleuon.mapper.FlowchartMapper;
 import com.bleuon.service.IFlowchartService;
@@ -61,11 +60,11 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
     }
 
     @Override
-    public R<Flowchart> queryOne(String id) {
+    public R<Flowchart> findOne(String id) {
         Flowchart flowchart = query().eq("id", id).one();
 
         if (Objects.isNull(flowchart)) {
-            return R.failed("查询失败，没有该流程图！", null);
+            return R.failed("该流程图不存在！", null);
         }
 
         return R.success(flowchart);
@@ -73,7 +72,7 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
 
     @Override
     @Transactional
-    public R<Flowchart> exposeQueryOne(String id) {
+    public R<Flowchart> exposeFindOne(String id) {
         Flowchart flowchart = query()
                 .eq("id", id)
                 .eq("is_share", 1)
@@ -94,27 +93,27 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
     }
 
     @Override
-    public R<List<Flowchart>> queryAll(FlowchartVo vo) {
+    public R<List<Flowchart>> findAll(FlowchartCondition condition) {
         QueryWrapper<Flowchart> wrapper = new QueryWrapper<>();
-        wrapper.eq("user_id", vo.getUid());
+        wrapper.eq("user_id", condition.getUid());
 
-        if (StringUtils.hasText(vo.getFileName())) {
-            wrapper.like("file_name", vo.getFileName());
+        if (StringUtils.hasText(condition.getFileName())) {
+            wrapper.like("file_name", condition.getFileName());
         }
 
-        if (vo.getIsShare() != null) {
-            wrapper.eq("is_share", vo.getIsShare());
+        if (condition.getIsShare() != null) {
+            wrapper.eq("is_share", condition.getIsShare());
         }
 
-        if (vo.getIsPublic() != null) {
-            wrapper.eq("is_public", vo.getIsPublic());
+        if (condition.getIsPublic() != null) {
+            wrapper.eq("is_public", condition.getIsPublic());
         }
 
-        if (vo.getIsLegal() != null) {
-            wrapper.eq("is_legal", vo.getIsLegal());
+        if (condition.getIsLegal() != null) {
+            wrapper.eq("is_legal", condition.getIsLegal());
         }
 
-        List<Collate> collates = vo.getCollates();
+        List<FlowchartCondition.Collate> collates = condition.getCollates();
         if (collates != null) {
             collates.forEach(e -> wrapper.orderBy(true, e.getIsAsc(), e.getCol()));
         }
@@ -154,7 +153,7 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
 
     @Override
     @Transactional
-    public R<Flowchart> copyOne(Flowchart data, String userId) {
+    public R<Flowchart> cloneOne(Flowchart data, String userId) {
         try {
             String uuid = UUID.randomUUID().toString();
             // 创建表

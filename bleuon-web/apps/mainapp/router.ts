@@ -109,7 +109,7 @@ const router = createRouter({
 });
 
 function isAuthenticated() {
-  return !!localStorage.getStorageWithAge(KeyVals.MAINAPP_TOKEN_KEY);
+  return !!localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
 }
 
 router.beforeEach((to, from, next) => {

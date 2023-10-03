@@ -1,7 +1,7 @@
 package com.bleuon.security.filter;
 
 import com.bleuon.entity.CustomUserDetails;
-import com.bleuon.mapper.AuthMapper;
+import com.bleuon.mapper.AuthorityMapper;
 import com.bleuon.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
@@ -31,9 +31,9 @@ import java.util.Map;
  */
 @Component
 @RequiredArgsConstructor
-public class AuthJwtFilter extends OncePerRequestFilter {
+public class VerifyJwtFilter extends OncePerRequestFilter {
 
-    private final AuthMapper mapper;
+    private final AuthorityMapper mapper;
 
     private final RedisTemplate<String, String> redisTemplate;
 

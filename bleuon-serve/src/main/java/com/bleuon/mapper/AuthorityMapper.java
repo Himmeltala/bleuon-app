@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 @Mapper
-public interface AuthMapper {
+public interface AuthorityMapper {
 
     List<String> getAuthority(Map<String, Object> map);
 

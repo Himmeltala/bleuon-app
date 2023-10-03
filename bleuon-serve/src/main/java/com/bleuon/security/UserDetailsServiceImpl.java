@@ -3,7 +3,7 @@ package com.bleuon.security;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bleuon.entity.CustomUserDetails;
 import com.bleuon.entity.User;
-import com.bleuon.mapper.AuthMapper;
+import com.bleuon.mapper.AuthorityMapper;
 import com.bleuon.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,7 +27,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl extends ServiceImpl<UserMapper, User> implements UserDetailsService {
 
-    private final AuthMapper mapper;
+    private final AuthorityMapper mapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

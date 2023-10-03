@@ -25,13 +25,7 @@ export function accountLogin(entity: IUser, success: Function, error?: Function)
   request
     .post<R<TokenR>>("/auth/login", body, { headers })
     .then(({ data }) => {
-      localStorage.setStorageWithAge(
-        KeyVals.MAINAPP_TOKEN_KEY,
-        data.data.token,
-        data.data.expire,
-        data.data.username,
-        data.data.id
-      );
+      localStorage.setToken(KeyVals.MAINAPP_TOKEN_KEY, data.data);
       success(data);
     })
     .catch(err => {
@@ -109,13 +103,7 @@ export function verifyMailCode(
     .post<R<TokenR>>("/auth/verify-mail-code", body, { params })
     .then(({ data }) => {
       if (type === "login") {
-        localStorage.setStorageWithAge(
-          KeyVals.MAINAPP_TOKEN_KEY,
-          data.data.token,
-          data.data.expire,
-          data.data.username,
-          data.data.id
-        );
+        localStorage.setToken(KeyVals.MAINAPP_TOKEN_KEY, data.data);
       }
       success(data);
     })
