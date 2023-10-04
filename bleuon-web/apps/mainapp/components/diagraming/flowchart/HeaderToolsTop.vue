@@ -157,7 +157,9 @@ function importFlowchart() {
         <el-tooltip content="分享">
           <div @click="dialogVisible = !dialogVisible" class="hover i-tabler-share"></div>
         </el-tooltip>
-        <!-- 用户没有登陆 -->
+        <el-tooltip content="收藏" v-if="token">
+          <div @click="importFlowchart" class="hover i-tabler-file-import ml-4"></div>
+        </el-tooltip>
         <el-tooltip content="导入模板" v-if="token">
           <div
             v-if="type === 'share'"

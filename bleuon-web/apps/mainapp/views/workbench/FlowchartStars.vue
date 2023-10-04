@@ -47,6 +47,14 @@ function deleteFlowchart(id: string, index: number) {
   });
 }
 
+const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
+
+function isMyFlowchart(item: any) {
+  if (item.belongUser.id == token.id) {
+    return "/flowchart/" + item.id;
+  } else return "/share/flowchart/" + item.id;
+}
+
 await fetchData();
 </script>
 
@@ -61,7 +69,7 @@ await fetchData();
           :file-name="item.fileName"
           :file-image="item.dataUri"
           :modify-date="formatted('MM-dd HH:mm:ss', new Date(item.modifyDate))"
-          :path="'/share/flowchart/' + item.id"
+          :path="isMyFlowchart(item)"
           :is-reset="false"
           @clone="cloneFlowchart(item)"
           @download="downloadFlowchart(item)"
