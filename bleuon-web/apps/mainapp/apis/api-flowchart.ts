@@ -110,7 +110,7 @@ export function deleteOne(params: { id?: string }, success: Function, error?: Fu
 /**
  * 查询所有的收藏的流程图
  */
-export async function findAllCollect(params: { uid: string }) {
+export async function findAllCollect(params: { fileName?: string }) {
   const { data } = await request.get<R<any[]>>("/flowchart/find/all/collect", { params });
   return data.data;
 }

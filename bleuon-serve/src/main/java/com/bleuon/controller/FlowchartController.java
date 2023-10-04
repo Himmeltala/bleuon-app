@@ -53,7 +53,8 @@ public class FlowchartController {
     ) {
         if (Objects.isNull(condition)) condition = new FlowchartCondition();
         Claims claims = JwtUtil.parseJwt(token);
-        condition.setUid((String) claims.get("id"));
+        String uid = (String) claims.get("id");
+        condition.setUid(uid);
 
         List<Flowchart> list = flowchart.findAll(condition);
         if (list.isEmpty()) return R.failed("没有查询到流程图！", null);
@@ -63,9 +64,9 @@ public class FlowchartController {
     @PostMapping("/create/one")
     public R<Flowchart> createOne(@RequestHeader("Authorization") String token) {
         Claims claims = JwtUtil.parseJwt(token);
-        String userId = (String) claims.get("id");
+        String uid = (String) claims.get("id");
 
-        Flowchart flowchart = this.flowchart.createOne(userId);
+        Flowchart flowchart = this.flowchart.createOne(uid);
         if (!Objects.isNull(flowchart)) {
             return R.success("创建流程图成功！", flowchart);
         }
@@ -77,9 +78,9 @@ public class FlowchartController {
                                  @RequestBody Flowchart data
     ) {
         Claims claims = JwtUtil.parseJwt(token);
-        String userId = (String) claims.get("id");
+        String uid = (String) claims.get("id");
 
-        Flowchart flowchart = this.flowchart.cloneOne(data, userId);
+        Flowchart flowchart = this.flowchart.cloneOne(data, uid);
         if (!Objects.isNull(flowchart)) {
             return R.success("复制流程图成功！", flowchart);
         }
@@ -94,10 +95,16 @@ public class FlowchartController {
     }
 
     @GetMapping("/find/all/collect")
-    public R<List<CollectFlowchart>> findAllCollect(@RequestParam String uid) {
-        List<CollectFlowchart> list = collect.findAll(uid);
+    public R<List<CollectFlowchart>> findAllCollect(@RequestHeader("Authorization") String token,
+                                                    @ModelAttribute FlowchartCondition condition
+    ) {
+        Claims claims = JwtUtil.parseJwt(token);
+        String uid = (String) claims.get("id");
+        condition.setUid(uid);
+
+        List<CollectFlowchart> list = collect.findAll(condition);
         if (list != null) return R.success(list);
-        return R.failed("没有查询到数据！", null);
+        return R.failed("没有收藏流程图！", null);
     }
 
     @DeleteMapping("/delete/one/collect")

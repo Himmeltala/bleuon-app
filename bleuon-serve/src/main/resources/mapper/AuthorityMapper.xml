@@ -4,7 +4,7 @@
 
     <insert id="setAuthority">
         INSERT INTO co_user_role(user_id, role_id, user_name)
-        VALUES (#{id}, #{role}, #{uname});
+        VALUES (#{id}, #{role}, #{uname})
     </insert>
 
     <select id="getAuthority" resultType="java.lang.String">
@@ -15,10 +15,10 @@
         INNER JOIN p_auths AS a ON a.id = car.auth_id
         <trim prefix="WHERE" prefixOverrides="AND">
             <if test="id != null">
-                AND cur.user_id = #{id};
+                AND cur.user_id = #{id}
             </if>
             <if test="username != null">
-                AND cur.user_name = #{username};
+                AND cur.user_name = #{username}
             </if>
         </trim>
     </select>

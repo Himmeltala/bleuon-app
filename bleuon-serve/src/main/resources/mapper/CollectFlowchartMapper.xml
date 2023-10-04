@@ -2,34 +2,33 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bleuon.mapper.CollectFlowchartMapper">
 
-    <resultMap id="mapOfFindAll" type="com.bleuon.entity.dto.CollectFlowchart">
+    <resultMap id="findAllMap" type="com.bleuon.entity.dto.CollectFlowchart" autoMapping="true">
         <id column="id" property="id"/>
-        <association property="flowchart" javaType="com.bleuon.entity.dto.CollectFlowchart$Flowchart"
-                     select="findFlowchartById" column="flowchart_id"/>
-        <association property="user" javaType="com.bleuon.entity.dto.CollectFlowchart$User" select="findUserById"
-                     column="belong_uid"/>
+        <association javaType="com.bleuon.entity.dto.CollectFlowchart$User" property="belongUser" columnPrefix="u_"
+                     autoMapping="true">
+            <id column="id" property="id"/>
+        </association>
     </resultMap>
-
-    <select id="findAll" resultMap="mapOfFindAll" resultType="com.bleuon.entity.dto.CollectFlowchart">
-        select *
-        from co_collect_flowchart
-        where collect_uid = #{uid};
-    </select>
-
-    <select id="findFlowchartById" resultType="com.bleuon.entity.dto.CollectFlowchart$Flowchart">
-        select *
-        from t_flowcharts
-        where id = #{id}
-    </select>
-
-    <select id="findUserById" resultType="com.bleuon.entity.dto.CollectFlowchart$User">
-        select id, avatar, username
-        from t_users
-        where id = #{id};
+    <select id="findAll" resultMap="findAllMap">
+        SELECT f.*,
+        u.id u_id,
+        u.username u_username,
+        u.avatar u_avatar
+        FROM t_flowcharts f
+        INNER JOIN t_users u ON u.id = f.user_id
+        INNER JOIN co_collect_flowchart cf ON cf.flowchart_id = f.id
+        WHERE cf.collect_uid = #{uid}
+        <trim prefix="AND" prefixOverrides="AND">
+            <if test="fileName != null and fileName != ''">
+                f.file_name = #{fileName}
+            </if>
+        </trim>
     </select>
 
     <delete id="deleteOne">
-        delete from co_collect_flowchart where id = #{id};
+        DELETE
+        FROM co_collect_flowchart
+        WHERE id = #{id}
     </delete>
 
 </mapper>

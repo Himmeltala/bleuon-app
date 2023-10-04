@@ -13,12 +13,11 @@ import { downloadWithDataUri } from "@mainapp/lib/tools";
 import Header from "@mainapp/components/workbench/Header.vue";
 import File from "@mainapp/components/workbench/File.vue";
 
-const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
 const collect = shallowRef();
 const searchVal = ref("");
 
 async function fetchData(params?: any) {
-  collect.value = await FlowchartApi.findAllCollect({ ...params, ...{ uid: token.id } });
+  collect.value = await FlowchartApi.findAllCollect(params);
 }
 
 async function searchFiles() {
@@ -58,15 +57,24 @@ await fetchData();
       <template v-if="collect">
         <File
           v-for="(item, index) in collect"
-          :key="item.flowchart.id"
-          :file-name="item.flowchart.fileName"
-          :file-image="item.flowchart.dataUri"
-          :modify-date="formatted('MM-dd HH:mm:ss', new Date(item.flowchart.modifyDate))"
-          :path="'/share/flowchart/' + item.flowchart.id"
+          :key="item.id"
+          :file-name="item.fileName"
+          :file-image="item.dataUri"
+          :modify-date="formatted('MM-dd HH:mm:ss', new Date(item.modifyDate))"
+          :path="'/share/flowchart/' + item.id"
           :is-reset="false"
-          @clone="cloneFlowchart(item.flowchart)"
-          @download="downloadFlowchart(item.flowchart)"
-          @delete="deleteFlowchart(item.id, index)"></File>
+          @clone="cloneFlowchart(item)"
+          @download="downloadFlowchart(item)"
+          @delete="deleteFlowchart(item.id, index)">
+          <template #footer>
+            <div class="f-c-s text-text-secondary text-0.8rem mt-2">
+              <img class="mr-2 w-6 h-6 rd-50%" :src="item.belongUser.avatar" />
+              <div>
+                {{ item.belongUser.username }}
+              </div>
+            </div>
+          </template>
+        </File>
       </template>
     </div>
   </div>

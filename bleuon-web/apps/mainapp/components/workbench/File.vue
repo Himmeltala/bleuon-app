@@ -38,7 +38,7 @@ const emits = defineEmits(["download", "clone", "delete", "reset"]);
   <div class="file relative">
     <el-dropdown :teleported="false">
       <div class="options absolute top-7 left-2">
-        <div class="options__icon f-c-c cursor-pointer w-10 h-6 rd-2 bg-#383838cc">
+        <div class="options-icon f-c-c cursor-pointer w-10 h-6 rd-2 bg-#383838cc">
           <div class="i-tabler-dots text-white"></div>
         </div>
       </div>
@@ -90,12 +90,13 @@ const emits = defineEmits(["download", "clone", "delete", "reset"]);
     </div>
     <div class="text-text-secondary text-0.8rem mt-2 f-c-s">
       <div class="i-tabler-clock-edit mr-1"></div>
-      更新于 {{ modifyDate }}
+      {{ modifyDate }}
     </div>
     <div v-if="createDate" class="text-text-secondary text-0.8rem mt-1 f-c-s">
       <div class="i-tabler-clock-edit mr-1"></div>
-      创建于 {{ createDate }}
+      {{ createDate }}
     </div>
+    <slot name="footer"></slot>
   </div>
 </template>
 
@@ -111,7 +112,7 @@ const emits = defineEmits(["download", "clone", "delete", "reset"]);
     .options {
       display: block;
 
-      .options__icon:hover {
+      .options-icon:hover {
         --uno: bg-#383838f2;
       }
     }

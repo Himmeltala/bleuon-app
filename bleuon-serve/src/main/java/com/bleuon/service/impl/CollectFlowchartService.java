@@ -1,6 +1,7 @@
 package com.bleuon.service.impl;
 
 import com.bleuon.entity.dto.CollectFlowchart;
+import com.bleuon.entity.vo.FlowchartCondition;
 import com.bleuon.mapper.CollectFlowchartMapper;
 import com.bleuon.service.ICollectFlowchartService;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +22,8 @@ public class CollectFlowchartService implements ICollectFlowchartService {
     private final CollectFlowchartMapper mapper;
 
     @Override
-    public List<CollectFlowchart> findAll(String uid) {
-        return mapper.findAll(uid);
+    public List<CollectFlowchart> findAll(FlowchartCondition condition) {
+        return mapper.findAll(condition);
     }
 
     @Override
