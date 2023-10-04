@@ -59,13 +59,7 @@ onMounted(() => {
     height: "75vh",
     gridSize: flowchartData.value.gridSize,
     bgColor: flowchartData.value.bgColor,
-    drawGrid: {
-      name: "doubleMesh",
-      args: [
-        { color: "#333333", thickness: 1 },
-        { color: "gray", scaleFactor: 5, thickness: 5 }
-      ]
-    }
+    drawGrid: JSON.parse(flowchartData.value.drawGrid)
   });
 
   paper.value = jointjs.paper;

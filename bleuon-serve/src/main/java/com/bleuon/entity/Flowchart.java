@@ -50,12 +50,16 @@ public class Flowchart {
     @TableField("grid_size")
     private Double gridSize;
 
+    @TableField("draw_grid")
+    @Pattern(regexp = ValidRegexp.JSON, message = "网格配置 JSON 格式错误！")
+    private String drawGrid;
+
     @TableField("connector_default")
-    @Pattern(regexp = ValidRegexp.JSON, message = "默认 connector JSON 数据格式错误！")
+    @Pattern(regexp = ValidRegexp.JSON, message = "connector JSON 数据格式错误！")
     private String connectorDefault;
 
     @TableField("router_default")
-    @Pattern(regexp = ValidRegexp.JSON, message = "默认 router JSON 数据格式错误！")
+    @Pattern(regexp = ValidRegexp.JSON, message = "router JSON 数据格式错误！")
     private String routerDefault;
 
     @TableField("is_public")

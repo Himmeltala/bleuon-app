@@ -6,6 +6,7 @@ declare type FlowchartData = Partial<{
   width: number;
   height: number;
   bgColor: string;
+  drawGrid: string;
   gridSize: number;
   connectorDefault: string;
   routerDefault: string;
