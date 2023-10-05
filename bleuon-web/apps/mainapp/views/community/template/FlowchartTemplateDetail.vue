@@ -115,6 +115,10 @@ onMounted(() => {
           <div class="mt-5">
             <el-tag class="mr-5" v-for="item in JSON.parse(data.tags)">{{ item }}</el-tag>
           </div>
+          <div @click="$router.push('/u/profile/' + data.flowchart.user.id)" class="cursor-pointer f-c-s mt-5">
+            <img class="mr-4 w-10 h-10 rd-50%" :src="data.flowchart.user.avatar" />
+            作者：{{ data.flowchart.user.username }}
+          </div>
         </div>
       </div>
     </div>

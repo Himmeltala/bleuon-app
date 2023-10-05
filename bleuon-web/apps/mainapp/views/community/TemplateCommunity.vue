@@ -118,9 +118,9 @@ await fetchData();
           <div
             v-for="item in templateListData"
             :key="item.id"
-            class="file-item pb-5 px-5 rd-2"
-            @click="$router.push('/template/flowchart/' + item.id)">
+            class="file-item pb-5 px-5 rd-2">
             <img
+              @click="$router.push('/template/flowchart/' + item.id)"
               :src="item.flowchart.dataUri"
               class="w-100% rd-2 object-fill h-50 cursor-pointer bg-white" />
             <div class="font-600">
@@ -135,16 +135,12 @@ await fetchData();
                 <div class="i-tabler-copy mr-2"></div>
                 <span>{{ item.copies }}</span>
               </div>
-              <div class="f-c-s">
-                <div class="i-tabler-thumb-up mr-2"></div>
-                <span>{{ item.digg }}</span>
-              </div>
             </div>
             <div class="text-text-secondary text-0.8rem mt-2 f-c-s">
               <div class="i-tabler-clock-edit mr-1"></div>
               {{ formatted("MM-dd HH:mm:ss", item.flowchart.modifyDate) }}
             </div>
-            <div class="f-c-s mt-2">
+            <div @click="$router.push('/u/profile/' + item.flowchart.user.id)" class="cursor-pointer f-c-s mt-4">
               <img :src="item.flowchart.user.avatar" class="mr-2 rd-50% w-6 h-6" />
               <div>{{ item.flowchart.user.username }}</div>
             </div>
