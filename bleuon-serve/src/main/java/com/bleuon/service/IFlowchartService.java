@@ -24,7 +24,7 @@ public interface IFlowchartService {
 
     Flowchart createOne(String userId);
 
-    Flowchart cloneOne(Flowchart data, String userId);
+    Flowchart cloneOne(Flowchart data, String uid);
 
     boolean deleteOne(String id);
 }

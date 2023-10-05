@@ -133,13 +133,13 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
 
     @Override
     @Transactional
-    public Flowchart cloneOne(Flowchart data, String userId) {
+    public Flowchart cloneOne(Flowchart data, String uid) {
         try {
             String uuid = UUID.randomUUID().toString();
             // 创建表
             Flowchart copyFlowchart = new Flowchart();
             copyFlowchart.setId(uuid);
-            copyFlowchart.setUserId(userId);
+            copyFlowchart.setUserId(uid);
             copyFlowchart.setCreateDate(new Timestamp(new Date().getTime()));
             copyFlowchart.setModifyDate(data.getModifyDate());
             copyFlowchart.setFileName(data.getFileName());
