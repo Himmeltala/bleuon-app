@@ -1,11 +1,13 @@
 package com.bleuon.service.impl;
 
 import com.bleuon.entity.TemplateFlowchart;
+import com.bleuon.exception.JdbcErrorException;
 import com.bleuon.mapper.TemplateFlowchartMapper;
 import com.bleuon.service.ITemplateFlowchartService;
 import com.bleuon.utils.http.R;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -34,6 +36,17 @@ public class TemplateFlowchartService implements ITemplateFlowchartService {
         TemplateFlowchart flowchart = mapper.findOne(data);
         if (Objects.isNull(flowchart)) return R.failed("没有查询到流程图！", null);
         return R.success(flowchart);
+    }
+
+    @Override
+    @Transactional
+    public boolean updateOne(TemplateFlowchart data) {
+        try {
+            Integer status = mapper.updateOne(data);
+            return status > 0;
+        } catch (Exception e) {
+            throw new JdbcErrorException(e.getCause());
+        }
     }
 
 }

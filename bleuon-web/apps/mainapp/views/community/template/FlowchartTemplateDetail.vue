@@ -26,13 +26,21 @@ async function fetchData(params: TemplateFlowchartData) {
   data.value = await TemplateCommunityApi.findOne(params);
 }
 
+function cloneFlowchart() {
+  TemplateCommunityApi.cloneOne(data.value, (res) => ElMessage.success(res.message));
+}
+
+function collectFlowchart() {
+  TemplateCommunityApi.collectOne(data.value);
+}
+
 await fetchData({ id: route.params.id.toString() });
 
 onMounted(() => {
   const jointjs = initJointJs({
     el: "bleuon-flowchart-content",
-    width: "75vw",
-    height: "60vh",
+    width: "80vw",
+    height: "100vh",
     gridSize: data.value.flowchart.gridSize,
     bgColor: data.value.flowchart.bgColor,
     drawGrid: JSON.parse(data.value.flowchart.drawGrid)
@@ -56,54 +64,58 @@ onMounted(() => {
       ListenerService.onMousewheelBlank(evt, paper.value);
     }
   });
+
+  TemplateCommunityApi.updateOne({ views: data.value.views + 1, id: data.value.id });
 });
 </script>
 
 <template>
   <div class="template-community slim-slider h-100vh flow-auto bg-bg-primary">
     <CommonHeader></CommonHeader>
-    <div class="content f-c-c">
-      <div class="wrapper w-75vw mt-5">
-        <div class="f-c-b">
-          <div>
-            <div class="font-bold text-1.2rem">{{ data.flowchart.fileName }}</div>
-            <div class="f-c-s mt-2 text-text-thirdly">
-              <div class="i-tabler-clock-edit mr-2"></div>
-              <span>{{ formatted("yyyy-MM-dd HH:mm:ss", data.flowchart.modifyDate) }}</span>
+    <div class="content f-c-c mb-5">
+      <div class="wrapper w-80vw mt-5">
+        <div class="bg-white p-5">
+          <div class="f-c-b">
+            <div>
+              <div class="font-bold text-1.2rem">{{ data.flowchart.fileName }}</div>
+              <div class="f-c-s mt-2 text-text-thirdly">
+                <div class="i-tabler-clock-edit mr-2"></div>
+                <span>{{ formatted("yyyy-MM-dd HH:mm:ss", data.flowchart.modifyDate) }}</span>
+              </div>
+            </div>
+            <div class="f-c-s">
+              <div class="f-c-s mr-4">
+                <div class="i-tabler-eye mr-2"></div>
+                <span>{{ data.views }}</span>
+              </div>
+              <div class="mr-4">
+                <el-button @click="collectFlowchart">
+                  {{ data.stars }}
+                  <template #icon>
+                    <div class="i-tabler-star"></div>
+                  </template>
+                </el-button>
+              </div>
+              <div>
+                <el-button type="primary" @click="cloneFlowchart">
+                  导入模板
+                  <template #icon>
+                    <div class="i-tabler-file-import"></div>
+                  </template>
+                </el-button>
+              </div>
             </div>
           </div>
-          <div class="f-c-s">
-            <div class="f-c-s mr-4">
-              <div class="i-tabler-eye mr-2"></div>
-              <span>{{ data.views }}</span>
-            </div>
-            <div class="mr-4">
-              <el-button>
-                {{ data.digg }}
-                <template #icon>
-                  <div class="i-tabler-thumb-up"></div>
-                </template>
-              </el-button>
-            </div>
-            <div class="mr-4">
-              <el-button>
-                {{ data.stars }}
-                <template #icon>
-                  <div class="i-tabler-star"></div>
-                </template>
-              </el-button>
-            </div>
-            <div class="mr-4">
-              <el-button type="primary">
-                导入模板
-                <template #icon>
-                  <div class="i-tabler-file-import"></div>
-                </template>
-              </el-button>
-            </div>
+          <div class="f-c-c">
+            <div class="mt-5" id="bleuon-flowchart-content"></div>
           </div>
         </div>
-        <div class="mt-5" id="bleuon-flowchart-content"></div>
+        <div class="information mt-5 p-5 bg-white">
+          <div class="font-500 text-1.1rem">{{ data.description }}</div>
+          <div class="mt-5">
+            <el-tag class="mr-5" v-for="item in JSON.parse(data.tags)">{{ item }}</el-tag>
+          </div>
+        </div>
       </div>
     </div>
   </div>

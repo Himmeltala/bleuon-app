@@ -35,9 +35,7 @@ function downloadFlowchart(data: any) {
 
 function cloneFlowchart(data: any) {
   data.fileName = "复制_收藏_" + data.fileName;
-  FlowchartApi.cloneOne(data, () => {
-    ElMessage.success("复制成功，在流程图中查看！");
-  });
+  FlowchartApi.cloneOne(data, (res) => ElMessage.success(res.message));
 }
 
 function deleteFlowchart(flowchartId: string, index: number) {

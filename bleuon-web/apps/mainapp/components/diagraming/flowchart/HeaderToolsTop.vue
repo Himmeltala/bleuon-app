@@ -116,9 +116,7 @@ function cancelShare() {
 
 function importFlowchart() {
   flowchartData.value.fileName = "导入模板_" + flowchartData.value.fileName;
-  FlowchartApi.cloneOne(flowchartData.value, () => {
-    ElMessage.success("导入成功，回到自己工作台查看吧！");
-  });
+  FlowchartApi.cloneOne(flowchartData.value, (res) => ElMessage.success(res.message));
 }
 
 function collectFlowchart() {

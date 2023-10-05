@@ -39,11 +39,11 @@ declare type TemplateFlowchartData = Partial<{
   id: string;
   views: number;
   copies: number;
-  digg: number;
   stars: number;
   tags: string;
   scene: string;
   price: string;
+  description: string;
   ranking: string;
   createDate: string;
   flowchartId: string;

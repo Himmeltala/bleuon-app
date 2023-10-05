@@ -81,4 +81,21 @@
         WHERE tf.id = #{id};
     </select>
 
+    <update id="updateOne">
+        UPDATE t_template_flowcharts
+        <set>
+            <trim suffixOverrides=",">
+                <if test="views != null">views = #{views},</if>
+                <if test="copies != null">copies = #{copies},</if>
+                <if test="stars != null">stars = #{stars},</if>
+                <if test="tags != null">tags = #{tags},</if>
+                <if test="scene != null">scene = #{scene},</if>
+                <if test="price != null">price = #{price},</if>
+                <if test="ranking != null">ranking = #{ranking},</if>
+                <if test="description != null">`description` = #{description},</if>
+            </trim>
+        </set>
+        WHERE id = #{id}
+    </update>
+
 </mapper>

@@ -25,11 +25,11 @@ public class TemplateFlowchart {
     private String id;
     private Integer views;
     private Integer copies;
-    private Integer digg;
     private Integer stars;
     private String tags;
     private String scene;
     private String price;
+    private String description;
     private String ranking;
 
     @TableField("create_date")

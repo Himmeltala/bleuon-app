@@ -66,21 +66,21 @@ function createFlowchart() {
     </div>
     <div class="menu-content mt-10 pb-5 b-b-1 b-b-solid b-border-primary">
       <div
-        :class="{ active: activeItem == 'auth-flowchart-list' }"
+        :class="{ 'active': activeItem == 'auth-flowchart-list' }"
         class="menu-item f-c-s"
         @click="navigateTo('auth-flowchart-list')">
         <div class="mr-2 i-tabler-chart-grid-dots"></div>
         流程图
       </div>
       <div
-        :class="{ active: activeItem == 'auth-flowchart-stars' }"
+        :class="{ 'active': activeItem == 'auth-flowchart-stars' }"
         class="menu-item f-c-s"
         @click="navigateTo('auth-flowchart-stars')">
         <div class="mr-2 i-tabler-star"></div>
         收藏的流程图
       </div>
       <div
-        :class="{ active: activeItem == 'auth-canvas-list' }"
+        :class="{ 'active': activeItem == 'auth-canvas-list' }"
         class="menu-item f-c-s"
         @click="navigateTo('auth-canvas-list')">
         <div class="mr-2 i-tabler-chalkboard"></div>
@@ -89,14 +89,14 @@ function createFlowchart() {
     </div>
     <div class="mt-5 pb-5 b-b-1 b-b-solid b-border-primary">
       <div
-        :class="{ active: activeItem == 'auth-template-community' }"
+        :class="{ 'active': activeItem == 'auth-template-community' }"
         class="menu-item f-c-s"
         @click="navigateTo('auth-template-community')">
         <div class="mr-2 i-tabler-template"></div>
         模板社区
       </div>
       <div
-        :class="{ active: activeItem == 'auth-discussion-community' }"
+        :class="{ 'active': activeItem == 'auth-discussion-community' }"
         class="menu-item f-c-s"
         @click="navigateTo('auth-discussion-community')">
         <div class="mr-2 i-tabler-friends"></div>
@@ -105,7 +105,7 @@ function createFlowchart() {
     </div>
     <div class="mt-5 pb-5">
       <div
-        :class="{ active: activeItem == 'auth-recycle' }"
+        :class="{ 'active': activeItem == 'auth-recycle' }"
         class="menu-item f-c-s"
         @click="navigateTo('auth-recycle')">
         <div class="mr-2 i-tabler-trash-x"></div>
@@ -120,11 +120,11 @@ function createFlowchart() {
   --uno: cursor-pointer select-none p-3 rd-2 transition-all-300;
 
   &.active {
-    --uno: bg- #F3F5F9;
+    --uno: bg-bg-primary;
   }
 
   &:hover {
-    --uno: bg- #F3F5F9;
+    --uno: bg-bg-primary;
   }
 }
 </style>

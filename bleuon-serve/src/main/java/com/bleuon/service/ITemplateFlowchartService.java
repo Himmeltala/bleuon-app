@@ -16,4 +16,7 @@ public interface ITemplateFlowchartService {
     R<List<TemplateFlowchart>> findAll(TemplateFlowchart data);
 
     R<TemplateFlowchart> findOne(TemplateFlowchart data);
+
+    boolean updateOne(TemplateFlowchart data);
+
 }
