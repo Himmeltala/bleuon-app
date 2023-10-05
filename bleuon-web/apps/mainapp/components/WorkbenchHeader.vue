@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 /**
  * @description 工作台头部组件
  * @author 郑人滏 42020306
@@ -34,9 +34,9 @@ function onEnter() {
     <div class="w-120">
       <el-input
         v-model="searchVal"
-        @keyup.enter="onEnter"
+        placeholder="搜索文件/文件夹"
         @input="onInput"
-        placeholder="搜索文件/文件夹">
+        @keyup.enter="onEnter">
         <template #suffix>
           <div class="i-tabler-search"></div>
         </template>
@@ -50,7 +50,7 @@ function onEnter() {
     </div>
     <div class="f-c-c">
       <div class="mr-5">
-        <el-button text bg size="small">
+        <el-button bg size="small" text>
           <template #icon>
             <div class="i-tabler-bell"></div>
           </template>
@@ -61,4 +61,4 @@ function onEnter() {
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style lang="scss" scoped></style>

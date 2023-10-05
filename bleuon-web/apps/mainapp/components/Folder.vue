@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 /**
  * @description 文件夹
  * @author 郑人滏 42020306
@@ -42,16 +42,16 @@ function handleClick() {
 <template>
   <div
     class="folder relative f-c-s px-4 py-4 rd-2 bg-white transition-all-300 cursor-pointer b-1 b-transparent b-solid hover:b-1 hover:b-primary hover:b-solid">
-    <div class="options" :class="disabled && times <= 0 ? 'block' : 'hidden'">
+    <div :class="disabled && times <= 0 ? 'block' : 'hidden'" class="options">
       <div
-        @click="handleClick"
-        class="options__icon f-c-c absolute top-2 right-2 cursor-pointer w-5 h-10 rd-2 bg-#383838cc">
+        class="options__icon f-c-c absolute top-2 right-2 cursor-pointer w-5 h-10 rd-2 bg-#383838cc"
+        @click="handleClick">
         <div class="i-tabler-dots-vertical text-white"></div>
       </div>
     </div>
     <div
-      class="options__panel select-none p-1 z-2 absolute top-10 right-2 w-80% bg-white rd-2"
-      :class="disabled && times <= 0 ? 'block' : 'hidden'">
+      :class="disabled && times <= 0 ? 'block' : 'hidden'"
+      class="options__panel select-none p-1 z-2 absolute top-10 right-2 w-80% bg-white rd-2">
       <div class="text-0.9rem f-c-s">
         <div class="i-tabler-edit mr-2"></div>
         重命名
@@ -70,7 +70,7 @@ function handleClick() {
   </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .folder {
   flex: 0 1 15% !important;
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.16);
@@ -80,7 +80,7 @@ function handleClick() {
       display: block;
 
       .options__icon:hover {
-        --uno: bg-#383838f2;
+        --uno: bg- #383838f2;
       }
     }
   }
@@ -92,7 +92,7 @@ function handleClick() {
       --uno: cursor-pointer px-4 py-2 rd-2 transition-all-300;
 
       &:hover {
-        --uno: bg-#F3F5F9;
+        --uno: bg- #F3F5F9;
       }
     }
   }

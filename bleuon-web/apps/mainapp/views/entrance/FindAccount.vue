@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 /**
  * @description 找回账号
  * @author 郑人滏 42020306
@@ -33,9 +33,9 @@ const email = ref("");
       <div class="mb-10 text-1.6rem">找回您的密码</div>
       <KeepAlive>
         <component
+          :is="tabs[tabIndex]"
           v-model:dynamic-comp-name="tabIndex"
-          v-model:email="email"
-          :is="tabs[tabIndex]"></component>
+          v-model:email="email"></component>
       </KeepAlive>
       <div
         class="f-c-e text-primary cursor-pointer"
@@ -46,4 +46,4 @@ const email = ref("");
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style lang="scss" scoped></style>

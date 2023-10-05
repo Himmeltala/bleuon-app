@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 /**
  * @description 设置
  * @author 郑人滏 42020306
@@ -62,9 +62,11 @@ const professionOps = reactive([
   }
 ]);
 
-function saveBasicData() {}
+function saveBasicData() {
+}
 
-function resetBasicData() {}
+function resetBasicData() {
+}
 </script>
 
 <template>
@@ -78,20 +80,20 @@ function resetBasicData() {}
           </div>
           <div class="f-s-b">
             <div class="w-50%">
-              <el-form :model="formData" label-width="auto" label-position="left">
+              <el-form :model="formData" label-position="left" label-width="auto">
                 <el-form-item label="昵称">
-                  <div class="f-c-c" v-if="!isEditUsername">
+                  <div v-if="!isEditUsername" class="f-c-c">
                     <div class="mr-5 text-text-secondary">{{ formData.username }}</div>
                     <div
                       class="i-tabler-pencil-minus hover"
                       @click="isEditUsername = !isEditUsername"></div>
                   </div>
-                  <div class="f-c-c" v-else>
+                  <div v-else class="f-c-c">
                     <div class="mr-5">
                       <el-input
-                        placeholder="请输入您的用户名"
+                        v-model="formData.username"
                         clearable
-                        v-model="formData.username" />
+                        placeholder="请输入您的用户名" />
                     </div>
                     <div
                       class="i-tabler-edit-off hover"
@@ -118,11 +120,11 @@ function resetBasicData() {}
                 </el-form-item>
                 <el-form-item label="个人简介">
                   <el-input
+                    v-model="formData.signature"
                     :rows="4"
                     clearable
-                    type="textarea"
                     placeholder="请输入您的个性签名"
-                    v-model="formData.signature" />
+                    type="textarea" />
                 </el-form-item>
               </el-form>
             </div>
@@ -132,7 +134,7 @@ function resetBasicData() {}
           </div>
           <div class="f-c-c mt-10">
             <el-button @click="resetBasicData">重置</el-button>
-            <el-button @click="saveBasicData" type="primary">保存资料</el-button>
+            <el-button type="primary" @click="saveBasicData">保存资料</el-button>
           </div>
         </div>
         <div class="bg-white rd-2 my-5 p-10">
@@ -179,7 +181,7 @@ function resetBasicData() {}
   </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .setting {
   background-color: rgb(244, 244, 244);
 }

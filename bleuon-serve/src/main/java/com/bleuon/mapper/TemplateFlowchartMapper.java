@@ -16,4 +16,5 @@ public interface TemplateFlowchartMapper {
 
     List<TemplateFlowchart> findAll(TemplateFlowchart data);
 
+    TemplateFlowchart findOne(TemplateFlowchart data);
 }

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 /**
  * @description 工作台侧边栏菜单
  * @author 郑人滏 42020306
@@ -42,9 +42,9 @@ function createFlowchart() {
   <div class="menu slim-slider h-100vh flow-auto px-5 b-r-1 b-r-solid b-border-primary bg-white">
     <div class="menu-header">
       <div class="mt-5">
-        <img src="/bleuon-icon.png" class="h-15 w-40 object-cover" />
+        <img class="h-15 w-40 object-cover" src="/bleuon-icon.png" />
       </div>
-      <el-dropdown :teleported="false" trigger="click" class="mt-5 w-100%">
+      <el-dropdown :teleported="false" class="mt-5 w-100%" trigger="click">
         <el-button class="w-100%" type="primary">＋新建</el-button>
         <template #dropdown>
           <el-dropdown-menu>
@@ -66,22 +66,22 @@ function createFlowchart() {
     </div>
     <div class="menu-content mt-10 pb-5 b-b-1 b-b-solid b-border-primary">
       <div
-        class="menu-item f-c-s"
         :class="{ active: activeItem == 'auth-flowchart-list' }"
+        class="menu-item f-c-s"
         @click="navigateTo('auth-flowchart-list')">
         <div class="mr-2 i-tabler-chart-grid-dots"></div>
         流程图
       </div>
       <div
-        class="menu-item f-c-s"
         :class="{ active: activeItem == 'auth-flowchart-stars' }"
+        class="menu-item f-c-s"
         @click="navigateTo('auth-flowchart-stars')">
         <div class="mr-2 i-tabler-star"></div>
         收藏的流程图
       </div>
       <div
-        class="menu-item f-c-s"
         :class="{ active: activeItem == 'auth-canvas-list' }"
+        class="menu-item f-c-s"
         @click="navigateTo('auth-canvas-list')">
         <div class="mr-2 i-tabler-chalkboard"></div>
         画布
@@ -89,15 +89,15 @@ function createFlowchart() {
     </div>
     <div class="mt-5 pb-5 b-b-1 b-b-solid b-border-primary">
       <div
-        class="menu-item f-c-s"
         :class="{ active: activeItem == 'auth-template-community' }"
+        class="menu-item f-c-s"
         @click="navigateTo('auth-template-community')">
         <div class="mr-2 i-tabler-template"></div>
         模板社区
       </div>
       <div
-        class="menu-item f-c-s"
         :class="{ active: activeItem == 'auth-discussion-community' }"
+        class="menu-item f-c-s"
         @click="navigateTo('auth-discussion-community')">
         <div class="mr-2 i-tabler-friends"></div>
         讨论社区
@@ -105,8 +105,8 @@ function createFlowchart() {
     </div>
     <div class="mt-5 pb-5">
       <div
-        class="menu-item f-c-s"
         :class="{ active: activeItem == 'auth-recycle' }"
+        class="menu-item f-c-s"
         @click="navigateTo('auth-recycle')">
         <div class="mr-2 i-tabler-trash-x"></div>
         回收站
@@ -115,16 +115,16 @@ function createFlowchart() {
   </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .menu-item {
   --uno: cursor-pointer select-none p-3 rd-2 transition-all-300;
 
   &.active {
-    --uno: bg-#F3F5F9;
+    --uno: bg- #F3F5F9;
   }
 
   &:hover {
-    --uno: bg-#F3F5F9;
+    --uno: bg- #F3F5F9;
   }
 }
 </style>

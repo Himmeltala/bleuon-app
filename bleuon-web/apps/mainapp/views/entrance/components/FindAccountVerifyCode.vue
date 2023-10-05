@@ -1,11 +1,6 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { UserApi } from "@mainapp/apis";
-import {
-  emailValidator,
-  verifyCodeValidator,
-  getVerifyCode,
-  commitForm
-} from "@common/utils/form-validators";
+import { commitForm, emailValidator, getVerifyCode, verifyCodeValidator } from "@common/utils/form-validators";
 import type { FormRules } from "element-plus";
 
 defineProps({
@@ -57,7 +52,7 @@ function confirmGetVerifyCode() {
 const isVerifySuccess = ref(false);
 
 function confirmSubmitForm() {
-  commitForm(formRef.value,  () => {
+  commitForm(formRef.value, () => {
     UserApi.verifyMailCode(formData, formData.code, "reset", () => {
       isVerifySuccess.value = true;
       emits("update:email", formData.email);
@@ -70,19 +65,19 @@ function confirmSubmitForm() {
   <div>
     <el-form ref="formRef" :model="formData" :rules="formRules">
       <el-form-item prop="email">
-        <el-input clearable size="large" v-model="formData.email" placeholder="请输入邮箱" />
+        <el-input v-model="formData.email" clearable placeholder="请输入邮箱" size="large" />
       </el-form-item>
       <el-form-item prop="code">
         <div class="f-c-b w-100%">
           <div class="w-70%">
             <el-input
+              v-model="formData.code"
               :maxlength="6"
               :minlength="6"
-              clearable
               class="w-100%"
-              size="large"
-              v-model="formData.code"
-              placeholder="请输入验证码" />
+              clearable
+              placeholder="请输入验证码"
+              size="large" />
           </div>
           <div class="w-30% f-c-e">
             <el-button
@@ -100,20 +95,20 @@ function confirmSubmitForm() {
       <el-form-item>
         <el-button
           v-if="!isVerifySuccess"
-          @click="confirmSubmitForm"
           :disabled="!isEmailCorrect || !isCodeCorrect"
-          size="large"
           class="w-100%"
-          type="primary">
+          size="large"
+          type="primary"
+          @click="confirmSubmitForm">
           <span class="font-bold">点击校验</span>
         </el-button>
         <el-button
           v-else
-          @click="$emit('update:dynamicCompName', 'FindAccountRsetPassword')"
           :disabled="!isEmailCorrect || !isCodeCorrect"
-          size="large"
           class="w-100%"
-          type="success">
+          size="large"
+          type="success"
+          @click="$emit('update:dynamicCompName', 'FindAccountRsetPassword')">
           <span class="font-bold">点击下一步</span>
         </el-button>
       </el-form-item>
@@ -121,4 +116,4 @@ function confirmSubmitForm() {
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style lang="scss" scoped></style>

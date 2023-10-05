@@ -1,16 +1,16 @@
 declare type UserData = Partial<{
-  id?: number;
-  username?: string;
-  password?: string;
-  phone?: string;
-  email?: string;
-  profession?: string;
-  company?: string;
-  position?: string;
-  avatar?: string;
-  signature?: string;
-  sex?: string;
-  registerDate?: string;
+  id: number;
+  username: string;
+  password: string;
+  phone: string;
+  email: string;
+  profession: string;
+  company: string;
+  position: string;
+  avatar: string;
+  signature: string;
+  sex: string;
+  registerDate: string;
 }>;
 
 declare type FlowchartData = Partial<{
@@ -28,26 +28,26 @@ declare type FlowchartData = Partial<{
   isPublic: number;
   isLegal: number;
   isShare: number;
-  deadShareDate: Date;
-  createDate: Date;
-  modifyDate: Date;
+  deadShareDate: string;
+  createDate: string;
+  modifyDate: string;
   userId: string;
   user: UserData;
 }>;
 
 declare type TemplateFlowchartData = Partial<{
-  id: number;
+  id: string;
   views: number;
   copies: number;
   digg: number;
+  stars: number;
   tags: string;
   scene: string;
   price: string;
   ranking: string;
-  createDate: Date;
+  createDate: string;
   flowchartId: string;
   flowchart: FlowchartData;
-
-  // not exist
+  //
   fileName: string;
 }>;

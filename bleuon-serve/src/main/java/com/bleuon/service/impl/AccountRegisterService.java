@@ -24,7 +24,7 @@ public class AccountRegisterService extends ServiceImpl<UserMapper, User> implem
 
     @Transactional
     @Override
-    public R<Void> register(User user) {
+    public R register(User user) {
         try {
             if (hasExistUser(user.getUsername()))
                 return R.failed("该用户名已经被注册！");
@@ -39,7 +39,7 @@ public class AccountRegisterService extends ServiceImpl<UserMapper, User> implem
         return query().eq("username", username).one() != null;
     }
 
-    private R<Void> saveUser(User user) {
+    private R saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setId(UUID.randomUUID().toString());
 

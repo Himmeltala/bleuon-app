@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @description:
@@ -23,8 +24,16 @@ public class TemplateFlowchartService implements ITemplateFlowchartService {
 
     @Override
     public R<List<TemplateFlowchart>> findAll(TemplateFlowchart data) {
-        List<TemplateFlowchart> all = mapper.findAll(data);
-        return R.success(all);
+        List<TemplateFlowchart> list = mapper.findAll(data);
+        if (Objects.isNull(list)) return R.failed("没有查询到流程图！", null);
+        return R.success(list);
+    }
+
+    @Override
+    public R<TemplateFlowchart> findOne(TemplateFlowchart data) {
+        TemplateFlowchart flowchart = mapper.findOne(data);
+        if (Objects.isNull(flowchart)) return R.failed("没有查询到流程图！", null);
+        return R.success(flowchart);
     }
 
 }

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 /**
  * @description Flowchart 流程图
  * @author 郑人滏 42020306
@@ -35,8 +35,7 @@ provide(KeyVals.BLEUON_FLOWCHART_GRAPH, graph);
 provide(KeyVals.BLEUON_FLOWCHART_DATA, flowchartData);
 
 async function fetchData() {
-  const data = await FlowchartApi.findOne({ id: route.params.id.toString() });
-  flowchartData.value = data;
+  flowchartData.value = await FlowchartApi.findOne({ id: route.params.id.toString() });
 }
 
 function updateFlowchartData() {
@@ -48,7 +47,8 @@ function updateFlowchartData() {
   flowchartData.value.connectorDefault = JSON.stringify(Data.linkConnectorConfig.value);
   flowchartData.value.routerDefault = JSON.stringify(Data.linkRouterConfig.value);
   flowchartData.value.dataUri = getDataUri(paper.value, graph.value);
-  FlowchartApi.updateOne(flowchartData.value, () => {});
+  FlowchartApi.updateOne(flowchartData.value, () => {
+  });
 }
 
 const updateThrottle = throttle(updateFlowchartData, 3000);
@@ -122,7 +122,7 @@ onMounted(() => {
   <div class="bleuon__flowchart-container h-100vh">
     <div
       class="bleuon__flowchart-header h-22vh border-border-primary border-b-1 border-b-solid bg-bg-primary px-4 py-4">
-      <HeaderToolsTop @change="updateThrottle" class="mb-4" />
+      <HeaderToolsTop class="mb-4" @change="updateThrottle" />
       <HeaderToolsBottom
         :is-clicked-element="Data.isClickedElement.value"
         :is-clicked-link="Data.isClickedLink.value" />
@@ -136,7 +136,7 @@ onMounted(() => {
         <FooterTools class="h-3vh" />
       </div>
       <div class="bleuon__flowchart-extra">
-        <input ref="textInputRef" type="text" class="bleuon__flowchart-input absolute hidden" />
+        <input ref="textInputRef" class="bleuon__flowchart-input absolute hidden" type="text" />
       </div>
     </div>
   </div>

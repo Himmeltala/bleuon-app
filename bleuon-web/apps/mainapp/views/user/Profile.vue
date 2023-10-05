@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 /**
  * @description 个人资料中心
  * @author 郑人滏 42020306
@@ -24,15 +24,15 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
       <div class="f-s-b pt-30 pb-20 px-50">
         <div class="f-c-c">
           <img
-            src="https://img2.baidu.com/it/u=1397727792,1861968739&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-            class="rd-50% h-30 w-30" />
+            class="rd-50% h-30 w-30"
+            src="https://img2.baidu.com/it/u=1397727792,1861968739&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500" />
           <div class="ml-10">
             <div class="username f-c-c mb-5">
               <div class="font-bold text-1.5rem mr-10">Himmelbleu</div>
               <el-button @click="$router.push('/u/setting')">编辑资料</el-button>
             </div>
             <div class="usertags mb-5">
-              <el-tag type="warning" class="mr-4">本科</el-tag>
+              <el-tag class="mr-4" type="warning">本科</el-tag>
               <el-tag>计算机科学与技术</el-tag>
             </div>
             <div class="signature text-text-secondary">Time tick away, dream faded away!</div>
@@ -67,7 +67,7 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
   </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .user-data {
   background-image: url("/user-profile-bg.png");
   background-repeat: no-repeat;

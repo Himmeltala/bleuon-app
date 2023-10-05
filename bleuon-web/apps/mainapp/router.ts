@@ -81,6 +81,17 @@ const router = createRouter({
       ]
     },
     {
+      path: "/template",
+      children: [
+        {
+          path: "flowchart/:id",
+          name: "auth-template-flowchart",
+          meta: { title: "流程图模板" },
+          component: () => import("@mainapp/views/community/template/FlowchartTemplateDetail.vue")
+        }
+      ]
+    },
+    {
       path: "/flowchart/:id",
       name: "auth-flowchat",
       meta: { title: "流程图" },

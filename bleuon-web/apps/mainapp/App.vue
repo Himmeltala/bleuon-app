@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 /**
  * @description App.vue 程序入口组件
  * @author 郑人滏 42020306
@@ -17,4 +17,4 @@
   </RouterView>
 </template>
 
-<style scoped lang="scss"></style>
+<style lang="scss" scoped></style>

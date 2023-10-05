@@ -5,6 +5,6 @@ import com.bleuon.utils.http.R;
 
 public interface IAccountRegisterService {
 
-    R<Void> register(User user);
+    R register(User user);
 
 }

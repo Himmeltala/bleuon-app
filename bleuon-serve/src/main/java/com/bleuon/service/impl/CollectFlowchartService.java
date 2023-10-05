@@ -39,7 +39,7 @@ public class CollectFlowchartService implements ICollectFlowchartService {
 
     @Override
     @Transactional
-    public R<Void> addOne(CollectFlowchartVo data) {
+    public R addOne(CollectFlowchartVo data) {
         try {
             CollectFlowchartDto one = mapper.findOne(data);
             if (!Objects.isNull(one)) return R.failed("您已经收藏过了！");

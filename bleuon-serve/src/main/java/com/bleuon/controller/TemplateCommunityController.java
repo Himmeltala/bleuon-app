@@ -28,4 +28,9 @@ public class TemplateCommunityController {
         return service.findAll(data);
     }
 
+    @GetMapping("find/one")
+    public R<TemplateFlowchart> findOne(TemplateFlowchart data) {
+        return service.findOne(data);
+    }
+
 }

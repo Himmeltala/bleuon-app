@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 /**
  * @description 登录入口路由组件
  * @author 郑人滏 42020306
@@ -21,7 +21,7 @@ const dynamicCompName = ref<"Login" | "Register" | "FindAccount">("Login");
 <template>
   <div class="entrance f-c-c h-100vh">
     <div class="w-40% h-100% relative">
-      <img src="/bleuon-icon.png" class="w-45 h-15 object-cover absolute top-10 left-10" />
+      <img class="w-45 h-15 object-cover absolute top-10 left-10" src="/bleuon-icon.png" />
       <div class="absolute top-50% left-30 color-gray-100 text-2rem">
         在同一个地方，构思、设计<br />
         ，让你更加高效<br />
@@ -36,10 +36,10 @@ const dynamicCompName = ref<"Login" | "Register" | "FindAccount">("Login");
     </div>
     <div class="w-60% h-100%">
       <component
-        v-model:dynamic-comp-name="dynamicCompName"
-        :is="tabs[dynamicCompName]"></component>
+        :is="tabs[dynamicCompName]"
+        v-model:dynamic-comp-name="dynamicCompName"></component>
     </div>
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style lang="scss" scoped></style>

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 /**
  * @description 工作台页
  * @author 郑人滏 42020306
@@ -14,11 +14,11 @@ const activeItem = ref<ActiveItem>("auth-flowchart-list");
 
 <template>
   <div class="workbench f-s-c bg-#F6F7F8">
-    <WorkbenchMenu class="w-17%" v-model:active-item="activeItem"></WorkbenchMenu>
+    <WorkbenchMenu v-model:active-item="activeItem" class="w-17%"></WorkbenchMenu>
     <div class="content h-100vh flow-auto px-10 pb-10 w-83%">
       <RouterView></RouterView>
     </div>
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style lang="scss" scoped></style>

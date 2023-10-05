@@ -1,6 +1,5 @@
 package com.bleuon.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -22,11 +21,12 @@ import java.sql.Timestamp;
 @TableName("t_template_flowcharts")
 public class TemplateFlowchart {
 
-    @TableId(type = IdType.AUTO)
-    private Integer id;
+    @TableId
+    private String id;
     private Integer views;
     private Integer copies;
     private Integer digg;
+    private Integer stars;
     private String tags;
     private String scene;
     private String price;

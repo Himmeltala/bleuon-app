@@ -14,25 +14,25 @@ import javax.naming.AuthenticationException;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler({ValidationException.class})
-    public R<Void> handleValidationException(ValidationException e) {
+    public R handleValidationException(ValidationException e) {
         log.error(e.getMessage(), e.getCause());
         return R.error(e.getMessage());
     }
 
     @ExceptionHandler({AuthenticationException.class})
-    public R<Void> handleAuthenticationException(AuthenticationException e) {
+    public R handleAuthenticationException(AuthenticationException e) {
         log.error(e.getMessage(), e.getCause());
         return R.error(e.getMessage());
     }
 
     @ExceptionHandler({JdbcErrorException.class})
-    public R<Void> handleJdbcErrorException(JdbcErrorException e) {
+    public R handleJdbcErrorException(JdbcErrorException e) {
         log.error(e.getMessage(), e.getCause());
         return R.error(JdbcExpType.ERROR);
     }
 
     @ExceptionHandler({JdbcFailedException.class})
-    public R<Void> handleJdbcOperationException(JdbcFailedException e) {
+    public R handleJdbcOperationException(JdbcFailedException e) {
         log.warn(e.getMessage(), e.getCause());
         return R.error(JdbcExpType.FAILED);
     }

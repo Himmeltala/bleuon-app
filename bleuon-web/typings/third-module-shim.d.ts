@@ -1,7 +1,8 @@
-import { AxiosInstance } from "axios";
+export {};
 
 declare module "vue" {
-  interface ComponentCustomProperties {}
+  interface ComponentCustomProperties {
+  }
 }
 
 declare module "axios" {

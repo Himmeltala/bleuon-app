@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 /**
  * @description 欢迎页
  * @author 郑人滏 42020306
@@ -12,7 +12,7 @@
     <div class="header fixed right-0 top-0 w-100%">
       <div class="px-55 f-c-b h-20 b-b-1 b-b-solid b-border-primary bg-white">
         <div class="flex-grow-1 cursor-pointer f-c-s" @click="$router.push('/')">
-          <img src="/bleuon-icon.png" class="w-45 h-15 object-cover" />
+          <img class="w-45 h-15 object-cover" src="/bleuon-icon.png" />
         </div>
         <div class="flex-grow-2 f-c-b text-1.1rem">
           <div class="hover">推荐</div>
@@ -33,7 +33,7 @@
         一款在线作图工具，支持原型图、UML、BPMN、网络拓扑图等多种图形绘制
       </div>
       <div class="text-center mt-20">
-        <el-button @click="$router.push('/workbench')" type="primary" size="large">免费试用</el-button>
+        <el-button size="large" type="primary" @click="$router.push('/workbench')">免费试用</el-button>
       </div>
     </div>
     <div class="mt-50">
@@ -68,7 +68,7 @@
       </div>
       <div class="text-center">
         <div class="text-white">
-          <img src="/browser.png" class="w-10 h-10 object-cover" />
+          <img class="w-10 h-10 object-cover" src="/browser.png" />
           <div class="mt-4">网页版</div>
         </div>
       </div>
@@ -78,7 +78,7 @@
   </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .download {
   height: calc(100vh - 5rem);
   background-image: url("https://www.processon.com/public_login/terminal_bg.7da39e2a.png");

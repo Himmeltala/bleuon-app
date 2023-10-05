@@ -1,12 +1,12 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import type { FormRules } from "element-plus";
 import {
+  commitForm,
   emailValidator,
-  verifyCodeValidator,
+  getVerifyCode,
   passwordValidator,
   rePasswdValidator,
-  getVerifyCode,
-  commitForm
+  verifyCodeValidator
 } from "@common/utils/form-validators";
 import { UserApi } from "@mainapp/apis";
 
@@ -84,19 +84,19 @@ function confirmSubmitForm() {
   <div>
     <el-form ref="formRef" :model="formData" :rules="formRules">
       <el-form-item prop="email">
-        <el-input clearable size="large" v-model="formData.email" placeholder="请输入邮箱" />
+        <el-input v-model="formData.email" clearable placeholder="请输入邮箱" size="large" />
       </el-form-item>
       <el-form-item prop="code">
         <div class="f-c-b w-100%">
           <div class="w-70%">
             <el-input
+              v-model="formData.code"
               :maxlength="6"
               :minlength="6"
-              clearable
               class="w-100%"
-              size="large"
-              v-model="formData.code"
-              placeholder="请输入验证码" />
+              clearable
+              placeholder="请输入验证码"
+              size="large" />
           </div>
           <div class="w-30% f-c-e">
             <el-button
@@ -113,31 +113,31 @@ function confirmSubmitForm() {
       </el-form-item>
       <el-form-item prop="password">
         <el-input
-          clearable
+          v-model="formData.password"
           :maxlength="16"
           :minlength="8"
-          size="large"
-          v-model="formData.password"
+          clearable
           placeholder="设置密码：支持任何字符"
-          show-password />
+          show-password
+          size="large" />
       </el-form-item>
       <el-form-item prop="rePasswd">
         <el-input
-          clearable
+          v-model="formData.rePasswd"
           :maxlength="16"
           :minlength="8"
-          size="large"
-          v-model="formData.rePasswd"
+          clearable
           placeholder="确认密码：两次密码保持一致"
-          show-password />
+          show-password
+          size="large" />
       </el-form-item>
       <el-form-item>
         <el-button
-          @click="confirmSubmitForm"
           :disabled="!isEmailCorrect || !isCodeCorrect || !isPasswordCorrect || !isRePasswdCorrect"
-          size="large"
           class="w-100%"
-          type="primary">
+          size="large"
+          type="primary"
+          @click="confirmSubmitForm">
           <span class="font-bold">注册</span>
         </el-button>
       </el-form-item>
@@ -146,4 +146,4 @@ function confirmSubmitForm() {
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style lang="scss" scoped></style>

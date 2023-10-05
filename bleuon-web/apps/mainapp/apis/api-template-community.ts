@@ -7,8 +7,27 @@
 
 import request from "./use-axios";
 
+/**
+ * 获取所有流程图模板
+ *
+ * @param params
+ * @returns
+ */
 export async function findAll(params?: TemplateFlowchartData) {
   const { data } = await request.get<R<TemplateFlowchartData[]>>("/community/template/find/all", {
+    params
+  });
+  return data.data;
+}
+
+/**
+ * 获取一个流程图模板
+ *
+ * @param params
+ * @returns
+ */
+export async function findOne(params: TemplateFlowchartData) {
+  const { data } = await request.get<R<TemplateFlowchartData>>("/community/template/find/one", {
     params
   });
   return data.data;

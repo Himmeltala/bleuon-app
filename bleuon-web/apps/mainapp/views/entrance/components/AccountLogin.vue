@@ -1,7 +1,7 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { UserApi } from "@mainapp/apis";
 import type { FormRules } from "element-plus";
-import { accountValidator, passwordValidator, commitForm } from "@common/utils/form-validators";
+import { accountValidator, commitForm, passwordValidator } from "@common/utils/form-validators";
 
 const router = useRouter();
 
@@ -41,31 +41,31 @@ function confirmLogin() {
 
 <template>
   <div>
-    <el-form ref="formRef" :rules="formRules" :model="formData">
+    <el-form ref="formRef" :model="formData" :rules="formRules">
       <el-form-item prop="username">
         <el-input
-          clearable
-          size="large"
           v-model="formData.username"
-          placeholder="请输入手机号/邮箱/用户名" />
+          clearable
+          placeholder="请输入手机号/邮箱/用户名"
+          size="large" />
       </el-form-item>
       <el-form-item prop="password">
         <el-input
-          clearable
+          v-model="formData.password"
           :maxlength="16"
           :minlength="8"
-          size="large"
-          v-model="formData.password"
+          clearable
           placeholder="请输入密码"
-          show-password />
+          show-password
+          size="large" />
       </el-form-item>
       <el-form-item>
         <el-button
           :disabled="!isAccountCorrect || !isPasswordCorrect"
-          @click="confirmLogin"
-          size="large"
           class="w-100%"
-          type="primary">
+          size="large"
+          type="primary"
+          @click="confirmLogin">
           <span class="font-bold">登录</span>
         </el-button>
       </el-form-item>
@@ -73,4 +73,4 @@ function confirmLogin() {
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style lang="scss" scoped></style>

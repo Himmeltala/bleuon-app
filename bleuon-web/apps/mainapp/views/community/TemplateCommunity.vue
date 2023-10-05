@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 /**
  * @description 社区模板
  * @author 郑人滏 42020306
@@ -16,11 +16,11 @@ const scene = ref("");
 const price = ref("");
 const ranking = ref("");
 
-const templateList = shallowRef<TemplateFlowchartData[]>();
+const templateListData = shallowRef<TemplateFlowchartData[]>();
 
 async function fetchData(params?: TemplateFlowchartData) {
-  templateList.value = await TemplateCommunityApi.findAll(params);
-  triggerRef(templateList);
+  templateListData.value = await TemplateCommunityApi.findAll(params);
+  triggerRef(templateListData);
 }
 
 function onSceneChange(value: any) {
@@ -59,7 +59,7 @@ await fetchData();
             <div class="f-c-s">
               <div class="w-30 font-500 text-1.2rem">搜索内容</div>
               <div class="w-120">
-                <el-input @keyup.enter="onEnter" v-model="searchVal" placeholder="请输入关键字搜索">
+                <el-input v-model="searchVal" placeholder="请输入关键字搜索" @keyup.enter="onEnter">
                   <template #suffix>
                     <div class="i-tabler-search"></div>
                   </template>
@@ -73,7 +73,7 @@ await fetchData();
               <div class="i-tabler-chart-bubble mr-2"></div>
               场景：
             </div>
-            <el-radio-group class="w-92%" @change="onSceneChange" v-model="scene">
+            <el-radio-group v-model="scene" class="w-92%" @change="onSceneChange">
               <el-radio label="">全部</el-radio>
               <el-radio label="资产管理">资产管理</el-radio>
               <el-radio label="财务">财务</el-radio>
@@ -92,7 +92,7 @@ await fetchData();
               <div class="i-tabler-chart-bubble mr-2"></div>
               价格：
             </div>
-            <el-radio-group class="w-92%" @change="onPriceChange" v-model="price">
+            <el-radio-group v-model="price" class="w-92%" @change="onPriceChange">
               <el-radio label="">全部</el-radio>
               <el-radio label="免费">免费</el-radio>
               <el-radio label="付费">付费</el-radio>
@@ -104,7 +104,7 @@ await fetchData();
               <div class="i-tabler-chart-bubble mr-2"></div>
               其他：
             </div>
-            <el-radio-group class="w-92%" @change="onOtherChange" v-model="ranking">
+            <el-radio-group v-model="ranking" class="w-92%" @change="onOtherChange">
               <el-radio label="">全部</el-radio>
               <el-radio label="推荐">推荐</el-radio>
               <el-radio label="热门">热门</el-radio>
@@ -113,12 +113,16 @@ await fetchData();
           </div>
         </div>
         <div
-          class="file-list w-75vw mt-5 mb-5 f-c-s flex-wrap flex-gap-1.25rem"
-          v-if="templateList">
-          <div class="file-item pb-5 px-5 rd-2" v-for="item in templateList" :key="item.id">
+          v-if="templateListData"
+          class="file-list w-75vw mt-5 mb-5 f-c-s flex-wrap flex-gap-1.25rem">
+          <div
+            v-for="item in templateListData"
+            :key="item.id"
+            class="file-item pb-5 px-5 rd-2"
+            @click="$router.push('/template/flowchart/' + item.id)">
             <img
-              class="w-100% rd-2 object-fill h-50 cursor-pointer bg-white"
-              :src="item.flowchart.dataUri" />
+              :src="item.flowchart.dataUri"
+              class="w-100% rd-2 object-fill h-50 cursor-pointer bg-white" />
             <div class="font-600">
               {{ item.flowchart.fileName }}
             </div>
@@ -138,10 +142,10 @@ await fetchData();
             </div>
             <div class="text-text-secondary text-0.8rem mt-2 f-c-s">
               <div class="i-tabler-clock-edit mr-1"></div>
-              {{ formatted("MM-dd HH:mm:ss", new Date(item.flowchart.modifyDate)) }}
+              {{ formatted("MM-dd HH:mm:ss", item.flowchart.modifyDate) }}
             </div>
             <div class="f-c-s mt-2">
-              <img class="mr-2 rd-50% w-6 h-6" :src="item.flowchart.user.avatar" />
+              <img :src="item.flowchart.user.avatar" class="mr-2 rd-50% w-6 h-6" />
               <div>{{ item.flowchart.user.username }}</div>
             </div>
             <!-- <div class="mt-2">tags</div> -->
@@ -152,7 +156,7 @@ await fetchData();
   </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .file-item {
   flex: 0 1 calc(20% - 1.25rem);
   background: #fff;

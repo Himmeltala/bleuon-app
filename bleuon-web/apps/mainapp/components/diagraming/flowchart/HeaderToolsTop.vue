@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { dia } from "@mainapp/lib";
 import { convertSvgToImage } from "@mainapp/lib/tools";
 import MenuAvatar from "@mainapp/components/MenuAvatar.vue";
@@ -129,26 +129,26 @@ function collectFlowchart() {
 <template>
   <div class="b-border-primary b-b-1 b-b-solid f-c-b pb-4">
     <div class="left f-c-s">
-      <el-button @click="$router.back()" type="primary" bg text>
+      <el-button bg text type="primary" @click="$router.back()">
         <template #icon>
           <div class="i-tabler-chevron-left"></div>
         </template>
       </el-button>
       <img
-        @click="$router.push('/workbench')"
+        class="mr-4 w-30 h-15 object-cover cursor-pointer"
         src="/bleuon-icon.png"
-        class="mr-4 w-30 h-15 object-cover cursor-pointer" />
+        @click="$router.push('/workbench')" />
       <div>
         <div v-show="editFile" @keyup.enter="confirmChangeFileName">
-          <el-input v-model="calcFileName" size="small" placeholder="请输入文件名" />
+          <el-input v-model="calcFileName" placeholder="请输入文件名" size="small" />
         </div>
-        <div class="text-gray-700" v-show="!editFile" @click="editFile = !editFile">
+        <div v-show="!editFile" class="text-gray-700" @click="editFile = !editFile">
           {{ calcFileName }}
         </div>
         <div class="mt-2">
           <div class="text-gray-500 text-0.8rem f-c-c">
             <div class="i-tabler-clock mr-1"></div>
-            上次更新：{{ formatted("yyyy-MM-dd HH:mm:ss", new Date(flowchartData.modifyDate)) }}
+            上次更新：{{ formatted("yyyy-MM-dd HH:mm:ss", flowchartData.modifyDate) }}
           </div>
         </div>
       </div>
@@ -156,20 +156,20 @@ function collectFlowchart() {
     <div class="right f-c-s">
       <div class="mr-6 f-c-s text-gray-700 text-1.5rem">
         <el-tooltip content="下载">
-          <div @click="download" class="hover mr-4 i-tabler-download"></div>
+          <div class="hover mr-4 i-tabler-download" @click="download"></div>
         </el-tooltip>
         <el-tooltip content="分享">
-          <div @click="dialogVisible = !dialogVisible" class="hover i-tabler-share"></div>
+          <div class="hover i-tabler-share" @click="dialogVisible = !dialogVisible"></div>
         </el-tooltip>
-        <el-tooltip content="收藏" v-if="token">
-          <div @click="collectFlowchart" class="hover i-tabler-star ml-4"></div>
+        <el-tooltip v-if="token" content="收藏">
+          <div class="hover i-tabler-star ml-4" @click="collectFlowchart"></div>
         </el-tooltip>
-        <el-tooltip content="导入模板" v-if="token">
+        <el-tooltip v-if="token" content="导入模板">
           <div>
             <div
               v-if="type === 'share'"
-              @click="importFlowchart"
-              class="hover i-tabler-file-import ml-4"></div>
+              class="hover i-tabler-file-import ml-4"
+              @click="importFlowchart"></div>
           </div>
         </el-tooltip>
       </div>
@@ -178,10 +178,10 @@ function collectFlowchart() {
     <el-dialog v-model="dialogVisible" title="分享流程图" width="40%">
       <el-form
         ref="formRef"
-        :rules="formRules"
         :model="flowchartData"
-        label-width="100px"
-        label-position="right">
+        :rules="formRules"
+        label-position="right"
+        label-width="100px">
         <el-form-item label="状态">
           <div v-if="!flowchartData.isShare">流程图没有公开，点击创建链接</div>
           <div v-else>流程图已经公开，点击链接浏览</div>
@@ -191,12 +191,12 @@ function collectFlowchart() {
             http://localhost:5173/#/share/flowchart/{{ flowchartData.id }}
           </el-link>
         </el-form-item>
-        <el-form-item prop="deadShareDate" label="截止日期">
+        <el-form-item label="截止日期" prop="deadShareDate">
           <el-date-picker
-            :disabled="type === 'share'"
             v-model="flowchartData.deadShareDate"
-            type="datetime"
-            :shortcuts="shortcuts" />
+            :disabled="type === 'share'"
+            :shortcuts="shortcuts"
+            type="datetime" />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -219,4 +219,4 @@ function collectFlowchart() {
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style lang="scss" scoped></style>

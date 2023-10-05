@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 /**
  * @description 文件
  * @author 郑人滏 42020306
@@ -73,8 +73,8 @@ const emits = defineEmits(["download", "clone", "delete", "reset"]);
     <div class="file-cover h-50 rd-2" @click="$router.push(path)">
       <img
         v-if="fileImage"
-        class="w-100% h-100% rd-2 object-fill cursor-pointer bg-white"
-        :src="fileImage" />
+        :src="fileImage"
+        class="w-100% h-100% rd-2 object-fill cursor-pointer bg-white" />
       <div v-else class="w-100% h-100% rd-2 cursor-pointer bg-white"></div>
     </div>
     <div class="file-footer">
@@ -83,7 +83,7 @@ const emits = defineEmits(["download", "clone", "delete", "reset"]);
   </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .file {
   flex: 0 1 calc(16.67% - 1.25rem);
 
@@ -96,7 +96,7 @@ const emits = defineEmits(["download", "clone", "delete", "reset"]);
       display: block;
 
       .file-options-icon:hover {
-        --uno: bg-#383838f2;
+        --uno: bg- #383838f2;
       }
     }
   }

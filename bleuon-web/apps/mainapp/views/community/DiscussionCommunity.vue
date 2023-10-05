@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 /**
  * @description 讨论社区
  * @author 郑人滏 42020306
@@ -15,4 +15,4 @@ import CommonHeader from "@mainapp/components/CommonHeader.vue";
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style lang="scss" scoped></style>

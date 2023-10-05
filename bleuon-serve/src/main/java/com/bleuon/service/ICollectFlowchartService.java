@@ -19,7 +19,7 @@ public interface ICollectFlowchartService {
 
     boolean deleteOne(CollectFlowchartVo data);
 
-    R<Void> addOne(CollectFlowchartVo data);
+    R addOne(CollectFlowchartVo data);
 
     R<CollectFlowchartDto> findOne(CollectFlowchartVo data);
 }

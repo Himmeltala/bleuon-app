@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 /**
  * @description 登录页
  * @author 郑人滏 42020306
@@ -36,23 +36,23 @@ function changeTabIndex(name: TabIndexType) {
       <div class="mb-10 text-1.6rem">欢迎使用 BleuOn</div>
       <div class="mb-10 f-c-s">
         <div
-          @click="changeTabIndex('AccountLogin')"
-          class="mr-10 cursor-pointer pb-4 text-1.1rem"
           :class="
             tabIndex === 'AccountLogin'
               ? 'active font-bold b-b-solid b-b-primary b-b-2'
               : 'text-text-secondary'
-          ">
+          "
+          class="mr-10 cursor-pointer pb-4 text-1.1rem"
+          @click="changeTabIndex('AccountLogin')">
           账号登录
         </div>
         <div
-          @click="changeTabIndex('EmailLogin')"
-          class="cursor-pointer pb-4 text-1.1rem"
           :class="
             tabIndex === 'EmailLogin'
               ? 'active font-bold b-b-solid b-b-primary b-b-2'
               : 'text-text-secondary'
-          ">
+          "
+          class="cursor-pointer pb-4 text-1.1rem"
+          @click="changeTabIndex('EmailLogin')">
           邮箱登录
         </div>
       </div>
@@ -81,7 +81,7 @@ function changeTabIndex(name: TabIndexType) {
   </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .other-login {
   position: relative;
 

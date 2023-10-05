@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 /**
  * @description Flowchart 侧边栏工具
  * @author 郑人滏 42020306
@@ -18,4 +18,4 @@ import CellsForBasic from "./CellsForBasic.vue";
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style lang="scss" scoped></style>

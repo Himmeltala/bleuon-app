@@ -1,11 +1,6 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { UserApi } from "@mainapp/apis";
-import {
-  emailValidator,
-  verifyCodeValidator,
-  getVerifyCode,
-  commitForm
-} from "@common/utils/form-validators";
+import { commitForm, emailValidator, getVerifyCode, verifyCodeValidator } from "@common/utils/form-validators";
 import type { FormRules } from "element-plus";
 
 const router = useRouter();
@@ -58,19 +53,19 @@ function confirmSubmitForm() {
   <div>
     <el-form ref="formRef" :model="formData" :rules="formRules">
       <el-form-item prop="email">
-        <el-input clearable size="large" v-model="formData.email" placeholder="请输入邮箱" />
+        <el-input v-model="formData.email" clearable placeholder="请输入邮箱" size="large" />
       </el-form-item>
       <el-form-item prop="code">
         <div class="f-c-b w-100%">
           <div class="w-70%">
             <el-input
+              v-model="formData.code"
               :maxlength="6"
               :minlength="6"
-              clearable
               class="w-100%"
-              size="large"
-              v-model="formData.code"
-              placeholder="请输入验证码" />
+              clearable
+              placeholder="请输入验证码"
+              size="large" />
           </div>
           <div class="w-30% f-c-e">
             <el-button
@@ -87,11 +82,11 @@ function confirmSubmitForm() {
       </el-form-item>
       <el-form-item>
         <el-button
-          @click="confirmSubmitForm"
           :disabled="!isEmailCorrect || !isCodeCorrect"
-          size="large"
           class="w-100%"
-          type="primary">
+          size="large"
+          type="primary"
+          @click="confirmSubmitForm">
           <span class="font-bold">登录</span>
         </el-button>
       </el-form-item>
@@ -99,4 +94,4 @@ function confirmSubmitForm() {
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style lang="scss" scoped></style>

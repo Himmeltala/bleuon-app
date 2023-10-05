@@ -32,7 +32,7 @@ public class FlowchartController {
     private final CollectFlowchartService collect;
 
     @PostMapping("/update/one")
-    public R<Void> updateOne(@RequestBody Flowchart data) {
+    public R updateOne(@RequestBody Flowchart data) {
         boolean status = flowchart.updateOne(data);
         if (status) {
             return R.success("更新流程图成功！");
@@ -89,7 +89,7 @@ public class FlowchartController {
     }
 
     @DeleteMapping("/delete/one")
-    public R<Void> deleteOne(@RequestParam String id) {
+    public R deleteOne(@RequestParam String id) {
         boolean status = flowchart.deleteOne(id);
         if (status) return R.success("删除流程图成功！");
         return R.failed("删除流程图失败！");
@@ -109,8 +109,8 @@ public class FlowchartController {
     }
 
     @DeleteMapping("/delete/one/collect")
-    public R<Void> deleteOneCollect(@RequestHeader("Authorization") String token,
-                                    @ModelAttribute CollectFlowchartVo data
+    public R deleteOneCollect(@RequestHeader("Authorization") String token,
+                              @ModelAttribute CollectFlowchartVo data
     ) {
         Claims claims = JwtUtil.parseJwt(token);
         String uid = (String) claims.get("id");
@@ -121,8 +121,8 @@ public class FlowchartController {
     }
 
     @PostMapping("/add/one/collect")
-    public R<Void> addOneCollect(@RequestHeader("Authorization") String token,
-                                 @RequestBody CollectFlowchartVo data
+    public R addOneCollect(@RequestHeader("Authorization") String token,
+                           @RequestBody CollectFlowchartVo data
     ) {
         Claims claims = JwtUtil.parseJwt(token);
         String uid = (String) claims.get("id");

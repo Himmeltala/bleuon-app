@@ -31,7 +31,7 @@ public class LogoutSuccessHandler implements org.springframework.security.web.au
         String authToken = request.getHeader("Authorization");
         Claims claims = JwtUtil.parseJwt(authToken);
 
-        R<Void> success = R.success("退出成功！");
+        R success = R.success("退出成功！");
 
         if (claims != null) {
             String jwtUuid = claims.getId();

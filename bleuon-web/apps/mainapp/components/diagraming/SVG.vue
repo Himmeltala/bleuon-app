@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 /**
  * @description Path SVG 创建组件
  * @author 郑人滏 42020306
@@ -43,26 +43,26 @@ const graph = inject<dia.Graph>(KeyVals.BLEUON_FLOWCHART_GRAPH);
     <svg
       :style="{ flex: flex }"
       :viewBox="viewBox"
+      xmlns="http://www.w3.org/2000/svg"
       @click="
         Path.create(graph, {
           width,
           height,
           attrs
         })
-      "
-      xmlns="http://www.w3.org/2000/svg">
+      ">
       <path
         v-for="(v, k) in attrs"
         :key="k"
         :d="v.refD"
         :fill="v.fill || '#ffffff'"
-        :stroke-width="v.stwidth || '0.3'"
-        :stroke="v.stroke || '#333333'"></path>
+        :stroke="v.stroke || '#333333'"
+        :stroke-width="v.stwidth || '0.3'"></path>
     </svg>
   </el-tooltip>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 svg {
   --uno: w-10 h-10 object-cover cursor-pointer;
 }

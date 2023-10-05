@@ -1,11 +1,6 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import type { FormRules } from "element-plus";
-import {
-  usernameValidator,
-  passwordValidator,
-  rePasswdValidator,
-  commitForm
-} from "@common/utils/form-validators";
+import { commitForm, passwordValidator, rePasswdValidator, usernameValidator } from "@common/utils/form-validators";
 import { UserApi } from "@mainapp/apis";
 
 const formData = reactive({
@@ -61,40 +56,40 @@ function confirmRegister() {
     <el-form ref="formRef" :model="formData" :rules="formRules">
       <el-form-item prop="username">
         <el-input
+          v-model="formData.username"
           :maxlength="16"
           :minlength="4"
           clearable
-          size="large"
-          v-model="formData.username"
-          placeholder="请输入用户名" />
+          placeholder="请输入用户名"
+          size="large" />
       </el-form-item>
       <el-form-item prop="password">
         <el-input
-          clearable
+          v-model="formData.password"
           :maxlength="16"
           :minlength="8"
-          size="large"
-          v-model="formData.password"
+          clearable
           placeholder="设置密码：支持任何字符"
-          show-password />
+          show-password
+          size="large" />
       </el-form-item>
       <el-form-item prop="rePasswd">
         <el-input
-          clearable
+          v-model="formData.rePasswd"
           :maxlength="16"
           :minlength="8"
-          size="large"
-          v-model="formData.rePasswd"
+          clearable
           placeholder="确认密码：两次密码保持一致"
-          show-password />
+          show-password
+          size="large" />
       </el-form-item>
       <el-form-item>
         <el-button
           :disabled="!isUnameCorrect || !isPasswordCorrect || !isRePasswdCorrect"
-          @click="confirmRegister"
-          size="large"
           class="w-100%"
-          type="primary">
+          size="large"
+          type="primary"
+          @click="confirmRegister">
           <span class="font-bold">注册</span>
         </el-button>
       </el-form-item>
@@ -105,4 +100,4 @@ function confirmRegister() {
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style lang="scss" scoped></style>

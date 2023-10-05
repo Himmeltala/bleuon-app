@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 /**
  * @description 收藏的流程图
  * @author 郑人滏 42020306
@@ -64,13 +64,13 @@ await fetchData();
         <File
           v-for="(item, index) in collect"
           :key="item.id"
-          :file-name="item.fileName"
           :file-image="item.dataUri"
-          :path="isMyFlowchart(item) ? '/flowchart/' + item.id : '/share/flowchart/' + item.id"
+          :file-name="item.fileName"
           :is-reset="false"
+          :path="isMyFlowchart(item) ? '/flowchart/' + item.id : '/share/flowchart/' + item.id"
           @clone="cloneFlowchart(item)"
-          @download="downloadFlowchart(item)"
-          @delete="deleteFlowchart(item.id, index)">
+          @delete="deleteFlowchart(item.id, index)"
+          @download="downloadFlowchart(item)">
           <template #footer>
             <div class="f-c-s flex-nowrap mt-4 w-100%">
               <div class="mr-2 i-tabler-chart-bubble text-theme-primary"></div>
@@ -78,10 +78,10 @@ await fetchData();
             </div>
             <div class="text-text-secondary text-0.8rem mt-2 f-c-s">
               <div class="i-tabler-clock-edit mr-1"></div>
-              {{ formatted("MM-dd HH:mm:ss", new Date(item.modifyDate)) }}
+              {{ formatted("MM-dd HH:mm:ss", item.modifyDate) }}
             </div>
             <div class="f-c-s text-text-secondary text-0.8rem mt-2">
-              <img class="mr-2 w-6 h-6 rd-50%" :src="item.belongUser.avatar" />
+              <img :src="item.belongUser.avatar" class="mr-2 w-6 h-6 rd-50%" />
               <div>
                 {{ isMyFlowchart(item) ? "我的" : item.belongUser.username }}
               </div>
@@ -93,4 +93,4 @@ await fetchData();
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style lang="scss" scoped></style>

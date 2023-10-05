@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 /**
  * @description flowcharts 流程图列表
  * @author 郑人滏 42020306
@@ -122,7 +122,7 @@ async function searchFiles() {
         <div>
           <el-tooltip content="筛选" placement="top">
             <el-dropdown :hide-on-click="false" :teleported="false" trigger="click">
-              <el-button @click="" size="small">
+              <el-button size="small" @click="">
                 <template #icon>
                   <div class="i-tabler-filter"></div>
                 </template>
@@ -132,12 +132,12 @@ async function searchFiles() {
                   <el-dropdown-item @click="modifyDateFlowchart">
                     <div class="text-0.8rem f-c-s select-none">
                       <div
-                        class="mr-2"
                         :class="
                           isModifyDateAsc
                             ? 'i-tabler-sort-ascending-2'
                             : 'i-tabler-sort-descending-2'
-                        "></div>
+                        "
+                        class="mr-2"></div>
                       <span>
                         修改日期<span v-if="isModifyDateAsc">升序</span><span v-else>降序</span>
                       </span>
@@ -146,12 +146,12 @@ async function searchFiles() {
                   <el-dropdown-item @click="createDateFlowchart">
                     <div class="text-0.8rem f-c-s select-none">
                       <div
-                        class="mr-2"
                         :class="
                           isCreateDateAsc
                             ? 'i-tabler-sort-ascending-2'
                             : 'i-tabler-sort-descending-2'
-                        "></div>
+                        "
+                        class="mr-2"></div>
                       <span>
                         创建日期<span v-if="isCreateDateAsc">升序</span><span v-else>降序</span>
                       </span>
@@ -193,13 +193,13 @@ async function searchFiles() {
       <File
         v-for="(item, index) in flowchartList"
         :key="item.id"
-        :file-name="item.fileName"
         :file-image="item.dataUri"
+        :file-name="item.fileName"
         :path="'/flowchart/' + item.id"
         @clone="cloneFlowchart(item)"
-        @reset="resetFlowchart(index)"
+        @delete="deleteFlowchart(item.id, index)"
         @download="downloadFlowchart(item)"
-        @delete="deleteFlowchart(item.id, index)">
+        @reset="resetFlowchart(index)">
         <template #footer>
           <div class="f-c-s flex-nowrap mt-4 w-100%">
             <div class="mr-2 i-tabler-chart-bubble text-theme-primary"></div>
@@ -207,7 +207,7 @@ async function searchFiles() {
           </div>
           <div class="text-text-secondary text-0.8rem mt-2 f-c-s">
             <div class="i-tabler-clock-edit mr-1"></div>
-            {{ formatted("MM-dd HH:mm:ss", new Date(item.modifyDate)) }}
+            {{ formatted("MM-dd HH:mm:ss", item.modifyDate) }}
           </div>
         </template>
       </File>
@@ -238,4 +238,4 @@ async function searchFiles() {
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style lang="scss" scoped></style>

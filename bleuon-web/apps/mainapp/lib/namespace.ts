@@ -1,4 +1,4 @@
-import { dia, shapes, linkTools, elementTools } from "jointjs";
+import { dia, elementTools, linkTools, shapes } from "jointjs";
 import { NormalResizeTool, RotateTool, updateLabelText } from "./tools";
 
 export function defineNamespace() {

@@ -1,6 +1,6 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import type { FormRules } from "element-plus";
-import { passwordValidator, rePasswdValidator, commitForm } from "@common/utils/form-validators";
+import { commitForm, passwordValidator, rePasswdValidator } from "@common/utils/form-validators";
 import { UserApi } from "@mainapp/apis";
 
 const props = defineProps({
@@ -57,35 +57,35 @@ function confirmSubmitForm() {
   <div>
     <el-form ref="formRef" :model="formData" :rules="formRules">
       <el-form-item prop="email">
-        <el-input disabled clearable size="large" v-model="formData.email" />
+        <el-input v-model="formData.email" clearable disabled size="large" />
       </el-form-item>
       <el-form-item prop="password">
         <el-input
-          clearable
+          v-model="formData.password"
           :maxlength="16"
           :minlength="8"
-          size="large"
-          v-model="formData.password"
+          clearable
           placeholder="设置密码：支持任何字符"
-          show-password />
+          show-password
+          size="large" />
       </el-form-item>
       <el-form-item prop="rePasswd">
         <el-input
-          clearable
+          v-model="formData.rePasswd"
           :maxlength="16"
           :minlength="8"
-          size="large"
-          v-model="formData.rePasswd"
+          clearable
           placeholder="确认密码：两次密码保持一致"
-          show-password />
+          show-password
+          size="large" />
       </el-form-item>
       <el-form-item>
         <el-button
-          @click="confirmSubmitForm"
           :disabled="!isPasswordCorrect || !isRePasswdCorrect"
-          size="large"
           class="w-100%"
-          type="primary">
+          size="large"
+          type="primary"
+          @click="confirmSubmitForm">
           <span class="font-bold">确定重置密码</span>
         </el-button>
       </el-form-item>
@@ -94,4 +94,4 @@ function confirmSubmitForm() {
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style lang="scss" scoped></style>

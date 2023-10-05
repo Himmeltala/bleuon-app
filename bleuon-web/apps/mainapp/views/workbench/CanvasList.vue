@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 /**
  * @description canvas list 画布列表
  * @author 郑人滏 42020306
@@ -9,4 +9,4 @@
 
 <template></template>
 
-<style scoped lang="scss"></style>
+<style lang="scss" scoped></style>

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 /**
  * @description Flowchat 底部工具
  * @author 郑人滏 42020306
@@ -33,12 +33,12 @@ function resetSlider() {
     <div class="scale-tool f-c-c">
       <div class="mr-4">
         <input
-          type="range"
-          @change="onSliderChange"
           v-model="Data.calcCurrentScale.value"
-          min="20"
           max="200"
-          step="1" />
+          min="20"
+          step="1"
+          type="range"
+          @change="onSliderChange" />
       </div>
       <el-tooltip content="重置缩放" placement="top">
         <div class="cursor-pointer" @click="resetSlider">{{ Data.calcCurrentScale.value }}%</div>
@@ -47,4 +47,4 @@ function resetSlider() {
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style lang="scss" scoped></style>

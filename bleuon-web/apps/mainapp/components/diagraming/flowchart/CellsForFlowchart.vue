@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 /**
  * @description Flowchart 图形创建组件
  * @author 郑人滏 42020306
@@ -19,15 +19,15 @@ data.value = await OfficialCellsApi.findAll("flowchart");
     <div class="mb-4 text-0.8rem font-bold">Flowchart 图形</div>
     <div class="f-c-s flex-wrap flex-gap-3">
       <SVG
-        v-if="data.length"
         v-for="item in data"
-        :width="item.width"
-        :height="item.height"
+        v-if="data.length"
+        :attrs="JSON.parse(item.attrs)"
         :content="item.notes"
+        :height="item.height"
         :view-box="item.viewBox"
-        :attrs="JSON.parse(item.attrs)"></SVG>
+        :width="item.width"></SVG>
     </div>
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style lang="scss" scoped></style>

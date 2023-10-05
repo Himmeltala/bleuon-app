@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 /**
  * @description 注册页
  * @author 郑人滏 42020306
@@ -30,23 +30,23 @@ const tabs = {
       <div class="mb-10 text-1.6rem">欢迎注册 BleuOn</div>
       <div class="mb-10 f-c-s">
         <div
-          @click="tabIndex = 'EmailRegister'"
-          class="mr-10 cursor-pointer pb-4 text-1.1rem"
           :class="
             tabIndex === 'EmailRegister'
               ? 'active font-bold b-b-solid b-b-primary b-b-2'
               : 'text-text-secondary'
-          ">
+          "
+          class="mr-10 cursor-pointer pb-4 text-1.1rem"
+          @click="tabIndex = 'EmailRegister'">
           邮箱注册
         </div>
         <div
-          @click="tabIndex = 'AccountRegister'"
-          class="cursor-pointer pb-4 text-1.1rem"
           :class="
             tabIndex === 'AccountRegister'
               ? 'active font-bold b-b-solid b-b-primary b-b-2'
               : 'text-text-secondary'
-          ">
+          "
+          class="cursor-pointer pb-4 text-1.1rem"
+          @click="tabIndex = 'AccountRegister'">
           账号注册
         </div>
       </div>

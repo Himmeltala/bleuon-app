@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 /**
  * @description 分享的 Flowchart 流程图
  * @author 郑人滏 42020306
@@ -106,7 +106,7 @@ onMounted(() => {
         <FooterTools class="h-3vh" />
       </div>
       <div class="bleuon__flowchart-extra">
-        <input ref="textInputRef" type="text" class="bleuon__flowchart-input absolute hidden" />
+        <input ref="textInputRef" class="bleuon__flowchart-input absolute hidden" type="text" />
       </div>
     </div>
   </div>

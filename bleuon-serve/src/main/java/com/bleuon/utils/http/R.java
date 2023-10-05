@@ -35,12 +35,12 @@ public class R<T> {
         return new R<>(code, data);
     }
 
-    public static R<Void> build(Integer code, String message) {
+    public static R build(Integer code, String message) {
         return new R<>(code, message);
     }
 
-    public static R<Void> error(String message) {
-        return new R<>(HttpCode.ERROR.getCode(), message);
+    public static R error(String message) {
+        return new R<>(HttpCode.ERROR.getCode(), message, null);
     }
 
     public static <T> R<T> error(String message, T data) {
@@ -51,8 +51,8 @@ public class R<T> {
         return new R<>(HttpCode.SUCCESS.getCode(), data);
     }
 
-    public static R<Void> success(String message) {
-        return new R<>(HttpCode.SUCCESS.getCode(), message);
+    public static R success(String message) {
+        return new R<>(HttpCode.SUCCESS.getCode(), message, null);
     }
 
     public static <T> R<T> success(String message, T data) {
@@ -63,8 +63,8 @@ public class R<T> {
         return new R<>(HttpCode.SUCCESS.getCode(), data);
     }
 
-    public static R<Void> failed(String message) {
-        return new R<>(HttpCode.FAILED.getCode(), message);
+    public static R failed(String message) {
+        return new R<>(HttpCode.FAILED.getCode(), message, null);
     }
 
     public static <T> R<T> failed(String message, T data) {

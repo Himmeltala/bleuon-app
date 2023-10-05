@@ -23,7 +23,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         response.setContentType("application/json;charset=utf-8");
 
-        R<Void> failed = R.failed("用户名或密码错误！");
+        R failed = R.failed("用户名或密码错误！");
         response.getWriter()
                 .write(JSON.toJSONString(failed));
     }

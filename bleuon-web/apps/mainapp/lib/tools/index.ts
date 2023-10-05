@@ -196,7 +196,7 @@ export function convertSvgToImage(
   const image = new Image();
   image.src = dataUri;
 
-  image.onload = function () {
+  image.onload = function() {
     canvas.width = config.width || 1000;
     canvas.height = config.height || 1000;
     context.fillStyle = config.bgColor || "#ffffff";
@@ -257,7 +257,7 @@ export function downloadWithDataUri(
 
   image.src = data.dataUri;
 
-  image.onload = function () {
+  image.onload = function() {
     canvas.width = data.width || 1000;
     canvas.height = data.height || 1000;
     context.fillStyle = data.bgColor || "#ffffff";

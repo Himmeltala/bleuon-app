@@ -35,9 +35,9 @@ public class AuthorityController {
     private final ResetPasswordService resetPasswordService;
 
     @GetMapping("/aks-mail-verify-code")
-    public R<Void> askMailVerifyCode(@RequestParam @Email(message = "不是一个合法的电子邮箱地址") String email,
-                                     @RequestParam @Pattern(regexp = ValidRegexp.MAIL_CODE_TYPE, message = "发送验证码的类型是 register 或 login 或 reset！") String type,
-                                     HttpServletRequest http) {
+    public R askMailVerifyCode(@RequestParam @Email(message = "不是一个合法的电子邮箱地址") String email,
+                               @RequestParam @Pattern(regexp = ValidRegexp.MAIL_CODE_TYPE, message = "发送验证码的类型是 register 或 login 或 reset！") String type,
+                               HttpServletRequest http) {
         return mailRelatedService.getMailVerifyCode(email, type, IpUtil.getIp(http));
     }
 
@@ -49,12 +49,12 @@ public class AuthorityController {
     }
 
     @PostMapping("/account-register")
-    public R<Void> accountRegister(@RequestBody User user) {
+    public R accountRegister(@RequestBody User user) {
         return registerService.register(user);
     }
 
     @PostMapping("/reset-password")
-    public R<Void> resetPassword(@RequestBody User user) {
+    public R resetPassword(@RequestBody User user) {
         return resetPasswordService.resetPassword(user);
     }
 

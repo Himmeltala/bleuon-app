@@ -17,7 +17,7 @@ public class ResetPasswordService extends ServiceImpl<UserMapper, User> implemen
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public R<Void> resetPassword(User user) {
+    public R resetPassword(User user) {
         UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
         String password = passwordEncoder.encode(user.getPassword());
         updateWrapper

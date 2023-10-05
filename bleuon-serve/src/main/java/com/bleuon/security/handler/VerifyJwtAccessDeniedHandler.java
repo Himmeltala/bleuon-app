@@ -30,7 +30,7 @@ public class VerifyJwtAccessDeniedHandler implements AccessDeniedHandler {
 
         log.error(e.getMessage(), e.getCause());
 
-        R<Void> failed = R.build(HttpCode.NO_AUTHORITY.getCode(), "权限不足！");
+        R failed = R.build(HttpCode.NO_AUTHORITY.getCode(), "权限不足！");
 
         response.getWriter()
                 .write(JSON.toJSONString(failed));

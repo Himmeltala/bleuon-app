@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 /**
  * @description 可以点击出菜单的头像组件
  * @author 郑人滏 42020306
@@ -21,8 +21,8 @@ function confirmLogout() {
   <div class="f-c-c relative">
     <el-dropdown :teleported="false">
       <img
-        src="https://img2.baidu.com/it/u=1397727792,1861968739&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-        class="rd-50% w-10 h-10 cursor-pointer" />
+        class="rd-50% w-10 h-10 cursor-pointer"
+        src="https://img2.baidu.com/it/u=1397727792,1861968739&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500" />
       <template #dropdown>
         <el-dropdown-menu>
           <div class="b-b-solid b-border-primary b-b-1 pb-2 mb-2">
@@ -55,7 +55,7 @@ function confirmLogout() {
           </div>
           <div>
             <el-dropdown-item>
-              <el-popconfirm @confirm="confirmLogout" title="是否确定退出登录？">
+              <el-popconfirm title="是否确定退出登录？" @confirm="confirmLogout">
                 <template #reference>
                   <div class="f-c-s">
                     <div class="i-tabler-logout mr-2"></div>
@@ -71,4 +71,4 @@ function confirmLogout() {
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style lang="scss" scoped></style>
