@@ -1,6 +1,7 @@
 package com.bleuon.mapper;
 
-import com.bleuon.entity.dto.CollectFlowchart;
+import com.bleuon.entity.dto.CollectFlowchartDto;
+import com.bleuon.entity.vo.CollectFlowchartVo;
 import com.bleuon.entity.vo.FlowchartCondition;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -15,8 +16,12 @@ import java.util.List;
 @Mapper
 public interface CollectFlowchartMapper {
 
-    List<CollectFlowchart> findAll(FlowchartCondition condition);
+    List<CollectFlowchartDto> findAll(FlowchartCondition condition);
 
-    boolean deleteOne(String id);
+    Integer deleteOne(String id);
+
+    Integer addOne(CollectFlowchartVo data);
+
+    CollectFlowchartDto findOne(CollectFlowchartVo data);
 
 }

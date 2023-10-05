@@ -120,6 +120,10 @@ function importFlowchart() {
     ElMessage.success("导入成功，回到自己工作台查看吧！");
   });
 }
+
+function collectFlowchart() {
+  FlowchartApi.addOneCollect({ flowchartId: flowchartData.value.id });
+}
 </script>
 
 <template>
@@ -158,13 +162,15 @@ function importFlowchart() {
           <div @click="dialogVisible = !dialogVisible" class="hover i-tabler-share"></div>
         </el-tooltip>
         <el-tooltip content="收藏" v-if="token">
-          <div @click="importFlowchart" class="hover i-tabler-file-import ml-4"></div>
+          <div @click="collectFlowchart" class="hover i-tabler-star ml-4"></div>
         </el-tooltip>
         <el-tooltip content="导入模板" v-if="token">
-          <div
-            v-if="type === 'share'"
-            @click="importFlowchart"
-            class="hover i-tabler-file-import ml-4"></div>
+          <div>
+            <div
+              v-if="type === 'share'"
+              @click="importFlowchart"
+              class="hover i-tabler-file-import ml-4"></div>
+          </div>
         </el-tooltip>
       </div>
       <MenuAvatar v-if="token" />

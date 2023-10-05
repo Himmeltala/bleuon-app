@@ -2,14 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bleuon.mapper.CollectFlowchartMapper">
 
-    <resultMap id="findAllMap" type="com.bleuon.entity.dto.CollectFlowchart" autoMapping="true">
+    <resultMap id="findMap" type="com.bleuon.entity.dto.CollectFlowchartDto" autoMapping="true">
         <id column="id" property="id"/>
-        <association javaType="com.bleuon.entity.dto.CollectFlowchart$User" property="belongUser" columnPrefix="u_"
+        <association javaType="com.bleuon.entity.dto.CollectFlowchartDto$User" property="belongUser" columnPrefix="u_"
                      autoMapping="true">
             <id column="id" property="id"/>
         </association>
     </resultMap>
-    <select id="findAll" resultMap="findAllMap">
+
+    <select id="findAll" resultMap="findMap">
         SELECT f.*,
         u.id u_id,
         u.username u_username,
@@ -25,10 +26,27 @@
         </trim>
     </select>
 
+    <select id="findOne" resultMap="findMap">
+        SELECT f.*,
+               u.id       u_id,
+               u.username u_username,
+               u.avatar   u_avatar
+        FROM t_flowcharts f
+                 INNER JOIN t_users u ON u.id = f.user_id
+                 INNER JOIN co_collect_flowchart cf ON cf.flowchart_id = f.id
+        WHERE cf.collect_uid = #{collectUid}
+          AND cf.flowchart_id = #{flowchartId};
+    </select>
+
     <delete id="deleteOne">
         DELETE
         FROM co_collect_flowchart
         WHERE id = #{id}
     </delete>
+
+    <insert id="addOne">
+        INSERT INTO co_collect_flowchart(collect_uid, flowchart_id)
+        VALUES (#{collectUid}, #{flowchartId})
+    </insert>
 
 </mapper>

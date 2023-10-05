@@ -2,7 +2,8 @@ package com.bleuon.controller;
 
 import com.bleuon.annotaion.RequestMappingPrefix;
 import com.bleuon.entity.Flowchart;
-import com.bleuon.entity.dto.CollectFlowchart;
+import com.bleuon.entity.dto.CollectFlowchartDto;
+import com.bleuon.entity.vo.CollectFlowchartVo;
 import com.bleuon.entity.vo.FlowchartCondition;
 import com.bleuon.service.impl.CollectFlowchartService;
 import com.bleuon.service.impl.FlowchartService;
@@ -95,14 +96,14 @@ public class FlowchartController {
     }
 
     @GetMapping("/find/all/collect")
-    public R<List<CollectFlowchart>> findAllCollect(@RequestHeader("Authorization") String token,
-                                                    @ModelAttribute FlowchartCondition condition
+    public R<List<CollectFlowchartDto>> findAllCollect(@RequestHeader("Authorization") String token,
+                                                       @ModelAttribute FlowchartCondition condition
     ) {
         Claims claims = JwtUtil.parseJwt(token);
         String uid = (String) claims.get("id");
         condition.setUid(uid);
 
-        List<CollectFlowchart> list = collect.findAll(condition);
+        List<CollectFlowchartDto> list = collect.findAll(condition);
         if (list != null) return R.success(list);
         return R.failed("没有收藏流程图！", null);
     }
@@ -112,6 +113,16 @@ public class FlowchartController {
         boolean status = collect.deleteOne(id);
         if (status) return R.success("删除收藏的流程图成功！");
         return R.failed("删除收藏的流程图失败！");
+    }
+
+    @PostMapping("/add/one/collect")
+    public R<Void> addOneCollect(@RequestHeader("Authorization") String token,
+                                 @RequestBody CollectFlowchartVo data
+    ) {
+        Claims claims = JwtUtil.parseJwt(token);
+        String uid = (String) claims.get("id");
+        data.setCollectUid(uid);
+        return collect.addOne(data);
     }
 
 }

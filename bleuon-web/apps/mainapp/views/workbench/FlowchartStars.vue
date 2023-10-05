@@ -50,9 +50,7 @@ function deleteFlowchart(id: string, index: number) {
 const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
 
 function isMyFlowchart(item: any) {
-  if (item.belongUser.id == token.id) {
-    return "/flowchart/" + item.id;
-  } else return "/share/flowchart/" + item.id;
+  return item.belongUser.id == token.id;
 }
 
 await fetchData();
@@ -69,7 +67,7 @@ await fetchData();
           :file-name="item.fileName"
           :file-image="item.dataUri"
           :modify-date="formatted('MM-dd HH:mm:ss', new Date(item.modifyDate))"
-          :path="isMyFlowchart(item)"
+          :path="isMyFlowchart(item) ? '/flowchart/' + item.id : '/share/flowchart/' + item.id"
           :is-reset="false"
           @clone="cloneFlowchart(item)"
           @download="downloadFlowchart(item)"
@@ -78,7 +76,7 @@ await fetchData();
             <div class="f-c-s text-text-secondary text-0.8rem mt-2">
               <img class="mr-2 w-6 h-6 rd-50%" :src="item.belongUser.avatar" />
               <div>
-                {{ item.belongUser.username }}
+                {{ isMyFlowchart(item) ? "我的" : item.belongUser.username }}
               </div>
             </div>
           </template>

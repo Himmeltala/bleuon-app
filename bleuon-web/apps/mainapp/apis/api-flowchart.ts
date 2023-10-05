@@ -10,11 +10,13 @@ import request from "./use-axios";
 /**
  * 更新当前流程图
  *
- * @param json
+ * @param body
+ * @param success
+ * @param error
  */
-export function updateOne(data: FlowchartData, success?: (data: R) => void, error?: Function) {
+export function updateOne(body: FlowchartData, success?: (data: R) => void, error?: Function) {
   request
-    .post<R>("/flowchart/update/one", data)
+    .post<R>("/flowchart/update/one", body)
     .then(({ data }) => {
       success && success(data);
     })
@@ -25,6 +27,9 @@ export function updateOne(data: FlowchartData, success?: (data: R) => void, erro
 
 /**
  * 获取流程图
+ *
+ * @param params
+ * @returns
  */
 export async function findOne(params: { id: string }) {
   const { data } = await request.get<R<FlowchartData>>("/flowchart/find/one", { params });
@@ -33,6 +38,10 @@ export async function findOne(params: { id: string }) {
 
 /**
  * 获取流程图
+ *
+ * @param params
+ * @param error
+ * @returns
  */
 export async function exposeFindOne(params: { id: string }, error?: Function) {
   try {
@@ -45,6 +54,9 @@ export async function exposeFindOne(params: { id: string }, error?: Function) {
 
 /**
  * 获取用户所有的流程图
+ *
+ * @param body
+ * @returns
  */
 export async function findAll(body?: {
   collates?: { isAsc: boolean; col: string }[];
@@ -59,8 +71,11 @@ export async function findAll(body?: {
 
 /**
  * 创建一个流程图
+ *
+ * @param success
+ * @param error
  */
-export function createOne(success: (data: FlowchartData) => void, error?: Function) {
+export function createOne(success: (body: FlowchartData) => void, error?: Function) {
   request
     .post<R<FlowchartData>>("/flowchart/create/one")
     .then(({ data }) => {
@@ -73,6 +88,10 @@ export function createOne(success: (data: FlowchartData) => void, error?: Functi
 
 /**
  * 复制一个流程图
+ *
+ * @param data
+ * @param success
+ * @param error
  */
 export function cloneOne(
   data: FlowchartData,
@@ -93,6 +112,8 @@ export function cloneOne(
  * 删除一个流程图
  *
  * @param params
+ * @param success
+ * @param error
  */
 export function deleteOne(params: { id?: string }, success: Function, error?: Function) {
   request
@@ -109,15 +130,45 @@ export function deleteOne(params: { id?: string }, success: Function, error?: Fu
 
 /**
  * 查询所有的收藏的流程图
+ *
+ * @param params
+ * @returns
  */
 export async function findAllCollect(params: { fileName?: string }) {
   const { data } = await request.get<R<any[]>>("/flowchart/find/all/collect", { params });
   return data.data;
 }
 
+/**
+ * 收藏一个流程图
+ *
+ * @param body
+ * @param success
+ * @param error
+ */
+export async function addOneCollect(
+  body: { flowchartId: string },
+  success?: Function,
+  error?: Function
+) {
+  request
+    .post("/flowchart/add/one/collect", body)
+    .then(() => {
+      success && success();
+    })
+    .catch(err => {
+      error && error(err);
+    });
+}
+
+/**
+ * 删除一个收藏的流程图
+ *
+ * @param params
+ * @param success
+ */
 export async function deleteOneCollect(params: { id: string }, success?: Function) {
   await request.delete<R<void>>("/flowchart/delete/one/collect", { params }).then(() => {
-    console.log("eee");
     success && success();
   });
 }

@@ -15,7 +15,7 @@ import java.sql.Timestamp;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CollectFlowchart {
+public class CollectFlowchartDto {
 
     private String id;
     private String fileName;
