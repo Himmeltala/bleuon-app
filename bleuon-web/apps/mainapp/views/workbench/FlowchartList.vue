@@ -195,12 +195,22 @@ async function searchFiles() {
         :key="item.id"
         :file-name="item.fileName"
         :file-image="item.dataUri"
-        :modify-date="formatted('MM-dd HH:mm:ss', new Date(item.modifyDate))"
         :path="'/flowchart/' + item.id"
         @clone="cloneFlowchart(item)"
         @reset="resetFlowchart(index)"
         @download="downloadFlowchart(item)"
-        @delete="deleteFlowchart(item.id, index)"></File>
+        @delete="deleteFlowchart(item.id, index)">
+        <template #footer>
+          <div class="f-c-s flex-nowrap mt-4 w-100%">
+            <div class="mr-2 i-tabler-chart-bubble text-theme-primary"></div>
+            <div class="text-0.9rem text-ellipsis line-clamp-1">{{ item.fileName }}</div>
+          </div>
+          <div class="text-text-secondary text-0.8rem mt-2 f-c-s">
+            <div class="i-tabler-clock-edit mr-1"></div>
+            {{ formatted("MM-dd HH:mm:ss", new Date(item.modifyDate)) }}
+          </div>
+        </template>
+      </File>
     </div>
     <el-dialog v-model="dialogVisible" title="修改文件名称" width="30%">
       <el-form :model="flowchartList[clickedIndex]" :rules="fileNameRules">

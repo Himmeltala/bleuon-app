@@ -66,13 +66,20 @@ await fetchData();
           :key="item.id"
           :file-name="item.fileName"
           :file-image="item.dataUri"
-          :modify-date="formatted('MM-dd HH:mm:ss', new Date(item.modifyDate))"
           :path="isMyFlowchart(item) ? '/flowchart/' + item.id : '/share/flowchart/' + item.id"
           :is-reset="false"
           @clone="cloneFlowchart(item)"
           @download="downloadFlowchart(item)"
           @delete="deleteFlowchart(item.id, index)">
           <template #footer>
+            <div class="f-c-s flex-nowrap mt-4 w-100%">
+              <div class="mr-2 i-tabler-chart-bubble text-theme-primary"></div>
+              <div class="text-0.9rem text-ellipsis line-clamp-1">{{ item.fileName }}</div>
+            </div>
+            <div class="text-text-secondary text-0.8rem mt-2 f-c-s">
+              <div class="i-tabler-clock-edit mr-1"></div>
+              {{ formatted("MM-dd HH:mm:ss", new Date(item.modifyDate)) }}
+            </div>
             <div class="f-c-s text-text-secondary text-0.8rem mt-2">
               <img class="mr-2 w-6 h-6 rd-50%" :src="item.belongUser.avatar" />
               <div>
