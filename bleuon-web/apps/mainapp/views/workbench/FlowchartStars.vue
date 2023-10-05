@@ -40,8 +40,8 @@ function cloneFlowchart(data: any) {
   });
 }
 
-function deleteFlowchart(id: string, index: number) {
-  FlowchartApi.deleteOneCollect({ id }, () => {
+function deleteFlowchart(flowchartId: string, index: number) {
+  FlowchartApi.deleteOneCollect({ flowchartId }, () => {
     collect.value.splice(index, 1);
     triggerRef(collect);
   });

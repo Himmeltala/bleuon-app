@@ -109,8 +109,13 @@ public class FlowchartController {
     }
 
     @DeleteMapping("/delete/one/collect")
-    public R<Void> deleteOneCollect(@RequestParam String id) {
-        boolean status = collect.deleteOne(id);
+    public R<Void> deleteOneCollect(@RequestHeader("Authorization") String token,
+                                    @ModelAttribute CollectFlowchartVo data
+    ) {
+        Claims claims = JwtUtil.parseJwt(token);
+        String uid = (String) claims.get("id");
+        data.setCollectUid(uid);
+        boolean status = collect.deleteOne(data);
         if (status) return R.success("删除收藏的流程图成功！");
         return R.failed("删除收藏的流程图失败！");
     }

@@ -18,7 +18,7 @@ public interface CollectFlowchartMapper {
 
     List<CollectFlowchartDto> findAll(FlowchartCondition condition);
 
-    Integer deleteOne(String id);
+    Integer deleteOne(CollectFlowchartVo data);
 
     Integer addOne(CollectFlowchartVo data);
 

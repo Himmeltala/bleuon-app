@@ -41,7 +41,8 @@
     <delete id="deleteOne">
         DELETE
         FROM co_collect_flowchart
-        WHERE id = #{id}
+        WHERE collect_uid = #{collectUid}
+          AND flowchart_id = #{flowchartId}
     </delete>
 
     <insert id="addOne">

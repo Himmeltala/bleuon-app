@@ -167,7 +167,7 @@ export async function addOneCollect(
  * @param params
  * @param success
  */
-export async function deleteOneCollect(params: { id: string }, success?: Function) {
+export async function deleteOneCollect(params: { flowchartId: string }, success?: Function) {
   await request.delete<R<void>>("/flowchart/delete/one/collect", { params }).then(() => {
     success && success();
   });

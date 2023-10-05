@@ -17,7 +17,7 @@ public interface ICollectFlowchartService {
 
     List<CollectFlowchartDto> findAll(FlowchartCondition condition);
 
-    boolean deleteOne(String id);
+    boolean deleteOne(CollectFlowchartVo data);
 
     R<Void> addOne(CollectFlowchartVo data);
 

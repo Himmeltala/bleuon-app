@@ -32,8 +32,8 @@ public class CollectFlowchartService implements ICollectFlowchartService {
     }
 
     @Override
-    public boolean deleteOne(String id) {
-        Integer row = mapper.deleteOne(id);
+    public boolean deleteOne(CollectFlowchartVo data) {
+        Integer row = mapper.deleteOne(data);
         return row > 0;
     }
 
