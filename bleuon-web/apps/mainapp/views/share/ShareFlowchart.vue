@@ -93,7 +93,7 @@ onMounted(() => {
 <template>
   <div class="bleuon__flowchart-container h-100vh">
     <div
-      class="bleuon__flowchart-header h-22vh border-border-primary border-b-1 border-b-solid bg-#f6f7f8 px-4 py-4">
+      class="bleuon__flowchart-header h-22vh border-border-primary border-b-1 border-b-solid bg-bg-primary px-4 py-4">
       <HeaderToolsTop :type="'share'" class="mb-4" />
       <HeaderToolsBottom
         :is-clicked-element="Data.isClickedElement.value"

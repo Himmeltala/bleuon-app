@@ -29,7 +29,7 @@ function resetSlider() {
 
 <template>
   <div
-    class="bleuon__flowchat-footer-tools b-border-primary b-t-1 b-t-solid bg-#f6f7f8 f-c-e px-4 text-0.8rem">
+    class="bleuon__flowchat-footer-tools b-border-primary b-t-1 b-t-solid bg-bg-primary f-c-e px-4 text-0.8rem">
     <div class="scale-tool f-c-c">
       <div class="mr-4">
         <input

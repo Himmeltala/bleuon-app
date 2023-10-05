@@ -10,8 +10,8 @@ import { FlowchartApi } from "@mainapp/apis";
 import { formatted } from "@common/utils/date";
 import { downloadWithDataUri } from "@mainapp/lib/tools";
 
-import Header from "@mainapp/components/workbench/Header.vue";
-import File from "@mainapp/components/workbench/File.vue";
+import WorkbenchHeader from "@mainapp/components/WorkbenchHeader.vue";
+import File from "@mainapp/components/File.vue";
 
 const collect = shallowRef();
 const searchVal = ref("");
@@ -58,8 +58,8 @@ await fetchData();
 
 <template>
   <div class="flowchart-stars">
-    <Header v-model:value="searchVal" @enter-search="searchFiles"></Header>
-    <div class="file-list mt-5 f-c-s flex-wrap flex-gap-5">
+    <WorkbenchHeader v-model:value="searchVal" @enter-search="searchFiles"></WorkbenchHeader>
+    <div class="file-list mt-5 f-c-s flex-wrap flex-gap-1.25rem">
       <template v-if="collect">
         <File
           v-for="(item, index) in collect"

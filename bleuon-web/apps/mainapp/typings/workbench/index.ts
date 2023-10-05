@@ -3,6 +3,6 @@ export type ActiveItem =
   | "auth-canvas-list"
   | "auth-flowchart-shares"
   | "auth-flowchart-stars"
-  | "auth-templates"
-  | "public-discussion"
+  | "auth-template-community"
+  | "auth-discussion-community"
   | "auth-recycle";

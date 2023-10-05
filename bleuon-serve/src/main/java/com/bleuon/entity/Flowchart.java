@@ -63,15 +63,15 @@ public class Flowchart {
     private String routerDefault;
 
     @TableField("is_public")
-    @Pattern(regexp = "[01]", message = "1 代表公开，0 代表私密！")
+    @Pattern(regexp = "^[01]$", message = "1 代表公开，0 反之")
     private Integer isPublic;
 
     @TableField("is_legal")
-    @Pattern(regexp = "[01]", message = "1 代表公开且审核通过，0 代表私密且审核未通过！")
+    @Pattern(regexp = "^[01]$", message = "1 代表公开且审核通过，0 反之")
     private Integer isLegal;
 
     @TableField("is_share")
-    @Pattern(regexp = "[01]", message = "1 代表分享，0 代表私密！")
+    @Pattern(regexp = "^[01]$", message = "1 代表分享，0 反之")
     private Integer isShare;
 
     @TableField("create_date")
@@ -85,4 +85,16 @@ public class Flowchart {
 
     @TableField("user_id")
     private String userId;
+
+    @TableField(exist = false)
+    private User user;
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    static class User {
+        private String id;
+        private String username;
+        private String avatar;
+    }
 }

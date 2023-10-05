@@ -33,7 +33,7 @@ export default defineConfig({
         thirdly: "var(--bleuon-text-thirdly)"
       },
       bg: {
-        primary: ""
+        primary: "#f6f7f8"
       },
       border: {
         primary: "var(--blueon-border-primary)"

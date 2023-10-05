@@ -151,7 +151,6 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
             copyFlowchart.setGridSize(data.getGridSize());
             copyFlowchart.setRouterDefault(data.getRouterDefault());
             copyFlowchart.setConnectorDefault(data.getConnectorDefault());
-            copyFlowchart.setIsPublic(data.getIsPublic());
 
             save(copyFlowchart);
 

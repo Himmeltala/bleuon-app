@@ -7,14 +7,14 @@
  */
 
 import type { ActiveItem } from "@mainapp/typings/workbench";
-import Menu from "@mainapp/components/workbench/Menu.vue";
+import WorkbenchMenu from "@mainapp/components/WorkbenchMenu.vue";
 
 const activeItem = ref<ActiveItem>("auth-flowchart-list");
 </script>
 
 <template>
   <div class="workbench f-s-c bg-#F6F7F8">
-    <Menu class="w-17%" v-model:active-item="activeItem"></Menu>
+    <WorkbenchMenu class="w-17%" v-model:active-item="activeItem"></WorkbenchMenu>
     <div class="content h-100vh flow-auto px-10 pb-10 w-83%">
       <RouterView></RouterView>
     </div>

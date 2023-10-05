@@ -90,15 +90,15 @@ function createFlowchart() {
     <div class="mt-5 pb-5 b-b-1 b-b-solid b-border-primary">
       <div
         class="menu-item f-c-s"
-        :class="{ active: activeItem == 'auth-templates' }"
-        @click="navigateTo('auth-templates')">
+        :class="{ active: activeItem == 'auth-template-community' }"
+        @click="navigateTo('auth-template-community')">
         <div class="mr-2 i-tabler-template"></div>
         模板社区
       </div>
       <div
         class="menu-item f-c-s"
-        :class="{ active: activeItem == 'public-discussion' }"
-        @click="navigateTo('public-discussion')">
+        :class="{ active: activeItem == 'auth-discussion-community' }"
+        @click="navigateTo('auth-discussion-community')">
         <div class="mr-2 i-tabler-friends"></div>
         讨论社区
       </div>

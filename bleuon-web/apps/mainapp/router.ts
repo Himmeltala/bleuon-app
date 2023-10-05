@@ -16,23 +16,7 @@ const router = createRouter({
       component: () => import("@mainapp/views/Welcome.vue")
     },
     {
-      path: "/share",
-      name: "public-share",
-      meta: { title: "分享" },
-      component: () => import("@mainapp/views/share/Share.vue"),
-      children: [
-        {
-          path: "flowchart/:id",
-          name: "public-share-flowchart",
-          meta: { title: "分享的流程图" },
-          component: () => import("@mainapp/views/share/ShareFlowchart.vue")
-        }
-      ]
-    },
-    {
       path: "/workbench",
-      name: "auth-workbench",
-      meta: { title: "首页" },
       redirect: "/workbench/flowchart-list",
       component: () => import("@mainapp/views/workbench/Workbench.vue"),
       children: [
@@ -51,7 +35,7 @@ const router = createRouter({
         {
           path: "canvas-list",
           name: "auth-canvas-list",
-          meta: { title: "我的流程图" },
+          meta: { title: "我的画布" },
           component: () => import("@mainapp/views/workbench/CanvasList.vue")
         }
       ]
@@ -80,10 +64,38 @@ const router = createRouter({
       ]
     },
     {
+      path: "/community",
+      children: [
+        {
+          path: "template",
+          name: "auth-template-community",
+          meta: { title: "模板社区" },
+          component: () => import("@mainapp/views/community/TemplateCommunity.vue")
+        },
+        {
+          path: "discussion",
+          name: "auth-discussion-community",
+          meta: { title: "讨论社区" },
+          component: () => import("@mainapp/views/community/DiscussionCommunity.vue")
+        }
+      ]
+    },
+    {
       path: "/flowchart/:id",
       name: "auth-flowchat",
       meta: { title: "流程图" },
       component: () => import("@mainapp/views/diagraming/Flowchart.vue")
+    },
+    {
+      path: "/share",
+      children: [
+        {
+          path: "flowchart/:id",
+          name: "public-share-flowchart",
+          meta: { title: "分享的流程图" },
+          component: () => import("@mainapp/views/share/ShareFlowchart.vue")
+        }
+      ]
     },
     {
       path: "/canvas/:id",

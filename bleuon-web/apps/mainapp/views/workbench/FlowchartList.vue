@@ -6,13 +6,13 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import File from "@mainapp/components/workbench/File.vue";
 import { FlowchartApi } from "@mainapp/apis";
 import { downloadWithDataUri } from "@mainapp/lib/tools";
 import { formatted } from "@common/utils/date";
 import { fileNameValidator } from "@common/utils/form-validators";
 
-import Header from "@mainapp/components/workbench/Header.vue";
+import WorkbenchHeader from "@mainapp/components/WorkbenchHeader.vue";
+import File from "@mainapp/components/File.vue";
 
 const clickedIndex = ref(0);
 const flowchartList = ref(await FlowchartApi.findAll());
@@ -115,7 +115,7 @@ async function searchFiles() {
 
 <template>
   <div class="flowchart-list h-100vh">
-    <Header v-model:value="searchVal" @enter-search="searchFiles"></Header>
+    <WorkbenchHeader v-model:value="searchVal" @enter-search="searchFiles"></WorkbenchHeader>
     <div class="f-c-b">
       <div>流程图</div>
       <div class="f-c-c">
@@ -189,7 +189,7 @@ async function searchFiles() {
       </div>
     </div>
     <div class="mt-5 text-text-secondary text-0.9rem">文件</div>
-    <div class="file-list mt-5 f-c-s flex-wrap flex-gap-5">
+    <div class="file-list mt-5 f-c-s flex-wrap flex-gap-1.25rem">
       <File
         v-for="(item, index) in flowchartList"
         :key="item.id"

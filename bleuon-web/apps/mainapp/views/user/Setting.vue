@@ -6,7 +6,7 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import Header from "./components/Header.vue";
+import CommonHeader from "@mainapp/components/CommonHeader.vue";
 
 const formData = reactive({
   username: "Himmelble",
@@ -69,7 +69,7 @@ function resetBasicData() {}
 
 <template>
   <div class="setting min-h-100vh">
-    <Header active-name="personal"></Header>
+    <CommonHeader></CommonHeader>
     <div class="f-c-c mt-5">
       <div class="w-75vw">
         <div class="bg-white rd-2 p-10">

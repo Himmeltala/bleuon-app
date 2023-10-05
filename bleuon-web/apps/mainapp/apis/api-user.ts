@@ -12,7 +12,7 @@ import request from "./use-axios";
  *
  * @param entity 用户实体类
  */
-export function accountLogin(entity: IUser, success: Function, error?: Function) {
+export function accountLogin(entity: UserData, success: Function, error?: Function) {
   const body = {
     username: entity.username,
     password: entity.password
@@ -38,7 +38,7 @@ export function accountLogin(entity: IUser, success: Function, error?: Function)
  *
  * @param entity 用户实体类
  */
-export function accountRegister(entity: IUser, success?: Function, error?: Function) {
+export function accountRegister(entity: UserData, success?: Function, error?: Function) {
   const body = {
     username: entity.username,
     password: entity.password
@@ -86,7 +86,7 @@ export function askMailVerifyCode(
  * @param type login（登录）、reset（重置）、register（注册）
  */
 export function verifyMailCode(
-  entity: IUser,
+  entity: UserData,
   code: string,
   type: "login" | "register" | "reset",
   success: Function,
@@ -117,7 +117,7 @@ export function verifyMailCode(
  *
  * @param entity 用户实体类
  */
-export function resetPassword(entity: IUser, success: Function, error?: Function) {
+export function resetPassword(entity: UserData, success: Function, error?: Function) {
   const body = {
     email: entity.email,
     password: entity.password

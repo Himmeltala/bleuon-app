@@ -8,7 +8,7 @@
 
 import { UserApi } from "@mainapp/apis";
 
-const disabled = ref(false);
+const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
 
 function confirmLogout() {
   UserApi.logout(() => {
@@ -33,13 +33,13 @@ function confirmLogout() {
               </div>
             </el-dropdown-item>
             <el-dropdown-item>
-              <div class="f-c-s" @click="$router.push('/u/setting')">
-                <div class="i-tabler-brand-storytel mr-2"></div>
-                账户中心
+              <div class="f-c-s" @click="$router.push('/u/setting/')">
+                <div class="i-tabler-user mr-2"></div>
+                个人资料
               </div>
             </el-dropdown-item>
             <el-dropdown-item>
-              <div class="f-c-s" @click="$router.push('/u/profile/123')">
+              <div class="f-c-s" @click="$router.push('/u/profile/' + token.id)">
                 <div class="i-tabler-user mr-2"></div>
                 个人主页
               </div>

@@ -6,10 +6,11 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import Header from "./components/Header.vue";
 import type { TabsPaneContext } from "element-plus";
 
-const activeName = ref<"myworks" | "myfollows" | "myfans">("myworks");
+import CommonHeader from "@mainapp/components/CommonHeader.vue";
+
+const activeName = ref<"follows" | "fans">("follows");
 
 const handleClick = (tab: TabsPaneContext, event: Event) => {
   console.log(tab, event);
@@ -18,7 +19,7 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
 
 <template>
   <div class="profile">
-    <Header></Header>
+    <CommonHeader active-name="personal"></CommonHeader>
     <div class="user-data">
       <div class="f-s-b pt-30 pb-20 px-50">
         <div class="f-c-c">
@@ -44,30 +45,21 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
           </div>
           <div class="text-center mr-10">
             <div class="font-bold text-1.5rem mb-2">0</div>
-            <div>点赞&收藏量</div>
-          </div>
-          <div class="text-center">
-            <div class="font-bold text-1.5rem mb-2">0</div>
-            <div>克隆量</div>
+            <div>点赞量</div>
           </div>
         </div>
       </div>
     </div>
     <div class="mt-5 px-50">
       <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="我的作品" name="myworks">
+        <el-tab-pane label="我的关注" name="follows">
           <template #label>
-            <span :class="{ 'font-bold': activeName === 'myworks' }">我的作品</span>
+            <span :class="{ 'font-bold': activeName === 'follows' }">我的关注</span>
           </template>
         </el-tab-pane>
-        <el-tab-pane label="我的关注" name="myfollows">
+        <el-tab-pane label="我的粉丝" name="fans">
           <template #label>
-            <span :class="{ 'font-bold': activeName === 'myfollows' }">我的关注</span>
-          </template>
-        </el-tab-pane>
-        <el-tab-pane label="我的粉丝" name="myfans">
-          <template #label>
-            <span :class="{ 'font-bold': activeName === 'myfans' }">我的粉丝</span>
+            <span :class="{ 'font-bold': activeName === 'fans' }">我的粉丝</span>
           </template>
         </el-tab-pane>
       </el-tabs>

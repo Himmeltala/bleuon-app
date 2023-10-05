@@ -8,36 +8,38 @@
 
 import MenuAvatar from "@mainapp/components/MenuAvatar.vue";
 
-const props = defineProps({
+const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
+
+defineProps({
   activeName: {
-    type: String as PropType<"personal" | "recommend" | "template">,
+    type: String as PropType<"personal" | "discussion" | "template">,
     required: false
   }
 });
 </script>
 
 <template>
-  <div class="header w-100% f-c-b px-10 h-20 b-b-1 b-b-solid b-b-#e4e4e4 bg-white">
+  <div class="header w-100% f-c-b px-10 h-20 b-b-1 b-b-solid b-border-primary bg-white">
     <div class="flex-grow-1 cursor-pointer f-c-s" @click="$router.push('/')">
       <img src="/bleuon-icon.png" class="w-45 h-15 object-cover" />
     </div>
     <div class="flex-grow-1 f-c-b text-1.1rem">
       <div
         class="hover"
-        @click="$router.push('/u/setting')"
-        :class="{ 'text-primary text-bold': activeName == 'personal' }">
+        @click="$router.push('/u/profile/' + token.id)"
+        :class="{ active: activeName === 'personal' }">
         个人
       </div>
       <div
         class="hover"
-        @click="$router.push('/u/recommend')"
-        :class="{ 'text-primary text-bold': activeName == 'recommend' }">
-        推荐
+        @click="$router.push('/community/discussion')"
+        :class="{ active: activeName === 'discussion' }">
+        社区
       </div>
       <div
         class="hover"
-        @click="$router.push('/u/template')"
-        :class="{ 'text-primary text-bold': activeName == 'template' }">
+        @click="$router.push('/community/template')"
+        :class="{ active: activeName === 'template' }">
         模板
       </div>
     </div>
@@ -47,4 +49,8 @@ const props = defineProps({
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.active {
+  --uno: text-theme-primary font-bold !important;
+}
+</style>

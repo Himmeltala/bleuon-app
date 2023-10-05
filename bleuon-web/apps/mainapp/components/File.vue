@@ -85,7 +85,7 @@ const emits = defineEmits(["download", "clone", "delete", "reset"]);
 
 <style scoped lang="scss">
 .file {
-  flex: 0 1 15% !important;
+  flex: 0 1 calc(16.67% - 1.25rem);
 
   .file-options {
     display: none;

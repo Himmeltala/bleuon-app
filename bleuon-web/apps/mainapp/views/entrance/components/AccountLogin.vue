@@ -9,7 +9,7 @@ const isAccountCorrect = ref(false);
 const isPasswordCorrect = ref(false);
 
 const formRef = ref();
-const formData = reactive<IUser>({
+const formData = reactive<UserData>({
   username: "",
   password: ""
 });
