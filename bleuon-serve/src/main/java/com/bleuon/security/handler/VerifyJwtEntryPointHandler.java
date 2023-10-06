@@ -28,7 +28,7 @@ public class VerifyJwtEntryPointHandler implements AuthenticationEntryPoint {
 
         log.error(e.getMessage(), e.getCause());
 
-        R failed = R.build(HttpCode.NO_AUTHORITY.getCode(), "认证失败或服务器错误！");
+        R<Object> failed = R.build(HttpCode.NO_AUTHORITY.getCode(), "认证失败或服务器错误！");
 
         response.getWriter()
                 .write(JSON.toJSONString(failed));

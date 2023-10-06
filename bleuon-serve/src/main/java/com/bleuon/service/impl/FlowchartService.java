@@ -163,7 +163,7 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
 
     @Override
     @Transactional
-    public R releaseOne(TemplateFlowchart data) {
+    public R<Object> releaseOne(TemplateFlowchart data) {
         try {
             Flowchart flowchart = query().eq("id", data.getFlowchartId()).one();
             if (flowchart.getIsPublic() == 1) {
@@ -189,9 +189,8 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
 
     @Override
     @Transactional
-    public R cancelReleaseOne(String flowchartId) {
+    public R<Object> cancelReleaseOne(String flowchartId) {
         try {
-            // 根据flowchartid 删除模板并设置publick
             Flowchart flowchart = new Flowchart();
             flowchart.setId(flowchartId);
             flowchart.setIsPublic(0);

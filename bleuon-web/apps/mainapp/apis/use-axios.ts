@@ -33,9 +33,13 @@ request.interceptors.response.use(
     const { data } = config;
 
     if (data.code === 500) {
-      ElMessage.error(data.message);
+      if (data.message) {
+        ElMessage.error(data.message);
+      }
     } else if (data.code === 400) {
-      ElMessage.warning(data.message);
+      if (data.message) {
+        ElMessage.warning(data.message);
+      }
     } else if (data.code === 403) {
       location.reload();
       localStorage.removeItem(KeyVals.MAINAPP_TOKEN_KEY);
@@ -47,7 +51,9 @@ request.interceptors.response.use(
         fuzzy: ["find", "clone", "/community/template/update/one"]
       })
     ) {
-      ElMessage.success(data.message);
+      if (data.message) {
+        ElMessage.success(data.message);
+      }
     }
 
     return config;

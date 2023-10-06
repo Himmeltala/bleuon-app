@@ -152,3 +152,13 @@ export function logout(success: Function, error?: Function) {
       error && error();
     });
 }
+
+/**
+ * 查询一个用户
+ *
+ * @param id uuid
+ */
+export async function findOne(id: string) {
+  const { data } = await request.get<R<UserData>>("/user/find/one", { params: { id } });
+  return data.data;
+}

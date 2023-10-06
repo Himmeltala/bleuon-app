@@ -6,7 +6,7 @@ import com.bleuon.utils.http.R;
 
 public interface IMailRelatedService {
 
-    R getMailVerifyCode(String email, String type, String ip);
+    R<Object> getMailVerifyCode(String email, String type, String ip);
 
     R<Token> verifyMailCode(User user, String type, String code);
 

@@ -26,7 +26,7 @@ import java.sql.Timestamp;
 public class Flowchart implements Serializable {
 
     @TableId
-    @Max(40)
+    @Pattern(regexp = ValidPattern.UUID, message = "不是一个合法的 UUID")
     private String id;
 
     @TableField("file_name")

@@ -19,7 +19,6 @@ import java.util.List;
  * @author: zheng
  * @date: 2023/9/27
  */
-@Validated
 @RequiredArgsConstructor
 @RequestMappingPrefix("/cell/official")
 public class CellController {
@@ -28,6 +27,7 @@ public class CellController {
 
     @GetMapping("/find/all")
     public R<List<OfficialCell>> findAll(
+            @Validated
             @Pattern(regexp = ValidPattern.CELL_TYPE, message = "图形类型错误！")
             @RequestParam String type
     ) {

@@ -2,6 +2,7 @@ package com.bleuon.controller;
 
 import com.bleuon.annotaion.RequestMappingPrefix;
 import com.bleuon.constant.KeyVals;
+import com.bleuon.constant.ValidPattern;
 import com.bleuon.entity.Flowchart;
 import com.bleuon.entity.TemplateFlowchart;
 import com.bleuon.entity.dto.CollectFlowchartDto;
@@ -12,6 +13,7 @@ import com.bleuon.service.impl.FlowchartService;
 import com.bleuon.utils.JwtUtil;
 import com.bleuon.utils.http.R;
 import io.jsonwebtoken.Claims;
+import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +27,6 @@ import java.util.Objects;
  * @author: zheng
  * @date: 2023/9/29
  */
-@Validated
 @RequiredArgsConstructor
 @RequestMappingPrefix("/flowchart")
 public class FlowchartController {
@@ -34,7 +35,7 @@ public class FlowchartController {
     private final CollectFlowchartService collectFlowchartService;
 
     @PostMapping("/update/one")
-    public R updateOne(@RequestBody Flowchart data) {
+    public R<Object> updateOne(@RequestBody @Validated Flowchart data) {
         boolean status = flowchartService.updateOne(data);
         if (status) {
             return R.success("更新流程图成功！");
@@ -78,7 +79,7 @@ public class FlowchartController {
 
     @PostMapping("/clone/one")
     public R<Flowchart> cloneOne(@RequestHeader(KeyVals.Token) String token,
-                                 @RequestBody Flowchart data
+                                 @RequestBody @Validated Flowchart data
     ) {
         Claims claims = JwtUtil.parseJwt(token);
         String uid = (String) claims.get("id");
@@ -91,7 +92,7 @@ public class FlowchartController {
     }
 
     @DeleteMapping("/delete/one")
-    public R deleteOne(@RequestParam String id) {
+    public R<Object> deleteOne(@RequestParam String id) {
         boolean status = flowchartService.deleteOne(id);
         if (status) return R.success("删除流程图成功！");
         return R.failed("删除流程图失败！");
@@ -111,8 +112,8 @@ public class FlowchartController {
     }
 
     @DeleteMapping("/delete/one/collect")
-    public R deleteOneCollect(@RequestHeader(KeyVals.Token) String token,
-                              @ModelAttribute CollectFlowchartVo data
+    public R<Object> deleteOneCollect(@RequestHeader(KeyVals.Token) String token,
+                                      @ModelAttribute CollectFlowchartVo data
     ) {
         Claims claims = JwtUtil.parseJwt(token);
         String uid = (String) claims.get("id");
@@ -123,8 +124,8 @@ public class FlowchartController {
     }
 
     @PostMapping("/add/one/collect")
-    public R addOneCollect(@RequestHeader(KeyVals.Token) String token,
-                           @RequestBody CollectFlowchartVo data
+    public R<Object> addOneCollect(@RequestHeader(KeyVals.Token) String token,
+                                   @RequestBody CollectFlowchartVo data
     ) {
         Claims claims = JwtUtil.parseJwt(token);
         String uid = (String) claims.get("id");
@@ -133,12 +134,16 @@ public class FlowchartController {
     }
 
     @PostMapping("/release/one")
-    public R releaseOne(@RequestBody TemplateFlowchart data) {
+    public R<Object> releaseOne(@RequestBody @Validated TemplateFlowchart data) {
         return flowchartService.releaseOne(data);
     }
 
     @DeleteMapping("/cancel/release/one")
-    public R cancelReleaseOne(@RequestParam String flowchartId) {
+    public R<Object> cancelReleaseOne(
+            @RequestParam
+            @Pattern(regexp = ValidPattern.UUID, message = "不是一个合法的 UUID")
+            String flowchartId
+    ) {
         return flowchartService.cancelReleaseOne(flowchartId);
     }
 

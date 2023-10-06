@@ -3,6 +3,8 @@ package com.bleuon.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.bleuon.constant.ValidPattern;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,10 +25,13 @@ import java.sql.Timestamp;
 public class TemplateFlowchart implements Serializable {
 
     @TableId
+    @Pattern(regexp = ValidPattern.UUID, message = "不是一个合法的 UUID")
     private String id;
     private Integer views;
     private Integer copies;
     private Integer stars;
+
+    @Pattern(regexp = ValidPattern.JSON, message = "不是一个合法的 JSON 字符串")
     private String tags;
     private String scene;
     private String price;

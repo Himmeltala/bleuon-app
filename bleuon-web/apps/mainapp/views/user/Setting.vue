@@ -6,18 +6,13 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
+import { UserApi } from "@mainapp/apis";
+
 // components
 import CommonHeader from "@mainapp/components/CommonHeader.vue";
 
-const formData = reactive({
-  username: "Himmelble",
-  profession: "计算机软件",
-  company: "西南财经大学天府学院",
-  position: "本科",
-  avatar:
-    "https://img2.baidu.com/it/u=1397727792,1861968739&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
-  signature: "Time tick away, dream faded away!"
-});
+const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
+const formData = ref(await UserApi.findOne(token.id));
 
 const isEditUsername = ref(false);
 const professionOps = reactive([
@@ -63,11 +58,9 @@ const professionOps = reactive([
   }
 ]);
 
-function saveBasicData() {
-}
+function saveBasicData() {}
 
-function resetBasicData() {
-}
+function resetBasicData() {}
 </script>
 
 <template>
@@ -150,7 +143,7 @@ function resetBasicData() {
                 <div>手机号</div>
               </div>
               <div class="ml-10 f-c-c">
-                <div class="text-text-thirdly">18508153489</div>
+                <div class="text-text-thirdly">{{ formData.phone }}</div>
                 <div class="ml-10 text-primary cursor-pointer">更换手机号</div>
               </div>
             </div>
@@ -161,7 +154,7 @@ function resetBasicData() {
                 <div>邮箱号</div>
               </div>
               <div class="ml-10 f-c-c">
-                <div class="text-text-thirdly">zhengrenfu@outlook.com</div>
+                <div class="text-text-thirdly">{{ formData.email }}</div>
                 <div class="ml-10 text-primary cursor-pointer">更换邮箱号</div>
               </div>
             </div>

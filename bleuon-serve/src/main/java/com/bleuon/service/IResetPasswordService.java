@@ -5,6 +5,6 @@ import com.bleuon.utils.http.R;
 
 public interface IResetPasswordService {
 
-    R resetPassword(User user);
+    R<Object> resetPassword(User user);
 
 }

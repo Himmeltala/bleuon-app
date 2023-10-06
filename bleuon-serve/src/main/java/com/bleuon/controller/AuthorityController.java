@@ -4,7 +4,7 @@ import com.bleuon.annotaion.RequestMappingPrefix;
 import com.bleuon.constant.ValidPattern;
 import com.bleuon.entity.User;
 import com.bleuon.entity.dto.Token;
-import com.bleuon.service.IAccountRegisterService;
+import com.bleuon.service.impl.AccountRegisterService;
 import com.bleuon.service.impl.MailRelatedService;
 import com.bleuon.service.impl.ResetPasswordService;
 import com.bleuon.utils.http.IpUtil;
@@ -25,36 +25,35 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author: zheng
  * @date: 2023/8/25
  */
-@Validated
 @RequiredArgsConstructor
 @RequestMappingPrefix("/auth")
 public class AuthorityController {
 
     private final MailRelatedService mailRelatedService;
-    private final IAccountRegisterService registerService;
+    private final AccountRegisterService registerService;
     private final ResetPasswordService resetPasswordService;
 
     @GetMapping("/aks-mail-verify-code")
-    public R askMailVerifyCode(@RequestParam @Email(message = "不是一个合法的电子邮箱地址") String email,
-                               @RequestParam @Pattern(regexp = ValidPattern.MAIL_CODE_TYPE, message = "发送验证码的类型是 register 或 login 或 reset！") String type,
-                               HttpServletRequest http) {
+    public R<Object> askMailVerifyCode(@RequestParam @Validated @Email(message = "不是一个合法的电子邮箱地址") String email,
+                                       @RequestParam @Validated @Pattern(regexp = ValidPattern.MAIL_CODE_TYPE, message = "发送验证码的类型是 register 或 login 或 reset！") String type,
+                                       HttpServletRequest http) {
         return mailRelatedService.getMailVerifyCode(email, type, IpUtil.getIp(http));
     }
 
     @PostMapping("/verify-mail-code")
-    public R<Token> verifyMailCode(@RequestBody User user,
-                                   @RequestParam @Pattern(regexp = ValidPattern.MAIL_CODE_TYPE, message = "发送验证码的类型是 register 或 login 或 reset！") String type,
-                                   @RequestParam @Pattern(regexp = ValidPattern.DIGIT_6, message = "验证码必须是 6 位正整数！") String code) {
+    public R<Token> verifyMailCode(@RequestBody @Validated User user,
+                                   @RequestParam @Validated @Pattern(regexp = ValidPattern.MAIL_CODE_TYPE, message = "发送验证码的类型是 register 或 login 或 reset！") String type,
+                                   @RequestParam @Validated @Pattern(regexp = ValidPattern.DIGIT_6, message = "验证码必须是 6 位正整数！") String code) {
         return mailRelatedService.verifyMailCode(user, type, code);
     }
 
     @PostMapping("/account-register")
-    public R accountRegister(@RequestBody User user) {
+    public R accountRegister(@RequestBody @Validated User user) {
         return registerService.register(user);
     }
 
     @PostMapping("/reset-password")
-    public R resetPassword(@RequestBody User user) {
+    public R resetPassword(@RequestBody @Validated User user) {
         return resetPasswordService.resetPassword(user);
     }
 

@@ -9,6 +9,7 @@
 import { UserApi } from "@mainapp/apis";
 
 const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
+const user = ref(await UserApi.findOne(token.id));
 
 function confirmLogout() {
   UserApi.logout(() => {
@@ -20,9 +21,7 @@ function confirmLogout() {
 <template>
   <div class="f-c-c relative">
     <el-dropdown :teleported="false">
-      <img
-        class="rd-50% w-10 h-10 cursor-pointer"
-        src="https://img2.baidu.com/it/u=1397727792,1861968739&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500" />
+      <img class="rd-50% w-10 h-10 cursor-pointer" :src="user.avatar" />
       <template #dropdown>
         <el-dropdown-menu>
           <div class="b-b-solid b-border-primary b-b-1 pb-2 mb-2">

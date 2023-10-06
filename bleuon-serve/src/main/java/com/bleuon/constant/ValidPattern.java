@@ -24,4 +24,9 @@ public class ValidPattern {
     public static final String JSON = "\\{\"([a-zA-Z_]+)\":(.+)}";
 
     public static final String CELL_TYPE = "(basic|flowchart)";
+
+    /**
+     * 是否为 UUID
+     */
+    public static final String UUID = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$";
 }

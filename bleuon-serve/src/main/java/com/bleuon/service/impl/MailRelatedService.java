@@ -69,7 +69,7 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> implements
      * @param ip    请求 IP
      */
     @Override
-    public R getMailVerifyCode(String email, String type, String ip) {
+    public R<Object> getMailVerifyCode(String email, String type, String ip) {
         setCacheCode(type + ":" + email);
         setSender(type + ":" + email + ":" + ip);
 
@@ -128,19 +128,19 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> implements
         return query().eq("email", email).one() != null;
     }
 
-    private R getNotRegisterVerifyCode(String email, String type) {
+    private R<Object> getNotRegisterVerifyCode(String email, String type) {
         if (isMailExist(email))
             return startWriteMail(email, type);
         else return R.failed("邮箱没有注册！");
     }
 
-    private R getRegisterVerifyCode(String email, String type) {
+    private R<Object> getRegisterVerifyCode(String email, String type) {
         if (!isMailExist(email))
             return startWriteMail(email, type);
         else return R.failed("该邮箱被注册！");
     }
 
-    private R startWriteMail(String email, String type) {
+    private R<Object> startWriteMail(String email, String type) {
         String code = generateCode();
         boolean f = publishMailByType(email, type, code);
         if (f) return R.success("验证码发送成功，请注意查收！");

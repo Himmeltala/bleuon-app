@@ -29,7 +29,7 @@ public interface IFlowchartService {
 
     boolean deleteOne(String id);
 
-    R releaseOne(TemplateFlowchart data);
+    R<Object> releaseOne(TemplateFlowchart data);
 
-    R cancelReleaseOne(String flowchartId);
+    R<Object> cancelReleaseOne(String flowchartId);
 }

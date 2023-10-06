@@ -24,7 +24,6 @@ import java.util.Objects;
  * @author: zheng
  * @date: 2023/10/5
  */
-@Validated
 @RequiredArgsConstructor
 @RequestMappingPrefix("/community/template")
 public class TemplateCommunityController {
@@ -34,18 +33,18 @@ public class TemplateCommunityController {
     private final CollectFlowchartService collectService;
 
     @GetMapping("/find/all")
-    public R<List<TemplateFlowchart>> findAll(TemplateFlowchart data) {
+    public R<List<TemplateFlowchart>> findAll(@Validated TemplateFlowchart data) {
         return service.findAll(data);
     }
 
     @GetMapping("/find/one")
-    public R<TemplateFlowchart> findOne(TemplateFlowchart data) {
+    public R<TemplateFlowchart> findOne(@Validated TemplateFlowchart data) {
         return service.findOne(data);
     }
 
     @PostMapping("/clone/one")
-    public R cloneOne(@RequestHeader(KeyVals.Token) String token,
-                      @RequestBody TemplateFlowchart data
+    public R<Object> cloneOne(@RequestHeader(KeyVals.Token) String token,
+                              @RequestBody @Validated TemplateFlowchart data
     ) {
         Claims claims = JwtUtil.parseJwt(token);
         String uid = (String) claims.get("id");
@@ -60,15 +59,15 @@ public class TemplateCommunityController {
     }
 
     @PutMapping("/update/one")
-    public R updateOne(@RequestBody TemplateFlowchart data) {
+    public R<Object> updateOne(@RequestBody @Validated TemplateFlowchart data) {
         boolean status = service.updateOne(data);
         if (status) return R.success("更新成功！");
         return R.failed("更新失败！");
     }
 
     @PostMapping("/collect/one")
-    public R collectOne(@RequestHeader(KeyVals.Token) String token,
-                        @RequestBody TemplateFlowchart data
+    public R<Object> collectOne(@RequestHeader(KeyVals.Token) String token,
+                                @RequestBody @Validated TemplateFlowchart data
     ) {
         Claims claims = JwtUtil.parseJwt(token);
         String uid = (String) claims.get("id");
@@ -76,7 +75,7 @@ public class TemplateCommunityController {
         CollectFlowchartVo vo = new CollectFlowchartVo();
         vo.setCollectUid(uid);
         vo.setFlowchartId(data.getFlowchartId());
-        R status = collectService.addOne(vo);
+        R<Object> status = collectService.addOne(vo);
         Integer code = status.getCode();
         if (code == 200) {
             data.setStars(data.getStars() + 1);

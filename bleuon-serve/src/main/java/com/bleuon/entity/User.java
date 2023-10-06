@@ -22,6 +22,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class User implements Serializable {
 
+    @Pattern(regexp = ValidPattern.UUID, message = "不是一个合法的 UUID")
     @TableId
     private String id;
 
