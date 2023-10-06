@@ -1,7 +1,7 @@
 package com.bleuon.controller;
 
 import com.bleuon.annotaion.RequestMappingPrefix;
-import com.bleuon.constant.ValidRegexp;
+import com.bleuon.constant.ValidPattern;
 import com.bleuon.entity.OfficialCell;
 import com.bleuon.service.IOfficialCellService;
 import com.bleuon.utils.http.R;
@@ -28,7 +28,7 @@ public class CellController {
 
     @GetMapping("/find/all")
     public R<List<OfficialCell>> findAll(
-            @Pattern(regexp = ValidRegexp.CELL_TYPE, message = "图形类型错误！")
+            @Pattern(regexp = ValidPattern.CELL_TYPE, message = "图形类型错误！")
             @RequestParam String type
     ) {
         return service.findAll(type);

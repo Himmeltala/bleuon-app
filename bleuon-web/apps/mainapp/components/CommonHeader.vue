@@ -6,6 +6,7 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
+// components
 import MenuAvatar from "@mainapp/components/MenuAvatar.vue";
 
 const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);

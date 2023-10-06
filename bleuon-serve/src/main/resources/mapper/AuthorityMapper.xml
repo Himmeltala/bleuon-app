@@ -2,6 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bleuon.mapper.AuthorityMapper">
 
+    <cache-ref namespace="com.bleuon.mapper.AuthorityMapper"/>
+
     <insert id="setAuthority">
         INSERT INTO co_user_role(user_id, role_id, user_name)
         VALUES (#{id}, #{role}, #{uname})

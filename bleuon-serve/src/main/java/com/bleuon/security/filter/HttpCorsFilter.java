@@ -1,5 +1,6 @@
 package com.bleuon.security.filter;
 
+import com.bleuon.constant.KeyVals;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpFilter;
@@ -20,7 +21,7 @@ public class HttpCorsFilter extends HttpFilter {
                             FilterChain chain) throws IOException, ServletException {
         response.addHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
         response.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-        response.addHeader("Access-Control-Allow-Headers", "Authorization, Content-Type");
+        response.addHeader("Access-Control-Allow-Headers", KeyVals.Token + ", Content-Type");
         chain.doFilter(request, response);
     }
 }

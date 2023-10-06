@@ -1,11 +1,6 @@
 <script lang="ts" setup>
 import { UserApi } from "@mainapp/apis";
-import {
-  commitForm,
-  emailValidator,
-  getVerifyCode,
-  verifyCodeValidator
-} from "@common/utils/form-validators";
+import { FormValidatorsUtil } from "@common/utils";
 
 const router = useRouter();
 
@@ -24,8 +19,8 @@ const formData = reactive({
 const formRules = reactive<FormRules>({
   email: [
     { required: true, message: "请输入电子邮箱", trigger: "blur" },
-    { validator: emailValidator(isEmailCorrect), trigger: "change" },
-    { validator: emailValidator(isEmailCorrect), trigger: "blur" }
+    { validator: FormValidatorsUtil.emailValidator(isEmailCorrect), trigger: "change" },
+    { validator: FormValidatorsUtil.emailValidator(isEmailCorrect), trigger: "blur" }
   ],
   code: [
     {
@@ -33,19 +28,24 @@ const formRules = reactive<FormRules>({
       message: "请输入验证码",
       trigger: "blur"
     },
-    { validator: verifyCodeValidator(isCodeCorrect), trigger: "change" },
-    { validator: verifyCodeValidator(isCodeCorrect), trigger: "blur" }
+    { validator: FormValidatorsUtil.verifyCodeValidator(isCodeCorrect), trigger: "change" },
+    { validator: FormValidatorsUtil.verifyCodeValidator(isCodeCorrect), trigger: "blur" }
   ]
 });
 
 function confirmGetVerifyCode() {
-  getVerifyCode(interval, coudButtonCount, codeButtonDisabled, (callback: any) => {
-    UserApi.askMailVerifyCode(formData.email, "login", () => callback());
-  });
+  FormValidatorsUtil.getVerifyCode(
+    interval,
+    coudButtonCount,
+    codeButtonDisabled,
+    (callback: any) => {
+      UserApi.askMailVerifyCode(formData.email, "login", () => callback());
+    }
+  );
 }
 
 function confirmSubmitForm() {
-  commitForm(formRef.value, () => {
+  FormValidatorsUtil.validate(formRef.value, () => {
     UserApi.verifyMailCode(formData, formData.code, "login", () => {
       router.push("/workbench");
     });

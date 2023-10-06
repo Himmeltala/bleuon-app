@@ -1,11 +1,16 @@
 /**
- * @description element-plus 组件的通用数据
+ * @description element-plus el-date-picker 通用数据
  * @author 郑人滏 42020306
- * @since 2023/10/1
+ * @since 2023/10/6
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-export const shortcuts = [
+/**
+ * 从明天开始的未来日期快捷选择
+ *
+ * 包括：明天、一周后、两周后、一月后、两月后
+ */
+export const futureShortcuts = [
   {
     text: "明天",
     value: () => {

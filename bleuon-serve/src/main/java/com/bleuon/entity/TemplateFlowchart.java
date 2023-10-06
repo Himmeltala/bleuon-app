@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
@@ -19,7 +20,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @TableName("t_template_flowcharts")
-public class TemplateFlowchart {
+public class TemplateFlowchart implements Serializable {
 
     @TableId
     private String id;

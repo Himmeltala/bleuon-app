@@ -5,8 +5,11 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-export function formatted(format: "yyyy-MM-dd HH:mm:ss" | "HH:mm:ss" | "yyyy-MM-dd" | string, timestamp?: string): string {
-  let date
+export function formatted(
+  format: "yyyy-MM-dd HH:mm:ss" | "HH:mm:ss" | "yyyy-MM-dd" | string,
+  timestamp?: string
+): string {
+  let date;
   if (!timestamp) {
     date = new Date();
   } else {

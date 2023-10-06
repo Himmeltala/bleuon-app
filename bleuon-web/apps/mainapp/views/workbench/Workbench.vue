@@ -7,6 +7,8 @@
  */
 
 import type { ActiveItem } from "@mainapp/typings/workbench";
+
+// components
 import WorkbenchMenu from "@mainapp/components/WorkbenchMenu.vue";
 
 const activeItem = ref<ActiveItem>("auth-flowchart-list");

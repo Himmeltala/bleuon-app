@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { commitForm, passwordValidator, rePasswdValidator } from "@common/utils/form-validators";
+import { FormValidatorsUtil } from "@common/utils";
 import { UserApi } from "@mainapp/apis";
 
 const props = defineProps({
@@ -25,8 +25,8 @@ const formRules = reactive<FormRules>({
       message: "请输入密码",
       trigger: "blur"
     },
-    { validator: passwordValidator(isPasswordCorrect), trigger: "change" },
-    { validator: passwordValidator(isPasswordCorrect), trigger: "blur" }
+    { validator: FormValidatorsUtil.passwordValidator(isPasswordCorrect), trigger: "change" },
+    { validator: FormValidatorsUtil.passwordValidator(isPasswordCorrect), trigger: "blur" }
   ],
   rePasswd: [
     {
@@ -34,8 +34,14 @@ const formRules = reactive<FormRules>({
       message: "请确认密码",
       trigger: "blur"
     },
-    { validator: rePasswdValidator(isRePasswdCorrect, formData), trigger: "change" },
-    { validator: rePasswdValidator(isRePasswdCorrect, formData), trigger: "blur" }
+    {
+      validator: FormValidatorsUtil.rePasswdValidator(isRePasswdCorrect, formData),
+      trigger: "change"
+    },
+    {
+      validator: FormValidatorsUtil.rePasswdValidator(isRePasswdCorrect, formData),
+      trigger: "blur"
+    }
   ]
 });
 
@@ -44,7 +50,7 @@ onMounted(() => {
 });
 
 function confirmSubmitForm() {
-  commitForm(formRef.value, () => {
+  FormValidatorsUtil.validate(formRef.value, () => {
     UserApi.resetPassword(formData, () => {
       ElMessage.success("密码重置成功，请返回登录！");
     });

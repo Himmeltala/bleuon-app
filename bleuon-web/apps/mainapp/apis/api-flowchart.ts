@@ -167,3 +167,33 @@ export async function deleteOneCollect(params: { flowchartId: string }, success?
     success && success();
   });
 }
+
+/**
+ * 发布和公开一个流程图
+ *
+ * @param body
+ * @param success
+ */
+export function releaseOne(body: TemplateFlowchartData, success?: Function) {
+  request
+    .post<R<void>>("/flowchart/release/one", body)
+    .then(() => {
+      success && success();
+    })
+    .catch(err => {});
+}
+
+/**
+ * 取消发布和公开一个流程图
+ *
+ * @param body
+ * @param success
+ */
+export function cancelReleaseOne(params: { flowchartId: string }, success?: Function) {
+  request
+    .delete<R<void>>("/flowchart/cancel/release/one", { params })
+    .then(() => {
+      success && success();
+    })
+    .catch(err => {});
+}

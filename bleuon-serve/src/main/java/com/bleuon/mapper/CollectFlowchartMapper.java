@@ -3,6 +3,7 @@ package com.bleuon.mapper;
 import com.bleuon.entity.dto.CollectFlowchartDto;
 import com.bleuon.entity.vo.CollectFlowchartVo;
 import com.bleuon.entity.vo.FlowchartCondition;
+import org.apache.ibatis.annotations.CacheNamespace;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
  * @date: 2023/10/2
  */
 @Mapper
+@CacheNamespace
 public interface CollectFlowchartMapper {
 
     List<CollectFlowchartDto> findAll(FlowchartCondition condition);

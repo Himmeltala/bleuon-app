@@ -52,7 +52,7 @@ export function initJointJs(config: {
     // @ts-ignore
     defaultLink: () => new shapes.bleuon.Link(),
     defaultConnectionPoint: { name: "boundary" },
-    validateConnection: function (cellViewS, magnetS, cellViewT, magnetT, end, linkView) {
+    validateConnection: function(cellViewS, magnetS, cellViewT, magnetT, end, linkView) {
       if (config.isPreventLinkFromInputPorts || false) {
         if (magnetS && magnetS.getAttribute("port-group") === "in") return false;
       }

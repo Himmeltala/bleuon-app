@@ -6,6 +6,7 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
+// components
 import CommonHeader from "@mainapp/components/CommonHeader.vue";
 
 const formData = reactive({
@@ -62,9 +63,11 @@ const professionOps = reactive([
   }
 ]);
 
-function saveBasicData() {}
+function saveBasicData() {
+}
 
-function resetBasicData() {}
+function resetBasicData() {
+}
 </script>
 
 <template>

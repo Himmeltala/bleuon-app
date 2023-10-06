@@ -7,12 +7,13 @@
  */
 
 import { TemplateCommunityApi } from "@mainapp/apis";
-import { formatted } from "@common/utils/date";
+import { DateUtil } from "@common/utils";
+import { ElSelectData } from "@common/data";
 
 // components
 import CommonHeader from "@mainapp/components/CommonHeader.vue";
 
-const scene = ref("");
+const scene = ref("全部");
 const price = ref("");
 const ranking = ref("");
 
@@ -74,17 +75,9 @@ await fetchData();
               场景：
             </div>
             <el-radio-group v-model="scene" class="w-92%" @change="onSceneChange">
-              <el-radio label="">全部</el-radio>
-              <el-radio label="资产管理">资产管理</el-radio>
-              <el-radio label="财务">财务</el-radio>
-              <el-radio label="采购管理">采购管理</el-radio>
-              <el-radio label="企业经营">企业经营</el-radio>
-              <el-radio label="业务流程">业务流程</el-radio>
-              <el-radio label="人力">人力</el-radio>
-              <el-radio label="商业战略">商业战略</el-radio>
-              <el-radio label="工程流程">工程流程</el-radio>
-              <el-radio label="销售管理">销售管理</el-radio>
-              <el-radio label="项目管理">项目管理</el-radio>
+              <el-radio v-for="item in ElSelectData.sceneList" :label="item.label">
+                {{ item.label }}
+              </el-radio>
             </el-radio-group>
           </div>
           <div class="file-price f-c-b mt-2">
@@ -94,9 +87,9 @@ await fetchData();
             </div>
             <el-radio-group v-model="price" class="w-92%" @change="onPriceChange">
               <el-radio label="">全部</el-radio>
-              <el-radio label="免费">免费</el-radio>
-              <el-radio label="付费">付费</el-radio>
-              <el-radio label="VIP免费">VIP免费</el-radio>
+              <el-radio v-for="item in ElSelectData.priceList" :label="item.label">
+                {{ item.label }}
+              </el-radio>
             </el-radio-group>
           </div>
           <div class="file-other f-c-b mt-2">
@@ -106,9 +99,9 @@ await fetchData();
             </div>
             <el-radio-group v-model="ranking" class="w-92%" @change="onOtherChange">
               <el-radio label="">全部</el-radio>
-              <el-radio label="推荐">推荐</el-radio>
-              <el-radio label="热门">热门</el-radio>
-              <el-radio label="最佳">最佳</el-radio>
+              <el-radio v-for="item in ElSelectData.rankingList" :label="item.label">
+                {{ item.label }}
+              </el-radio>
             </el-radio-group>
           </div>
         </div>
@@ -135,7 +128,7 @@ await fetchData();
             </div>
             <div class="text-text-secondary text-0.8rem mt-2 f-c-s">
               <div class="i-tabler-clock-edit mr-1"></div>
-              {{ formatted("MM-dd HH:mm:ss", item.flowchart.modifyDate) }}
+              {{ DateUtil.formatted("MM-dd HH:mm:ss", item.flowchart.modifyDate) }}
             </div>
             <div
               @click="$router.push('/u/profile/' + item.flowchart.user.id)"

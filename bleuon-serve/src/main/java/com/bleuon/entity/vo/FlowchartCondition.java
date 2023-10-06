@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FlowchartCondition {
+public class FlowchartCondition implements Serializable {
 
     private String uid;
     private String fileName;
@@ -27,7 +28,7 @@ public class FlowchartCondition {
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class Collate {
+    public static class Collate implements Serializable {
 
         /**
          * 是否升序

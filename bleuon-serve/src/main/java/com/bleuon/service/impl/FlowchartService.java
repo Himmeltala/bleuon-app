@@ -1,9 +1,9 @@
 package com.bleuon.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bleuon.entity.Flowchart;
+import com.bleuon.entity.TemplateFlowchart;
 import com.bleuon.entity.vo.FlowchartCondition;
 import com.bleuon.exception.JdbcErrorException;
 import com.bleuon.mapper.FlowchartMapper;
@@ -27,28 +27,19 @@ import java.util.UUID;
  * @author: zheng
  * @date: 2023/9/29
  */
-@Service
+@Service("FlowchartService")
 @RequiredArgsConstructor
 public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> implements IFlowchartService {
+
+    private final FlowchartMapper flowchartMapper;
+    private final TemplateFlowchartService templateFlowchartService;
 
     @Override
     @Transactional
     public boolean updateOne(Flowchart data) {
         try {
-            UpdateWrapper<Flowchart> updateWrapper = new UpdateWrapper<>();
-
-            updateWrapper
-                    .eq("id", data.getId())
-                    .set("file_name", data.getFileName())
-                    .set("json", data.getJson())
-                    .set("modify_date", new Timestamp(new Date().getTime()))
-                    .set("width", data.getWidth())
-                    .set("height", data.getHeight())
-                    .set("data_uri", data.getDataUri() == null ? "" : data.getDataUri())
-                    .set("is_public", data.getIsPublic() == null ? 0 : data.getIsPublic())
-                    .set("dead_share_date", data.getDeadShareDate());
-
-            return update(data, updateWrapper);
+            Integer status = flowchartMapper.updateOne(data);
+            return status > 0;
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());
         }
@@ -170,4 +161,52 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
         }
     }
 
+    @Override
+    @Transactional
+    public R releaseOne(TemplateFlowchart data) {
+        try {
+            Flowchart flowchart = query().eq("id", data.getFlowchartId()).one();
+            if (flowchart.getIsPublic() == 1) {
+                return R.failed("已经公开过了！");
+            }
+
+            flowchart.setIsPublic(1);
+            boolean status = updateOne(flowchart);
+
+            if (status) {
+                data.setId(UUID.randomUUID().toString());
+                boolean f = templateFlowchartService.addOne(data);
+                if (f) {
+                    return R.success("公开成功！");
+                }
+            }
+
+            return R.failed("公开失败！");
+        } catch (Exception e) {
+            throw new JdbcErrorException(e.getCause());
+        }
+    }
+
+    @Override
+    @Transactional
+    public R cancelReleaseOne(String flowchartId) {
+        try {
+            // 根据flowchartid 删除模板并设置publick
+            Flowchart flowchart = new Flowchart();
+            flowchart.setId(flowchartId);
+            flowchart.setIsPublic(0);
+            boolean status = updateOne(flowchart);
+            if (status) {
+                TemplateFlowchart templateFlowchart = new TemplateFlowchart();
+                templateFlowchart.setFlowchartId(flowchartId);
+                boolean b = templateFlowchartService.deleteOne(templateFlowchart);
+                if (!b) {
+                    return R.failed("取消发布失败！");
+                }
+            }
+            return R.success("取消发布成功！");
+        } catch (Exception e) {
+            throw new JdbcErrorException(e.getCause());
+        }
+    }
 }

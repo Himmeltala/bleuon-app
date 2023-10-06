@@ -9,12 +9,13 @@
 import "jointjs/css/layout.css";
 import "jointjs/css/themes/default.css";
 
-import { dia, initJointJs } from "@mainapp/lib";
-
+import { DateUtil } from "@common/utils";
 import { TemplateCommunityApi } from "@mainapp/apis";
-import CommonHeader from "@mainapp/components/CommonHeader.vue";
-import { formatted } from "@common/utils/date";
+import { dia, initJointJs } from "@mainapp/lib";
 import { ListenerService } from "@mainapp/service/diagraming/flowchart";
+
+// components
+import CommonHeader from "@mainapp/components/CommonHeader.vue";
 
 const paper = shallowRef<dia.Paper>();
 const graph = shallowRef<dia.Graph>();
@@ -79,7 +80,9 @@ onMounted(() => {
               <div class="font-bold text-1.2rem">{{ data.flowchart.fileName }}</div>
               <div class="f-c-s mt-2 text-text-thirdly">
                 <div class="i-tabler-clock-edit mr-2"></div>
-                <span>{{ formatted("yyyy-MM-dd HH:mm:ss", data.flowchart.modifyDate) }}</span>
+                <span>
+                  {{ DateUtil.formatted("yyyy-MM-dd HH:mm:ss", data.flowchart.modifyDate) }}
+                </span>
               </div>
             </div>
             <div class="f-c-s">
@@ -110,13 +113,13 @@ onMounted(() => {
           </div>
         </div>
         <div class="information mt-5 p-5 bg-white">
-          <div class="font-500 text-1.1rem">{{ data.description }}</div>
+          <div class="font-500 text-1.2rem">描述：{{ data.description }}</div>
           <div class="mt-5">
             <el-tag class="mr-5" v-for="item in JSON.parse(data.tags)">{{ item }}</el-tag>
           </div>
           <div
             @click="$router.push('/u/profile/' + data.flowchart.user.id)"
-            class="cursor-pointer f-c-s mt-5">
+            class="cursor-pointer f-c-e mt-5">
             <img class="mr-4 w-10 h-10 rd-50%" :src="data.flowchart.user.avatar" />
             作者：{{ data.flowchart.user.username }}
           </div>

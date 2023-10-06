@@ -14,7 +14,7 @@ import { dia, initJointJs } from "@mainapp/lib";
 import { FlowchartApi } from "@mainapp/apis";
 import { ListenerService } from "@mainapp/service/diagraming/flowchart";
 import * as Data from "@mainapp/data/diagraming/flowchart";
-import { formatted } from "@common/utils/date";
+import { DateUtil } from "@common/utils";
 
 // components
 import HeaderToolsBottom from "@mainapp/components/diagraming/flowchart/HeaderToolsBottom.vue";
@@ -130,7 +130,7 @@ await fetchData();
           </el-link>
         </el-form-item>
         <el-form-item label="截止日期">
-          {{ formatted("yyyy-MM-dd HH:mm:ss", flowchartData.deadShareDate) }}
+          {{ DateUtil.formatted("yyyy-MM-dd HH:mm:ss", flowchartData.deadShareDate) }}
         </el-form-item>
       </el-form>
     </el-dialog>

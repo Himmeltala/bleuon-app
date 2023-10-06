@@ -1,6 +1,7 @@
 package com.bleuon.controller;
 
 import com.bleuon.annotaion.RequestMappingPrefix;
+import com.bleuon.constant.KeyVals;
 import com.bleuon.entity.Flowchart;
 import com.bleuon.entity.TemplateFlowchart;
 import com.bleuon.entity.vo.CollectFlowchartVo;
@@ -43,7 +44,7 @@ public class TemplateCommunityController {
     }
 
     @PostMapping("/clone/one")
-    public R cloneOne(@RequestHeader("Authorization") String token,
+    public R cloneOne(@RequestHeader(KeyVals.Token) String token,
                       @RequestBody TemplateFlowchart data
     ) {
         Claims claims = JwtUtil.parseJwt(token);
@@ -66,7 +67,7 @@ public class TemplateCommunityController {
     }
 
     @PostMapping("/collect/one")
-    public R collectOne(@RequestHeader("Authorization") String token,
+    public R collectOne(@RequestHeader(KeyVals.Token) String token,
                         @RequestBody TemplateFlowchart data
     ) {
         Claims claims = JwtUtil.parseJwt(token);

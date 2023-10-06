@@ -2,6 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bleuon.mapper.TemplateFlowchartMapper">
 
+    <cache-ref namespace="com.bleuon.mapper.TemplateFlowchartMapper"/>
+
     <resultMap id="findMap" type="com.bleuon.entity.TemplateFlowchart" autoMapping="true">
         <id property="id" column="id"/>
         <association javaType="com.bleuon.entity.Flowchart" property="flowchart" columnPrefix="f_" autoMapping="true">
@@ -97,5 +99,16 @@
         </set>
         WHERE id = #{id}
     </update>
+
+    <insert id="addOne">
+        INSERT INTO t_template_flowcharts(id, tags, scene, price, description, flowchart_id)
+        VALUES (#{id}, #{tags}, #{scene}, #{price}, #{description}, #{flowchartId});
+    </insert>
+
+    <delete id="deleteOne">
+        DELETE
+        FROM t_template_flowcharts
+        WHERE flowchart_id = #{flowchartId};
+    </delete>
 
 </mapper>

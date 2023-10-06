@@ -2,6 +2,7 @@ package com.bleuon.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.bleuon.entity.OfficialCell;
+import org.apache.ibatis.annotations.CacheNamespace;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -11,5 +12,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @date: 2023/9/27
  */
 @Mapper
+@CacheNamespace
 public interface OfficialCellMapper extends BaseMapper<OfficialCell> {
 }

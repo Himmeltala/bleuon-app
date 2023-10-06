@@ -1,9 +1,11 @@
 <script lang="ts" setup>
 import { dia } from "@mainapp/lib";
 import { convertSvgToImage } from "@mainapp/lib/tools";
-import MenuAvatar from "@mainapp/components/MenuAvatar.vue";
-import { formatted } from "@common/utils/date";
+import { DateUtil } from "@common/utils";
 import { FlowchartApi } from "@mainapp/apis";
+
+// components
+import MenuAvatar from "@mainapp/components/MenuAvatar.vue";
 
 const paper = inject<Ref<dia.Paper>>(KeyVals.BLEUON_FLOWCHART_PAPER);
 const graph = inject<Ref<dia.Graph>>(KeyVals.BLEUON_FLOWCHART_GRAPH);
@@ -71,7 +73,7 @@ function collectFlowchart() {
         <div class="mt-2">
           <div class="text-gray-500 text-0.8rem f-c-c">
             <div class="i-tabler-clock mr-1"></div>
-            上次更新：{{ formatted("yyyy-MM-dd HH:mm:ss", flowchartData.modifyDate) }}
+            上次更新：{{ DateUtil.formatted("yyyy-MM-dd HH:mm:ss", flowchartData.modifyDate) }}
           </div>
         </div>
       </div>

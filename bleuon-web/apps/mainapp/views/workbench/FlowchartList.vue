@@ -6,13 +6,13 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
+import { DateUtil, FormValidatorsUtil } from "@common/utils";
 import { FlowchartApi } from "@mainapp/apis";
 import { downloadWithDataUri } from "@mainapp/lib/tools";
-import { formatted } from "@common/utils/date";
-import { fileNameValidator } from "@common/utils/form-validators";
 
-import WorkbenchHeader from "@mainapp/components/WorkbenchHeader.vue";
+// components
 import File from "@mainapp/components/File.vue";
+import WorkbenchHeader from "@mainapp/components/WorkbenchHeader.vue";
 
 const clickedIndex = ref(0);
 const flowchartList = ref(await FlowchartApi.findAll());
@@ -21,8 +21,8 @@ const dialogVisible = ref(false);
 const isFileNameCorrect = ref(false);
 const fileNameRules = reactive({
   fileName: [
-    { validator: fileNameValidator(isFileNameCorrect), trigger: "blur" },
-    { validator: fileNameValidator(isFileNameCorrect), trigger: "change" }
+    { validator: FormValidatorsUtil.fileNameValidator(isFileNameCorrect), trigger: "blur" },
+    { validator: FormValidatorsUtil.fileNameValidator(isFileNameCorrect), trigger: "change" }
   ]
 });
 
@@ -207,7 +207,7 @@ async function searchFiles() {
           </div>
           <div class="text-text-secondary text-0.8rem mt-2 f-c-s">
             <div class="i-tabler-clock-edit mr-1"></div>
-            {{ formatted("MM-dd HH:mm:ss", item.modifyDate) }}
+            {{ DateUtil.formatted("MM-dd HH:mm:ss", item.modifyDate) }}
           </div>
         </template>
       </File>

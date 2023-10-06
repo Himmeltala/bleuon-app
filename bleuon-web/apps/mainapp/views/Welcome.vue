@@ -34,7 +34,8 @@
       </div>
       <div class="text-center mt-20">
         <el-button size="large" type="primary" @click="$router.push('/workbench')"
-          >免费试用</el-button
+        >免费试用
+        </el-button
         >
       </div>
     </div>

@@ -6,7 +6,7 @@
  */
 
 import axios from "axios";
-import { notInterceptUrl } from "@common/utils/interceptor";
+import { InterceptorUtil } from "@common/utils";
 
 const request = axios.create({
   baseURL: `http://localhost:8080/api`
@@ -43,7 +43,7 @@ request.interceptors.response.use(
 
     if (
       data.code === 200 &&
-      !notInterceptUrl(config.config, {
+      !InterceptorUtil.notInterceptUrl(config.config, {
         fuzzy: ["find", "clone", "/community/template/update/one"]
       })
     ) {

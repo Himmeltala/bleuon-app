@@ -1,12 +1,5 @@
 <script lang="ts" setup>
-import {
-  commitForm,
-  emailValidator,
-  getVerifyCode,
-  passwordValidator,
-  rePasswdValidator,
-  verifyCodeValidator
-} from "@common/utils/form-validators";
+import { FormValidatorsUtil } from "@common/utils";
 import { UserApi } from "@mainapp/apis";
 
 const coudButtonCount = ref(60);
@@ -28,8 +21,8 @@ const formData = reactive({
 const formRules = reactive<FormRules>({
   email: [
     { required: true, message: "请输入电子邮箱", trigger: "blur" },
-    { validator: emailValidator(isEmailCorrect), trigger: "change" },
-    { validator: emailValidator(isEmailCorrect), trigger: "blur" }
+    { validator: FormValidatorsUtil.emailValidator(isEmailCorrect), trigger: "change" },
+    { validator: FormValidatorsUtil.emailValidator(isEmailCorrect), trigger: "blur" }
   ],
   code: [
     {
@@ -37,8 +30,8 @@ const formRules = reactive<FormRules>({
       message: "请输入验证码",
       trigger: "blur"
     },
-    { validator: verifyCodeValidator(isCodeCorrect), trigger: "change" },
-    { validator: verifyCodeValidator(isCodeCorrect), trigger: "blur" }
+    { validator: FormValidatorsUtil.verifyCodeValidator(isCodeCorrect), trigger: "change" },
+    { validator: FormValidatorsUtil.verifyCodeValidator(isCodeCorrect), trigger: "blur" }
   ],
   password: [
     {
@@ -46,8 +39,8 @@ const formRules = reactive<FormRules>({
       message: "请输入密码",
       trigger: "blur"
     },
-    { validator: passwordValidator(isPasswordCorrect), trigger: "change" },
-    { validator: passwordValidator(isPasswordCorrect), trigger: "blur" }
+    { validator: FormValidatorsUtil.passwordValidator(isPasswordCorrect), trigger: "change" },
+    { validator: FormValidatorsUtil.passwordValidator(isPasswordCorrect), trigger: "blur" }
   ],
   rePasswd: [
     {
@@ -55,19 +48,30 @@ const formRules = reactive<FormRules>({
       message: "请确认密码",
       trigger: "blur"
     },
-    { validator: rePasswdValidator(isRePasswdCorrect, formData), trigger: "change" },
-    { validator: rePasswdValidator(isRePasswdCorrect, formData), trigger: "blur" }
+    {
+      validator: FormValidatorsUtil.rePasswdValidator(isRePasswdCorrect, formData),
+      trigger: "change"
+    },
+    {
+      validator: FormValidatorsUtil.rePasswdValidator(isRePasswdCorrect, formData),
+      trigger: "blur"
+    }
   ]
 });
 
 function confirmGetVerifyCode() {
-  getVerifyCode(interval, coudButtonCount, codeButtonDisabled, (callback: any) => {
-    UserApi.askMailVerifyCode(formData.email, "register", () => callback());
-  });
+  FormValidatorsUtil.getVerifyCode(
+    interval,
+    coudButtonCount,
+    codeButtonDisabled,
+    (callback: any) => {
+      UserApi.askMailVerifyCode(formData.email, "register", () => callback());
+    }
+  );
 }
 
 function confirmSubmitForm() {
-  commitForm(formRef.value, () => {
+  FormValidatorsUtil.validate(formRef.value, () => {
     UserApi.verifyMailCode(formData, formData.code, "register", () => {
       ElMessage({
         type: "success",

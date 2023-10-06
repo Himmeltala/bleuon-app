@@ -1,10 +1,5 @@
 <script lang="ts" setup>
-import {
-  commitForm,
-  passwordValidator,
-  rePasswdValidator,
-  usernameValidator
-} from "@common/utils/form-validators";
+import { FormValidatorsUtil } from "@common/utils";
 import { UserApi } from "@mainapp/apis";
 
 const formData = reactive({
@@ -19,8 +14,8 @@ const formRef = ref();
 const formRules = reactive<FormRules>({
   username: [
     { required: true, message: "请输入用户名", trigger: "blur" },
-    { validator: usernameValidator(isUnameCorrect), trigger: "change" },
-    { validator: usernameValidator(isUnameCorrect), trigger: "blur" }
+    { validator: FormValidatorsUtil.usernameValidator(isUnameCorrect), trigger: "change" },
+    { validator: FormValidatorsUtil.usernameValidator(isUnameCorrect), trigger: "blur" }
   ],
   password: [
     {
@@ -28,8 +23,8 @@ const formRules = reactive<FormRules>({
       message: "请输入密码",
       trigger: "blur"
     },
-    { validator: passwordValidator(isPasswordCorrect), trigger: "change" },
-    { validator: passwordValidator(isPasswordCorrect), trigger: "blur" }
+    { validator: FormValidatorsUtil.passwordValidator(isPasswordCorrect), trigger: "change" },
+    { validator: FormValidatorsUtil.passwordValidator(isPasswordCorrect), trigger: "blur" }
   ],
   rePasswd: [
     {
@@ -37,13 +32,19 @@ const formRules = reactive<FormRules>({
       message: "请确认密码",
       trigger: "blur"
     },
-    { validator: rePasswdValidator(isRePasswdCorrect, formData), trigger: "change" },
-    { validator: rePasswdValidator(isRePasswdCorrect, formData), trigger: "blur" }
+    {
+      validator: FormValidatorsUtil.rePasswdValidator(isRePasswdCorrect, formData),
+      trigger: "change"
+    },
+    {
+      validator: FormValidatorsUtil.rePasswdValidator(isRePasswdCorrect, formData),
+      trigger: "blur"
+    }
   ]
 });
 
 function confirmRegister() {
-  commitForm(formRef.value, async () => {
+  FormValidatorsUtil.validate(formRef.value, async () => {
     UserApi.accountRegister(formData, () => {
       ElMessage({
         type: "success",

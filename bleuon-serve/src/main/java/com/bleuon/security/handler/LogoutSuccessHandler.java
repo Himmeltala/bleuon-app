@@ -1,6 +1,7 @@
 package com.bleuon.security.handler;
 
 import com.alibaba.fastjson2.JSON;
+import com.bleuon.constant.KeyVals;
 import com.bleuon.utils.JwtUtil;
 import com.bleuon.utils.http.R;
 import io.jsonwebtoken.Claims;
@@ -28,7 +29,7 @@ public class LogoutSuccessHandler implements org.springframework.security.web.au
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         response.setContentType("application/json;charset=utf-8");
-        String authToken = request.getHeader("Authorization");
+        String authToken = request.getHeader(KeyVals.Token);
         Claims claims = JwtUtil.parseJwt(authToken);
 
         R success = R.success("退出成功！");

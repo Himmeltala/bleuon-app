@@ -1,6 +1,5 @@
 package com.bleuon.exception;
 
-import com.bleuon.constant.JdbcExpType;
 import com.bleuon.utils.http.R;
 import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
@@ -28,13 +27,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({JdbcErrorException.class})
     public R handleJdbcErrorException(JdbcErrorException e) {
         log.error(e.getMessage(), e.getCause());
-        return R.error(JdbcExpType.ERROR);
+        return R.error("服务器内部异常，操作数据库错误！");
     }
 
     @ExceptionHandler({JdbcFailedException.class})
     public R handleJdbcOperationException(JdbcFailedException e) {
         log.warn(e.getMessage(), e.getCause());
-        return R.error(JdbcExpType.FAILED);
+        return R.error("服务器内部异常，操作数据库失败！");
     }
 
 }

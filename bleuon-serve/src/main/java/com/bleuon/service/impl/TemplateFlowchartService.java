@@ -19,7 +19,7 @@ import java.util.Objects;
  * @date: 2023/10/5
  */
 @RequiredArgsConstructor
-@Service
+@Service("TemplateFlowchartService")
 public class TemplateFlowchartService implements ITemplateFlowchartService {
 
     private final TemplateFlowchartMapper mapper;
@@ -43,6 +43,28 @@ public class TemplateFlowchartService implements ITemplateFlowchartService {
     public boolean updateOne(TemplateFlowchart data) {
         try {
             Integer status = mapper.updateOne(data);
+            return status > 0;
+        } catch (Exception e) {
+            throw new JdbcErrorException(e.getCause());
+        }
+    }
+
+    @Override
+    @Transactional
+    public boolean addOne(TemplateFlowchart data) {
+        try {
+            Integer status = mapper.addOne(data);
+            return status > 0;
+        } catch (Exception e) {
+            throw new JdbcErrorException(e.getCause());
+        }
+    }
+
+    @Override
+    @Transactional
+    public boolean deleteOne(TemplateFlowchart data) {
+        try {
+            Integer status = mapper.deleteOne(data);
             return status > 0;
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());

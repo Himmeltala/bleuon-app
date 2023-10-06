@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { UserApi } from "@mainapp/apis";
-import { accountValidator, commitForm, passwordValidator } from "@common/utils/form-validators";
+import { FormValidatorsUtil } from "@common/utils";
 
 const router = useRouter();
 
@@ -15,8 +15,8 @@ const formData = reactive<UserData>({
 const formRules = reactive<FormRules>({
   username: [
     { required: true, message: "请输入账号信息", trigger: "blur" },
-    { validator: accountValidator(isAccountCorrect), trigger: "change" },
-    { validator: accountValidator(isAccountCorrect), trigger: "blur" }
+    { validator: FormValidatorsUtil.accountValidator(isAccountCorrect), trigger: "change" },
+    { validator: FormValidatorsUtil.accountValidator(isAccountCorrect), trigger: "blur" }
   ],
   password: [
     {
@@ -24,13 +24,13 @@ const formRules = reactive<FormRules>({
       message: "请输入密码",
       trigger: "blur"
     },
-    { validator: passwordValidator(isPasswordCorrect), trigger: "change" },
-    { validator: passwordValidator(isPasswordCorrect), trigger: "blur" }
+    { validator: FormValidatorsUtil.passwordValidator(isPasswordCorrect), trigger: "change" },
+    { validator: FormValidatorsUtil.passwordValidator(isPasswordCorrect), trigger: "blur" }
   ]
 });
 
 function confirmLogin() {
-  commitForm(formRef.value, async () => {
+  FormValidatorsUtil.validate(formRef.value, async () => {
     UserApi.accountLogin(formData, () => {
       router.push("/workbench");
     });

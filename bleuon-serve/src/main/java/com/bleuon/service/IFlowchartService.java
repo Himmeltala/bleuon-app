@@ -1,6 +1,7 @@
 package com.bleuon.service;
 
 import com.bleuon.entity.Flowchart;
+import com.bleuon.entity.TemplateFlowchart;
 import com.bleuon.entity.vo.FlowchartCondition;
 import com.bleuon.utils.http.R;
 
@@ -27,4 +28,8 @@ public interface IFlowchartService {
     Flowchart cloneOne(Flowchart data, String uid);
 
     boolean deleteOne(String id);
+
+    R releaseOne(TemplateFlowchart data);
+
+    R cancelReleaseOne(String flowchartId);
 }

@@ -1,5 +1,5 @@
 /**
- * @description 拦截器
+ * @description 拦截器工具
  * @author 郑人滏 42020306
  * @since 2023/9/17
  * @link https://github.com/himmelbleu/bleuon-app

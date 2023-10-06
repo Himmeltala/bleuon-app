@@ -10,19 +10,19 @@
 import "jointjs/css/layout.css";
 import "jointjs/css/themes/default.css";
 
-import { throttle } from "@common/utils/prevent";
-import { shortcuts } from "@common/data/el-components";
-import { commitForm } from "@common/utils/form-validators";
-import { dia, initJointJs } from "@mainapp/lib";
-import { getDataUri } from "@mainapp/lib/tools";
 import { FlowchartApi } from "@mainapp/apis";
 import * as Data from "@mainapp/data/diagraming/flowchart";
+import { dia, initJointJs } from "@mainapp/lib";
+import { getDataUri } from "@mainapp/lib/tools";
 import { ListenerService } from "@mainapp/service/diagraming/flowchart";
 
+import { ElDatePickerData, ElSelectData } from "@common/data";
+import { FormValidatorsUtil, PreventUtil } from "@common/utils";
+
 // components
+import FooterTools from "@mainapp/components/diagraming/flowchart/FooterTools.vue";
 import HeaderToolsBottom from "@mainapp/components/diagraming/flowchart/HeaderToolsBottom.vue";
 import HeaderToolsTop from "@mainapp/components/diagraming/flowchart/HeaderToolsTop.vue";
-import FooterTools from "@mainapp/components/diagraming/flowchart/FooterTools.vue";
 import Sidebar from "@mainapp/components/diagraming/flowchart/Sidebar.vue";
 
 const paper = shallowRef<dia.Paper>();
@@ -52,7 +52,7 @@ function updateFlowchartData() {
   FlowchartApi.updateOne(flowchartData.value, () => {});
 }
 
-const updateThrottle = throttle(updateFlowchartData, 3000);
+const updateThrottle = PreventUtil.throttle(updateFlowchartData, 3000);
 
 function regainFromJson() {
   paper.value.freeze();
@@ -108,7 +108,7 @@ onMounted(() => {
   });
 });
 
-const dialogVisible = ref(false);
+const shareDialogVisible = ref(false);
 const shareFormRef = ref<FormInstance>();
 const shareFormRules = reactive<FormRules<any>>({
   deadShareDate: [
@@ -128,11 +128,11 @@ const shareFormRules = reactive<FormRules<any>>({
 });
 
 function confirmShare() {
-  commitForm(shareFormRef.value, () => {
+  FormValidatorsUtil.validate(shareFormRef.value, () => {
     flowchartData.value.isShare = 1;
     FlowchartApi.updateOne(flowchartData.value, data => {
       if (data.code === 200) {
-        ElMessage.success("分享成功，复制链接浏览！");
+        ElMessage.success("分享成功！");
       } else {
         flowchartData.value.isShare = 0;
         ElMessage.error("分享失败！");
@@ -154,6 +154,85 @@ function cancelShare() {
   });
 }
 
+const releaseDialogVisible = ref(false);
+const releaseFormRef = ref<FormInstance>();
+const releaseFormData = reactive({
+  description: "",
+  scene: "全部",
+  price: "免费",
+  tags: ""
+});
+const releaseFormRules = reactive<FormRules<any>>({
+  description: [
+    {
+      required: true,
+      message: "请输入文件描述",
+      trigger: "blur"
+    }
+  ],
+  scene: [
+    {
+      required: true,
+      message: "请选择一个适用场景",
+      trigger: "blur"
+    }
+  ],
+  price: [
+    {
+      required: true,
+      message: "请选择一个收费标准",
+      trigger: "blur"
+    }
+  ]
+});
+
+const releaseTagVal = ref("");
+const releaseTagList = ref([]);
+
+function onEnterReleaseTag() {
+  if (releaseTagVal.value.length < 3) {
+    ElMessage.warning("标签内容不能少于3个字符");
+    return;
+  }
+
+  if (releaseTagVal.value.length > 10) {
+    ElMessage.warning("标签内容不能超过10个字符");
+    return;
+  }
+
+  if (releaseTagList.value.length < 5) {
+    if (!releaseTagList.value.includes(releaseTagVal.value)) {
+      releaseTagList.value.push(releaseTagVal.value);
+    } else {
+      ElMessage.warning("不能重复添加标签");
+    }
+  } else {
+    ElMessage.warning("标签最多添加5个");
+  }
+}
+
+function closeReleaseTag(index: number) {
+  releaseTagList.value.splice(index, 1);
+}
+
+function confirmRelease() {
+  FormValidatorsUtil.validate(releaseFormRef.value, () => {
+    releaseFormData.tags = JSON.stringify(releaseTagList.value);
+    FlowchartApi.releaseOne(
+      { ...{ flowchartId: flowchartData.value.id }, ...releaseFormData },
+      () => {
+        flowchartData.value.isPublic = 1;
+      }
+    );
+  });
+}
+
+function cancelRelease() {
+  FlowchartApi.cancelReleaseOne({ flowchartId: flowchartData.value.id }, () => {
+    flowchartData.value.isPublic = 0;
+  });
+}
+
 await fetchData();
 </script>
 
@@ -164,7 +243,14 @@ await fetchData();
       <HeaderToolsTop :data="flowchartData" class="mb-4" @change="updateThrottle">
         <template #tools>
           <el-tooltip content="分享">
-            <div class="hover i-tabler-share" @click="dialogVisible = !dialogVisible"></div>
+            <div
+              class="hover i-tabler-share mr-4"
+              @click="shareDialogVisible = !shareDialogVisible"></div>
+          </el-tooltip>
+          <el-tooltip content="发布和公开">
+            <div
+              class="hover i-tabler-location-share"
+              @click="releaseDialogVisible = !releaseDialogVisible"></div>
           </el-tooltip>
         </template>
       </HeaderToolsTop>
@@ -184,7 +270,7 @@ await fetchData();
         <input ref="textInputRef" class="bleuon__flowchart-input absolute hidden" type="text" />
       </div>
     </div>
-    <el-dialog v-model="dialogVisible" title="分享流程图" width="40%">
+    <el-dialog v-model="shareDialogVisible" title="分享流程图" width="40%">
       <el-form
         ref="shareFormRef"
         :model="flowchartData"
@@ -192,8 +278,8 @@ await fetchData();
         label-position="right"
         label-width="100px">
         <el-form-item label="状态">
-          <div v-if="!flowchartData.isShare">流程图没有公开，点击创建链接</div>
-          <div v-else>流程图已经公开，点击链接浏览</div>
+          <div v-if="!flowchartData.isShare">流程图没有分享，请创建分享链接</div>
+          <div v-else>流程图已经分享，点击链接浏览</div>
         </el-form-item>
         <el-form-item v-if="flowchartData.isShare" label="链接地址">
           <el-link type="primary" @click="$router.push('/share/flowchart/' + flowchartData.id)">
@@ -203,12 +289,12 @@ await fetchData();
         <el-form-item label="截止日期" prop="deadShareDate">
           <el-date-picker
             v-model="flowchartData.deadShareDate"
-            :shortcuts="shortcuts"
+            :shortcuts="ElDatePickerData.futureShortcuts"
             type="datetime" />
         </el-form-item>
       </el-form>
       <template #footer>
-        <span class="dialog-footer">
+        <span>
           <el-button :disabled="!!flowchartData.isShare" type="primary" @click="confirmShare">
             <template #icon>
               <div class="i-tabler-check"></div>
@@ -220,6 +306,81 @@ await fetchData();
               <div class="i-tabler-x"></div>
             </template>
             取消公开
+          </el-button>
+        </span>
+      </template>
+    </el-dialog>
+    <el-dialog v-model="releaseDialogVisible" title="发布和公开流程图" width="40%">
+      <el-form
+        v-if="!flowchartData.isPublic"
+        ref="releaseFormRef"
+        :model="releaseFormData"
+        :rules="releaseFormRules"
+        label-position="left"
+        label-width="90px">
+        <el-form-item label="文件描述" prop="description">
+          <el-input v-model="releaseFormData.description" />
+        </el-form-item>
+        <el-form-item label="场景" prop="scene">
+          <el-select v-model="releaseFormData.scene" placeholder="请输入适用场景">
+            <el-option
+              v-for="item in ElSelectData.sceneList"
+              :key="item.label"
+              :label="item.label"
+              :value="item.value" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="价格" prop="price">
+          <el-select v-model="releaseFormData.price" placeholder="请输入收费标准">
+            <el-option
+              v-for="item in ElSelectData.priceList"
+              :key="item.label"
+              :label="item.label"
+              :value="item.value" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="标签">
+          <el-input
+            @keyup.enter="onEnterReleaseTag"
+            v-model="releaseTagVal"
+            placeholder="按下回车键添加标签，最多添加5个" />
+          <div class="f-c-s mt-2">
+            <el-tag
+              closable
+              class="mr-2"
+              v-for="(item, index) in releaseTagList"
+              :key="item"
+              @close="closeReleaseTag(index)">
+              {{ item }}
+            </el-tag>
+          </div>
+        </el-form-item>
+      </el-form>
+      <div v-else class="text-center text-1.2rem font-bold">
+        已经发布到社区模板，若需要你可以取消发布
+      </div>
+      <template #footer>
+        <span>
+          <el-button
+            v-if="!flowchartData.isPublic"
+            @click="releaseDialogVisible = !releaseDialogVisible">
+            <template #icon>
+              <div class="i-tabler-x"></div>
+            </template>
+            取消
+          </el-button>
+          <el-button @click="cancelRelease" type="danger" v-else>
+            <template #icon>
+              <div class="i-tabler-x"></div>
+            </template>
+            取消发布
+          </el-button>
+          <el-button :disabled="!!flowchartData.isPublic" type="primary" @click="confirmRelease">
+            <template #icon>
+              <div class="i-tabler-check"></div>
+            </template>
+            <span v-if="!flowchartData.isPublic">确定发布</span>
+            <span v-else>已经发布</span>
           </el-button>
         </span>
       </template>

@@ -1,5 +1,5 @@
 /**
- * @description 校验器
+ * @description 校验器工具
  * @author 郑人滏 42020306
  * @since 2023/10/1
  * @link https://github.com/himmelbleu/bleuon-app
@@ -8,13 +8,13 @@
 import type { FormInstance } from "element-plus";
 
 /**
- * 提交表单
+ * 提交表单之前校验整个表单是否合法
  *
  * @param formEl 表单 Ref 对象
  * @param success 成功回调
  * @param error 失败回调
  */
-export async function commitForm(
+export async function validate(
   formEl: FormInstance | undefined,
   success?: Function,
   error?: Function

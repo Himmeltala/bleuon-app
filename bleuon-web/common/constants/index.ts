@@ -1,3 +1,1 @@
-import * as KeyVals from "./key-vals";
-
-export { KeyVals };
+export * as KeyVals from "./key-vals";

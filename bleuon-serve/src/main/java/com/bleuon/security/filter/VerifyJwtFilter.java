@@ -1,5 +1,6 @@
 package com.bleuon.security.filter;
 
+import com.bleuon.constant.KeyVals;
 import com.bleuon.entity.CustomUserDetails;
 import com.bleuon.mapper.AuthorityMapper;
 import com.bleuon.utils.JwtUtil;
@@ -39,7 +40,7 @@ public class VerifyJwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
-        String authorization = request.getHeader("Authorization");
+        String authorization = request.getHeader(KeyVals.Token);
         Claims claims = JwtUtil.parseJwt(authorization);
 
         if (claims != null) {

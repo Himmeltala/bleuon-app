@@ -3,7 +3,7 @@ package com.bleuon.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.bleuon.constant.ValidRegexp;
+import com.bleuon.constant.ValidPattern;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -25,15 +25,15 @@ public class User implements Serializable {
     @TableId
     private String id;
 
-    @Pattern(regexp = ValidRegexp.USERNAME, message = "字母、中文、-、_，不能以数字开头、-、_开头，长度在4~16")
+    @Pattern(regexp = ValidPattern.USERNAME, message = "字母、中文、-、_，不能以数字开头、-、_开头，长度在4~16")
     @TableField
     private String username;
 
-    @Pattern(regexp = ValidRegexp.PASSWORD, message = "英文、.、数字，长度在8~16")
+    @Pattern(regexp = ValidPattern.PASSWORD, message = "英文、.、数字，长度在8~16")
     @TableField
     private String password;
 
-    @Pattern(regexp = ValidRegexp.PHONE, message = "不是一个合法的手机号码")
+    @Pattern(regexp = ValidPattern.PHONE, message = "不是一个合法的手机号码")
     @TableField
     private String phone;
 

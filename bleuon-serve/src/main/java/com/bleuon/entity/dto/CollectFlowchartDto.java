@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
@@ -15,7 +16,7 @@ import java.sql.Timestamp;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CollectFlowchartDto {
+public class CollectFlowchartDto implements Serializable {
 
     private String id;
     private String fileName;
@@ -38,7 +39,7 @@ public class CollectFlowchartDto {
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    static class User {
+    static class User implements Serializable {
         private String id;
         private String username;
         private String avatar;

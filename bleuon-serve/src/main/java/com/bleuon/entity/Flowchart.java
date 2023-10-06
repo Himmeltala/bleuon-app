@@ -3,13 +3,14 @@ package com.bleuon.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.bleuon.constant.ValidRegexp;
+import com.bleuon.constant.ValidPattern;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
@@ -22,7 +23,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @TableName("t_flowcharts")
-public class Flowchart {
+public class Flowchart implements Serializable {
 
     @TableId
     @Max(40)
@@ -51,15 +52,15 @@ public class Flowchart {
     private Double gridSize;
 
     @TableField("draw_grid")
-    @Pattern(regexp = ValidRegexp.JSON, message = "网格配置 JSON 格式错误！")
+    @Pattern(regexp = ValidPattern.JSON, message = "网格配置 JSON 格式错误！")
     private String drawGrid;
 
     @TableField("connector_default")
-    @Pattern(regexp = ValidRegexp.JSON, message = "connector JSON 数据格式错误！")
+    @Pattern(regexp = ValidPattern.JSON, message = "connector JSON 数据格式错误！")
     private String connectorDefault;
 
     @TableField("router_default")
-    @Pattern(regexp = ValidRegexp.JSON, message = "router JSON 数据格式错误！")
+    @Pattern(regexp = ValidPattern.JSON, message = "router JSON 数据格式错误！")
     private String routerDefault;
 
     @TableField("is_public")
@@ -92,7 +93,7 @@ public class Flowchart {
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    static class User {
+    static class User implements Serializable {
         private String id;
         private String username;
         private String avatar;

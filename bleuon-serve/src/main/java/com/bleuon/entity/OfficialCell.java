@@ -3,13 +3,14 @@ package com.bleuon.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.bleuon.constant.ValidRegexp;
+import com.bleuon.constant.ValidPattern;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
@@ -22,7 +23,7 @@ import java.sql.Timestamp;
 @TableName("t_official_cells")
 @NoArgsConstructor
 @AllArgsConstructor
-public class OfficialCell {
+public class OfficialCell implements Serializable {
 
     @TableId
     @Max(40)
@@ -39,7 +40,7 @@ public class OfficialCell {
     private Double height;
 
     @TableField
-    @Pattern(regexp = ValidRegexp.JSON, message = "似乎不是一个合法的 JSON 字符串！")
+    @Pattern(regexp = ValidPattern.JSON, message = "似乎不是一个合法的 JSON 字符串！")
     private String attrs;
 
     @TableField("view_box")
@@ -47,7 +48,7 @@ public class OfficialCell {
     private String viewBox;
 
     @TableField
-    @Pattern(regexp = ValidRegexp.CELL_TYPE, message = "图形类型错误！")
+    @Pattern(regexp = ValidPattern.CELL_TYPE, message = "图形类型错误！")
     private String type;
 
     @TableField("create_date")

@@ -19,4 +19,8 @@ public interface ITemplateFlowchartService {
 
     boolean updateOne(TemplateFlowchart data);
 
+    boolean addOne(TemplateFlowchart data);
+
+    boolean deleteOne(TemplateFlowchart data);
+
 }

@@ -14,7 +14,7 @@ src
 │   │           └─ BleuonServeApplication.java
 │   ├─ resources
 │   │   ├─ application.yml
-│   │   ├─ mappers              // MyBatis 映射文件
+│   │   ├─ mappers                // MyBatis 映射文件
 │   │   └─ ...
 └─ pom.xml
 ```
@@ -25,9 +25,3 @@ src
 4. configs：存放配置类，例如数据库配置、安全配置、Swagger 配置等。
 5. application.yml：应用的配置文件，包含应用的属性设置。
 6. mappers：存放 MyBatis 的 Mapper 接口，用于定义 SQL 映射操作。
-
-# Spring Security
-
-1. 登录发放 jwt（完成）
-2. 通过 jwt 访问其他接口（完成）
-3. 退出，注销 jwt（）

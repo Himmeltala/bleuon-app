@@ -1,6 +1,6 @@
 package com.bleuon.constant;
 
-public class ValidRegexp {
+public class ValidPattern {
 
     /**
      * 邮箱验证码类型
