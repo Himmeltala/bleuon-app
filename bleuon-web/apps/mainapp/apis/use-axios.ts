@@ -13,7 +13,7 @@ const request = axios.create({
 });
 
 request.interceptors.request.use(
-  (config) => {
+  config => {
     const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
 
     if (token) {
@@ -22,14 +22,14 @@ request.interceptors.request.use(
 
     return config;
   },
-  (error) => {
+  error => {
     ElMessage.error("啊哦，发生了错误！");
     return Promise.reject(error);
   }
 );
 
 request.interceptors.response.use(
-  (config) => {
+  config => {
     const { data } = config;
 
     if (data.code === 500) {
@@ -41,13 +41,18 @@ request.interceptors.response.use(
       localStorage.removeItem(KeyVals.MAINAPP_TOKEN_KEY);
     }
 
-    if (data.code === 200 && !notInterceptUrl(config.config, { fuzzy: ["find", "clone", "/community/template/update/one"] })) {
+    if (
+      data.code === 200 &&
+      !notInterceptUrl(config.config, {
+        fuzzy: ["find", "clone", "/community/template/update/one"]
+      })
+    ) {
       ElMessage.success(data.message);
     }
 
     return config;
   },
-  (error) => {
+  error => {
     ElMessage.error("啊哦，发生了错误！");
     return Promise.reject(error);
   }

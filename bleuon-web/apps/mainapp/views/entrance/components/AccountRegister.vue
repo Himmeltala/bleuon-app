@@ -1,6 +1,10 @@
 <script lang="ts" setup>
-import type { FormRules } from "element-plus";
-import { commitForm, passwordValidator, rePasswdValidator, usernameValidator } from "@common/utils/form-validators";
+import {
+  commitForm,
+  passwordValidator,
+  rePasswdValidator,
+  usernameValidator
+} from "@common/utils/form-validators";
 import { UserApi } from "@mainapp/apis";
 
 const formData = reactive({

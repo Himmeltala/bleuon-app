@@ -23,11 +23,16 @@ export default defineConfig(({ mode }) => {
         ],
         imports: [
           "vue",
-          "pinia",
           "vue-router",
-          "@vueuse/core",
+          // "pinia",
+          // "@vueuse/core",
           {
             "@common/constants": ["KeyVals"]
+          },
+          {
+            from: "element-plus",
+            imports: ["FormInstance", "FormRules", "TabsPaneContext"],
+            type: true
           }
         ],
         resolvers: [

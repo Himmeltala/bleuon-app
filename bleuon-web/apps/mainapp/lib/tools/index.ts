@@ -146,8 +146,7 @@ export function updateLabelText(elementView: dia.ElementView, textInput: HTMLInp
   const { model } = elementView;
   const { position, size } = model.attributes;
 
-  const cellText = model.attr("label/text");
-  textInput.value = cellText;
+  textInput.value = model.attr("label/text");
 
   textInput.style.top = position.y + "px";
   textInput.style.left = position.x + "px";
@@ -172,8 +171,12 @@ export function updateLabelText(elementView: dia.ElementView, textInput: HTMLInp
 /**
  * 导出 SVG 为图片
  *
- * @param el svg
+ * @param paper
+ * @param graph
  * @param type png、jpeg
+ * @param config
+ * @param success
+ * @param failure
  */
 export function convertSvgToImage(
   paper: dia.Paper,
@@ -186,8 +189,8 @@ export function convertSvgToImage(
     dataUri?: string;
     fileName?: string;
   },
-  success?: Function,
-  failure?: Function
+  success?: (res: string) => void,
+  failure?: (res: string) => void
 ) {
   const canvas = document.createElement("canvas");
   const context = canvas.getContext("2d");
@@ -196,7 +199,7 @@ export function convertSvgToImage(
   const image = new Image();
   image.src = dataUri;
 
-  image.onload = function() {
+  image.onload = function () {
     canvas.width = config.width || 1000;
     canvas.height = config.height || 1000;
     context.fillStyle = config.bgColor || "#ffffff";
@@ -238,6 +241,8 @@ export function getDataUri(paper: dia.Paper, graph: dia.Graph) {
  *
  * @param data width、height、bgColor、dataUri
  * @param type png、jpeg
+ * @param success
+ * @param failure
  */
 export function downloadWithDataUri(
   data: { width?: number; height?: number; bgColor?: string; dataUri?: string; fileName?: string },
@@ -257,7 +262,7 @@ export function downloadWithDataUri(
 
   image.src = data.dataUri;
 
-  image.onload = function() {
+  image.onload = function () {
     canvas.width = data.width || 1000;
     canvas.height = data.height || 1000;
     context.fillStyle = data.bgColor || "#ffffff";

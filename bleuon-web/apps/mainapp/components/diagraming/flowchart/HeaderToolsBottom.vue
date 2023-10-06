@@ -268,6 +268,6 @@ const shapeBgColorPickerRef = ref();
 }
 
 .tools__title {
-  --uno: text-gray-600 mb-2 text-0 .8rem f-c-s;
+  --uno: text-gray-600 mb-2 text-0.8rem f-c-s;
 }
 </style>

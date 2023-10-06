@@ -8,6 +8,29 @@
 import type { FormInstance } from "element-plus";
 
 /**
+ * 提交表单
+ *
+ * @param formEl 表单 Ref 对象
+ * @param success 成功回调
+ * @param error 失败回调
+ */
+export async function commitForm(
+  formEl: FormInstance | undefined,
+  success?: Function,
+  error?: Function
+) {
+  if (!formEl) return;
+  await formEl.validate((valid, fields) => {
+    if (valid) {
+      success && success(valid, fields);
+    } else {
+      error && error(valid, fields);
+      return false;
+    }
+  });
+}
+
+/**
  * 邮箱验证器
  *
  * @param isCorrect 邮箱地址是否正确的标识变量
@@ -73,29 +96,6 @@ export function getVerifyCode(
   });
 
   disabled.value = true;
-}
-
-/**
- * 提交表单
- *
- * @param formEl 表单 Ref 对象
- * @param success 成功回调
- * @param error 失败回调
- */
-export async function commitForm(
-  formEl: FormInstance | undefined,
-  success?: Function,
-  error?: Function
-) {
-  if (!formEl) return;
-  await formEl.validate((valid, fields) => {
-    if (valid) {
-      success && success(valid, fields);
-    } else {
-      error && error(valid, fields);
-      return false;
-    }
-  });
 }
 
 /**

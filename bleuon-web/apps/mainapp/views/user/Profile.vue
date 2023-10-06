@@ -6,8 +6,6 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import type { TabsPaneContext } from "element-plus";
-
 import CommonHeader from "@mainapp/components/CommonHeader.vue";
 
 const activeName = ref<"follows" | "fans">("follows");

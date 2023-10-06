@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import type { FormRules } from "element-plus";
 import {
   commitForm,
   emailValidator,

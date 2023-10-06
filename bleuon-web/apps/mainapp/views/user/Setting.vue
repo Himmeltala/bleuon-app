@@ -62,11 +62,9 @@ const professionOps = reactive([
   }
 ]);
 
-function saveBasicData() {
-}
+function saveBasicData() {}
 
-function resetBasicData() {
-}
+function resetBasicData() {}
 </script>
 
 <template>

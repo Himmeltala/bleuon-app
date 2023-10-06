@@ -7,7 +7,5 @@ declare module "vue" {
 
 declare module "axios" {
   interface AxiosInstance {
-    cancelSource: any;
-    isCancel: any;
   }
 }

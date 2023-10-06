@@ -33,7 +33,9 @@
         一款在线作图工具，支持原型图、UML、BPMN、网络拓扑图等多种图形绘制
       </div>
       <div class="text-center mt-20">
-        <el-button size="large" type="primary" @click="$router.push('/workbench')">免费试用</el-button>
+        <el-button size="large" type="primary" @click="$router.push('/workbench')"
+          >免费试用</el-button
+        >
       </div>
     </div>
     <div class="mt-50">

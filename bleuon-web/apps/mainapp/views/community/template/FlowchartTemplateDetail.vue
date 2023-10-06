@@ -27,7 +27,7 @@ async function fetchData(params: TemplateFlowchartData) {
 }
 
 function cloneFlowchart() {
-  TemplateCommunityApi.cloneOne(data.value, (res) => ElMessage.success(res.message));
+  TemplateCommunityApi.cloneOne(data.value, res => ElMessage.success(res.message));
 }
 
 function collectFlowchart() {
@@ -49,20 +49,19 @@ onMounted(() => {
   paper.value = jointjs.paper;
   graph.value = jointjs.graph;
 
+  paper.value.freeze();
 
   if (data.value.flowchart.json) {
-    paper.value.freeze();
     graph.value.fromJSON(JSON.parse(data.value.flowchart.json));
-    paper.value.unfreeze();
   }
 
   paper.value.options.linkConnectorConfig = JSON.parse(data.value.flowchart.connectorDefault);
   paper.value.options.linkRouterConfig = JSON.parse(data.value.flowchart.routerDefault);
 
+  paper.value.unfreeze();
+
   paper.value.on({
-    "blank:mousewheel": evt => {
-      ListenerService.onMousewheelBlank(evt, paper.value);
-    }
+    "blank:mousewheel": evt => ListenerService.onMousewheelBlank(evt, paper.value)
   });
 
   TemplateCommunityApi.updateOne({ views: data.value.views + 1, id: data.value.id });
@@ -115,7 +114,9 @@ onMounted(() => {
           <div class="mt-5">
             <el-tag class="mr-5" v-for="item in JSON.parse(data.tags)">{{ item }}</el-tag>
           </div>
-          <div @click="$router.push('/u/profile/' + data.flowchart.user.id)" class="cursor-pointer f-c-s mt-5">
+          <div
+            @click="$router.push('/u/profile/' + data.flowchart.user.id)"
+            class="cursor-pointer f-c-s mt-5">
             <img class="mr-4 w-10 h-10 rd-50%" :src="data.flowchart.user.avatar" />
             作者：{{ data.flowchart.user.username }}
           </div>

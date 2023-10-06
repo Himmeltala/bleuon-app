@@ -14,9 +14,10 @@ import request from "./use-axios";
  * @param success
  */
 export function collectOne(body: TemplateFlowchartData, success?: (res: R) => void) {
-  request.post<R>("/community/template/collect/one", body).then(({ data }) => success && success(data));
+  request
+    .post<R>("/community/template/collect/one", body)
+    .then(({ data }) => success && success(data));
 }
-
 
 /**
  * 获取所有流程图模板
@@ -51,12 +52,19 @@ export async function findOne(params: TemplateFlowchartData) {
  * @param success
  * @param error
  */
-export async function cloneOne(body: TemplateFlowchartData, success?: (res: R) => void, error?: Function) {
-  request.post<R>("/community/template/clone/one", body).then(({ data }) => {
-    success && success(data);
-  }).catch(err => {
-    error && error(err);
-  });
+export async function cloneOne(
+  body: TemplateFlowchartData,
+  success?: (res: R) => void,
+  error?: Function
+) {
+  request
+    .post<R>("/community/template/clone/one", body)
+    .then(({ data }) => {
+      success && success(data);
+    })
+    .catch(err => {
+      error && error(err);
+    });
 }
 
 /**
@@ -66,10 +74,17 @@ export async function cloneOne(body: TemplateFlowchartData, success?: (res: R) =
  * @param success
  * @param error
  */
-export async function updateOne(body: TemplateFlowchartData, success?: (res: R) => void, error?: Function) {
-  request.put("/community/template/update/one", body).then(({ data }) => {
-    success && success(data);
-  }).catch(err => {
-    error && error(err);
-  });
+export async function updateOne(
+  body: TemplateFlowchartData,
+  success?: (res: R) => void,
+  error?: Function
+) {
+  request
+    .put("/community/template/update/one", body)
+    .then(({ data }) => {
+      success && success(data);
+    })
+    .catch(err => {
+      error && error(err);
+    });
 }

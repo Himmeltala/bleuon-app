@@ -92,11 +92,7 @@ export function createOne(success: (body: FlowchartData) => void, error?: Functi
  * @param success
  * @param error
  */
-export function cloneOne(
-  data: FlowchartData,
-  success?: (res: R) => void,
-  error?: Function
-) {
+export function cloneOne(data: FlowchartData, success?: (res: R) => void, error?: Function) {
   request
     .post<R<FlowchartData>>("/flowchart/clone/one", data)
     .then(({ data }) => {

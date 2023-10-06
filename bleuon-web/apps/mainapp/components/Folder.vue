@@ -92,7 +92,7 @@ function handleClick() {
       --uno: cursor-pointer px-4 py-2 rd-2 transition-all-300;
 
       &:hover {
-        --uno: bg- #F3F5F9;
+        --uno: bg- #f3f5f9;
       }
     }
   }
