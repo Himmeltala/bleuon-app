@@ -28,10 +28,17 @@ const emits = defineEmits(["download", "clone", "delete", "reset"]);
 </script>
 
 <template>
-  <div class="file relative">
+  <div class="file relative bg-bg-overlay rd-2">
+    <div class="file-cover h-50 rd-2" @click="$router.push(path)">
+      <img
+        v-if="fileImage"
+        :src="fileImage"
+        class="w-100% h-100% rd-2 object-fill cursor-pointer bg-white" />
+      <div v-else class="w-100% h-100% rd-2 cursor-pointer bg-white"></div>
+    </div>
     <el-dropdown :teleported="false">
-      <div class="file-options absolute top-7 left-2">
-        <div class="file-options-icon f-c-c cursor-pointer w-10 h-6 rd-2 bg-#383838cc">
+      <div class="file-options absolute top--11.75rem left-0.8rem">
+        <div class="file-options-icon f-c-c cursor-pointer w-10 h-6 rd-2 bg-gray-600">
           <div class="i-tabler-dots text-white"></div>
         </div>
       </div>
@@ -70,14 +77,7 @@ const emits = defineEmits(["download", "clone", "delete", "reset"]);
         </el-dropdown-menu>
       </template>
     </el-dropdown>
-    <div class="file-cover h-50 rd-2" @click="$router.push(path)">
-      <img
-        v-if="fileImage"
-        :src="fileImage"
-        class="w-100% h-100% rd-2 object-fill cursor-pointer bg-white" />
-      <div v-else class="w-100% h-100% rd-2 cursor-pointer bg-white"></div>
-    </div>
-    <div class="file-footer">
+    <div class="file-footer mx-2 mb-4">
       <slot name="footer"></slot>
     </div>
   </div>
@@ -94,15 +94,9 @@ const emits = defineEmits(["download", "clone", "delete", "reset"]);
   &:hover {
     .file-options {
       display: block;
-
-      .file-options-icon:hover {
-        --uno: bg- #383838f2;
-      }
     }
   }
 
-  .file-cover {
-    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.16);
-  }
+  box-shadow: var(--el-box-shadow-lighter);
 }
 </style>

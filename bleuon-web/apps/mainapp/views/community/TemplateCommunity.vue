@@ -51,11 +51,11 @@ await fetchData();
 </script>
 
 <template>
-  <div class="template-community slim-slider h-100vh flow-auto bg-bg-primary">
+  <div class="template-community slim-slider h-100vh flow-auto bg-bg-page">
     <CommonHeader active-name="template"></CommonHeader>
     <div class="content f-c-c">
       <div class="wrapper w-75vw mt-5">
-        <div class="categories b-b-1 b-b-solid b-border-primary pb-5">
+        <div class="categories bg-bg-overlay p-5 rd-2 b-b-1 b-b-solid b-border-primary pb-5">
           <div class="f-c-c">
             <div class="f-c-s">
               <div class="w-30 font-500 text-1.2rem">搜索内容</div>
@@ -113,10 +113,10 @@ await fetchData();
               @click="$router.push('/template/flowchart/' + item.id)"
               :src="item.flowchart.dataUri"
               class="w-100% rd-2 object-fill h-50 cursor-pointer bg-white" />
-            <div class="font-600">
+            <div class="font-600 text-text-primary mt-2">
               {{ item.flowchart.fileName }}
             </div>
-            <div class="mt-2 f-c-s text-text-thirdly text-0.9rem">
+            <div class="mt-2 f-c-s text-text-regular text-0.9rem">
               <div class="f-c-s mr-4">
                 <div class="i-tabler-eye mr-2"></div>
                 <span>{{ item.views }}</span>
@@ -132,7 +132,7 @@ await fetchData();
             </div>
             <div
               @click="$router.push('/u/profile/' + item.flowchart.user.id)"
-              class="cursor-pointer f-c-s mt-4">
+              class="text-text-secondary cursor-pointer f-c-s mt-4">
               <img :src="item.flowchart.user.avatar" class="mr-2 rd-50% w-6 h-6" />
               <div>{{ item.flowchart.user.username }}</div>
             </div>
@@ -147,7 +147,7 @@ await fetchData();
 <style lang="scss" scoped>
 .file-item {
   flex: 0 1 calc(20% - 1.25rem);
-  background: #fff;
-  box-shadow: 1px 1px 0 #ddd;
+  --uno: bg-bg-overlay;
+  box-shadow: var(--el-box-shadow-lighter);
 }
 </style>

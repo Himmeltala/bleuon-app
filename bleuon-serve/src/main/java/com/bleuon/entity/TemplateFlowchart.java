@@ -24,14 +24,14 @@ import java.sql.Timestamp;
 @TableName("t_template_flowcharts")
 public class TemplateFlowchart implements Serializable {
 
+    @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
     @TableId
-    @Pattern(regexp = ValidPattern.UUID, message = "不是一个合法的 UUID")
     private String id;
     private Integer views;
     private Integer copies;
     private Integer stars;
 
-    @Pattern(regexp = ValidPattern.JSON, message = "不是一个合法的 JSON 字符串")
+    @Pattern(regexp = ValidPattern.JSON, message = "不是合法的 JSON 字符串！")
     private String tags;
     private String scene;
     private String price;

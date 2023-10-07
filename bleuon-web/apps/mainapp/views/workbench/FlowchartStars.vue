@@ -56,38 +56,45 @@ await fetchData();
 </script>
 
 <template>
-  <div class="flowchart-stars">
+  <div class="flowchart-stars max-h-100vh">
     <WorkbenchHeader v-model:value="searchVal" @enter-search="searchFiles"></WorkbenchHeader>
-    <div class="file-list mt-5 f-c-s flex-wrap flex-gap-1.25rem">
-      <template v-if="collect">
-        <File
-          v-for="(item, index) in collect"
-          :key="item.id"
-          :file-image="item.dataUri"
-          :file-name="item.fileName"
-          :is-reset="false"
-          :path="isMyFlowchart(item) ? '/flowchart/' + item.id : '/share/flowchart/' + item.id"
-          @clone="cloneFlowchart(item)"
-          @delete="deleteFlowchart(item.id, index)"
-          @download="downloadFlowchart(item)">
-          <template #footer>
-            <div class="f-c-s flex-nowrap mt-4 w-100%">
-              <div class="mr-2 i-tabler-chart-bubble text-theme-primary"></div>
-              <div class="text-0.9rem text-ellipsis line-clamp-1">{{ item.fileName }}</div>
-            </div>
-            <div class="text-text-secondary text-0.8rem mt-2 f-c-s">
-              <div class="i-tabler-clock-edit mr-1"></div>
-              {{ DateUtil.formatted("MM-dd HH:mm:ss", item.modifyDate) }}
-            </div>
-            <div class="f-c-s text-text-secondary text-0.8rem mt-2">
-              <img :src="item.belongUser.avatar" class="mr-2 w-6 h-6 rd-50%" />
-              <div>
-                {{ isMyFlowchart(item) ? "我的" : item.belongUser.username }}
+    <div class="px-10 pb-10">
+      <div class="f-c-b">
+        <div>收藏的流程图</div>
+        <div></div>
+      </div>
+      <div class="mt-5 text-text-regular text-0.9rem">文件</div>
+      <div class="file-list mt-5 f-c-s flex-wrap flex-gap-1.25rem">
+        <template v-if="collect">
+          <File
+            v-for="(item, index) in collect"
+            :key="item.id"
+            :file-image="item.dataUri"
+            :file-name="item.fileName"
+            :is-reset="false"
+            :path="isMyFlowchart(item) ? '/flowchart/' + item.id : '/share/flowchart/' + item.id"
+            @clone="cloneFlowchart(item)"
+            @delete="deleteFlowchart(item.id, index)"
+            @download="downloadFlowchart(item)">
+            <template #footer>
+              <div class="f-c-s flex-nowrap mt-4 w-100%">
+                <div class="mr-2 i-tabler-chart-bubble text-theme-primary"></div>
+                <div class="text-0.9rem text-ellipsis line-clamp-1">{{ item.fileName }}</div>
               </div>
-            </div>
-          </template>
-        </File>
-      </template>
+              <div class="text-text-secondary text-0.8rem mt-2 f-c-s">
+                <div class="i-tabler-clock-edit mr-1"></div>
+                {{ DateUtil.formatted("MM-dd HH:mm:ss", item.modifyDate) }}
+              </div>
+              <div class="f-c-s text-text-secondary text-0.8rem mt-2">
+                <img :src="item.belongUser.avatar" class="mr-2 w-6 h-6 rd-50%" />
+                <div>
+                  {{ isMyFlowchart(item) ? "我的" : item.belongUser.username }}
+                </div>
+              </div>
+            </template>
+          </File>
+        </template>
+      </div>
     </div>
   </div>
 </template>

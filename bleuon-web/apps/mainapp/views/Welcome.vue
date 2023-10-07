@@ -9,8 +9,8 @@
 
 <template>
   <div class="welcome">
-    <div class="header fixed right-0 top-0 w-100%">
-      <div class="px-55 f-c-b h-20 b-b-1 b-b-solid b-border-primary bg-white">
+    <div class="header fixed right-0 top-0 w-100% bg-bg-overlay">
+      <div class="px-55 f-c-b h-20 b-b-1 b-b-solid b-border-primary">
         <div class="flex-grow-1 cursor-pointer f-c-s" @click="$router.push('/')">
           <img class="w-45 h-15 object-cover" src="/bleuon-icon.png" />
         </div>
@@ -34,9 +34,8 @@
       </div>
       <div class="text-center mt-20">
         <el-button size="large" type="primary" @click="$router.push('/workbench')"
-        >免费试用
-        </el-button
-        >
+          >免费试用
+        </el-button>
       </div>
     </div>
     <div class="mt-50">

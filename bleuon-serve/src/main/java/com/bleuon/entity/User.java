@@ -22,7 +22,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class User implements Serializable {
 
-    @Pattern(regexp = ValidPattern.UUID, message = "不是一个合法的 UUID")
+    @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
     @TableId
     private String id;
 
@@ -34,11 +34,11 @@ public class User implements Serializable {
     @TableField
     private String password;
 
-    @Pattern(regexp = ValidPattern.PHONE, message = "不是一个合法的手机号码")
+    @Pattern(regexp = ValidPattern.PHONE, message = "不是合法的手机号!")
     @TableField
     private String phone;
 
-    @Email(message = "不是一个合法的电子邮箱地址")
+    @Email(message = "不是合法的邮箱地址！")
     @TableField
     private String email;
 
@@ -57,7 +57,7 @@ public class User implements Serializable {
     @TableField
     private String signature;
 
-    @Pattern(regexp = "(男|女|保密)", message = "性别可以是男、女或保密")
+    @Pattern(regexp = "(男|女|保密)", message = "性别男、女或保密")
     @TableField
     private String sex;
 

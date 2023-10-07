@@ -25,12 +25,11 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class OfficialCell implements Serializable {
 
+    @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
     @TableId
-    @Pattern(regexp = ValidPattern.UUID, message = "不是一个合法的 UUID")
     private Integer id;
 
     @TableField
-    @Max(50)
     private String notes;
 
     @TableField
@@ -39,16 +38,15 @@ public class OfficialCell implements Serializable {
     @TableField
     private Double height;
 
+    @Pattern(regexp = ValidPattern.JSON, message = "不是合法的 JSON 字符串！")
     @TableField
-    @Pattern(regexp = ValidPattern.JSON, message = "似乎不是一个合法的 JSON 字符串！")
     private String attrs;
 
     @TableField("view_box")
-    @Max(100)
     private String viewBox;
 
-    @TableField
     @Pattern(regexp = ValidPattern.CELL_TYPE, message = "图形类型错误！")
+    @TableField
     private String type;
 
     @TableField("create_date")

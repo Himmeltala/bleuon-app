@@ -1,4 +1,10 @@
-import { defineConfig, presetAttributify, presetIcons, presetUno, transformerDirectives } from "unocss";
+import {
+  defineConfig,
+  presetAttributify,
+  presetIcons,
+  presetUno,
+  transformerDirectives
+} from "unocss";
 
 export default defineConfig({
   presets: [
@@ -19,18 +25,33 @@ export default defineConfig({
   theme: {
     colors: {
       theme: {
-        primary: "var(--el-color-primary)"
+        primary: "var(--bleuon-theme-color-primary)",
+        1: "var(--bleuon-theme-color-1)",
+        2: "var(--bleuon-theme-color-2)",
+        3: "var(--bleuon-theme-color-3)",
+        4: "var(--bleuon-theme-color-4)",
+        5: "var(--bleuon-theme-color-5)",
+        6: "var(--bleuon-theme-color-6)"
       },
       text: {
-        primary: "var(--bleuon-text-primary)",
-        secondary: "var(--bleuon-text-secondary)",
-        thirdly: "var(--bleuon-text-thirdly)"
+        primary: "var(--bleuon-text-color-primary)",
+        regular: "var(--bleuon-text-color-regular)",
+        secondary: "var(--bleuon-text-color-secondary)",
+        placeholder: "var(--bleuon-text-color-placeholder)",
+        disabled: "var(--bleuon-text-color-disabled)"
       },
       bg: {
-        primary: "#f6f7f8"
+        primary: "var(--bleuon-bg-color)",
+        page: "var(--bleuon-bg-color-page)",
+        overlay: "var(--bleuon-bg-color-overlay)"
       },
       border: {
-        primary: "var(--blueon-border-primary)"
+        primary: "var(--bleuon-border-color)",
+        darker: "var(--bleuon-border-color-darker)",
+        dark: "var(--bleuon-border-color-dark)",
+        light: "var(--bleuon-border-color-light)",
+        lighter: "var(--bleuon-border-color-lighter)",
+        extraLight: "var(--bleuon-border-color-extra-light)"
       }
     }
   },

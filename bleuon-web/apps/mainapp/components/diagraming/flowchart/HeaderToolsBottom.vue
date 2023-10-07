@@ -29,7 +29,7 @@ const shapeBgColorPickerRef = ref();
 </script>
 
 <template>
-  <div class="f-c-s">
+  <div class="f-c-s bg-bg-primary">
     <div class="tools__text">
       <div class="tools__title">
         <div class="i-tabler-typography mr-1"></div>
@@ -268,6 +268,6 @@ const shapeBgColorPickerRef = ref();
 }
 
 .tools__title {
-  --uno: text-gray-600 mb-2 text-0 .8rem f-c-s;
+  --uno: text-text-secondary mb-2 text-0 0.8rem f-c-s;
 }
 </style>

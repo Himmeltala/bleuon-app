@@ -6,27 +6,106 @@
  */
 
 @import "element-plus/theme-chalk/dark/css-vars.css";
-@import "@mainapp/scss/index";
+@import "@mainapp/scss/mixins.scss";
 
-html[class="dark"] {
-  // 主题规定的文字颜色
-  --bleuon-text-primary: #a7a7a7;
-  --bleuon-text-secondary: #999999;
-  --bleuon-text-thirdly: #7c7c7c;
-}
-
-html[class="light"] {
-  // 主题规定的文字颜色
-  --bleuon-text-primary: #383838;
-  --bleuon-text-secondary: #686868;
-  --bleuon-text-thirdly: #969696;
-
+html {
+  // theme
+  --bleuon-theme-color-primary: var(--el-color-primary);
+  --bleuon-theme-color-1: var(--el-color-primary-dark-2);
+  --bleuon-theme-color-2: var(--el-color-primary-light-3);
+  --bleuon-theme-color-3: var(--el-color-primary-light-5);
+  --bleuon-theme-color-4: var(--el-color-primary-light-7);
+  --bleuon-theme-color-5: var(--el-color-primary-light-8);
+  --bleuon-theme-color-6: var(--el-color-primary-light-9);
+  // bg
+  --bleuon-bg-color-page: var(--el-bg-color-page);
+  --bleuon-bg-color: var(--el-bg-color);
+  --bleuon-bg-color-overlay: var(--el-bg-color-overlay);
+  // text
+  --bleuon-text-color-primary: var(--el-text-color-primary);
+  --bleuon-text-color-regular: var(--el-text-color-regular);
+  --bleuon-text-color-secondary: var(--el-text-color-secondary);
+  --bleuon-text-color-placeholder: var(--el-text-color-placeholder);
+  --bleuon-text-color-disabled: var(--el-text-color-disabled);
   // border
-  --blueon-border-primary: #dfe2e5;
+  --bleuon-border-color-darker: var(--el-border-color-darker);
+  --bleuon-border-color-dark: var(--el-border-color-dark);
+  --bleuon-border-color: var(--el-border-color);
+  --bleuon-border-color-light: var(--el-border-color-light);
+  --bleuon-border-color-lighter: var(--el-border-color-lighter);
+  --bleuon-border-color-extra-light: var(--el-border-color-extra-light);
+  // fill
+  --bleuon-fill-color-darker: var(--el-fill-color-darker);
+  --bleuon-fill-color-dark: var(--el-fill-color-dark);
+  --bleuon-fill-color: var(--el-fill-color);
+  --bleuon-fill-color-light: var(--el-fill-color-light);
+  --bleuon-fill-color-lighter: var(--el-fill-color-lighter);
+  --bleuon-fill-color-extra-light: var(--el-fill-color-extra-light);
+  --bleuon-fill-color-blank: var(--el-fill-color-blank);
 }
 
 * {
   color: inherit;
   box-sizing: border-box;
   scroll-behavior: smooth;
+}
+
+:root {
+  --bleuon-font-size: 14px;
+}
+
+// 375 ~ 1400 都是 14px，超过 1500px 就开始依次往上递增
+@for $i from 1 through 30 {
+  $min: $i * 100 + 1500px;
+
+  @media screen and (min-width: $min) {
+    :root {
+      --bleuon-font-size: #{calc($min / 100)};
+    }
+  }
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-size: var(--bleuon-font-size);
+  color: var(--bleuon-text-color-primary);
+
+  & {
+    scrollbar-color: initial;
+    scrollbar-width: none;
+  }
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* 细小的滑动块 */
+.slim-slider {
+  &::-webkit-scrollbar {
+    width: 10px;
+    height: 7px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #b5b5b5;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #999;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border: 1px solid #fff;
+    border-radius: 6px;
+    background: #c9c9c9;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border: 2px solid #fff;
+    border-radius: 6px;
+    background-color: #c6c6c6;
+  }
 }

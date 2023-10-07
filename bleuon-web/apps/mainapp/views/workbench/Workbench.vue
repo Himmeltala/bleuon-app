@@ -15,9 +15,9 @@ const activeItem = ref<ActiveItem>("auth-flowchart-list");
 </script>
 
 <template>
-  <div class="workbench f-s-c bg-bg-primary">
+  <div class="workbench f-s-c bg-bg-page">
     <WorkbenchMenu v-model:active-item="activeItem" class="w-17%"></WorkbenchMenu>
-    <div class="content h-100vh flow-auto px-10 pb-10 w-83%">
+    <div class="content h-100vh flow-auto w-83%">
       <RouterView></RouterView>
     </div>
   </div>

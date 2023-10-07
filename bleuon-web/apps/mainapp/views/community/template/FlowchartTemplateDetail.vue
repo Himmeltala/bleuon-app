@@ -70,15 +70,15 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="template-community slim-slider h-100vh flow-auto bg-bg-primary">
+  <div class="template-community slim-slider h-100vh flow-auto bg-bg-page">
     <CommonHeader></CommonHeader>
     <div class="content f-c-c mb-5">
       <div class="wrapper w-80vw mt-5">
-        <div class="bg-white p-5">
+        <div class="bg-bg-overlay p-5">
           <div class="f-c-b">
             <div>
               <div class="font-bold text-1.2rem">{{ data.flowchart.fileName }}</div>
-              <div class="f-c-s mt-2 text-text-thirdly">
+              <div class="f-c-s mt-2 text-text-secondary">
                 <div class="i-tabler-clock-edit mr-2"></div>
                 <span>
                   {{ DateUtil.formatted("yyyy-MM-dd HH:mm:ss", data.flowchart.modifyDate) }}
@@ -112,7 +112,7 @@ onMounted(() => {
             <div class="mt-5" id="bleuon-flowchart-content"></div>
           </div>
         </div>
-        <div class="information mt-5 p-5 bg-white">
+        <div class="information mt-5 p-5 bg-bg-overlay">
           <div class="font-500 text-1.2rem">描述：{{ data.description }}</div>
           <div class="mt-5">
             <el-tag class="mr-5" v-for="item in JSON.parse(data.tags)">{{ item }}</el-tag>

@@ -31,7 +31,7 @@ function onEnter() {
 </script>
 
 <template>
-  <div class="header f-c-b mt-5 mb-10">
+  <div class="header f-c-b py-5 px-10 mb-10 bg-bg-primary b-b-1 b-b-solid b-border-primary">
     <div class="w-120">
       <el-input
         v-model="searchVal"

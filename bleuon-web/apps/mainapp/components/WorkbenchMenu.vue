@@ -29,8 +29,6 @@ onBeforeMount(() => {
   emits("update:activeItem", currRouterName);
 });
 
-const disabled = ref(false);
-
 function createFlowchart() {
   FlowchartApi.createOne(data => {
     router.push(`/flowchart/${data.id}`);
@@ -39,7 +37,8 @@ function createFlowchart() {
 </script>
 
 <template>
-  <div class="menu slim-slider h-100vh flow-auto px-5 b-r-1 b-r-solid b-border-primary bg-white">
+  <div
+    class="menu slim-slider h-100vh flow-auto px-5 b-r-1 b-r-solid b-border-primary bg-bg-primary">
     <div class="menu-header">
       <div class="mt-5">
         <img class="h-15 w-40 object-cover" src="/bleuon-icon.png" />
@@ -120,11 +119,11 @@ function createFlowchart() {
   --uno: cursor-pointer select-none p-3 rd-2 transition-all-300;
 
   &.active {
-    --uno: bg-bg-primary;
+    --uno: bg-theme-6;
   }
 
   &:hover {
-    --uno: bg-bg-primary;
+    --uno: bg-theme-6;
   }
 }
 </style>

@@ -52,7 +52,7 @@ function collectFlowchart() {
 </script>
 
 <template>
-  <div class="b-border-primary b-b-1 b-b-solid f-c-b pb-4">
+  <div class="b-border-primary bg-bg-primary b-b-1 b-b-solid f-c-b pb-4">
     <div class="left f-c-s">
       <el-button bg text type="primary" @click="$router.back()">
         <template #icon>
@@ -67,11 +67,11 @@ function collectFlowchart() {
         <div v-show="editFile" @keyup.enter="confirmChangeFileName">
           <el-input v-model="calcFileName" placeholder="请输入文件名" size="small" />
         </div>
-        <div v-show="!editFile" class="text-gray-700" @click="editFile = !editFile">
+        <div v-show="!editFile" class="text-text-primary" @click="editFile = !editFile">
           {{ calcFileName }}
         </div>
         <div class="mt-2">
-          <div class="text-gray-500 text-0.8rem f-c-c">
+          <div class="text-text-secondary text-0.8rem f-c-c">
             <div class="i-tabler-clock mr-1"></div>
             上次更新：{{ DateUtil.formatted("yyyy-MM-dd HH:mm:ss", flowchartData.modifyDate) }}
           </div>
@@ -79,7 +79,7 @@ function collectFlowchart() {
       </div>
     </div>
     <div class="right f-c-s">
-      <div class="mr-6 f-c-s text-gray-700 text-1.5rem">
+      <div class="mr-6 f-c-s text-text-secondary text-1.5rem">
         <el-tooltip content="下载">
           <div class="hover mr-4 i-tabler-download" @click="download"></div>
         </el-tooltip>

@@ -20,7 +20,7 @@ defineProps({
 </script>
 
 <template>
-  <div class="header w-100% f-c-b px-10 h-20 b-b-1 b-b-solid b-border-primary bg-white">
+  <div class="header w-100% f-c-b px-10 h-20 b-b-1 b-b-solid b-border-primary bg-bg-overlay">
     <div class="flex-grow-1 cursor-pointer f-c-s" @click="$router.push('/')">
       <img class="w-45 h-15 object-cover" src="/bleuon-icon.png" />
     </div>

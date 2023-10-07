@@ -25,12 +25,11 @@ import java.sql.Timestamp;
 @TableName("t_flowcharts")
 public class Flowchart implements Serializable {
 
+    @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
     @TableId
-    @Pattern(regexp = ValidPattern.UUID, message = "不是一个合法的 UUID")
     private String id;
 
     @TableField("file_name")
-    @Max(30)
     private String fileName;
 
     @TableField
@@ -51,28 +50,25 @@ public class Flowchart implements Serializable {
     @TableField("grid_size")
     private Double gridSize;
 
-    @TableField("draw_grid")
     @Pattern(regexp = ValidPattern.JSON, message = "网格配置 JSON 格式错误！")
+    @TableField("draw_grid")
     private String drawGrid;
 
+    @Pattern(regexp = ValidPattern.JSON, message = "JSON 数据格式错误！")
     @TableField("connector_default")
-    @Pattern(regexp = ValidPattern.JSON, message = "connector JSON 数据格式错误！")
     private String connectorDefault;
 
+    @Pattern(regexp = ValidPattern.JSON, message = "JSON 数据格式错误！")
     @TableField("router_default")
-    @Pattern(regexp = ValidPattern.JSON, message = "router JSON 数据格式错误！")
     private String routerDefault;
 
     @TableField("is_public")
-    @Pattern(regexp = "^[01]$", message = "1 代表公开，0 反之")
     private Integer isPublic;
 
     @TableField("is_legal")
-    @Pattern(regexp = "^[01]$", message = "1 代表公开且审核通过，0 反之")
     private Integer isLegal;
 
     @TableField("is_share")
-    @Pattern(regexp = "^[01]$", message = "1 代表分享，0 反之")
     private Integer isShare;
 
     @TableField("create_date")
@@ -98,4 +94,5 @@ public class Flowchart implements Serializable {
         private String username;
         private String avatar;
     }
+
 }

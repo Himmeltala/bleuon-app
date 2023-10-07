@@ -143,7 +143,7 @@ function resetBasicData() {}
                 <div>手机号</div>
               </div>
               <div class="ml-10 f-c-c">
-                <div class="text-text-thirdly">{{ formData.phone }}</div>
+                <div class="text-text-secondary">{{ formData.phone }}</div>
                 <div class="ml-10 text-primary cursor-pointer">更换手机号</div>
               </div>
             </div>
@@ -154,7 +154,7 @@ function resetBasicData() {}
                 <div>邮箱号</div>
               </div>
               <div class="ml-10 f-c-c">
-                <div class="text-text-thirdly">{{ formData.email }}</div>
+                <div class="text-text-secondary">{{ formData.email }}</div>
                 <div class="ml-10 text-primary cursor-pointer">更换邮箱号</div>
               </div>
             </div>
@@ -164,7 +164,7 @@ function resetBasicData() {}
                 <div>密码</div>
               </div>
               <div class="ml-10 f-c-c">
-                <div class="text-text-thirdly">******</div>
+                <div class="text-text-secondary">******</div>
                 <div class="ml-10 text-primary cursor-pointer">更换密码</div>
               </div>
             </div>
