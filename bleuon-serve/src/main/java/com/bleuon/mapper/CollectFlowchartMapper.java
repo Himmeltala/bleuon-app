@@ -2,7 +2,7 @@ package com.bleuon.mapper;
 
 import com.bleuon.entity.dto.CollectFlowchartDto;
 import com.bleuon.entity.vo.CollectFlowchartVo;
-import com.bleuon.entity.vo.FlowchartCondition;
+import com.bleuon.entity.vo.FlowchartCriteria;
 import org.apache.ibatis.annotations.CacheNamespace;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -18,12 +18,12 @@ import java.util.List;
 @CacheNamespace
 public interface CollectFlowchartMapper {
 
-    List<CollectFlowchartDto> findAll(FlowchartCondition condition);
+    List<CollectFlowchartDto> findAllCollectByCriteria(FlowchartCriteria criteria);
 
-    Integer deleteOne(CollectFlowchartVo data);
+    Integer erase(CollectFlowchartVo body);
 
-    Integer addOne(CollectFlowchartVo data);
+    Integer add(CollectFlowchartVo body);
 
-    CollectFlowchartDto findOne(CollectFlowchartVo data);
+    CollectFlowchartDto find(CollectFlowchartVo body);
 
 }

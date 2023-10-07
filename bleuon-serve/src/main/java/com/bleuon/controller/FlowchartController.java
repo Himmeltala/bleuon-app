@@ -7,7 +7,7 @@ import com.bleuon.entity.Flowchart;
 import com.bleuon.entity.TemplateFlowchart;
 import com.bleuon.entity.dto.CollectFlowchartDto;
 import com.bleuon.entity.vo.CollectFlowchartVo;
-import com.bleuon.entity.vo.FlowchartCondition;
+import com.bleuon.entity.vo.FlowchartCriteria;
 import com.bleuon.service.impl.CollectFlowchartService;
 import com.bleuon.service.impl.FlowchartService;
 import com.bleuon.utils.JwtUtil;
@@ -34,9 +34,9 @@ public class FlowchartController {
     private final FlowchartService flowchartService;
     private final CollectFlowchartService collectFlowchartService;
 
-    @PostMapping("/update/one")
-    public R<Object> updateOne(@RequestBody @Validated Flowchart data) {
-        boolean status = flowchartService.updateOne(data);
+    @PutMapping("/renewal")
+    public R<Object> renewal(@RequestBody @Validated Flowchart body) {
+        boolean status = flowchartService.renewal(body);
         if (status) {
             return R.success("更新流程图成功！");
         } else {
@@ -44,107 +44,110 @@ public class FlowchartController {
         }
     }
 
-    @GetMapping("/find/one")
-    public R<Flowchart> findOne(@RequestParam String id) {
-        Flowchart result = flowchartService.findOne(id);
+    @GetMapping("/find/by/id")
+    public R<Flowchart> findById(@RequestParam String id) {
+        Flowchart result = flowchartService.findById(id);
         if (Objects.isNull(result)) return R.failed("该流程图不存在！", null);
         return R.success(result);
     }
 
-    @PostMapping("/find/all")
-    public R<List<Flowchart>> findAll(@RequestHeader(KeyVals.Token) String token,
-                                      @RequestBody(required = false) FlowchartCondition condition
+    @PostMapping("/find/all/by/criteria")
+    public R<List<Flowchart>> findAllByCriteria(@RequestHeader(KeyVals.Token) String token,
+                                                @RequestBody FlowchartCriteria criteria
     ) {
-        if (Objects.isNull(condition)) condition = new FlowchartCondition();
         Claims claims = JwtUtil.parseJwt(token);
         String uid = (String) claims.get("id");
-        condition.setUid(uid);
+        criteria.setUid(uid);
 
-        List<Flowchart> list = flowchartService.findAll(condition);
+        List<Flowchart> list = flowchartService.findAllByCriteria(criteria);
         if (list.isEmpty()) return R.failed("没有查询到流程图！", null);
         return R.success(list);
     }
 
-    @PostMapping("/create/one")
-    public R<Flowchart> createOne(@RequestHeader(KeyVals.Token) String token) {
+    @PostMapping("/add")
+    public R<Flowchart> add(@RequestHeader(KeyVals.Token) String token) {
         Claims claims = JwtUtil.parseJwt(token);
         String uid = (String) claims.get("id");
 
-        Flowchart flowchart = this.flowchartService.createOne(uid);
+        Flowchart flowchart = this.flowchartService.add(uid);
         if (!Objects.isNull(flowchart)) {
             return R.success("创建流程图成功！", flowchart);
         }
         return R.failed("创建流程图失败！", null);
     }
 
-    @PostMapping("/clone/one")
-    public R<Flowchart> cloneOne(@RequestHeader(KeyVals.Token) String token,
-                                 @RequestBody @Validated Flowchart data
+    @PostMapping("/replicate")
+    public R<Flowchart> replicate(@RequestHeader(KeyVals.Token) String token,
+                                  @RequestBody @Validated Flowchart body
     ) {
         Claims claims = JwtUtil.parseJwt(token);
         String uid = (String) claims.get("id");
 
-        Flowchart flowchart = this.flowchartService.cloneOne(data, uid);
+        Flowchart flowchart = this.flowchartService.replicate(body, uid);
         if (!Objects.isNull(flowchart)) {
             return R.success("复制流程图成功！", flowchart);
         }
         return R.failed("复制流程图失败！", null);
     }
 
-    @DeleteMapping("/delete/one")
-    public R<Object> deleteOne(@RequestParam String id) {
-        boolean status = flowchartService.deleteOne(id);
+    @DeleteMapping("/erase/by/id")
+    public R<Object> eraseById(@RequestParam String id) {
+        boolean status = flowchartService.eraseById(id);
         if (status) return R.success("删除流程图成功！");
         return R.failed("删除流程图失败！");
     }
 
-    @GetMapping("/find/all/collect")
-    public R<List<CollectFlowchartDto>> findAllCollect(@RequestHeader(KeyVals.Token) String token,
-                                                       @ModelAttribute FlowchartCondition condition
+    @GetMapping("/find/all/collect/by/criteria")
+    public R<List<CollectFlowchartDto>> findAllCollectByCriteria(
+            @RequestHeader(KeyVals.Token) String token,
+            FlowchartCriteria criteria
     ) {
         Claims claims = JwtUtil.parseJwt(token);
         String uid = (String) claims.get("id");
-        condition.setUid(uid);
+        criteria.setUid(uid);
 
-        List<CollectFlowchartDto> list = collectFlowchartService.findAll(condition);
+        List<CollectFlowchartDto> list = collectFlowchartService.findAllCollectByCriteria(criteria);
         if (list != null) return R.success(list);
         return R.failed("没有收藏流程图！", null);
     }
 
-    @DeleteMapping("/delete/one/collect")
-    public R<Object> deleteOneCollect(@RequestHeader(KeyVals.Token) String token,
-                                      @ModelAttribute CollectFlowchartVo data
+    @DeleteMapping("/erase/collect")
+    public R<Object> eraseCollect(
+            @RequestHeader(KeyVals.Token) String token,
+            @Validated CollectFlowchartVo params
     ) {
         Claims claims = JwtUtil.parseJwt(token);
         String uid = (String) claims.get("id");
-        data.setCollectUid(uid);
-        boolean status = collectFlowchartService.deleteOne(data);
+        params.setCollectUid(uid);
+
+        boolean status = collectFlowchartService.erase(params);
         if (status) return R.success("删除收藏的流程图成功！");
         return R.failed("删除收藏的流程图失败！");
     }
 
-    @PostMapping("/add/one/collect")
-    public R<Object> addOneCollect(@RequestHeader(KeyVals.Token) String token,
-                                   @RequestBody CollectFlowchartVo data
+    @PostMapping("/add/collect")
+    public R<Object> addCollect(
+            @RequestHeader(KeyVals.Token) String token,
+            @RequestBody @Validated CollectFlowchartVo body
     ) {
         Claims claims = JwtUtil.parseJwt(token);
         String uid = (String) claims.get("id");
-        data.setCollectUid(uid);
-        return collectFlowchartService.addOne(data);
+        body.setCollectUid(uid);
+        return collectFlowchartService.add(body);
     }
 
-    @PostMapping("/release/one")
-    public R<Object> releaseOne(@RequestBody @Validated TemplateFlowchart data) {
-        return flowchartService.releaseOne(data);
+    @PostMapping("/release")
+    public R<Object> release(@RequestBody @Validated TemplateFlowchart body) {
+        return flowchartService.release(body);
     }
 
-    @DeleteMapping("/cancel/release/one")
-    public R<Object> cancelReleaseOne(
+    @DeleteMapping("/cancel/release")
+    public R<Object> cancelRelease(
             @RequestParam
-            @Pattern(regexp = ValidPattern.UUID, message = "不是一个合法的 UUID")
+            @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
             String flowchartId
     ) {
-        return flowchartService.cancelReleaseOne(flowchartId);
+        return flowchartService.cancelRelease(flowchartId);
     }
 
 }

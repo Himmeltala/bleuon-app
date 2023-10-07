@@ -1,6 +1,6 @@
 /**
  * @description jointjs 初始化
- * @author 郑人滏 42020306
+ * @author zheng
  * @since 2023/9/9
  * @link https://github.com/himmelbleu/bleuon-app
  */
@@ -52,7 +52,7 @@ export function initJointJs(config: {
     // @ts-ignore
     defaultLink: () => new shapes.bleuon.Link(),
     defaultConnectionPoint: { name: "boundary" },
-    validateConnection: function(cellViewS, magnetS, cellViewT, magnetT, end, linkView) {
+    validateConnection: function (cellViewS, magnetS, cellViewT, magnetT, end, linkView) {
       if (config.isPreventLinkFromInputPorts || false) {
         if (magnetS && magnetS.getAttribute("port-group") === "in") return false;
       }

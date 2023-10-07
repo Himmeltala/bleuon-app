@@ -2,7 +2,7 @@ package com.bleuon.service;
 
 import com.bleuon.entity.Flowchart;
 import com.bleuon.entity.TemplateFlowchart;
-import com.bleuon.entity.vo.FlowchartCondition;
+import com.bleuon.entity.vo.FlowchartCriteria;
 import com.bleuon.utils.http.R;
 
 import java.util.List;
@@ -15,21 +15,21 @@ import java.util.List;
  */
 public interface IFlowchartService {
 
-    boolean updateOne(Flowchart data);
+    boolean renewal(Flowchart body);
 
-    Flowchart findOne(String id);
+    Flowchart findById(String flowchartId);
 
     R<Flowchart> exposeFindOne(String id);
 
-    List<Flowchart> findAll(FlowchartCondition vo);
+    List<Flowchart> findAllByCriteria(FlowchartCriteria criteria);
 
-    Flowchart createOne(String userId);
+    Flowchart add(String uid);
 
-    Flowchart cloneOne(Flowchart data, String uid);
+    Flowchart replicate(Flowchart data, String uid);
 
-    boolean deleteOne(String id);
+    boolean eraseById(String flowchartId);
 
-    R<Object> releaseOne(TemplateFlowchart data);
+    R<Object> release(TemplateFlowchart body);
 
-    R<Object> cancelReleaseOne(String flowchartId);
+    R<Object> cancelRelease(String flowchartId);
 }

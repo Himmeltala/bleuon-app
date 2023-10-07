@@ -18,11 +18,11 @@ public interface TemplateFlowchartMapper {
 
     List<TemplateFlowchart> findAll(TemplateFlowchart data);
 
-    TemplateFlowchart findOne(TemplateFlowchart data);
+    TemplateFlowchart find(TemplateFlowchart data);
 
-    Integer updateOne(TemplateFlowchart data);
+    Integer renewal(TemplateFlowchart data);
 
-    Integer addOne(TemplateFlowchart data);
+    Integer add(TemplateFlowchart data);
 
-    Integer deleteOne(TemplateFlowchart data);
+    Integer erase(TemplateFlowchart data);
 }

@@ -1,37 +1,31 @@
 /**
  * @description FlowChart API
- * @author 郑人滏 42020306
+ * @author zheng
  * @since 2023/9/28
  * @link https://github.com/himmelbleu/bleuon-app
  */
 import request from "./use-axios";
 
 /**
- * 更新当前流程图
+ * 更新流程图
  *
  * @param body
  * @param success
- * @param error
  */
-export function updateOne(body: FlowchartData, success?: (data: R) => void, error?: Function) {
-  request
-    .post<R>("/flowchart/update/one", body)
-    .then(({ data }) => {
-      success && success(data);
-    })
-    .catch(err => {
-      error && error(err);
-    });
+export function renewal(body: FlowchartData, success?: (data: R) => void) {
+  request.put<R>("/flowchart/renewal", body).then(({ data }) => {
+    success && success(data);
+  });
 }
 
 /**
- * 获取流程图
+ * 通过 id 获取流程图
  *
  * @param params
  * @returns
  */
-export async function findOne(params: { id: string }) {
-  const { data } = await request.get<R<FlowchartData>>("/flowchart/find/one", { params });
+export async function findById(params: { id: string }) {
+  const { data } = await request.get<R<FlowchartData>>("/flowchart/find/by/id", { params });
   return data.data;
 }
 
@@ -52,49 +46,46 @@ export async function exposeFindOne(params: { id: string }, error?: Function) {
 }
 
 /**
- * 获取用户所有的流程图
+ * 通过条件查询获取流程图列表
  *
- * @param body
+ * @param criteria
  * @returns
  */
-export async function findAll(body?: {
-  collates?: { isAsc: boolean; col: string }[];
+export async function findAllByCriteria(criteria: {
+  sequences?: { isAsc: boolean; col: string }[];
   fileName?: string;
   isPublic?: number;
   isShare?: number;
   isLegal?: number;
 }) {
-  const { data } = await request.post<R<FlowchartData[]>>("/flowchart/find/all", body);
+  const { data } = await request.post<R<FlowchartData[]>>(
+    "/flowchart/find/all/by/criteria",
+    criteria
+  );
   return data.data;
 }
 
 /**
- * 创建一个流程图
+ * 创建流程图
  *
  * @param success
- * @param error
  */
-export function createOne(success: (body: FlowchartData) => void, error?: Function) {
-  request
-    .post<R<FlowchartData>>("/flowchart/create/one")
-    .then(({ data }) => {
-      success && success(data.data);
-    })
-    .catch(err => {
-      error && error(err);
-    });
+export function add(success: (res: R<FlowchartData>) => void) {
+  request.post<R<FlowchartData>>("/flowchart/add").then(({ data }) => {
+    success && success(data);
+  });
 }
 
 /**
  * 复制一个流程图
  *
- * @param data
+ * @param body
  * @param success
  * @param error
  */
-export function cloneOne(data: FlowchartData, success?: (res: R) => void, error?: Function) {
+export function replicate(body: FlowchartData, success?: (res: R) => void, error?: Function) {
   request
-    .post<R<FlowchartData>>("/flowchart/clone/one", data)
+    .post<R<FlowchartData>>("/flowchart/replicate", body)
     .then(({ data }) => {
       success && success(data);
     })
@@ -110,9 +101,9 @@ export function cloneOne(data: FlowchartData, success?: (res: R) => void, error?
  * @param success
  * @param error
  */
-export function deleteOne(params: { id?: string }, success: Function, error?: Function) {
+export function eraseById(params: { id?: string }, success: Function, error?: Function) {
   request
-    .delete<R<void>>("/flowchart/delete/one", {
+    .delete<R<void>>("/flowchart/erase/by/id", {
       params
     })
     .then(() => {
@@ -129,8 +120,10 @@ export function deleteOne(params: { id?: string }, success: Function, error?: Fu
  * @param params
  * @returns
  */
-export async function findAllCollect(params: { fileName?: string }) {
-  const { data } = await request.get<R<any[]>>("/flowchart/find/all/collect", { params });
+export async function findAllCollectByCriteria(params: { fileName?: string }) {
+  const { data } = await request.get<R<any[]>>("/flowchart/find/all/collect/by/criteria", {
+    params
+  });
   return data.data;
 }
 
@@ -139,21 +132,11 @@ export async function findAllCollect(params: { fileName?: string }) {
  *
  * @param body
  * @param success
- * @param error
  */
-export async function addOneCollect(
-  body: { flowchartId: string },
-  success?: Function,
-  error?: Function
-) {
-  request
-    .post("/flowchart/add/one/collect", body)
-    .then(() => {
-      success && success();
-    })
-    .catch(err => {
-      error && error(err);
-    });
+export async function addCollect(body: { flowchartId: string }, success?: Function) {
+  request.post("/flowchart/add/collect", body).then(() => {
+    success && success();
+  });
 }
 
 /**
@@ -162,36 +145,33 @@ export async function addOneCollect(
  * @param params
  * @param success
  */
-export async function deleteOneCollect(params: { flowchartId: string }, success?: Function) {
-  await request.delete<R<void>>("/flowchart/delete/one/collect", { params }).then(() => {
+export async function eraseCollect(params: { flowchartId: string }, success?: Function) {
+  await request.delete<R<void>>("/flowchart/erase/collect", { params }).then(() => {
     success && success();
   });
 }
 
 /**
- * 发布和公开一个流程图
+ * 发布和公开流程图到模板社区
  *
  * @param body
  * @param success
  */
-export function releaseOne(body: TemplateFlowchartData, success?: Function) {
-  request
-    .post<R<void>>("/flowchart/release/one", body)
-    .then(() => {
-      success && success();
-    })
-    .catch(err => {});
+export function release(body: TemplateFlowchartData, success?: Function) {
+  request.post<R<void>>("/flowchart/release", body).then(() => {
+    success && success();
+  });
 }
 
 /**
  * 取消发布和公开一个流程图
  *
- * @param body
+ * @param params
  * @param success
  */
-export function cancelReleaseOne(params: { flowchartId: string }, success?: Function) {
+export function cancelRelease(params: { flowchartId: string }, success?: Function) {
   request
-    .delete<R<void>>("/flowchart/cancel/release/one", { params })
+    .delete<R<void>>("/flowchart/cancel/release", { params })
     .then(() => {
       success && success();
     })

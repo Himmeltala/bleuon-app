@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 /**
  * @description 登录页
- * @author 郑人滏 42020306
+ * @author zheng
  * @since 2023/8/23
  * @link https://github.com/himmelbleu/bleuon-app
  */

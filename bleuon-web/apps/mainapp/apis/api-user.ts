@@ -1,6 +1,6 @@
 /**
  * @description 用户 API
- * @author 郑人滏 42020306
+ * @author zheng
  * @since 2023/9/9
  * @link https://github.com/himmelbleu/bleuon-app
  */
@@ -154,11 +154,27 @@ export function logout(success: Function, error?: Function) {
 }
 
 /**
- * 查询一个用户
- *
- * @param id uuid
+ * 通过 token 查询用户信息
  */
-export async function findOne(id: string) {
-  const { data } = await request.get<R<UserData>>("/user/find/one", { params: { id } });
+export async function fineOneByToken() {
+  const { data } = await request.get<R<UserData>>("/user/find/one/by/token");
   return data.data;
+}
+
+/**
+ * 通过 token 更新用户资料
+ *
+ * @param data
+ * @param success
+ * @param error
+ */
+export async function updateOneByToken(data: UserData, success?: Function, error?: Function) {
+  request
+    .post<R>("/user/update/one/by/token", data)
+    .then(({ data }) => {
+      success && success(data);
+    })
+    .catch(err => {
+      error && error();
+    });
 }

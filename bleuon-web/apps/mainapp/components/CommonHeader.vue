@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 /**
  * @description user 页面下的头部组件
- * @author 郑人滏 42020306
+ * @author zheng
  * @since 2023/8/23
  * @link https://github.com/himmelbleu/bleuon-app
  */
@@ -21,8 +21,11 @@ defineProps({
 
 <template>
   <div class="header w-100% f-c-b px-10 h-20 b-b-1 b-b-solid b-border-primary bg-bg-overlay">
-    <div class="flex-grow-1 cursor-pointer f-c-s" @click="$router.push('/')">
-      <img class="w-45 h-15 object-cover" src="/bleuon-icon.png" />
+    <div class="flex-grow-1 f-c-s">
+      <img
+        class="w-45 h-15 cursor-pointer object-cover"
+        @click="$router.push('/')"
+        src="/bleuon-icon.png" />
     </div>
     <div class="flex-grow-1 f-c-b text-1.1rem">
       <div

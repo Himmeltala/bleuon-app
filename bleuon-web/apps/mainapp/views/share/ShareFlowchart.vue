@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 /**
  * @description 分享的 Flowchart 流程图
- * @author 郑人滏 42020306
+ * @author zheng
  * @since 2023/9/30
  * @link https://github.com/himmelbleu/bleuon-app
  */
@@ -83,9 +83,9 @@ onMounted(() => {
 
 const dialogVisible = ref(false);
 
-function importFlowchart() {
+function replicateFlowchart() {
   flowchartData.value.fileName = "模板_" + flowchartData.value.fileName;
-  FlowchartApi.cloneOne(flowchartData.value, res => ElMessage.success(res.message));
+  FlowchartApi.replicate(flowchartData.value, res => ElMessage.success(res.message));
 }
 
 await fetchData();
@@ -102,7 +102,7 @@ await fetchData();
           </el-tooltip>
           <el-tooltip v-if="token" content="导入模板">
             <div>
-              <div class="hover i-tabler-file-import" @click="importFlowchart"></div>
+              <div class="hover i-tabler-file-import" @click="replicateFlowchart"></div>
             </div>
           </el-tooltip>
         </template>

@@ -1,6 +1,6 @@
 /**
  * @description 配置 axios
- * @author 郑人滏 42020306
+ * @author zheng
  * @since 2023/9/9
  * @link https://github.com/himmelbleu/bleuon-app
  */

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 /**
  * @description 收藏的流程图
- * @author 郑人滏 42020306
+ * @author zheng
  * @since 2023/8/23
  * @link https://github.com/himmelbleu/bleuon-app
  */
@@ -18,7 +18,7 @@ const collect = shallowRef();
 const searchVal = ref("");
 
 async function fetchData(params?: any) {
-  collect.value = await FlowchartApi.findAllCollect(params);
+  collect.value = await FlowchartApi.findAllCollectByCriteria(params);
 }
 
 async function searchFiles() {
@@ -34,13 +34,13 @@ function downloadFlowchart(data: any) {
   );
 }
 
-function cloneFlowchart(data: any) {
+function replicateFlowchart(data: any) {
   data.fileName = "复制_收藏_" + data.fileName;
-  FlowchartApi.cloneOne(data, res => ElMessage.success(res.message));
+  FlowchartApi.replicate(data, res => ElMessage.success(res.message));
 }
 
 function deleteFlowchart(flowchartId: string, index: number) {
-  FlowchartApi.deleteOneCollect({ flowchartId }, () => {
+  FlowchartApi.eraseCollect({ flowchartId }, () => {
     collect.value.splice(index, 1);
     triggerRef(collect);
   });
@@ -73,7 +73,7 @@ await fetchData();
             :file-name="item.fileName"
             :is-reset="false"
             :path="isMyFlowchart(item) ? '/flowchart/' + item.id : '/share/flowchart/' + item.id"
-            @clone="cloneFlowchart(item)"
+            @clone="replicateFlowchart(item)"
             @delete="deleteFlowchart(item.id, index)"
             @download="downloadFlowchart(item)">
             <template #footer>

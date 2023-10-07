@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 /**
  * @description Path SVG 创建组件
- * @author 郑人滏 42020306
+ * @author zheng
  * @since 2023/9/26
  * @link https://github.com/himmelbleu/bleuon-app
  */

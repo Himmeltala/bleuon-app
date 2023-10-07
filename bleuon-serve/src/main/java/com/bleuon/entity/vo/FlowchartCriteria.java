@@ -1,5 +1,7 @@
 package com.bleuon.entity.vo;
 
+import com.bleuon.constant.ValidPattern;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,19 +18,20 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FlowchartCondition implements Serializable {
+public class FlowchartCriteria implements Serializable {
 
+    @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
     private String uid;
     private String fileName;
     private Integer isPublic;
     private Integer isLegal;
     private Integer isShare;
-    private List<Collate> collates;
+    private List<Sequence> sequences;
 
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class Collate implements Serializable {
+    public static class Sequence implements Serializable {
 
         /**
          * 是否升序

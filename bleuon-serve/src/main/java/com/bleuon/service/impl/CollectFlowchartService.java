@@ -2,7 +2,7 @@ package com.bleuon.service.impl;
 
 import com.bleuon.entity.dto.CollectFlowchartDto;
 import com.bleuon.entity.vo.CollectFlowchartVo;
-import com.bleuon.entity.vo.FlowchartCondition;
+import com.bleuon.entity.vo.FlowchartCriteria;
 import com.bleuon.exception.JdbcErrorException;
 import com.bleuon.mapper.CollectFlowchartMapper;
 import com.bleuon.service.ICollectFlowchartService;
@@ -27,34 +27,29 @@ public class CollectFlowchartService implements ICollectFlowchartService {
     private final CollectFlowchartMapper mapper;
 
     @Override
-    public List<CollectFlowchartDto> findAll(FlowchartCondition condition) {
-        return mapper.findAll(condition);
+    public List<CollectFlowchartDto> findAllCollectByCriteria(FlowchartCriteria criteria) {
+        return mapper.findAllCollectByCriteria(criteria);
     }
 
     @Override
-    public boolean deleteOne(CollectFlowchartVo data) {
-        Integer row = mapper.deleteOne(data);
+    public boolean erase(CollectFlowchartVo body) {
+        Integer row = mapper.erase(body);
         return row > 0;
     }
 
     @Override
     @Transactional
-    public R<Object> addOne(CollectFlowchartVo data) {
+    public R<Object> add(CollectFlowchartVo body) {
         try {
-            CollectFlowchartDto one = mapper.findOne(data);
+            CollectFlowchartDto one = mapper.find(body);
             if (!Objects.isNull(one)) return R.failed("您已经收藏过了！");
 
-            Integer row = mapper.addOne(data);
+            Integer row = mapper.add(body);
             if (row > 0) return R.success("收藏成功！");
             return R.error("收藏失败！");
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());
         }
-    }
-
-    @Override
-    public R<CollectFlowchartDto> findOne(CollectFlowchartVo data) {
-        return null;
     }
 
 }

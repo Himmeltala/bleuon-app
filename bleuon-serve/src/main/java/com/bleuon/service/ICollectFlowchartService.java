@@ -2,7 +2,7 @@ package com.bleuon.service;
 
 import com.bleuon.entity.dto.CollectFlowchartDto;
 import com.bleuon.entity.vo.CollectFlowchartVo;
-import com.bleuon.entity.vo.FlowchartCondition;
+import com.bleuon.entity.vo.FlowchartCriteria;
 import com.bleuon.utils.http.R;
 
 import java.util.List;
@@ -15,11 +15,10 @@ import java.util.List;
  */
 public interface ICollectFlowchartService {
 
-    List<CollectFlowchartDto> findAll(FlowchartCondition condition);
+    List<CollectFlowchartDto> findAllCollectByCriteria(FlowchartCriteria criteria);
 
-    boolean deleteOne(CollectFlowchartVo data);
+    boolean erase(CollectFlowchartVo data);
 
-    R<Object> addOne(CollectFlowchartVo data);
+    R<Object> add(CollectFlowchartVo data);
 
-    R<CollectFlowchartDto> findOne(CollectFlowchartVo data);
 }

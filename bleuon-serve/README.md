@@ -25,3 +25,10 @@ src
 4. configs：存放配置类，例如数据库配置、安全配置、Swagger 配置等。
 5. application.yml：应用的配置文件，包含应用的属性设置。
 6. mappers：存放 MyBatis 的 Mapper 接口，用于定义 SQL 映射操作。
+
+# 约束
+
+add：insert
+erase：delete
+renewal：update
+find：select

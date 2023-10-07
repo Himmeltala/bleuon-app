@@ -13,14 +13,14 @@ import java.util.List;
  */
 public interface ITemplateFlowchartService {
 
-    R<List<TemplateFlowchart>> findAll(TemplateFlowchart data);
+    R<List<TemplateFlowchart>> findAll(TemplateFlowchart body);
 
-    R<TemplateFlowchart> findOne(TemplateFlowchart data);
+    R<TemplateFlowchart> find(TemplateFlowchart body);
 
-    boolean updateOne(TemplateFlowchart data);
+    boolean renewal(TemplateFlowchart body);
 
-    boolean addOne(TemplateFlowchart data);
+    boolean add(TemplateFlowchart body);
 
-    boolean deleteOne(TemplateFlowchart data);
+    boolean erase(TemplateFlowchart body);
 
 }

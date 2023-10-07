@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 /**
  * @description Flowchart 流程图
- * @author 郑人滏 42020306
+ * @author zheng
  * @since 2023/9/9
  * @link https://github.com/himmelbleu/bleuon-app
  */
@@ -37,7 +37,7 @@ provide(KeyVals.BLEUON_FLOWCHART_GRAPH, graph);
 provide(KeyVals.BLEUON_FLOWCHART_DATA, flowchartData);
 
 async function fetchData() {
-  flowchartData.value = await FlowchartApi.findOne({ id: route.params.id.toString() });
+  flowchartData.value = await FlowchartApi.findById({ id: route.params.id.toString() });
 }
 
 function updateFlowchartData() {
@@ -49,7 +49,8 @@ function updateFlowchartData() {
   flowchartData.value.connectorDefault = JSON.stringify(Data.linkConnectorConfig.value);
   flowchartData.value.routerDefault = JSON.stringify(Data.linkRouterConfig.value);
   flowchartData.value.dataUri = getDataUri(paper.value, graph.value);
-  FlowchartApi.updateOne(flowchartData.value, () => {});
+  FlowchartApi.renewal(flowchartData.value, () => {
+  });
 }
 
 const updateThrottle = PreventUtil.throttle(updateFlowchartData, 3000);
@@ -99,9 +100,9 @@ onMounted(() => {
   // @ts-ignore
   graph.value.on("change", updateThrottle);
   // @ts-ignore
-  graph.value.on("add", updateThrottle);
+  graph.value.on("add", updateFlowchartData);
   // @ts-ignore
-  graph.value.on("remove", updateThrottle);
+  graph.value.on("remove", updateFlowchartData);
 
   ListenerService.onKeydown({
     ctrlS: updateThrottle
@@ -130,8 +131,8 @@ const shareFormRules = reactive<FormRules<any>>({
 function confirmShare() {
   FormValidatorsUtil.validate(shareFormRef.value, () => {
     flowchartData.value.isShare = 1;
-    FlowchartApi.updateOne(flowchartData.value, data => {
-      if (data.code === 200) {
+    FlowchartApi.renewal(flowchartData.value, res => {
+      if (res.code === 200) {
         ElMessage.success("分享成功！");
       } else {
         flowchartData.value.isShare = 0;
@@ -144,8 +145,8 @@ function confirmShare() {
 function cancelShare() {
   flowchartData.value.isShare = 0;
   flowchartData.value.deadShareDate = null;
-  FlowchartApi.updateOne(flowchartData.value, data => {
-    if (data.code === 200) {
+  FlowchartApi.renewal(flowchartData.value, res => {
+    if (res.code === 200) {
       ElMessage.success("取消分享成功！");
     } else {
       flowchartData.value.isShare = 1;
@@ -218,7 +219,7 @@ function closeReleaseTag(index: number) {
 function confirmRelease() {
   FormValidatorsUtil.validate(releaseFormRef.value, () => {
     releaseFormData.tags = JSON.stringify(releaseTagList.value);
-    FlowchartApi.releaseOne(
+    FlowchartApi.release(
       { ...{ flowchartId: flowchartData.value.id }, ...releaseFormData },
       () => {
         flowchartData.value.isPublic = 1;
@@ -228,7 +229,7 @@ function confirmRelease() {
 }
 
 function cancelRelease() {
-  FlowchartApi.cancelReleaseOne({ flowchartId: flowchartData.value.id }, () => {
+  FlowchartApi.cancelRelease({ flowchartId: flowchartData.value.id }, () => {
     flowchartData.value.isPublic = 0;
   });
 }
@@ -240,7 +241,7 @@ await fetchData();
   <div class="bleuon__flowchart-container h-100vh">
     <div
       class="bleuon__flowchart-header h-22vh border-border-primary border-b-1 border-b-solid bg-bg-primary px-4 py-4">
-      <HeaderToolsTop :data="flowchartData" class="mb-4" @change="updateThrottle">
+      <HeaderToolsTop :data="flowchartData" class="mb-4" @change="updateFlowchartData">
         <template #tools>
           <el-tooltip content="分享">
             <div

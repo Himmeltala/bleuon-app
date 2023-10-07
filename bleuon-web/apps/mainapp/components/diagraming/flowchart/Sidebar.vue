@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 /**
  * @description Flowchart 侧边栏工具
- * @author 郑人滏 42020306
+ * @author zheng
  * @since 2023/9/24
  * @link https://github.com/himmelbleu/bleuon-app
  */

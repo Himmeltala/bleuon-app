@@ -1,64 +1,29 @@
 <script lang="ts" setup>
 /**
  * @description 设置
- * @author 郑人滏 42020306
+ * @author zheng
  * @since 2023/8/23
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
 import { UserApi } from "@mainapp/apis";
+import { ElSelectData } from "@common/data";
 
 // components
 import CommonHeader from "@mainapp/components/CommonHeader.vue";
 
-const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
-const formData = ref(await UserApi.findOne(token.id));
+const formData = reactive(await UserApi.fineOneByToken());
 
-const isEditUsername = ref(false);
-const professionOps = reactive([
-  {
-    value: "国防和航空",
-    label: "国防和航空"
-  },
-  {
-    value: "计算机硬件",
-    label: "计算机硬件"
-  },
-  {
-    value: "计算机软件",
-    label: "计算机软件"
-  },
-  {
-    value: "计算机网络",
-    label: "计算机网络"
-  },
-  {
-    value: "互联网",
-    label: "互联网"
-  },
-  {
-    value: "半导体",
-    label: "半导体"
-  },
-  {
-    value: "电信",
-    label: "电信"
-  },
-  {
-    value: "律师",
-    label: "律师"
-  },
-  {
-    value: "法律服务",
-    label: "法律服务"
-  },
-  {
-    value: "生物技术",
-    label: "生物技术"
-  }
-]);
-
-function saveBasicData() {}
+function saveBasicData() {
+  UserApi.updateOneByToken({
+    username: formData.username,
+    profession: formData.profession,
+    company: formData.company,
+    position: formData.position,
+    avatar: formData.avatar,
+    signature: formData.signature
+  });
+}
 
 function resetBasicData() {}
 </script>
@@ -76,28 +41,12 @@ function resetBasicData() {}
             <div class="w-50%">
               <el-form :model="formData" label-position="left" label-width="auto">
                 <el-form-item label="昵称">
-                  <div v-if="!isEditUsername" class="f-c-c">
-                    <div class="mr-5 text-text-secondary">{{ formData.username }}</div>
-                    <div
-                      class="i-tabler-pencil-minus hover"
-                      @click="isEditUsername = !isEditUsername"></div>
-                  </div>
-                  <div v-else class="f-c-c">
-                    <div class="mr-5">
-                      <el-input
-                        v-model="formData.username"
-                        clearable
-                        placeholder="请输入您的用户名" />
-                    </div>
-                    <div
-                      class="i-tabler-edit-off hover"
-                      @click="isEditUsername = !isEditUsername"></div>
-                  </div>
+                  <EditInput v-model:text="formData.username" :base-modification="true"></EditInput>
                 </el-form-item>
                 <el-form-item label="行业">
                   <el-select v-model="formData.profession" placeholder="请选择您的行业">
                     <el-option
-                      v-for="item in professionOps"
+                      v-for="item in ElSelectData.professionList"
                       :key="item.value"
                       :label="item.label"
                       :value="item.value" />

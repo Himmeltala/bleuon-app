@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 /**
  * @description 个人资料中心
- * @author 郑人滏 42020306
+ * @author zheng
  * @since 2023/8/23
  * @link https://github.com/himmelbleu/bleuon-app
  */
@@ -11,10 +11,8 @@ import { UserApi } from "@mainapp/apis";
 // components
 import CommonHeader from "@mainapp/components/CommonHeader.vue";
 
+const formData = reactive(await UserApi.fineOneByToken());
 const activeName = ref<"follows" | "fans">("follows");
-
-const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
-const user = ref(await UserApi.findOne(token.id));
 
 const handleClick = (tab: TabsPaneContext, event: Event) => {
   console.log(tab, event);
@@ -27,18 +25,18 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
     <div class="user-data bg-bg-primary">
       <div class="f-s-b pt-30 pb-20 px-50">
         <div class="f-c-c">
-          <img class="rd-50% h-30 w-30" :src="user.avatar" />
+          <img class="rd-50% h-30 w-30" :src="formData.avatar" />
           <div class="ml-10">
             <div class="username f-c-c mb-5">
-              <div class="font-bold text-1.5rem mr-10">{{ user.username }}</div>
+              <div class="font-bold text-1.5rem mr-10">{{ formData.username }}</div>
               <el-button @click="$router.push('/u/setting')">编辑资料</el-button>
             </div>
             <div class="usertags mb-5">
-              <el-tag class="mr-4" type="warning">{{ user.position }}</el-tag>
-              <el-tag>{{ user.company }}</el-tag>
+              <el-tag class="mr-4" type="warning">{{ formData.position }}</el-tag>
+              <el-tag>{{ formData.company }}</el-tag>
             </div>
             <div class="signature text-text-secondary">
-              {{ user.signature || "这个人很懒，什么也没有留下" }}
+              {{ formData.signature || "这个人很懒，什么也没有留下" }}
             </div>
           </div>
         </div>

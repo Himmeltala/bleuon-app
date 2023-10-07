@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 /**
  * @description 工作台侧边栏菜单
- * @author 郑人滏 42020306
+ * @author zheng
  * @since 2023/8/23
  * @link https://github.com/himmelbleu/bleuon-app
  */
@@ -30,8 +30,8 @@ onBeforeMount(() => {
 });
 
 function createFlowchart() {
-  FlowchartApi.createOne(data => {
-    router.push(`/flowchart/${data.id}`);
+  FlowchartApi.add(res => {
+    router.push(`/flowchart/${res.data.id}`);
   });
 }
 </script>

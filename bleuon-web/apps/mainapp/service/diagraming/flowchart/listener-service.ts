@@ -1,6 +1,6 @@
 /**
  * @description jointjs 事件监听、以及页面上的一些 change 事件
- * @author 郑人滏 42020306
+ * @author zheng
  * @since 2023/9/24
  * @link https://github.com/himmelbleu/bleuon-app
  */

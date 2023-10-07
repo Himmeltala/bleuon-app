@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bleuon.entity.Flowchart;
 import com.bleuon.entity.TemplateFlowchart;
-import com.bleuon.entity.vo.FlowchartCondition;
+import com.bleuon.entity.vo.FlowchartCriteria;
 import com.bleuon.exception.JdbcErrorException;
 import com.bleuon.mapper.FlowchartMapper;
 import com.bleuon.service.IFlowchartService;
@@ -34,11 +34,11 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
     private final FlowchartMapper flowchartMapper;
     private final TemplateFlowchartService templateFlowchartService;
 
-    @Override
     @Transactional
-    public boolean updateOne(Flowchart data) {
+    @Override
+    public boolean renewal(Flowchart body) {
         try {
-            Integer status = flowchartMapper.updateOne(data);
+            Integer status = flowchartMapper.renewal(body);
             return status > 0;
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());
@@ -46,12 +46,12 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
     }
 
     @Override
-    public Flowchart findOne(String id) {
-        return query().eq("id", id).one();
+    public Flowchart findById(String flowchartId) {
+        return query().eq("id", flowchartId).one();
     }
 
-    @Override
     @Transactional
+    @Override
     public R<Flowchart> exposeFindOne(String id) {
         Flowchart flowchart = query()
                 .eq("id", id)
@@ -64,7 +64,7 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
 
         if (DateUtil.isAfter(flowchart.getDeadShareDate())) {
             flowchart.setDeadShareDate(null);
-            updateOne(flowchart);
+            renewal(flowchart);
             return R.failed("该流程图分享已过期！", null);
         }
 
@@ -72,43 +72,43 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
     }
 
     @Override
-    public List<Flowchart> findAll(FlowchartCondition condition) {
+    public List<Flowchart> findAllByCriteria(FlowchartCriteria criteria) {
         QueryWrapper<Flowchart> wrapper = new QueryWrapper<>();
-        wrapper.eq("user_id", condition.getUid());
+        wrapper.eq("user_id", criteria.getUid());
 
-        if (StringUtils.hasText(condition.getFileName())) {
-            wrapper.like("file_name", condition.getFileName());
+        if (StringUtils.hasText(criteria.getFileName())) {
+            wrapper.like("file_name", criteria.getFileName());
         }
 
-        if (condition.getIsShare() != null) {
-            wrapper.eq("is_share", condition.getIsShare());
+        if (criteria.getIsShare() != null) {
+            wrapper.eq("is_share", criteria.getIsShare());
         }
 
-        if (condition.getIsPublic() != null) {
-            wrapper.eq("is_public", condition.getIsPublic());
+        if (criteria.getIsPublic() != null) {
+            wrapper.eq("is_public", criteria.getIsPublic());
         }
 
-        if (condition.getIsLegal() != null) {
-            wrapper.eq("is_legal", condition.getIsLegal());
+        if (criteria.getIsLegal() != null) {
+            wrapper.eq("is_legal", criteria.getIsLegal());
         }
 
-        List<FlowchartCondition.Collate> collates = condition.getCollates();
-        if (collates != null) {
-            collates.forEach(e -> wrapper.orderBy(true, e.getIsAsc(), e.getCol()));
+        List<FlowchartCriteria.Sequence> sequences = criteria.getSequences();
+        if (sequences != null) {
+            sequences.forEach(e -> wrapper.orderBy(true, e.getIsAsc(), e.getCol()));
         }
 
         return super.list(wrapper);
     }
 
-    @Override
     @Transactional
-    public Flowchart createOne(String userId) {
+    @Override
+    public Flowchart add(String uid) {
         try {
             String uuid = UUID.randomUUID().toString();
             // 创建表
             Flowchart flowchart = new Flowchart();
             flowchart.setId(uuid);
-            flowchart.setUserId(userId);
+            flowchart.setUserId(uid);
             Timestamp timestamp = new Timestamp(new Date().getTime());
             flowchart.setCreateDate(timestamp);
             flowchart.setModifyDate(timestamp);
@@ -122,9 +122,9 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
         }
     }
 
-    @Override
     @Transactional
-    public Flowchart cloneOne(Flowchart data, String uid) {
+    @Override
+    public Flowchart replicate(Flowchart body, String uid) {
         try {
             String uuid = UUID.randomUUID().toString();
             // 创建表
@@ -132,16 +132,16 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
             copyFlowchart.setId(uuid);
             copyFlowchart.setUserId(uid);
             copyFlowchart.setCreateDate(new Timestamp(new Date().getTime()));
-            copyFlowchart.setModifyDate(data.getModifyDate());
-            copyFlowchart.setFileName(data.getFileName());
-            copyFlowchart.setJson(data.getJson());
-            copyFlowchart.setDataUri(data.getDataUri());
-            copyFlowchart.setWidth(data.getWidth());
-            copyFlowchart.setHeight(data.getHeight());
-            copyFlowchart.setBgColor(data.getBgColor());
-            copyFlowchart.setGridSize(data.getGridSize());
-            copyFlowchart.setRouterDefault(data.getRouterDefault());
-            copyFlowchart.setConnectorDefault(data.getConnectorDefault());
+            copyFlowchart.setModifyDate(body.getModifyDate());
+            copyFlowchart.setFileName(body.getFileName());
+            copyFlowchart.setJson(body.getJson());
+            copyFlowchart.setDataUri(body.getDataUri());
+            copyFlowchart.setWidth(body.getWidth());
+            copyFlowchart.setHeight(body.getHeight());
+            copyFlowchart.setBgColor(body.getBgColor());
+            copyFlowchart.setGridSize(body.getGridSize());
+            copyFlowchart.setRouterDefault(body.getRouterDefault());
+            copyFlowchart.setConnectorDefault(body.getConnectorDefault());
 
             save(copyFlowchart);
 
@@ -151,31 +151,31 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
         }
     }
 
-    @Override
     @Transactional
-    public boolean deleteOne(String id) {
+    @Override
+    public boolean eraseById(String flowchartId) {
         try {
-            return removeById(id);
+            return removeById(flowchartId);
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());
         }
     }
 
-    @Override
     @Transactional
-    public R<Object> releaseOne(TemplateFlowchart data) {
+    @Override
+    public R<Object> release(TemplateFlowchart body) {
         try {
-            Flowchart flowchart = query().eq("id", data.getFlowchartId()).one();
+            Flowchart flowchart = query().eq("id", body.getFlowchartId()).one();
             if (flowchart.getIsPublic() == 1) {
                 return R.failed("已经公开过了！");
             }
 
             flowchart.setIsPublic(1);
-            boolean status = updateOne(flowchart);
+            boolean status = renewal(flowchart);
 
             if (status) {
-                data.setId(UUID.randomUUID().toString());
-                boolean f = templateFlowchartService.addOne(data);
+                body.setId(UUID.randomUUID().toString());
+                boolean f = templateFlowchartService.add(body);
                 if (f) {
                     return R.success("公开成功！");
                 }
@@ -187,18 +187,18 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
         }
     }
 
-    @Override
     @Transactional
-    public R<Object> cancelReleaseOne(String flowchartId) {
+    @Override
+    public R<Object> cancelRelease(String flowchartId) {
         try {
             Flowchart flowchart = new Flowchart();
             flowchart.setId(flowchartId);
             flowchart.setIsPublic(0);
-            boolean status = updateOne(flowchart);
+            boolean status = renewal(flowchart);
             if (status) {
                 TemplateFlowchart templateFlowchart = new TemplateFlowchart();
                 templateFlowchart.setFlowchartId(flowchartId);
-                boolean b = templateFlowchartService.deleteOne(templateFlowchart);
+                boolean b = templateFlowchartService.erase(templateFlowchart);
                 if (!b) {
                     return R.failed("取消发布失败！");
                 }

@@ -39,7 +39,7 @@ public class TemplateCommunityController {
 
     @GetMapping("/find/one")
     public R<TemplateFlowchart> findOne(@Validated TemplateFlowchart data) {
-        return service.findOne(data);
+        return service.find(data);
     }
 
     @PostMapping("/clone/one")
@@ -53,14 +53,14 @@ public class TemplateCommunityController {
         Integer copies = data.getCopies();
         data.setCopies(copies + 1);
 
-        Flowchart flowchart = flowchartService.cloneOne(data.getFlowchart(), uid);
+        Flowchart flowchart = flowchartService.replicate(data.getFlowchart(), uid);
         if (Objects.isNull(flowchart)) return R.error("导入模板失败！");
         return R.success("导入模板成功！");
     }
 
     @PutMapping("/update/one")
     public R<Object> updateOne(@RequestBody @Validated TemplateFlowchart data) {
-        boolean status = service.updateOne(data);
+        boolean status = service.renewal(data);
         if (status) return R.success("更新成功！");
         return R.failed("更新失败！");
     }
@@ -75,11 +75,11 @@ public class TemplateCommunityController {
         CollectFlowchartVo vo = new CollectFlowchartVo();
         vo.setCollectUid(uid);
         vo.setFlowchartId(data.getFlowchartId());
-        R<Object> status = collectService.addOne(vo);
+        R<Object> status = collectService.add(vo);
         Integer code = status.getCode();
         if (code == 200) {
             data.setStars(data.getStars() + 1);
-            boolean s = service.updateOne(data);
+            boolean s = service.renewal(data);
             if (s) return R.success("收藏成功！");
             return R.failed("收藏失败！");
         } else {

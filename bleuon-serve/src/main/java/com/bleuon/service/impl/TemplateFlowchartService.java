@@ -25,24 +25,24 @@ public class TemplateFlowchartService implements ITemplateFlowchartService {
     private final TemplateFlowchartMapper mapper;
 
     @Override
-    public R<List<TemplateFlowchart>> findAll(TemplateFlowchart data) {
-        List<TemplateFlowchart> list = mapper.findAll(data);
+    public R<List<TemplateFlowchart>> findAll(TemplateFlowchart body) {
+        List<TemplateFlowchart> list = mapper.findAll(body);
         if (Objects.isNull(list)) return R.failed("没有查询到流程图！", null);
         return R.success(list);
     }
 
     @Override
-    public R<TemplateFlowchart> findOne(TemplateFlowchart data) {
-        TemplateFlowchart flowchart = mapper.findOne(data);
+    public R<TemplateFlowchart> find(TemplateFlowchart body) {
+        TemplateFlowchart flowchart = mapper.find(body);
         if (Objects.isNull(flowchart)) return R.failed("没有查询到流程图！", null);
         return R.success(flowchart);
     }
 
     @Override
     @Transactional
-    public boolean updateOne(TemplateFlowchart data) {
+    public boolean renewal(TemplateFlowchart body) {
         try {
-            Integer status = mapper.updateOne(data);
+            Integer status = mapper.renewal(body);
             return status > 0;
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());
@@ -51,9 +51,9 @@ public class TemplateFlowchartService implements ITemplateFlowchartService {
 
     @Override
     @Transactional
-    public boolean addOne(TemplateFlowchart data) {
+    public boolean add(TemplateFlowchart body) {
         try {
-            Integer status = mapper.addOne(data);
+            Integer status = mapper.add(body);
             return status > 0;
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());
@@ -62,9 +62,9 @@ public class TemplateFlowchartService implements ITemplateFlowchartService {
 
     @Override
     @Transactional
-    public boolean deleteOne(TemplateFlowchart data) {
+    public boolean erase(TemplateFlowchart body) {
         try {
-            Integer status = mapper.deleteOne(data);
+            Integer status = mapper.erase(body);
             return status > 0;
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());

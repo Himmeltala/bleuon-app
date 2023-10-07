@@ -15,6 +15,12 @@ import org.apache.ibatis.annotations.Mapper;
 @CacheNamespace
 public interface FlowchartMapper extends BaseMapper<Flowchart> {
 
-    Integer updateOne(Flowchart data);
+    /**
+     * 更新流程图
+     *
+     * @param data
+     * @return 影响行数
+     */
+    Integer renewal(Flowchart data);
 
 }

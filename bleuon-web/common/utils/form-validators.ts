@@ -1,6 +1,6 @@
 /**
  * @description 校验器工具
- * @author 郑人滏 42020306
+ * @author zheng
  * @since 2023/10/1
  * @link https://github.com/himmelbleu/bleuon-app
  */

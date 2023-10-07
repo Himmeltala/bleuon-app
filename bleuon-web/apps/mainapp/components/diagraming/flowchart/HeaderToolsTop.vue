@@ -1,4 +1,11 @@
 <script lang="ts" setup>
+/**
+ * @description 流程图头部工具
+ * @author zheng
+ * @since 2023/10/1
+ * @link https://github.com/himmelbleu/bleuon-app
+ */
+
 import { dia } from "@mainapp/lib";
 import { convertSvgToImage } from "@mainapp/lib/tools";
 import { DateUtil } from "@common/utils";
@@ -12,7 +19,6 @@ const graph = inject<Ref<dia.Graph>>(KeyVals.BLEUON_FLOWCHART_GRAPH);
 const flowchartData = inject<Ref<FlowchartData>>(KeyVals.BLEUON_FLOWCHART_DATA);
 const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
 
-const editFile = ref(false);
 const emits = defineEmits(["change"]);
 
 function download() {
@@ -41,13 +47,12 @@ const calcFileName = computed({
   }
 });
 
-function confirmChangeFileName() {
+function onEnterFileName() {
   emits("change");
-  editFile.value = !editFile.value;
 }
 
 function collectFlowchart() {
-  FlowchartApi.addOneCollect({ flowchartId: flowchartData.value.id });
+  FlowchartApi.addCollect({ flowchartId: flowchartData.value.id });
 }
 </script>
 
@@ -64,12 +69,12 @@ function collectFlowchart() {
         src="/bleuon-icon.png"
         @click="$router.push('/workbench')" />
       <div>
-        <div v-show="editFile" @keyup.enter="confirmChangeFileName">
-          <el-input v-model="calcFileName" placeholder="请输入文件名" size="small" />
-        </div>
-        <div v-show="!editFile" class="text-text-primary" @click="editFile = !editFile">
-          {{ calcFileName }}
-        </div>
+        <EditInput
+          @enter="onEnterFileName"
+          v-model:text="calcFileName"
+          :base-modification="true"
+          size="small"
+          placeholder="请输入文件名"></EditInput>
         <div class="mt-2">
           <div class="text-text-secondary text-0.8rem f-c-c">
             <div class="i-tabler-clock mr-1"></div>

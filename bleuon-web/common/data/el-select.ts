@@ -1,9 +1,52 @@
 /**
  * @description element-plus el-select 通用数据
- * @author 郑人滏 42020306
+ * @author zheng
  * @since 2023/10/6
  * @link https://github.com/himmelbleu/bleuon-app
  */
+
+export const professionList = [
+  {
+    value: "国防和航空",
+    label: "国防和航空"
+  },
+  {
+    value: "计算机硬件",
+    label: "计算机硬件"
+  },
+  {
+    value: "计算机软件",
+    label: "计算机软件"
+  },
+  {
+    value: "计算机网络",
+    label: "计算机网络"
+  },
+  {
+    value: "互联网",
+    label: "互联网"
+  },
+  {
+    value: "半导体",
+    label: "半导体"
+  },
+  {
+    value: "电信",
+    label: "电信"
+  },
+  {
+    value: "律师",
+    label: "律师"
+  },
+  {
+    value: "法律服务",
+    label: "法律服务"
+  },
+  {
+    value: "生物技术",
+    label: "生物技术"
+  }
+];
 
 /**
  * 公开流程图的场景类别

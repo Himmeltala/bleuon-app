@@ -58,7 +58,7 @@
         </where>
     </select>
 
-    <select id="findOne" resultMap="findMap">
+    <select id="find" resultMap="findMap">
         SELECT tf.*,
                f.id                f_id,
                f.file_name         f_file_name,
@@ -83,7 +83,7 @@
         WHERE tf.id = #{id};
     </select>
 
-    <update id="updateOne">
+    <update id="renewal">
         UPDATE t_template_flowcharts
         <set>
             <trim suffixOverrides=",">
@@ -100,12 +100,12 @@
         WHERE id = #{id}
     </update>
 
-    <insert id="addOne">
+    <insert id="add">
         INSERT INTO t_template_flowcharts(id, tags, scene, price, description, flowchart_id)
         VALUES (#{id}, #{tags}, #{scene}, #{price}, #{description}, #{flowchartId});
     </insert>
 
-    <delete id="deleteOne">
+    <delete id="erase">
         DELETE
         FROM t_template_flowcharts
         WHERE flowchart_id = #{flowchartId};

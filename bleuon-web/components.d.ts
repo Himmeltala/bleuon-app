@@ -10,6 +10,7 @@ declare module 'vue' {
     DropDownGroup: typeof import("./common/components/dropdown/DropDownGroup.vue")["default"]
     DropDownItem: typeof import("./common/components/dropdown/DropDownItem.vue")["default"]
     DropDownMenu: typeof import("./common/components/dropdown/DropDownMenu.vue")["default"]
+    EditInput: typeof import('./common/components/EditInput.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElColorPicker: typeof import('element-plus/es')['ElColorPicker']
     ElDatePicker: typeof import('element-plus/es')['ElDatePicker']

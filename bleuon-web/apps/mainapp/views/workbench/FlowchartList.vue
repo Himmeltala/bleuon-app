@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 /**
  * @description flowcharts 流程图列表
- * @author 郑人滏 42020306
+ * @author zheng
  * @since 2023/8/23
  * @link https://github.com/himmelbleu/bleuon-app
  */
@@ -15,7 +15,7 @@ import File from "@mainapp/components/File.vue";
 import WorkbenchHeader from "@mainapp/components/WorkbenchHeader.vue";
 
 const clickedIndex = ref(0);
-const flowchartList = ref(await FlowchartApi.findAll());
+const flowchartList = ref(await FlowchartApi.findAllByCriteria({}));
 
 const dialogVisible = ref(false);
 const isFileNameCorrect = ref(false);
@@ -26,8 +26,8 @@ const fileNameRules = reactive({
   ]
 });
 
-function updateFlowchart() {
-  FlowchartApi.updateOne(flowchartList.value[clickedIndex.value], () => {
+function renewalFlowchart() {
+  FlowchartApi.renewal(flowchartList.value[clickedIndex.value], () => {
     dialogVisible.value = !dialogVisible.value;
   });
 }
@@ -50,21 +50,21 @@ function downloadFlowchart(data: FlowchartData) {
   );
 }
 
-function cloneFlowchart(data: FlowchartData) {
+function replicateFlowchart(data: FlowchartData) {
   data.fileName = "复制_" + data.fileName;
-  FlowchartApi.cloneOne(data, async () => {
-    await fechData();
+  FlowchartApi.replicate(data, async () => {
+    await fetchData({});
   });
 }
 
 function deleteFlowchart(id: string, index: number) {
-  FlowchartApi.deleteOne({ id }, async () => {
+  FlowchartApi.eraseById({ id }, async () => {
     flowchartList.value.splice(index, 1);
   });
 }
 
-async function fechData(params?: any) {
-  flowchartList.value = await FlowchartApi.findAll(params);
+async function fetchData(params: any) {
+  flowchartList.value = await FlowchartApi.findAllByCriteria(params);
 }
 
 const searchVal = ref("");
@@ -72,27 +72,27 @@ const isModifyDateAsc = ref(false);
 const isCreateDateAsc = ref(false);
 
 function allFlowchart() {
-  fechData({
+  fetchData({
     fileName: searchVal.value
   });
 }
 
 function publicFlowchart() {
-  fechData({
+  fetchData({
     fileName: searchVal.value,
     isPublic: 1
   });
 }
 
 function shareFlowchart() {
-  fechData({
+  fetchData({
     fileName: searchVal.value,
     isShare: 1
   });
 }
 
 function legalFlowchart() {
-  fechData({
+  fetchData({
     fileName: searchVal.value,
     isLegal: 1
   });
@@ -100,16 +100,16 @@ function legalFlowchart() {
 
 function modifyDateFlowchart() {
   isModifyDateAsc.value = !isModifyDateAsc.value;
-  fechData({ collates: [{ col: "modify_date", isAsc: isModifyDateAsc.value }] });
+  fetchData({ sequences: [{ col: "modify_date", isAsc: isModifyDateAsc.value }] });
 }
 
 function createDateFlowchart() {
   isCreateDateAsc.value = !isCreateDateAsc.value;
-  fechData({ collates: [{ col: "create_date", isAsc: isCreateDateAsc.value }] });
+  fetchData({ sequences: [{ col: "create_date", isAsc: isCreateDateAsc.value }] });
 }
 
 async function searchFiles() {
-  fechData({ fileName: searchVal.value });
+  fetchData({ fileName: searchVal.value });
 }
 </script>
 
@@ -197,7 +197,7 @@ async function searchFiles() {
           :file-image="item.dataUri"
           :file-name="item.fileName"
           :path="'/flowchart/' + item.id"
-          @clone="cloneFlowchart(item)"
+          @clone="replicateFlowchart(item)"
           @delete="deleteFlowchart(item.id, index)"
           @download="downloadFlowchart(item)"
           @reset="resetFlowchart(index)">
@@ -221,7 +221,7 @@ async function searchFiles() {
         </el-form>
         <template #footer>
           <span class="dialog-footer">
-            <el-button :disabled="!isFileNameCorrect" type="primary" @click="updateFlowchart">
+            <el-button :disabled="!isFileNameCorrect" type="primary" @click="renewalFlowchart">
               <template #icon>
                 <div class="i-tabler-check"></div>
               </template>

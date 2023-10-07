@@ -1,15 +1,14 @@
 <script lang="ts" setup>
 /**
  * @description 可以点击出菜单的头像组件
- * @author 郑人滏 42020306
+ * @author zheng
  * @since 2023/8/23
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
 import { UserApi } from "@mainapp/apis";
 
-const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
-const user = ref(await UserApi.findOne(token.id));
+const user = ref(await UserApi.fineOneByToken());
 
 function confirmLogout() {
   UserApi.logout(() => {
@@ -19,18 +18,12 @@ function confirmLogout() {
 
 const root = document.querySelector("html");
 const mode = useStorage(KeyVals.MAINAPP_THEME_MODE, "");
-const isDarkMode = ref(false);
-
-onBeforeMount(() => {
-  const modeName = mode.value === "dark" ? true : false;
-  isDarkMode.value = modeName;
-  switchThemeMode();
-});
+const isDark = ref(mode.value == "dark" ? true : false);
 
 function switchThemeMode() {
-  const modeName = isDarkMode.value ? "dark" : "light";
-  root.className = modeName;
-  mode.value = modeName;
+  const name = isDark.value ? "dark" : "light";
+  root.className = name;
+  mode.value = name;
 }
 </script>
 
@@ -54,7 +47,7 @@ function switchThemeMode() {
               </div>
             </el-dropdown-item>
             <el-dropdown-item>
-              <div class="f-c-s" @click="$router.push('/u/profile/' + token.id)">
+              <div class="f-c-s" @click="$router.push('/u/profile/' + user.id)">
                 <div class="i-tabler-user mr-2"></div>
                 个人主页
               </div>
@@ -70,9 +63,9 @@ function switchThemeMode() {
             <el-dropdown-item>
               <el-switch
                 @change="switchThemeMode"
-                :active-text="isDarkMode ? '黑夜' : '白天'"
+                :active-text="isDark ? '黑夜' : '白天'"
                 size="small"
-                v-model="isDarkMode" />
+                v-model="isDark" />
             </el-dropdown-item>
           </div>
           <div>

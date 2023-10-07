@@ -1,6 +1,6 @@
 /**
  * @description 程序入口函数
- * @author 郑人滏 42020306
+ * @author zheng
  * @since 2023/6/23
  * @link https://github.com/himmelbleu/bleuon-app
  */

@@ -1,6 +1,6 @@
 /**
  * @description element-plus el-date-picker 通用数据
- * @author 郑人滏 42020306
+ * @author zheng
  * @since 2023/10/6
  * @link https://github.com/himmelbleu/bleuon-app
  */
