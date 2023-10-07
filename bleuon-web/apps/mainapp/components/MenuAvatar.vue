@@ -16,6 +16,22 @@ function confirmLogout() {
     location.reload();
   });
 }
+
+const root = document.querySelector("html");
+const mode = useStorage(KeyVals.MAINAPP_THEME_MODE, "");
+const isDarkMode = ref(false);
+
+onBeforeMount(() => {
+  const modeName = mode.value === "dark" ? true : false;
+  isDarkMode.value = modeName;
+  switchThemeMode();
+});
+
+function switchThemeMode() {
+  const modeName = isDarkMode.value ? "dark" : "light";
+  root.className = modeName;
+  mode.value = modeName;
+}
 </script>
 
 <template>
@@ -50,6 +66,13 @@ function confirmLogout() {
                 <div class="i-tabler-home mr-2"></div>
                 官网首页
               </div>
+            </el-dropdown-item>
+            <el-dropdown-item>
+              <el-switch
+                @change="switchThemeMode"
+                :active-text="isDarkMode ? '黑夜' : '白天'"
+                size="small"
+                v-model="isDarkMode" />
             </el-dropdown-item>
           </div>
           <div>

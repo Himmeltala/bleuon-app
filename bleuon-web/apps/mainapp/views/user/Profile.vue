@@ -22,9 +22,9 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
 </script>
 
 <template>
-  <div class="profile">
+  <div class="profile slim-slider h-100vh flow-auto bg-bg-page">
     <CommonHeader active-name="personal"></CommonHeader>
-    <div class="user-data">
+    <div class="user-data bg-bg-primary">
       <div class="f-s-b pt-30 pb-20 px-50">
         <div class="f-c-c">
           <img class="rd-50% h-30 w-30" :src="user.avatar" />
@@ -55,25 +55,27 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
       </div>
     </div>
     <div class="mt-5 px-50">
-      <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="我的关注" name="follows">
-          <template #label>
-            <span :class="{ 'font-bold': activeName === 'follows' }">我的关注</span>
-          </template>
-        </el-tab-pane>
-        <el-tab-pane label="我的粉丝" name="fans">
-          <template #label>
-            <span :class="{ 'font-bold': activeName === 'fans' }">我的粉丝</span>
-          </template>
-        </el-tab-pane>
-      </el-tabs>
+      <div class="bg-bg-overlay px-5 pb-5 rd-2">
+        <el-tabs v-model="activeName" @tab-click="handleClick">
+          <el-tab-pane label="我的关注" name="follows">
+            <template #label>
+              <span :class="{ 'font-bold': activeName === 'follows' }">我的关注</span>
+            </template>
+          </el-tab-pane>
+          <el-tab-pane label="我的粉丝" name="fans">
+            <template #label>
+              <span :class="{ 'font-bold': activeName === 'fans' }">我的粉丝</span>
+            </template>
+          </el-tab-pane>
+        </el-tabs>
+      </div>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .user-data {
-  background-image: url("/user-profile-bg.png");
+  // background-image: url("/user-profile-bg.png");
   background-repeat: no-repeat;
   background-size: 100% 100%;
   background-position: 50%;

@@ -64,12 +64,12 @@ function resetBasicData() {}
 </script>
 
 <template>
-  <div class="setting min-h-100vh">
+  <div class="setting slim-slider h-100vh flow-auto bg-bg-page">
     <CommonHeader></CommonHeader>
     <div class="f-c-c mt-5">
       <div class="w-75vw">
-        <div class="bg-white rd-2 p-10">
-          <div class="font-bold text-1.5rem pb-5 mb-10 b-b-1 b-b-solid b-b-#e4e4e4 bg-white">
+        <div class="bg-bg-overlay rd-2 p-10">
+          <div class="font-bold text-1.5rem pb-5 mb-10 b-b-1 b-b-solid b-border-primary">
             基本信息
           </div>
           <div class="f-s-b">
@@ -131,8 +131,8 @@ function resetBasicData() {}
             <el-button type="primary" @click="saveBasicData">保存资料</el-button>
           </div>
         </div>
-        <div class="bg-white rd-2 my-5 p-10">
-          <div class="font-bold text-1.5rem pb-5 mb-10 b-b-1 b-b-solid b-b-#e4e4e4 bg-white">
+        <div class="bg-bg-overlay rd-2 my-5 p-10">
+          <div class="font-bold text-1.5rem pb-5 mb-10 b-b-1 b-b-solid b-border-primary">
             账号安全
           </div>
           <div>
@@ -175,8 +175,4 @@ function resetBasicData() {}
   </div>
 </template>
 
-<style lang="scss" scoped>
-.setting {
-  background-color: rgb(244, 244, 244);
-}
-</style>
+<style lang="scss" scoped></style>

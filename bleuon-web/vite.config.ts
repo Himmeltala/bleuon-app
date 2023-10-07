@@ -27,7 +27,11 @@ export default defineConfig(({ mode }) => {
           // "pinia",
           // "@vueuse/core",
           {
-            "@common/constants": ["KeyVals"]
+            "@common/constants": ["KeyVals"],
+            "@vueuse/core": [
+              "useStorage" // import { useStorage } from '@vueuse/core',
+              // ["useFetch", "useMyFetch"] // import { useFetch as useMyFetch } from '@vueuse/core',
+            ]
           },
           {
             from: "element-plus",
