@@ -49,8 +49,7 @@ function updateFlowchartData() {
   flowchartData.value.connectorDefault = JSON.stringify(Data.linkConnectorConfig.value);
   flowchartData.value.routerDefault = JSON.stringify(Data.linkRouterConfig.value);
   flowchartData.value.dataUri = getDataUri(paper.value, graph.value);
-  FlowchartApi.renewal(flowchartData.value, () => {
-  });
+  FlowchartApi.renewal(flowchartData.value, () => {});
 }
 
 const updateThrottle = PreventUtil.throttle(updateFlowchartData, 3000);
@@ -219,12 +218,9 @@ function closeReleaseTag(index: number) {
 function confirmRelease() {
   FormValidatorsUtil.validate(releaseFormRef.value, () => {
     releaseFormData.tags = JSON.stringify(releaseTagList.value);
-    FlowchartApi.release(
-      { ...{ flowchartId: flowchartData.value.id }, ...releaseFormData },
-      () => {
-        flowchartData.value.isPublic = 1;
-      }
-    );
+    FlowchartApi.release({ ...{ flowchartId: flowchartData.value.id }, ...releaseFormData }, () => {
+      flowchartData.value.isPublic = 1;
+    });
   });
 }
 
@@ -283,9 +279,11 @@ await fetchData();
           <div v-else>流程图已经分享，点击链接浏览</div>
         </el-form-item>
         <el-form-item v-if="flowchartData.isShare" label="链接地址">
-          <el-link type="primary" @click="$router.push('/share/flowchart/' + flowchartData.id)">
-            http://localhost:5173/#/share/flowchart/{{ flowchartData.id }}
-          </el-link>
+          <router-link :to="'/share/flowchart/' + flowchartData.id">
+            <el-link type="primary">
+              http://localhost:5173/#/share/flowchart/{{ flowchartData.id }}
+            </el-link>
+          </router-link>
         </el-form-item>
         <el-form-item label="截止日期" prop="deadShareDate">
           <el-date-picker

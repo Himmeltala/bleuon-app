@@ -16,9 +16,9 @@ import java.util.List;
 @CacheNamespace
 public interface TemplateFlowchartMapper {
 
-    List<TemplateFlowchart> findAll(TemplateFlowchart data);
+    List<TemplateFlowchart> findAll(TemplateFlowchart params);
 
-    TemplateFlowchart find(TemplateFlowchart data);
+    TemplateFlowchart find(TemplateFlowchart params);
 
     Integer renewal(TemplateFlowchart data);
 

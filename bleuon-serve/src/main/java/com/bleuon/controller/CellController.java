@@ -1,15 +1,12 @@
 package com.bleuon.controller;
 
 import com.bleuon.annotaion.RequestMappingPrefix;
-import com.bleuon.constant.ValidPattern;
 import com.bleuon.entity.OfficialCell;
 import com.bleuon.service.IOfficialCellService;
 import com.bleuon.utils.http.R;
-import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -25,13 +22,12 @@ public class CellController {
 
     private final IOfficialCellService service;
 
-    @GetMapping("/find/all")
-    public R<List<OfficialCell>> findAll(
+    @GetMapping("/find/all/by/criteria")
+    public R<List<OfficialCell>> findAllByCriteria(
             @Validated
-            @Pattern(regexp = ValidPattern.CELL_TYPE, message = "图形类型错误！")
-            @RequestParam String type
+            OfficialCell params
     ) {
-        return service.findAll(type);
+        return service.findAllByCriteria(params);
     }
 
 }

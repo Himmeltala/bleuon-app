@@ -25,15 +25,15 @@ public class TemplateFlowchartService implements ITemplateFlowchartService {
     private final TemplateFlowchartMapper mapper;
 
     @Override
-    public R<List<TemplateFlowchart>> findAll(TemplateFlowchart body) {
-        List<TemplateFlowchart> list = mapper.findAll(body);
+    public R<List<TemplateFlowchart>> findAll(TemplateFlowchart params) {
+        List<TemplateFlowchart> list = mapper.findAll(params);
         if (Objects.isNull(list)) return R.failed("没有查询到流程图！", null);
         return R.success(list);
     }
 
     @Override
-    public R<TemplateFlowchart> find(TemplateFlowchart body) {
-        TemplateFlowchart flowchart = mapper.find(body);
+    public R<TemplateFlowchart> findById(TemplateFlowchart params) {
+        TemplateFlowchart flowchart = mapper.find(params);
         if (Objects.isNull(flowchart)) return R.failed("没有查询到流程图！", null);
         return R.success(flowchart);
     }

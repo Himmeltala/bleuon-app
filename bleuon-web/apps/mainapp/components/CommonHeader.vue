@@ -22,30 +22,20 @@ defineProps({
 <template>
   <div class="header w-100% f-c-b px-10 h-20 b-b-1 b-b-solid b-border-primary bg-bg-overlay">
     <div class="flex-grow-1 f-c-s">
-      <img
-        class="w-45 h-15 cursor-pointer object-cover"
-        @click="$router.push('/')"
-        src="/bleuon-icon.png" />
+      <router-link to="/">
+        <img class="w-45 h-15 cursor-pointer object-cover" src="/bleuon-icon.png" />
+      </router-link>
     </div>
     <div class="flex-grow-1 f-c-b text-1.1rem">
-      <div
-        :class="{ active: activeName === 'personal' }"
-        class="hover"
-        @click="$router.push('/u/profile/' + token.id)">
-        个人
-      </div>
-      <div
-        :class="{ active: activeName === 'discussion' }"
-        class="hover"
-        @click="$router.push('/community/discussion')">
-        社区
-      </div>
-      <div
-        :class="{ active: activeName === 'template' }"
-        class="hover"
-        @click="$router.push('/community/template')">
-        模板
-      </div>
+      <router-link :to="'/u/profile/' + token.id">
+        <div :class="{ active: activeName === 'personal' }" class="hover">个人</div>
+      </router-link>
+      <router-link to="/community/discussion">
+        <div :class="{ active: activeName === 'discussion' }" class="hover">社区</div>
+      </router-link>
+      <router-link to="/community/template">
+        <div :class="{ active: activeName === 'template' }" class="hover">模板</div>
+      </router-link>
     </div>
     <div class="flex-grow-1 f-c-e">
       <MenuAvatar></MenuAvatar>

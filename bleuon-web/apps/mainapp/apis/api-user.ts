@@ -156,8 +156,8 @@ export function logout(success: Function, error?: Function) {
 /**
  * 通过 token 查询用户信息
  */
-export async function fineOneByToken() {
-  const { data } = await request.get<R<UserData>>("/user/find/one/by/token");
+export async function fineByToken() {
+  const { data } = await request.get<R<UserData>>("/user/find/by/token");
   return data.data;
 }
 
@@ -168,9 +168,9 @@ export async function fineOneByToken() {
  * @param success
  * @param error
  */
-export async function updateOneByToken(data: UserData, success?: Function, error?: Function) {
+export async function renewalByToken(data: UserData, success?: Function, error?: Function) {
   request
-    .post<R>("/user/update/one/by/token", data)
+    .post<R>("/user/renewal/by/token", data)
     .then(({ data }) => {
       success && success(data);
     })

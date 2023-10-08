@@ -13,6 +13,6 @@ import java.util.List;
  */
 public interface IOfficialCellService {
 
-    R<List<OfficialCell>> findAll(String type);
+    R<List<OfficialCell>> findAllByCriteria(OfficialCell params);
 
 }

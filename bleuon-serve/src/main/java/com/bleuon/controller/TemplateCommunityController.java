@@ -28,45 +28,47 @@ import java.util.Objects;
 @RequestMappingPrefix("/community/template")
 public class TemplateCommunityController {
 
-    private final TemplateFlowchartService service;
     private final FlowchartService flowchartService;
-    private final CollectFlowchartService collectService;
+    private final CollectFlowchartService collectFlowchartService;
+    private final TemplateFlowchartService templateFlowchartService;
 
     @GetMapping("/find/all")
-    public R<List<TemplateFlowchart>> findAll(@Validated TemplateFlowchart data) {
-        return service.findAll(data);
+    public R<List<TemplateFlowchart>> findAll(@Validated TemplateFlowchart params) {
+        String fileName = params.getFileName();
+        if (fileName != null) {
+            params.setFileName(fileName.toLowerCase());
+        }
+        return templateFlowchartService.findAll(params);
     }
 
-    @GetMapping("/find/one")
-    public R<TemplateFlowchart> findOne(@Validated TemplateFlowchart data) {
-        return service.find(data);
+    @GetMapping("/find/by/id")
+    public R<TemplateFlowchart> findById(@Validated TemplateFlowchart params) {
+        return templateFlowchartService.findById(params);
     }
 
-    @PostMapping("/clone/one")
-    public R<Object> cloneOne(@RequestHeader(KeyVals.Token) String token,
-                              @RequestBody @Validated TemplateFlowchart data
+    @PostMapping("/replicate")
+    public R<Object> replicate(@RequestHeader(KeyVals.Token) String token,
+                               @RequestBody @Validated TemplateFlowchart body
     ) {
         Claims claims = JwtUtil.parseJwt(token);
         String uid = (String) claims.get("id");
 
         // 加一次导入次数
-        Integer copies = data.getCopies();
-        data.setCopies(copies + 1);
+        Integer copies = body.getCopies();
+        body.setCopies(copies + 1);
 
-        Flowchart flowchart = flowchartService.replicate(data.getFlowchart(), uid);
-        if (Objects.isNull(flowchart)) return R.error("导入模板失败！");
-        return R.success("导入模板成功！");
+        Flowchart flowchart = flowchartService.replicate(body.getFlowchart(), uid);
+        return Objects.isNull(flowchart) ? R.error("导入模板失败！") : R.success("导入模板成功！");
     }
 
-    @PutMapping("/update/one")
-    public R<Object> updateOne(@RequestBody @Validated TemplateFlowchart data) {
-        boolean status = service.renewal(data);
-        if (status) return R.success("更新成功！");
-        return R.failed("更新失败！");
+    @PutMapping("/renewal")
+    public R<Object> renewal(@RequestBody @Validated TemplateFlowchart data) {
+        boolean status = templateFlowchartService.renewal(data);
+        return status ? R.success("更新成功！") : R.failed("更新失败！");
     }
 
-    @PostMapping("/collect/one")
-    public R<Object> collectOne(@RequestHeader(KeyVals.Token) String token,
+    @PostMapping("/add/collect")
+    public R<Object> addCollect(@RequestHeader(KeyVals.Token) String token,
                                 @RequestBody @Validated TemplateFlowchart data
     ) {
         Claims claims = JwtUtil.parseJwt(token);
@@ -75,16 +77,16 @@ public class TemplateCommunityController {
         CollectFlowchartVo vo = new CollectFlowchartVo();
         vo.setCollectUid(uid);
         vo.setFlowchartId(data.getFlowchartId());
-        R<Object> status = collectService.add(vo);
-        Integer code = status.getCode();
-        if (code == 200) {
-            data.setStars(data.getStars() + 1);
-            boolean s = service.renewal(data);
-            if (s) return R.success("收藏成功！");
-            return R.failed("收藏失败！");
-        } else {
+        R<Object> status = collectFlowchartService.add(vo);
+
+        if (status.getCode() != 200) {
             return status;
         }
+
+        data.setStars(data.getStars() + 1);
+        boolean success = templateFlowchartService.renewal(data);
+
+        return success ? R.success("收藏成功！") : R.failed("收藏失败！");
     }
 
 }

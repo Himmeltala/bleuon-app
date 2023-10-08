@@ -5,10 +5,9 @@
  * @since 2023/8/23
  * @link https://github.com/himmelbleu/bleuon-app
  */
-
 import { UserApi } from "@mainapp/apis";
 
-const user = ref(await UserApi.fineOneByToken());
+const user = useStorage<UserData>(KeyVals.MAINAPP_USER, {});
 
 function confirmLogout() {
   UserApi.logout(() => {
@@ -35,30 +34,38 @@ function switchThemeMode() {
         <el-dropdown-menu>
           <div class="b-b-solid b-border-primary b-b-1 pb-2 mb-2">
             <el-dropdown-item>
-              <div class="f-c-s" @click="$router.push('/workbench')">
-                <div class="i-tabler-files mr-2"></div>
-                个人文件
-              </div>
+              <router-link to="/workbench">
+                <div class="f-c-s">
+                  <div class="i-tabler-files mr-2"></div>
+                  个人文件
+                </div>
+              </router-link>
             </el-dropdown-item>
             <el-dropdown-item>
-              <div class="f-c-s" @click="$router.push('/u/setting/')">
-                <div class="i-tabler-user mr-2"></div>
-                个人资料
-              </div>
+              <router-link to="/u/setting">
+                <div class="f-c-s">
+                  <div class="i-tabler-user mr-2"></div>
+                  个人资料
+                </div>
+              </router-link>
             </el-dropdown-item>
             <el-dropdown-item>
-              <div class="f-c-s" @click="$router.push('/u/profile/' + user.id)">
-                <div class="i-tabler-user mr-2"></div>
-                个人主页
-              </div>
+              <router-link :to="'/u/profile/' + user.id">
+                <div class="f-c-s">
+                  <div class="i-tabler-user mr-2"></div>
+                  个人主页
+                </div>
+              </router-link>
             </el-dropdown-item>
           </div>
           <div class="b-b-solid b-border-primary b-b-1 pb-2 mb-2">
             <el-dropdown-item>
-              <div class="f-c-s" @click="$router.push('/')">
-                <div class="i-tabler-home mr-2"></div>
-                官网首页
-              </div>
+              <router-link to="/">
+                <div class="f-c-s">
+                  <div class="i-tabler-home mr-2"></div>
+                  官网首页
+                </div>
+              </router-link>
             </el-dropdown-item>
             <el-dropdown-item>
               <el-switch

@@ -197,7 +197,7 @@ async function searchFiles() {
           :file-image="item.dataUri"
           :file-name="item.fileName"
           :path="'/flowchart/' + item.id"
-          @clone="replicateFlowchart(item)"
+          @replicate="replicateFlowchart(item)"
           @delete="deleteFlowchart(item.id, index)"
           @download="downloadFlowchart(item)"
           @reset="resetFlowchart(index)">

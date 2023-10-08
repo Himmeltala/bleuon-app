@@ -37,18 +37,13 @@ public class FlowchartController {
     @PutMapping("/renewal")
     public R<Object> renewal(@RequestBody @Validated Flowchart body) {
         boolean status = flowchartService.renewal(body);
-        if (status) {
-            return R.success("更新流程图成功！");
-        } else {
-            return R.failed("更新流程图失败！");
-        }
+        return status ? R.success("更新流程图成功！") : R.failed("更新流程图失败！");
     }
 
     @GetMapping("/find/by/id")
     public R<Flowchart> findById(@RequestParam String id) {
         Flowchart result = flowchartService.findById(id);
-        if (Objects.isNull(result)) return R.failed("该流程图不存在！", null);
-        return R.success(result);
+        return Objects.isNull(result) ? R.failed("该流程图不存在！", null) : R.success(result);
     }
 
     @PostMapping("/find/all/by/criteria")
@@ -60,8 +55,7 @@ public class FlowchartController {
         criteria.setUid(uid);
 
         List<Flowchart> list = flowchartService.findAllByCriteria(criteria);
-        if (list.isEmpty()) return R.failed("没有查询到流程图！", null);
-        return R.success(list);
+        return list.isEmpty() ? R.failed("没有查询到流程图！", null) : R.success(list);
     }
 
     @PostMapping("/add")
@@ -69,11 +63,8 @@ public class FlowchartController {
         Claims claims = JwtUtil.parseJwt(token);
         String uid = (String) claims.get("id");
 
-        Flowchart flowchart = this.flowchartService.add(uid);
-        if (!Objects.isNull(flowchart)) {
-            return R.success("创建流程图成功！", flowchart);
-        }
-        return R.failed("创建流程图失败！", null);
+        Flowchart flowchart = flowchartService.add(uid);
+        return flowchart != null ? R.success("创建流程图成功！", flowchart) : R.failed("创建流程图失败！", null);
     }
 
     @PostMapping("/replicate")
@@ -83,18 +74,14 @@ public class FlowchartController {
         Claims claims = JwtUtil.parseJwt(token);
         String uid = (String) claims.get("id");
 
-        Flowchart flowchart = this.flowchartService.replicate(body, uid);
-        if (!Objects.isNull(flowchart)) {
-            return R.success("复制流程图成功！", flowchart);
-        }
-        return R.failed("复制流程图失败！", null);
+        Flowchart flowchart = flowchartService.replicate(body, uid);
+        return flowchart != null ? R.success("复制流程图成功！", flowchart) : R.failed("复制流程图失败！", null);
     }
 
     @DeleteMapping("/erase/by/id")
     public R<Object> eraseById(@RequestParam String id) {
         boolean status = flowchartService.eraseById(id);
-        if (status) return R.success("删除流程图成功！");
-        return R.failed("删除流程图失败！");
+        return status ? R.success("删除流程图成功！") : R.failed("删除流程图失败！");
     }
 
     @GetMapping("/find/all/collect/by/criteria")
@@ -107,8 +94,7 @@ public class FlowchartController {
         criteria.setUid(uid);
 
         List<CollectFlowchartDto> list = collectFlowchartService.findAllCollectByCriteria(criteria);
-        if (list != null) return R.success(list);
-        return R.failed("没有收藏流程图！", null);
+        return list != null ? R.success(list) : R.failed("没有收藏流程图！", null);
     }
 
     @DeleteMapping("/erase/collect")
@@ -121,8 +107,7 @@ public class FlowchartController {
         params.setCollectUid(uid);
 
         boolean status = collectFlowchartService.erase(params);
-        if (status) return R.success("删除收藏的流程图成功！");
-        return R.failed("删除收藏的流程图失败！");
+        return status ? R.success("删除收藏的流程图成功！") : R.failed("删除收藏的流程图失败！");
     }
 
     @PostMapping("/add/collect")
@@ -143,8 +128,8 @@ public class FlowchartController {
 
     @DeleteMapping("/cancel/release")
     public R<Object> cancelRelease(
-            @RequestParam
             @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
+            @RequestParam
             String flowchartId
     ) {
         return flowchartService.cancelRelease(flowchartId);

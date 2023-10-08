@@ -15,7 +15,7 @@ public interface ITemplateFlowchartService {
 
     R<List<TemplateFlowchart>> findAll(TemplateFlowchart body);
 
-    R<TemplateFlowchart> find(TemplateFlowchart body);
+    R<TemplateFlowchart> findById(TemplateFlowchart body);
 
     boolean renewal(TemplateFlowchart body);
 

@@ -12,8 +12,8 @@ import com.bleuon.utils.http.R;
  */
 public interface IUserService {
 
-    R<UserDto> findOne(User vo);
+    R<UserDto> findById(User vo);
 
-    boolean updateOne(User vo);
+    boolean renewal(User vo);
 
 }

@@ -52,7 +52,7 @@
                     AND ranking = #{ranking}
                 </if>
                 <if test="fileName != null and fileName != ''">
-                    AND f.file_name = #{fileName}
+                    AND f.file_name like #{fileName}
                 </if>
             </trim>
         </where>

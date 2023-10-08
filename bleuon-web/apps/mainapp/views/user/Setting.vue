@@ -12,16 +12,16 @@ import { ElSelectData } from "@common/data";
 // components
 import CommonHeader from "@mainapp/components/CommonHeader.vue";
 
-const formData = reactive(await UserApi.fineOneByToken());
+const formData = useStorage<UserData>(KeyVals.MAINAPP_USER, {});
 
 function saveBasicData() {
-  UserApi.updateOneByToken({
-    username: formData.username,
-    profession: formData.profession,
-    company: formData.company,
-    position: formData.position,
-    avatar: formData.avatar,
-    signature: formData.signature
+  UserApi.renewalByToken({
+    username: formData.value.username,
+    profession: formData.value.profession,
+    company: formData.value.company,
+    position: formData.value.position,
+    avatar: formData.value.avatar,
+    signature: formData.value.signature
   });
 }
 

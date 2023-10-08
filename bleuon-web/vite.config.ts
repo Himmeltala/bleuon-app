@@ -29,7 +29,8 @@ export default defineConfig(({ mode }) => {
           {
             "@common/constants": ["KeyVals"],
             "@vueuse/core": [
-              "useStorage" // import { useStorage } from '@vueuse/core',
+              "useStorage", // import { useStorage } from '@vueuse/core',
+              "useStorageAsync"
               // ["useFetch", "useMyFetch"] // import { useFetch as useMyFetch } from '@vueuse/core',
             ]
           },

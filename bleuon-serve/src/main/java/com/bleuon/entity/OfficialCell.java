@@ -24,7 +24,6 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class OfficialCell implements Serializable {
 
-    @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
     @TableId
     private Integer id;
 

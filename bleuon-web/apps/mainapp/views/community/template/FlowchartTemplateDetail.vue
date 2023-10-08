@@ -24,15 +24,15 @@ const route = useRoute();
 const data = ref<TemplateFlowchartData>();
 
 async function fetchData(params: TemplateFlowchartData) {
-  data.value = await TemplateCommunityApi.findOne(params);
+  data.value = await TemplateCommunityApi.findById(params);
 }
 
-function cloneFlowchart() {
-  TemplateCommunityApi.cloneOne(data.value, res => ElMessage.success(res.message));
+function replicateFlowchart() {
+  TemplateCommunityApi.replicate(data.value, res => ElMessage.success(res.message));
 }
 
 function collectFlowchart() {
-  TemplateCommunityApi.collectOne(data.value);
+  TemplateCommunityApi.addCollect(data.value);
 }
 
 await fetchData({ id: route.params.id.toString() });
@@ -65,7 +65,7 @@ onMounted(() => {
     "blank:mousewheel": evt => ListenerService.onMousewheelBlank(evt, paper.value)
   });
 
-  TemplateCommunityApi.updateOne({ views: data.value.views + 1, id: data.value.id });
+  TemplateCommunityApi.renewal({ views: data.value.views + 1, id: data.value.id });
 });
 </script>
 
@@ -99,7 +99,7 @@ onMounted(() => {
                 </el-button>
               </div>
               <div>
-                <el-button type="primary" @click="cloneFlowchart">
+                <el-button type="primary" @click="replicateFlowchart">
                   导入模板
                   <template #icon>
                     <div class="i-tabler-file-import"></div>
@@ -117,12 +117,12 @@ onMounted(() => {
           <div class="mt-5">
             <el-tag class="mr-5" v-for="item in JSON.parse(data.tags)">{{ item }}</el-tag>
           </div>
-          <div
-            @click="$router.push('/u/profile/' + data.flowchart.user.id)"
-            class="cursor-pointer f-c-e mt-5">
-            <img class="mr-4 w-10 h-10 rd-50%" :src="data.flowchart.user.avatar" />
-            作者：{{ data.flowchart.user.username }}
-          </div>
+          <router-link :to="'/u/profile/' + data.flowchart.user.id">
+            <div class="cursor-pointer f-c-e mt-5">
+              <img class="mr-4 w-10 h-10 rd-50%" :src="data.flowchart.user.avatar" />
+              作者：{{ data.flowchart.user.username }}
+            </div>
+          </router-link>
         </div>
       </div>
     </div>

@@ -48,7 +48,7 @@ request.interceptors.response.use(
     if (
       data.code === 200 &&
       !InterceptorUtil.notInterceptUrl(config.config, {
-        fuzzy: ["find", "clone", "/community/template/update/one"]
+        fuzzy: ["find", "replicate", "/community/template/update/one"]
       })
     ) {
       if (data.message) {

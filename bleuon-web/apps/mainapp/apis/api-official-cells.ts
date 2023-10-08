@@ -8,11 +8,11 @@
 import request from "./use-axios";
 
 /**
- * 获取所有的 cells
+ * 通过条件查询图形列表
  *
- * @param type 图形类型
+ * @param params
  */
-export async function findAll(type: "basic" | "flowchart") {
-  const { data } = await request.get<R>("/cell/official/find/all", { params: { type } });
+export async function findAllByCriteria(params: { type: "basic" | "flowchart" }) {
+  const { data } = await request.get<R>("/cell/official/find/all/by/criteria", { params });
   return data.data;
 }

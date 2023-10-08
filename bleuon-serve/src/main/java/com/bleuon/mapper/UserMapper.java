@@ -14,6 +14,6 @@ import org.apache.ibatis.annotations.Mapper;
 @CacheNamespace
 public interface UserMapper extends BaseMapper<User> {
 
-    Integer updateOne(User vo);
+    Integer renewal(User vo);
 
 }

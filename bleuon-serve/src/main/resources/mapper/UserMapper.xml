@@ -4,7 +4,7 @@
 
     <cache-ref namespace="com.bleuon.mapper.UserMapper"/>
 
-    <update id="updateOne">
+    <update id="renewal">
         UPDATE t_users
         <set>
             <trim suffixOverrides=",">

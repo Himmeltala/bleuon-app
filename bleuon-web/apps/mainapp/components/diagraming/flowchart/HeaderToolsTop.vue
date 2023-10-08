@@ -64,10 +64,9 @@ function collectFlowchart() {
           <div class="i-tabler-chevron-left"></div>
         </template>
       </el-button>
-      <img
-        class="mr-4 w-30 h-15 object-cover cursor-pointer"
-        src="/bleuon-icon.png"
-        @click="$router.push('/workbench')" />
+      <router-link to="/workbench">
+        <img class="mr-4 w-30 h-15 object-cover cursor-pointer" src="/bleuon-icon.png" />
+      </router-link>
       <div>
         <EditInput
           @enter="onEnterFileName"

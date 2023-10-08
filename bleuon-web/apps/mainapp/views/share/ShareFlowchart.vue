@@ -125,9 +125,11 @@ await fetchData();
       <el-form ref="shareFormRef" label-position="right" label-width="100px">
         <el-form-item label="状态">流程图已经公开，点击链接浏览</el-form-item>
         <el-form-item label="链接地址">
-          <el-link type="primary" @click="$router.push('/share/flowchart/' + flowchartData.id)">
-            http://localhost:5173/#/share/flowchart/{{ flowchartData.id }}
-          </el-link>
+          <router-link :to="'/share/flowchart/' + flowchartData.id">
+            <el-link type="primary">
+              http://localhost:5173/#/share/flowchart/{{ flowchartData.id }}
+            </el-link>
+          </router-link>
         </el-form-item>
         <el-form-item label="截止日期">
           {{ DateUtil.formatted("yyyy-MM-dd HH:mm:ss", flowchartData.deadShareDate) }}

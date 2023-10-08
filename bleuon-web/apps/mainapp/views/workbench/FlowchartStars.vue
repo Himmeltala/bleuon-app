@@ -73,7 +73,7 @@ await fetchData();
             :file-name="item.fileName"
             :is-reset="false"
             :path="isMyFlowchart(item) ? '/flowchart/' + item.id : '/share/flowchart/' + item.id"
-            @clone="replicateFlowchart(item)"
+            @replicate="replicateFlowchart(item)"
             @delete="deleteFlowchart(item.id, index)"
             @download="downloadFlowchart(item)">
             <template #footer>

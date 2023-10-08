@@ -27,7 +27,7 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
     private final UserMapper mapper;
 
     @Override
-    public R<UserDto> findOne(User vo) {
+    public R<UserDto> findById(User vo) {
         User user = query().eq("id", vo.getId()).one();
         if (!Objects.isNull(user)) {
             UserDto dto = new UserDto();
@@ -37,11 +37,11 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
         return R.failed("不存在该用户！");
     }
 
-    @Override
     @Transactional
-    public boolean updateOne(User vo) {
+    @Override
+    public boolean renewal(User vo) {
         try {
-            Integer status = mapper.updateOne(vo);
+            Integer status = mapper.renewal(vo);
             return status > 0;
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());

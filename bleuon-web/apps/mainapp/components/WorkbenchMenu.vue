@@ -47,8 +47,8 @@ function createFlowchart() {
         <el-button class="w-100%" type="primary">＋新建</el-button>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item>
-              <div class="w-40 f-c-s" @click="createFlowchart">
+            <el-dropdown-item @click="createFlowchart">
+              <div class="w-40 f-c-s">
                 <div class="i-tabler-chart-grid-dots mr-4 text-theme-primary"></div>
                 <div>新建流程图</div>
               </div>

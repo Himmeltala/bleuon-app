@@ -8,6 +8,12 @@
 @import "element-plus/theme-chalk/dark/css-vars.css";
 @import "@mainapp/scss/mixins.scss";
 
+* {
+  color: inherit;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
 html {
   // theme
   --bleuon-theme-color-primary: var(--el-color-primary);
@@ -42,15 +48,7 @@ html {
   --bleuon-fill-color-lighter: var(--el-fill-color-lighter);
   --bleuon-fill-color-extra-light: var(--el-fill-color-extra-light);
   --bleuon-fill-color-blank: var(--el-fill-color-blank);
-}
 
-* {
-  color: inherit;
-  box-sizing: border-box;
-  scroll-behavior: smooth;
-}
-
-:root {
   --bleuon-font-size: 14px;
 }
 
@@ -59,7 +57,7 @@ html {
   $min: $i * 100 + 1500px;
 
   @media screen and (min-width: $min) {
-    :root {
+    html {
       --bleuon-font-size: #{calc($min / 100)};
     }
   }
@@ -71,11 +69,6 @@ body {
   padding: 0;
   font-size: var(--bleuon-font-size);
   color: var(--bleuon-text-color-primary);
-
-  & {
-    scrollbar-color: initial;
-    scrollbar-width: none;
-  }
 
   &::-webkit-scrollbar {
     display: none;
@@ -108,4 +101,9 @@ body {
     border-radius: 6px;
     background-color: #c6c6c6;
   }
+}
+
+a {
+  text-decoration: none; /* 取消下划线 */
+  color: inherit; /* 使用默认文本颜色 */
 }

@@ -11,7 +11,7 @@ import SVG from "../SVG.vue";
 
 const data = ref(null);
 
-data.value = await OfficialCellsApi.findAll("flowchart");
+data.value = await OfficialCellsApi.findAllByCriteria({ type: "flowchart" });
 </script>
 
 <template>

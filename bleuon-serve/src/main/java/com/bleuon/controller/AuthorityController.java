@@ -34,16 +34,38 @@ public class AuthorityController {
     private final ResetPasswordService resetPasswordService;
 
     @GetMapping("/aks-mail-verify-code")
-    public R<Object> askMailVerifyCode(@RequestParam @Validated @Email(message = "不是一个合法的电子邮箱地址") String email,
-                                       @RequestParam @Validated @Pattern(regexp = ValidPattern.MAIL_CODE_TYPE, message = "发送验证码的类型是 register 或 login 或 reset！") String type,
-                                       HttpServletRequest http) {
+    public R<Object> askMailVerifyCode(
+            @Validated
+            @Email(message = "不是一个合法的电子邮箱地址")
+            @RequestParam
+            String email,
+
+            @Validated
+            @Pattern(regexp = ValidPattern.MAIL_CODE_TYPE, message = "发送验证码的类型是 register 或 login 或 reset！")
+            @RequestParam
+            String type,
+
+            HttpServletRequest http
+    ) {
         return mailRelatedService.getMailVerifyCode(email, type, IpUtil.getIp(http));
     }
 
     @PostMapping("/verify-mail-code")
-    public R<Token> verifyMailCode(@RequestBody @Validated User user,
-                                   @RequestParam @Validated @Pattern(regexp = ValidPattern.MAIL_CODE_TYPE, message = "发送验证码的类型是 register 或 login 或 reset！") String type,
-                                   @RequestParam @Validated @Pattern(regexp = ValidPattern.DIGIT_6, message = "验证码必须是 6 位正整数！") String code) {
+    public R<Token> verifyMailCode(
+            @Validated
+            @RequestBody
+            User user,
+
+            @Validated
+            @Pattern(regexp = ValidPattern.MAIL_CODE_TYPE, message = "发送验证码的类型是 register 或 login 或 reset！")
+            @RequestParam
+            String type,
+
+            @Validated
+            @Pattern(regexp = ValidPattern.DIGIT_6, message = "验证码必须是 6 位正整数！")
+            @RequestParam
+            String code
+    ) {
         return mailRelatedService.verifyMailCode(user, type, code);
     }
 

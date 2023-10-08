@@ -27,28 +27,28 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/find/one")
+    @GetMapping("/find/by/id")
     public R<UserDto> findOne(@Validated User vo) {
-        return userService.findOne(vo);
+        return userService.findById(vo);
     }
 
-    @GetMapping("/find/one/by/token")
-    public R<UserDto> findOneByToken(@RequestHeader(KeyVals.Token) String token) {
+    @GetMapping("/find/by/token")
+    public R<UserDto> findByToken(@RequestHeader(KeyVals.Token) String token) {
         Claims claims = JwtUtil.parseJwt(token);
         String uid = (String) claims.get("id");
         User user = new User();
         user.setId(uid);
-        return userService.findOne(user);
+        return userService.findById(user);
     }
 
-    @PostMapping("/update/one/by/token")
-    public R<Object> updateOneByToken(@RequestHeader(KeyVals.Token) String token, @Validated @RequestBody User vo) {
+    @PostMapping("/renewal/by/token")
+    public R<Object> renewalByToken(@RequestHeader(KeyVals.Token) String token, @Validated @RequestBody User vo) {
         Claims claims = JwtUtil.parseJwt(token);
         String uid = (String) claims.get("id");
         vo.setId(uid);
-        boolean status = userService.updateOne(vo);
-        if (status) return R.success("更新资料成功！");
-        return R.failed("更新资料失败！");
+        boolean status = userService.renewal(vo);
+
+        return status ? R.success("更新资料成功！") : R.failed("更新资料失败！");
     }
 
 }
