@@ -61,17 +61,19 @@ const formRules = reactive<FormRules>({
 
 function confirmGetVerifyCode() {
   FormValidatorsUtil.getVerifyCode(interval, coudButtonCount, codeButtonDisabled, callback => {
-    UserApi.askMailCaptcha({ email: formData.email }, () => callback());
+    UserApi.askRegisterMailCaptcha({ email: formData.email }, () => callback());
   });
 }
 
 function confirmSubmitForm() {
   FormValidatorsUtil.validate(formRef.value, () => {
-    UserApi.verifyMailCaptcha(formData, () => {
-      UserApi.emailRegister({ email: formData.email, password: formData.password }, () => {
+    UserApi.registerWithMailCaptcha(
+      formData,
+      { email: formData.email, captcha: formData.captcha },
+      () => {
         ElMessage.success("请返回登录页面进行邮箱登录！");
-      });
-    });
+      }
+    );
   });
 }
 </script>

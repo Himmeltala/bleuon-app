@@ -48,7 +48,7 @@ function confirmGetVerifyCode() {
     coudButtonCount,
     codeButtonDisabled,
     (callback: any) => {
-      UserApi.askMailCaptcha({ email: formData.email }, () => callback());
+      UserApi.askResetMailCaptcha({ email: formData.email }, () => callback());
     }
   );
 }

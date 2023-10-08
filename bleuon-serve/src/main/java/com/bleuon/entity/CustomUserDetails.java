@@ -34,6 +34,15 @@ public class CustomUserDetails implements UserDetails {
                 .collect(Collectors.toList());
     }
 
+    public CustomUserDetails(String id, String username, String password, List<String> authorities) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.authorities = authorities.stream()
+                .map(SimpleGrantedAuthority::new) // 将String权限名称转换为GrantedAuthority对象
+                .collect(Collectors.toList());
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;

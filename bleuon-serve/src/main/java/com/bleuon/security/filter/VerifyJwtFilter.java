@@ -49,8 +49,11 @@ public class VerifyJwtFilter extends OncePerRequestFilter {
 
             if (expire != null && expire != -2) {
                 List<String> authorities = mapper.getAuthority(Map.of("username", claims.get("username")));
-                CustomUserDetails details = new CustomUserDetails((String) claims.get("username"), "******", authorities);
-                details.setId((String) claims.get("id"));
+
+                String id = (String) claims.get("id");
+                String username = (String) claims.get("username");
+                CustomUserDetails details = new CustomUserDetails(id, username, "******", authorities);
+
                 SecurityContext context = SecurityContextHolder.createEmptyContext();
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(details, details.getPassword(), details.getAuthorities());

@@ -20,7 +20,7 @@ import java.util.Objects;
  * @author: zheng
  * @date: 2023/10/2
  */
-@Service("CollectFlowchartService")
+@Service
 @RequiredArgsConstructor
 public class CollectFlowchartService implements ICollectFlowchartService {
 

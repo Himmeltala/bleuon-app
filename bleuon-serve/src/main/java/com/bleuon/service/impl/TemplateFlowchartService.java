@@ -19,7 +19,7 @@ import java.util.Objects;
  * @date: 2023/10/5
  */
 @RequiredArgsConstructor
-@Service("TemplateFlowchartService")
+@Service
 public class TemplateFlowchartService implements ITemplateFlowchartService {
 
     private final TemplateFlowchartMapper mapper;

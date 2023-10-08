@@ -16,7 +16,7 @@ import java.util.List;
  * @author: zheng
  * @date: 2023/9/27
  */
-@Service("OfficialCellService")
+@Service
 @RequiredArgsConstructor
 public class OfficialCellService extends ServiceImpl<OfficialCellMapper, OfficialCell> implements IOfficialCellService {
 

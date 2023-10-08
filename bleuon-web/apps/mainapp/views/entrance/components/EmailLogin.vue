@@ -39,14 +39,14 @@ function confirmGetVerifyCode() {
     coudButtonCount,
     codeButtonDisabled,
     (callback: any) => {
-      UserApi.askMailCaptcha({ email: formData.email }, () => callback());
+      UserApi.askLoginMailCaptcha({ email: formData.email }, () => callback());
     }
   );
 }
 
 function confirmSubmitForm() {
   FormValidatorsUtil.validate(formRef.value, () => {
-    UserApi.verifyMailCaptcha(formData, token => {
+    UserApi.loginWithMailCaptcha(formData, token => {
       localStorage.setToken(KeyVals.MAINAPP_TOKEN_KEY, token);
       UserApi.fineByToken().then(data => {
         useStorage<UserData>(KeyVals.MAINAPP_USER, {}).value = data;

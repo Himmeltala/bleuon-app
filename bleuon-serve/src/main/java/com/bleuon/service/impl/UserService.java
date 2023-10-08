@@ -21,7 +21,7 @@ import java.util.Objects;
  * @author: zheng
  * @date: 2023/10/6
  */
-@Service("UserService")
+@Service
 @RequiredArgsConstructor
 public class UserService extends ServiceImpl<UserMapper, User> implements IUserService {
 
@@ -31,6 +31,25 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
     @Override
     public R<UserDto> findById(User params) {
         User user = query().eq("id", params.getId()).one();
+        if (!Objects.isNull(user)) {
+            UserDto dto = new UserDto();
+            BeanUtil.copyProperties(user, dto);
+            return R.success(dto);
+        }
+        return R.failed("不存在该用户！");
+    }
+
+    public UserDto findByEmail(String email) {
+        User exists = query().eq("email", email).one();
+        if (Objects.isNull(exists)) return null;
+
+        UserDto dto = new UserDto();
+        BeanUtil.copyProperties(exists, dto);
+        return dto;
+    }
+
+    public R<UserDto> findByUsername(String username) {
+        User user = query().eq("username", username).one();
         if (!Objects.isNull(user)) {
             UserDto dto = new UserDto();
             BeanUtil.copyProperties(user, dto);

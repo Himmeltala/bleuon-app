@@ -27,7 +27,7 @@ import java.util.UUID;
  * @author: zheng
  * @date: 2023/9/29
  */
-@Service("FlowchartService")
+@Service
 @RequiredArgsConstructor
 public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> implements IFlowchartService {
 

@@ -15,7 +15,7 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @description:
+ * @description: 与 redis 交互，发送邮箱、校验验证码是否正确、校验验证码是否存在、验证码是否过期登
  * @package: com.bleuon.service
  * @author: zheng
  * @date: 2023/10/8

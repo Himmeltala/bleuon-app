@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 用户名密码登录 Service 实现类。
@@ -31,17 +32,14 @@ public class UserDetailsServiceImpl extends ServiceImpl<UserMapper, User> implem
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = findUserByFiled(username);
+        User exists = findUserByFiled(username);
 
-        if (user == null) {
+        if (Objects.isNull(exists)) {
             throw new UsernameNotFoundException("用户名或密码错误！");
         }
 
-        List<String> authorities = mapper.getAuthority(Map.of("username", user.getUsername()));
-        CustomUserDetails details = new CustomUserDetails(user.getUsername(), user.getPassword(), authorities);
-        details.setId(user.getId());
-
-        return details;
+        List<String> authorities = mapper.getAuthority(Map.of("username", exists.getUsername()));
+        return new CustomUserDetails(exists.getId(), exists.getUsername(), exists.getPassword(), authorities);
     }
 
     private User findUserByFiled(String field) {
