@@ -46,11 +46,7 @@ const formRules = reactive<FormRules>({
 function confirmRegister() {
   FormValidatorsUtil.validate(formRef.value, async () => {
     UserApi.accountRegister(formData, () => {
-      ElMessage({
-        type: "success",
-        message: "恭喜您，请返回登录页面进行登录！",
-        grouping: true
-      });
+      ElMessage.success("请返回登录页面进行登录！");
     });
   });
 }

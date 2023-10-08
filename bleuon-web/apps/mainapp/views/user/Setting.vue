@@ -38,12 +38,12 @@ const isRePasswdCorrect = ref(false);
 
 const renewalPwdFormRef = ref();
 const renewalPwdFormData = reactive({
-  code: "",
+  captcha: "",
   password: "",
   rePasswd: ""
 });
 const renewalPwdFormRules = reactive<FormRules>({
-  code: [
+  captcha: [
     {
       required: true,
       message: "请输入验证码",
@@ -80,25 +80,28 @@ const renewalPwdFormRules = reactive<FormRules>({
 
 function getRenewalPwdCode() {
   FormValidatorsUtil.getVerifyCode(interval, coudButtonCount, codeButtonDisabled, callback => {
-    UserApi.askMailVerifyCode(formData.value.email, "reset", () => callback());
+    UserApi.askMailCaptcha({ email: formData.value.email }, () => callback());
   });
 }
 
 function confirmRenewalPwd() {
   FormValidatorsUtil.validate(renewalPwdFormRef.value, () => {
-    UserApi.verifyMailCode(formData.value, renewalPwdFormData.code, "reset", () => {
-      UserApi.renewalByToken(
-        {
-          password: renewalPwdFormData.password
-        },
-        () => {
-          UserApi.logout(() => {
-            location.reload();
-            ElMessage.success("恭喜您，请返回登录页面进行邮箱登录！");
-          });
-        }
-      );
-    });
+    UserApi.verifyMailCaptcha(
+      { captcha: renewalPwdFormData.captcha, email: formData.value.email },
+      () => {
+        UserApi.renewalByToken(
+          {
+            password: renewalPwdFormData.password
+          },
+          () => {
+            UserApi.logout(() => {
+              location.reload();
+              ElMessage.success("请重新登录！");
+            });
+          }
+        );
+      }
+    );
   });
 }
 </script>
@@ -206,7 +209,7 @@ function confirmRenewalPwd() {
             label-position="left"
             :model="renewalPwdFormData"
             :rules="renewalPwdFormRules">
-            <el-form-item label="验证码" prop="code">
+            <el-form-item label="验证码" prop="captcha">
               <div class="f-c-b flex-wrap w-100%">
                 <div class="w-45%">
                   <el-input
@@ -214,7 +217,7 @@ function confirmRenewalPwd() {
                     size="small"
                     :maxlength="6"
                     :minlength="6"
-                    v-model="renewalPwdFormData.code"
+                    v-model="renewalPwdFormData.captcha"
                     clearable
                     placeholder="请输入6位验证码" />
                 </div>

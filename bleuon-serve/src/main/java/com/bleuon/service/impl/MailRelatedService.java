@@ -8,7 +8,6 @@ import com.bleuon.entity.User;
 import com.bleuon.entity.dto.Token;
 import com.bleuon.mapper.AuthorityMapper;
 import com.bleuon.mapper.UserMapper;
-import com.bleuon.service.IMailRelatedService;
 import com.bleuon.utils.JwtUtil;
 import com.bleuon.utils.NumbersUtil;
 import com.bleuon.utils.http.R;
@@ -41,7 +40,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Service("MailRelatedService")
 @RequiredArgsConstructor
-public class MailRelatedService extends ServiceImpl<UserMapper, User> implements IMailRelatedService {
+public class MailRelatedService extends ServiceImpl<UserMapper, User> {
 
     private final JavaMailSender mailSender;
 
@@ -56,28 +55,31 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> implements
 
     @Getter
     @Setter
-    private String cacheCode;
+    private String captcha;
 
     @Getter
     @Setter
-    private String sender;
+    private String principal;
 
     /**
      * 获取邮箱验证码
+     * <p>
+     * 存储发送过来的验证码类型+邮箱+ip地址，再次发送的时候获取redis中是否有这个验证码
+     * 如果有这个验证码发送成功，没有发送失败，说明重复发送了
      *
      * @param email 电子邮箱地址
      * @param type  验证码类型
      * @param ip    请求 IP
      */
-    @Override
     public R<Object> getMailVerifyCode(String email, String type, String ip) {
-        setCacheCode(type + ":" + email);
-        setSender(type + ":" + email + ":" + ip);
+        setCaptcha(type + ":" + email);
+        setPrincipal(type + ":" + email + ":" + ip);
 
-        if (isMultiGet())
+        if (Boolean.TRUE.equals(redisTemplate.hasKey(getPrincipal())))
             return R.failed("60s 内只能获取一次验证码！");
-
-        rememberIp(ip);
+        else {
+            memorizePrincipal(ip);
+        }
 
         if (type.equals("register"))
             return getRegisterVerifyCode(email, type);
@@ -93,11 +95,10 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> implements
      * @param code 验证码
      */
     @Transactional
-    @Override
     public R<Token> verifyMailCode(User user, String type, String code) {
         try {
-            setCacheCode(type + ":" + user.getEmail());
-            String cacheCode = redisTemplate.opsForValue().get(getCacheCode());
+            setCaptcha(type + ":" + user.getEmail());
+            String cacheCode = redisTemplate.opsForValue().get(getCaptcha());
 
             if (cacheCode == null)
                 return R.failed("验证码和邮箱不匹配！", null);
@@ -113,7 +114,7 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> implements
                 token = verifyLoginMailCode(user);
             else
                 token = R.success("验证码正确！");
-            redisTemplate.delete(getCacheCode());
+            redisTemplate.delete(getCaptcha());
 
             return token;
         } catch (Exception e) {
@@ -122,11 +123,11 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> implements
     }
 
     private boolean isMultiGet() {
-        return Boolean.TRUE.equals(redisTemplate.hasKey(getSender()));
+        return Boolean.TRUE.equals(redisTemplate.hasKey(getPrincipal()));
     }
 
-    private void rememberIp(String ip) {
-        redisTemplate.opsForValue().set(getSender(), ip, 1, TimeUnit.MINUTES);
+    private void memorizePrincipal(String ip) {
+        redisTemplate.opsForValue().set(getPrincipal(), ip, 1, TimeUnit.MINUTES);
     }
 
     private boolean isMailExist(String email) {
@@ -154,7 +155,7 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> implements
 
     private String generateCode() {
         String code = String.valueOf(NumbersUtil.random(100000, 999999));
-        redisTemplate.opsForValue().set(getCacheCode(), code, 3, TimeUnit.MINUTES);
+        redisTemplate.opsForValue().set(getCaptcha(), code, 3, TimeUnit.MINUTES);
         return code;
     }
 

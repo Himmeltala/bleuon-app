@@ -24,6 +24,7 @@ import java.util.Objects;
  * @author: zheng
  * @date: 2023/10/5
  */
+@Validated
 @RequiredArgsConstructor
 @RequestMappingPrefix("/community/template")
 public class TemplateCommunityController {
@@ -47,9 +48,7 @@ public class TemplateCommunityController {
     }
 
     @PostMapping("/replicate")
-    public R<Object> replicate(@RequestHeader(KeyVals.Token) String token,
-                               @RequestBody @Validated TemplateFlowchart body
-    ) {
+    public R<Object> replicate(@RequestHeader(KeyVals.Token) String token, @RequestBody TemplateFlowchart body) {
         Claims claims = JwtUtil.parseJwt(token);
         String uid = (String) claims.get("id");
 
@@ -62,15 +61,13 @@ public class TemplateCommunityController {
     }
 
     @PutMapping("/renewal")
-    public R<Object> renewal(@RequestBody @Validated TemplateFlowchart data) {
+    public R<Object> renewal(@RequestBody TemplateFlowchart data) {
         boolean status = templateFlowchartService.renewal(data);
         return status ? R.success("更新成功！") : R.failed("更新失败！");
     }
 
     @PostMapping("/add/collect")
-    public R<Object> addCollect(@RequestHeader(KeyVals.Token) String token,
-                                @RequestBody @Validated TemplateFlowchart data
-    ) {
+    public R<Object> addCollect(@RequestHeader(KeyVals.Token) String token, @RequestBody TemplateFlowchart data) {
         Claims claims = JwtUtil.parseJwt(token);
         String uid = (String) claims.get("id");
 

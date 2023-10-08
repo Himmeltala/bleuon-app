@@ -13,7 +13,7 @@ const isRePasswdCorrect = ref(false);
 const formRef = ref();
 const formData = reactive({
   email: "",
-  code: "",
+  captcha: "",
   password: "",
   rePasswd: ""
 });
@@ -24,7 +24,7 @@ const formRules = reactive<FormRules>({
     { validator: FormValidatorsUtil.emailValidator(isEmailCorrect), trigger: "change" },
     { validator: FormValidatorsUtil.emailValidator(isEmailCorrect), trigger: "blur" }
   ],
-  code: [
+  captcha: [
     {
       required: true,
       message: "请输入验证码",
@@ -61,17 +61,15 @@ const formRules = reactive<FormRules>({
 
 function confirmGetVerifyCode() {
   FormValidatorsUtil.getVerifyCode(interval, coudButtonCount, codeButtonDisabled, callback => {
-    UserApi.askMailVerifyCode(formData.email, "register", () => callback());
+    UserApi.askMailCaptcha({ email: formData.email }, () => callback());
   });
 }
 
 function confirmSubmitForm() {
   FormValidatorsUtil.validate(formRef.value, () => {
-    UserApi.verifyMailCode(formData, formData.code, "register", () => {
-      ElMessage({
-        type: "success",
-        message: "恭喜您，请返回登录页面进行邮箱登录！",
-        grouping: true
+    UserApi.verifyMailCaptcha(formData, () => {
+      UserApi.emailRegister({ email: formData.email, password: formData.password }, () => {
+        ElMessage.success("请返回登录页面进行邮箱登录！");
       });
     });
   });
@@ -84,11 +82,11 @@ function confirmSubmitForm() {
       <el-form-item prop="email">
         <el-input v-model="formData.email" clearable placeholder="请输入邮箱" size="large" />
       </el-form-item>
-      <el-form-item prop="code">
+      <el-form-item prop="captcha">
         <div class="f-c-b w-100%">
           <div class="w-70%">
             <el-input
-              v-model="formData.code"
+              v-model="formData.captcha"
               :maxlength="6"
               :minlength="6"
               class="w-100%"

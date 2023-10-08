@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
  * @author: zheng
  * @date: 2023/10/6
  */
+@Validated
 @RequiredArgsConstructor
 @RequestMappingPrefix("/user")
 public class UserController {
@@ -28,7 +29,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/find/by/id")
-    public R<UserDto> findById(@Validated User params) {
+    public R<UserDto> findById(User params) {
         return userService.findById(params);
     }
 
@@ -42,7 +43,7 @@ public class UserController {
     }
 
     @PostMapping("/renewal/by/token")
-    public R<Object> renewalByToken(@RequestHeader(KeyVals.Token) String token, @Validated @RequestBody User body) {
+    public R<Object> renewalByToken(@RequestHeader(KeyVals.Token) String token, @RequestBody User body) {
         Claims claims = JwtUtil.parseJwt(token);
         String uid = (String) claims.get("id");
         body.setId(uid);

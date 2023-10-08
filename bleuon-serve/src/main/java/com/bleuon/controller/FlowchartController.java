@@ -27,6 +27,7 @@ import java.util.Objects;
  * @author: zheng
  * @date: 2023/9/29
  */
+@Validated
 @RequiredArgsConstructor
 @RequestMappingPrefix("/flowchart")
 public class FlowchartController {
@@ -35,7 +36,7 @@ public class FlowchartController {
     private final CollectFlowchartService collectFlowchartService;
 
     @PutMapping("/renewal")
-    public R<Object> renewal(@RequestBody @Validated Flowchart body) {
+    public R<Object> renewal(@RequestBody Flowchart body) {
         boolean status = flowchartService.renewal(body);
         return status ? R.success("更新流程图成功！") : R.failed("更新流程图失败！");
     }
@@ -69,7 +70,7 @@ public class FlowchartController {
 
     @PostMapping("/replicate")
     public R<Flowchart> replicate(@RequestHeader(KeyVals.Token) String token,
-                                  @RequestBody @Validated Flowchart body
+                                  @RequestBody Flowchart body
     ) {
         Claims claims = JwtUtil.parseJwt(token);
         String uid = (String) claims.get("id");
@@ -87,6 +88,7 @@ public class FlowchartController {
     @GetMapping("/find/all/collect/by/criteria")
     public R<List<CollectFlowchartDto>> findAllCollectByCriteria(
             @RequestHeader(KeyVals.Token) String token,
+            @Validated
             FlowchartCriteria criteria
     ) {
         Claims claims = JwtUtil.parseJwt(token);
@@ -113,7 +115,7 @@ public class FlowchartController {
     @PostMapping("/add/collect")
     public R<Object> addCollect(
             @RequestHeader(KeyVals.Token) String token,
-            @RequestBody @Validated CollectFlowchartVo body
+            @RequestBody CollectFlowchartVo body
     ) {
         Claims claims = JwtUtil.parseJwt(token);
         String uid = (String) claims.get("id");
@@ -122,7 +124,7 @@ public class FlowchartController {
     }
 
     @PostMapping("/release")
-    public R<Object> release(@RequestBody @Validated TemplateFlowchart body) {
+    public R<Object> release(@RequestBody TemplateFlowchart body) {
         return flowchartService.release(body);
     }
 

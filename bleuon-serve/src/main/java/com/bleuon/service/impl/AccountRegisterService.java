@@ -12,6 +12,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service("AccountRegisterService")
@@ -19,34 +22,60 @@ import java.util.UUID;
 public class AccountRegisterService extends ServiceImpl<UserMapper, User> implements IAccountRegisterService {
 
     private final BCryptPasswordEncoder passwordEncoder;
-
     private final AuthorityMapper authorityMapper;
 
     @Transactional
     @Override
-    public R<Object> register(User user) {
+    public R<Object> registerByAccount(User body) {
         try {
-            if (hasExistUser(user.getUsername()))
-                return R.failed("该用户名已经被注册！");
+            User exists = query().eq("username", body.getUsername()).one();
 
-            return saveUser(user);
+            if (!Objects.isNull(exists)) {
+                return R.error("用户名已被注册！");
+            }
+
+            body.setPassword(passwordEncoder.encode(body.getPassword()));
+            body.setId(UUID.randomUUID().toString());
+
+            boolean status = this.save(body);
+            if (status) {
+                authorityMapper.setAuthority(body.getId(), AuthorityType.USER, body.getUsername());
+                return R.success("注册成功！");
+            } else {
+                return R.error("注册失败！");
+            }
         } catch (Exception e) {
             throw new RuntimeException();
         }
     }
 
-    private boolean hasExistUser(String username) {
-        return query().eq("username", username).one() != null;
-    }
+    @Transactional
+    @Override
+    public R<Object> registerByEmail(User body) {
+        try {
+            User exists = query().eq("email", body.getEmail()).one();
 
-    private R<Object> saveUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setId(UUID.randomUUID().toString());
+            if (!Objects.isNull(exists)) {
+                return R.error("邮箱已被注册！");
+            }
 
-        this.save(user);
-        authorityMapper.setAuthority(user.getId(), AuthorityType.USER, user.getUsername());
+            String uuid = UUID.randomUUID().toString();
 
-        return R.success("恭喜你，注册用户成功！");
+            body.setId(uuid);
+            body.setUsername("用户_" + uuid);
+            body.setPassword(passwordEncoder.encode(body.getPassword()));
+            body.setRegisterDate(new Timestamp(new Date().getTime()));
+            boolean status = this.save(body);
+
+            if (status) {
+                authorityMapper.setAuthority(body.getId(), AuthorityType.USER, body.getUsername());
+                return R.success("注册成功！");
+            } else {
+                return R.error("注册失败！");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
     }
 
 }

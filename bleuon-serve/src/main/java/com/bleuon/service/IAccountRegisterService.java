@@ -5,6 +5,7 @@ import com.bleuon.utils.http.R;
 
 public interface IAccountRegisterService {
 
-    R<Object> register(User user);
+    R<Object> registerByAccount(User body);
 
+    R<Object> registerByEmail(User body);
 }

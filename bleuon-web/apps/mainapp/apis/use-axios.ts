@@ -36,6 +36,7 @@ request.interceptors.response.use(
       if (data.message) {
         ElMessage.error(data.message);
       }
+      return Promise.reject(config);
     } else if (data.code === 400) {
       if (data.message) {
         ElMessage.warning(data.message);

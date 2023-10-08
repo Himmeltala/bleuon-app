@@ -12,7 +12,7 @@ import request from "./use-axios";
  *
  * @param entity 用户实体类
  */
-export function accountLogin(entity: UserData, success: Function, error?: Function) {
+export function accountLogin(entity: UserData, success: (res: TokenR) => void) {
   const body = {
     username: entity.username,
     password: entity.password
@@ -22,19 +22,9 @@ export function accountLogin(entity: UserData, success: Function, error?: Functi
     "Content-Type": "application/x-www-form-urlencoded"
   };
 
-  request
-    .post<R<TokenR>>("/auth/login", body, { headers })
-    .then(({ data }) => {
-      localStorage.setToken(KeyVals.MAINAPP_TOKEN_KEY, data.data);
-      fineByToken().then(res => {
-        const user = useStorage<UserData>(KeyVals.MAINAPP_USER, {});
-        user.value = res;
-        success(data);
-      });
-    })
-    .catch(err => {
-      error && error(err);
-    });
+  request.post<R<TokenR>>("/auth/login", body, { headers }).then(({ data }) => {
+    success(data.data);
+  });
 }
 
 /**
@@ -59,21 +49,31 @@ export function accountRegister(entity: UserData, success?: Function, error?: Fu
 }
 
 /**
+ * 邮箱注册
+ *
+ * @param body
+ * @param success
+ */
+export function emailRegister(body: UserData, success?: Function) {
+  request.post<R>("/auth/email-register", body).then(({ data }) => {
+    success && success(data);
+  });
+}
+
+/**
  * 获取验证码
  *
- * @param email 电子邮箱地址
- * @param type login（登录）、reset（重置）、register（注册）
+ * @param params
  */
-export function askMailVerifyCode(
-  email: string,
-  type: "login" | "register" | "reset",
+export function askMailCaptcha(
+  params: {
+    email: string;
+  },
   success?: Function,
   error?: Function
 ) {
-  const params = { type, email };
-
   request
-    .get<R>("/auth/aks-mail-verify-code", { params })
+    .get<R>("/auth/aks-mail-captcha", { params })
     .then(({ data }) => {
       success && success(data);
     })
@@ -85,40 +85,18 @@ export function askMailVerifyCode(
 /**
  * 校验邮箱验证码
  *
- * @param entity 用户实体类
- * @param code 验证码
- * @param type login（登录）、reset（重置）、register（注册）
+ * @param body
  */
-export function verifyMailCode(
-  entity: UserData,
-  code: string,
-  type: "login" | "register" | "reset",
-  success: Function,
-  error?: Function
+export function verifyMailCaptcha(
+  body: {
+    email: string;
+    captcha: string;
+  },
+  success: (res: TokenR) => void
 ) {
-  const body = {
-    email: entity.email,
-    password: entity.password
-  };
-
-  const params = { type, code };
-
-  request
-    .post<R<TokenR>>("/auth/verify-mail-code", body, { params })
-    .then(({ data }) => {
-      if (type === "login") {
-        localStorage.setToken(KeyVals.MAINAPP_TOKEN_KEY, data.data);
-        fineByToken().then(res => {
-          const user = useStorage<UserData>(KeyVals.MAINAPP_USER, {});
-          user.value = res;
-          success(data);
-        });
-      }
-      success(data);
-    })
-    .catch(err => {
-      error && error();
-    });
+  request.post<R<TokenR>>("/auth/verify-mail-captcha", body).then(({ data }) => {
+    success(data.data);
+  });
 }
 
 /**

@@ -22,7 +22,7 @@ const isCodeCorrect = ref(false);
 const formRef = ref();
 const formData = reactive({
   email: "",
-  code: ""
+  captcha: ""
 });
 
 const formRules = reactive<FormRules>({
@@ -31,7 +31,7 @@ const formRules = reactive<FormRules>({
     { validator: FormValidatorsUtil.emailValidator(isEmailCorrect), trigger: "change" },
     { validator: FormValidatorsUtil.emailValidator(isEmailCorrect), trigger: "blur" }
   ],
-  code: [
+  captcha: [
     {
       required: true,
       message: "请输入验证码",
@@ -48,7 +48,7 @@ function confirmGetVerifyCode() {
     coudButtonCount,
     codeButtonDisabled,
     (callback: any) => {
-      UserApi.askMailVerifyCode(formData.email, "reset", () => callback());
+      UserApi.askMailCaptcha({ email: formData.email }, () => callback());
     }
   );
 }
@@ -57,7 +57,7 @@ const isVerifySuccess = ref(false);
 
 function confirmSubmitForm() {
   FormValidatorsUtil.validate(formRef.value, () => {
-    UserApi.verifyMailCode(formData, formData.code, "reset", () => {
+    UserApi.verifyMailCaptcha(formData, () => {
       isVerifySuccess.value = true;
       emits("update:email", formData.email);
     });
@@ -71,11 +71,11 @@ function confirmSubmitForm() {
       <el-form-item prop="email">
         <el-input v-model="formData.email" clearable placeholder="请输入邮箱" size="large" />
       </el-form-item>
-      <el-form-item prop="code">
+      <el-form-item prop="captcha">
         <div class="f-c-b w-100%">
           <div class="w-70%">
             <el-input
-              v-model="formData.code"
+              v-model="formData.captcha"
               :maxlength="6"
               :minlength="6"
               class="w-100%"

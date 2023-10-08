@@ -17,6 +17,8 @@ spring:
     default-encoding: UTF-8
     port: 587
     sender: himmelbleu@qq.com
+    timeout: 1
+    expire: 3
 
 mybatis-plus:
   configuration:
