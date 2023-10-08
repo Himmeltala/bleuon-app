@@ -5,6 +5,7 @@
  * @since 2023/8/23
  * @link https://github.com/himmelbleu/bleuon-app
  */
+
 import { UserApi } from "@mainapp/apis";
 
 const user = useStorage<UserData>(KeyVals.MAINAPP_USER, {});

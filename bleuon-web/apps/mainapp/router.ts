@@ -150,7 +150,6 @@ router.beforeEach((to, from, next) => {
     next();
   } else if (name.startsWith("enter-") && isAuth) {
     next("/workbench");
-    ElMessage.warning("您已登陆！已导航至首页");
   } else {
     next();
   }

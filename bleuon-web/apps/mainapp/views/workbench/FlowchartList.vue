@@ -216,7 +216,10 @@ async function searchFiles() {
       <el-dialog v-model="dialogVisible" title="修改文件名称" width="30%">
         <el-form :model="flowchartList[clickedIndex]" :rules="fileNameRules">
           <el-form-item prop="fileName">
-            <el-input v-model="flowchartList[clickedIndex].fileName" placeholder="请输入文件名称" />
+            <el-input
+              @keyup.enter="renewalFlowchart"
+              v-model="flowchartList[clickedIndex].fileName"
+              placeholder="请输入文件名称" />
           </el-form-item>
         </el-form>
         <template #footer>

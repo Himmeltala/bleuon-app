@@ -5,6 +5,16 @@
  * @since 2023/8/23
  * @link https://github.com/himmelbleu/bleuon-app
  */
+
+import { UserApi } from "@mainapp/apis";
+
+const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
+
+function confirmLogout() {
+  UserApi.logout(() => {
+    location.reload();
+  });
+}
 </script>
 
 <template>
@@ -22,14 +32,44 @@
           <div class="hover">专题</div>
         </div>
         <div class="flex-grow-1 f-c-e">
-          <router-link to="/entrance">
-            <el-button text>
-              <span class="text-text-primary">登录</span>
-            </el-button>
-          </router-link>
-          <router-link to="/entrance">
-            <el-button type="primary">免费注册</el-button>
-          </router-link>
+          <template v-if="token">
+            <router-link class="mr-4" to="/entrance">
+              <el-button type="primary">
+                <span>进入工作台</span>
+                <template #icon>
+                  <div class="i-tabler-door-enter"></div>
+                </template>
+              </el-button>
+            </router-link>
+            <el-popconfirm title="是否确定退出登录？" @confirm="confirmLogout">
+              <template #reference>
+                <el-button type="danger" text bg>
+                  <span>退出</span>
+                  <template #icon>
+                    <div class="i-tabler-logout"></div>
+                  </template>
+                </el-button>
+              </template>
+            </el-popconfirm>
+          </template>
+          <template v-else>
+            <router-link class="mr-4" to="/entrance">
+              <el-button text bg>
+                <span>登录</span>
+                <template #icon>
+                  <div class="i-tabler-key"></div>
+                </template>
+              </el-button>
+            </router-link>
+            <router-link to="/entrance">
+              <el-button type="primary">
+                <span>注册</span>
+                <template #icon>
+                  <div class="i-tabler-login-2"></div>
+                </template>
+              </el-button>
+            </router-link>
+          </template>
         </div>
       </div>
     </div>

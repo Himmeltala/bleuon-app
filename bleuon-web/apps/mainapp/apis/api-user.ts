@@ -26,7 +26,11 @@ export function accountLogin(entity: UserData, success: Function, error?: Functi
     .post<R<TokenR>>("/auth/login", body, { headers })
     .then(({ data }) => {
       localStorage.setToken(KeyVals.MAINAPP_TOKEN_KEY, data.data);
-      success(data);
+      fineByToken().then(res => {
+        const user = useStorage<UserData>(KeyVals.MAINAPP_USER, {});
+        user.value = res;
+        success(data);
+      });
     })
     .catch(err => {
       error && error(err);
@@ -104,8 +108,12 @@ export function verifyMailCode(
     .then(({ data }) => {
       if (type === "login") {
         localStorage.setToken(KeyVals.MAINAPP_TOKEN_KEY, data.data);
+        fineByToken().then(res => {
+          const user = useStorage<UserData>(KeyVals.MAINAPP_USER, {});
+          user.value = res;
+          success(data);
+        });
       }
-      success(data);
     })
     .catch(err => {
       error && error();

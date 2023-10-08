@@ -28,7 +28,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/find/by/id")
-    public R<UserDto> findOne(@Validated User vo) {
+    public R<UserDto> findById(@Validated User vo) {
         return userService.findById(vo);
     }
 

@@ -41,7 +41,9 @@ function createFlowchart() {
     class="menu slim-slider h-100vh flow-auto px-5 b-r-1 b-r-solid b-border-primary bg-bg-primary">
     <div class="menu-header">
       <div class="mt-5">
-        <img class="h-15 w-40 object-cover" src="/bleuon-icon.png" />
+        <router-link to="/">
+          <img class="h-15 w-40 object-cover" src="/bleuon-icon.png" />
+        </router-link>
       </div>
       <el-dropdown :teleported="false" class="mt-5 w-100%" trigger="click">
         <el-button class="w-100%" type="primary">＋新建</el-button>
@@ -116,7 +118,7 @@ function createFlowchart() {
 
 <style lang="scss" scoped>
 .menu-item {
-  --uno: cursor-pointer select-none p-3 rd-2 transition-all-300;
+  --uno: cursor-pointer select-none p-2 rd-2 transition-all-300;
 
   &.active {
     --uno: bg-theme-6;

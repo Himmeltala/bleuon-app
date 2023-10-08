@@ -29,15 +29,15 @@ const emits = defineEmits(["download", "replicate", "delete", "reset"]);
 
 <template>
   <div class="file relative bg-bg-overlay rd-2">
-    <router-link :to="path">
-      <div class="file-cover h-50 rd-2">
+    <div class="file-cover h-50 rd-2">
+      <router-link :to="path">
         <img
           v-if="fileImage"
           :src="fileImage"
           class="w-100% h-100% rd-2 object-fill cursor-pointer bg-white" />
         <div v-else class="w-100% h-100% rd-2 cursor-pointer bg-white"></div>
-      </div>
-    </router-link>
+      </router-link>
+    </div>
     <el-dropdown :teleported="false">
       <div class="file-options absolute top--11.75rem left-0.8rem">
         <div class="file-options-icon f-c-c cursor-pointer w-10 h-6 rd-2 bg-gray-600">

@@ -9,6 +9,7 @@
 import { UserApi } from "@mainapp/apis";
 
 const root = document.querySelector("html");
+const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
 const mode = useStorage(KeyVals.MAINAPP_THEME_MODE, "");
 const user = useStorage<UserData>(KeyVals.MAINAPP_USER, {});
 
@@ -18,9 +19,11 @@ onBeforeMount(() => {
 });
 
 onMounted(() => {
-  UserApi.fineByToken().then(res => {
-    user.value = res;
-  });
+  if (token) {
+    UserApi.fineByToken().then(res => {
+      user.value = res;
+    });
+  }
 });
 </script>
 
