@@ -8,13 +8,14 @@
 
 import { UserApi } from "@mainapp/apis";
 import { ElSelectData } from "@common/data";
+import { FormValidatorsUtil } from "@common/utils";
 
 // components
 import CommonHeader from "@mainapp/components/CommonHeader.vue";
 
 const formData = useStorage<UserData>(KeyVals.MAINAPP_USER, {});
 
-function saveBasicData() {
+function renewalBasicData() {
   UserApi.renewalByToken({
     username: formData.value.username,
     profession: formData.value.profession,
@@ -26,6 +27,80 @@ function saveBasicData() {
 }
 
 function resetBasicData() {}
+
+let interval: number;
+const renewalPwdDialog = ref(false);
+const coudButtonCount = ref(60);
+const codeButtonDisabled = ref(false);
+const isCodeCorrect = ref(false);
+const isPasswordCorrect = ref(false);
+const isRePasswdCorrect = ref(false);
+
+const renewalPwdFormRef = ref();
+const renewalPwdFormData = reactive({
+  code: "",
+  password: "",
+  rePasswd: ""
+});
+const renewalPwdFormRules = reactive<FormRules>({
+  code: [
+    {
+      required: true,
+      message: "请输入验证码",
+      trigger: "blur"
+    },
+    { validator: FormValidatorsUtil.verifyCodeValidator(isCodeCorrect), trigger: "change" },
+    { validator: FormValidatorsUtil.verifyCodeValidator(isCodeCorrect), trigger: "blur" }
+  ],
+  password: [
+    {
+      required: true,
+      message: "请输入密码",
+      trigger: "blur"
+    },
+    { validator: FormValidatorsUtil.passwordValidator(isPasswordCorrect), trigger: "change" },
+    { validator: FormValidatorsUtil.passwordValidator(isPasswordCorrect), trigger: "blur" }
+  ],
+  rePasswd: [
+    {
+      required: true,
+      message: "请确认密码",
+      trigger: "blur"
+    },
+    {
+      validator: FormValidatorsUtil.rePasswdValidator(isRePasswdCorrect, renewalPwdFormData),
+      trigger: "change"
+    },
+    {
+      validator: FormValidatorsUtil.rePasswdValidator(isRePasswdCorrect, renewalPwdFormData),
+      trigger: "blur"
+    }
+  ]
+});
+
+function getRenewalPwdCode() {
+  FormValidatorsUtil.getVerifyCode(interval, coudButtonCount, codeButtonDisabled, callback => {
+    UserApi.askMailVerifyCode(formData.value.email, "reset", () => callback());
+  });
+}
+
+function confirmRenewalPwd() {
+  FormValidatorsUtil.validate(renewalPwdFormRef.value, () => {
+    UserApi.verifyMailCode(formData.value, renewalPwdFormData.code, "reset", () => {
+      UserApi.renewalByToken(
+        {
+          password: renewalPwdFormData.password
+        },
+        () => {
+          UserApi.logout(() => {
+            location.reload();
+            ElMessage.success("恭喜您，请返回登录页面进行邮箱登录！");
+          });
+        }
+      );
+    });
+  });
+}
 </script>
 
 <template>
@@ -77,7 +152,7 @@ function resetBasicData() {}
           </div>
           <div class="f-c-c mt-10">
             <el-button @click="resetBasicData">重置</el-button>
-            <el-button type="primary" @click="saveBasicData">保存资料</el-button>
+            <el-button type="primary" @click="renewalBasicData">保存资料</el-button>
           </div>
         </div>
         <div class="bg-bg-overlay rd-2 my-5 p-10">
@@ -85,40 +160,112 @@ function resetBasicData() {}
             账号安全
           </div>
           <div>
-            <!-- phone -->
-            <div class="mb-10 f-c-s">
-              <div class="f-c-c">
-                <div class="i-tabler-phone mr-2"></div>
-                <div>手机号</div>
-              </div>
-              <div class="ml-10 f-c-c">
-                <div class="text-text-secondary">{{ formData.phone }}</div>
-                <div class="ml-10 text-primary cursor-pointer">更换手机号</div>
-              </div>
-            </div>
-            <!-- email -->
-            <div class="mb-10 f-c-s">
-              <div class="f-c-c">
-                <div class="i-tabler-phone mr-2"></div>
-                <div>邮箱号</div>
-              </div>
-              <div class="ml-10 f-c-c">
-                <div class="text-text-secondary">{{ formData.email }}</div>
-                <div class="ml-10 text-primary cursor-pointer">更换邮箱号</div>
-              </div>
-            </div>
             <div class="f-c-s">
               <div class="f-c-c">
                 <div class="i-tabler-phone mr-2"></div>
+                <div>手机</div>
+              </div>
+              <div class="ml-10 f-c-s">
+                <div class="text-text-secondary mr-10">{{ formData.phone }}</div>
+                <el-button size="small" text bg>更换</el-button>
+              </div>
+            </div>
+            <div class="mt-5 f-c-s">
+              <div class="f-c-c">
+                <div class="i-tabler-at mr-2"></div>
+                <div>邮箱</div>
+              </div>
+              <div class="ml-10 f-c-s">
+                <div class="text-text-secondary mr-10">{{ formData.email }}</div>
+                <el-button size="small" text bg>更换</el-button>
+              </div>
+            </div>
+            <div class="mt-5 f-c-s">
+              <div class="f-c-c">
+                <div class="i-tabler-key mr-2"></div>
                 <div>密码</div>
               </div>
-              <div class="ml-10 f-c-c">
-                <div class="text-text-secondary">******</div>
-                <div class="ml-10 text-primary cursor-pointer">更换密码</div>
+              <div class="ml-10 f-c-s">
+                <div class="text-text-secondary mr-10">******</div>
+                <el-button
+                  size="small"
+                  type="danger"
+                  text
+                  bg
+                  @click="renewalPwdDialog = !renewalPwdDialog">
+                  修改
+                </el-button>
               </div>
             </div>
           </div>
         </div>
+        <el-dialog v-model="renewalPwdDialog" title="修改密码" width="30%">
+          <el-form
+            ref="renewalPwdFormRef"
+            label-width="80px"
+            label-position="left"
+            :model="renewalPwdFormData"
+            :rules="renewalPwdFormRules">
+            <el-form-item label="验证码" prop="code">
+              <div class="f-c-b flex-wrap w-100%">
+                <div class="w-45%">
+                  <el-input
+                    class="w-100%"
+                    size="small"
+                    :maxlength="6"
+                    :minlength="6"
+                    v-model="renewalPwdFormData.code"
+                    clearable
+                    placeholder="请输入6位验证码" />
+                </div>
+                <div class="w-50% f-c-s">
+                  <el-button
+                    plain
+                    type="primary"
+                    size="small"
+                    :disabled="codeButtonDisabled"
+                    @click="getRenewalPwdCode">
+                    <span v-if="coudButtonCount < 60 && coudButtonCount >= 0">
+                      请等待 {{ coudButtonCount }}s
+                    </span>
+                    <span v-else>获取验证码</span>
+                  </el-button>
+                </div>
+              </div>
+            </el-form-item>
+            <el-form-item label="新的密码" prop="password">
+              <el-input
+                v-model="renewalPwdFormData.password"
+                :maxlength="16"
+                :minlength="8"
+                clearable
+                placeholder="设置密码：支持任何字符"
+                show-password
+                size="small" />
+            </el-form-item>
+            <el-form-item label="确认密码" prop="rePasswd">
+              <el-input
+                v-model="renewalPwdFormData.rePasswd"
+                :maxlength="16"
+                :minlength="8"
+                clearable
+                placeholder="确认密码：两次密码保持一致"
+                show-password
+                size="small" />
+            </el-form-item>
+          </el-form>
+          <template #footer>
+            <span class="dialog-footer">
+              <el-button @click="renewalPwdDialog = false">取消</el-button>
+              <el-button
+                :disabled="!isCodeCorrect || !isPasswordCorrect || !isRePasswdCorrect"
+                type="primary"
+                @click="confirmRenewalPwd">
+                确认
+              </el-button>
+            </span>
+          </template>
+        </el-dialog>
       </div>
     </div>
   </div>

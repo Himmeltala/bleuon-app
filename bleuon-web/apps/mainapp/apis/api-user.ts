@@ -114,6 +114,7 @@ export function verifyMailCode(
           success(data);
         });
       }
+      success(data);
     })
     .catch(err => {
       error && error();
@@ -172,13 +173,13 @@ export async function fineByToken() {
 /**
  * 通过 token 更新用户资料
  *
- * @param data
+ * @param body
  * @param success
  * @param error
  */
-export async function renewalByToken(data: UserData, success?: Function, error?: Function) {
+export async function renewalByToken(body: UserData, success?: Function, error?: Function) {
   request
-    .post<R>("/user/renewal/by/token", data)
+    .post<R>("/user/renewal/by/token", body)
     .then(({ data }) => {
       success && success(data);
     })

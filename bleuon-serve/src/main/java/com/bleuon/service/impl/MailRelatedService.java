@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
@@ -104,13 +105,17 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> implements
             if (!cacheCode.equals(code))
                 return R.failed("验证码不存在，或与邮箱不匹配！", null);
 
+            R<Token> token;
+
             if (type.equals("register"))
-                return verifyRegisterMailCode(user);
+                token = verifyRegisterMailCode(user);
             else if (type.equals("login"))
-                return verifyLoginMailCode(user);
+                token = verifyLoginMailCode(user);
             else
-                redisTemplate.delete(getCacheCode());
-            return R.success("验证成功，进行下一步！", null);
+                token = R.success("验证码正确！");
+            redisTemplate.delete(getCacheCode());
+
+            return token;
         } catch (Exception e) {
             throw new RuntimeException(e.getCause());
         }
@@ -186,7 +191,6 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> implements
             authorityMapper.setAuthority(u.getId(), AuthorityType.USER, u.getUsername());
 
             if (f) {
-                redisTemplate.delete(getCacheCode());
                 return R.success("注册成功！", null);
             }
 
@@ -207,13 +211,13 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> implements
         User user = findUserByEmail(u.getEmail());
 
         if (user != null) {
-            String uuid = UUID.randomUUID().toString();
+            String jwtUuid = UUID.randomUUID().toString();
             Long expire = JwtUtil.getExpire();
+            CustomUserDetails details = new CustomUserDetails(user.getUsername(), "******", Arrays.asList("", ""));
 
-            CustomUserDetails details = new CustomUserDetails(user.getUsername(), "******", null);
-            String value = JwtUtil.createJwt(details, uuid, expire);
+            String value = JwtUtil.createJwt(details, jwtUuid, expire);
 
-            redisTemplate.opsForValue().set(uuid, value, expire, TimeUnit.SECONDS);
+            redisTemplate.opsForValue().set(jwtUuid, value, expire, TimeUnit.SECONDS);
 
             Token token = new Token();
             token.setValue(value);
@@ -221,7 +225,6 @@ public class MailRelatedService extends ServiceImpl<UserMapper, User> implements
             token.setUsername(details.getUsername());
             token.setId(details.getId());
 
-            redisTemplate.delete(getCacheCode());
             return R.success("登录成功！", token);
         } else {
             return R.failed("邮箱没有注册！", null);

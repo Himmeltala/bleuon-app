@@ -9,6 +9,7 @@ import com.bleuon.mapper.UserMapper;
 import com.bleuon.service.IUserService;
 import com.bleuon.utils.http.R;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +26,7 @@ import java.util.Objects;
 public class UserService extends ServiceImpl<UserMapper, User> implements IUserService {
 
     private final UserMapper mapper;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public R<UserDto> findById(User vo) {
@@ -41,6 +43,7 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
     @Override
     public boolean renewal(User vo) {
         try {
+            vo.setPassword(passwordEncoder.encode(vo.getPassword()));
             Integer status = mapper.renewal(vo);
             return status > 0;
         } catch (Exception e) {

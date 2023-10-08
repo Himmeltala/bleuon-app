@@ -82,7 +82,7 @@ export function getVerifyCode(
   interval: number,
   count: Ref<number>,
   disabled: Ref<boolean>,
-  startInterval: Function
+  startInterval: (callback: Function) => void
 ) {
   startInterval(() => {
     interval = setInterval(() => {

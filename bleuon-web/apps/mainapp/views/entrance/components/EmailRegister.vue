@@ -60,14 +60,9 @@ const formRules = reactive<FormRules>({
 });
 
 function confirmGetVerifyCode() {
-  FormValidatorsUtil.getVerifyCode(
-    interval,
-    coudButtonCount,
-    codeButtonDisabled,
-    (callback: any) => {
-      UserApi.askMailVerifyCode(formData.email, "register", () => callback());
-    }
-  );
+  FormValidatorsUtil.getVerifyCode(interval, coudButtonCount, codeButtonDisabled, callback => {
+    UserApi.askMailVerifyCode(formData.email, "register", () => callback());
+  });
 }
 
 function confirmSubmitForm() {
@@ -98,7 +93,7 @@ function confirmSubmitForm() {
               :minlength="6"
               class="w-100%"
               clearable
-              placeholder="请输入验证码"
+              placeholder="请输入6位验证码"
               size="large" />
           </div>
           <div class="w-30% f-c-e">
