@@ -28,8 +28,8 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/find/by/id")
-    public R<UserDto> findById(@Validated User vo) {
-        return userService.findById(vo);
+    public R<UserDto> findById(@Validated User params) {
+        return userService.findById(params);
     }
 
     @GetMapping("/find/by/token")
@@ -42,11 +42,11 @@ public class UserController {
     }
 
     @PostMapping("/renewal/by/token")
-    public R<Object> renewalByToken(@RequestHeader(KeyVals.Token) String token, @Validated @RequestBody User vo) {
+    public R<Object> renewalByToken(@RequestHeader(KeyVals.Token) String token, @Validated @RequestBody User body) {
         Claims claims = JwtUtil.parseJwt(token);
         String uid = (String) claims.get("id");
-        vo.setId(uid);
-        boolean status = userService.renewal(vo);
+        body.setId(uid);
+        boolean status = userService.renewal(body);
 
         return status ? R.success("更新资料成功！") : R.failed("更新资料失败！");
     }

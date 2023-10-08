@@ -29,8 +29,8 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public R<UserDto> findById(User vo) {
-        User user = query().eq("id", vo.getId()).one();
+    public R<UserDto> findById(User params) {
+        User user = query().eq("id", params.getId()).one();
         if (!Objects.isNull(user)) {
             UserDto dto = new UserDto();
             BeanUtil.copyProperties(user, dto);
@@ -41,10 +41,12 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
 
     @Transactional
     @Override
-    public boolean renewal(User vo) {
+    public boolean renewal(User body) {
         try {
-            vo.setPassword(passwordEncoder.encode(vo.getPassword()));
-            Integer status = mapper.renewal(vo);
+            if (body.getPassword() != null) {
+                body.setPassword(passwordEncoder.encode(body.getPassword()));
+            }
+            Integer status = mapper.renewal(body);
             return status > 0;
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());
