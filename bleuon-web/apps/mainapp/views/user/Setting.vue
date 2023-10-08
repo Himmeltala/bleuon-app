@@ -80,7 +80,7 @@ const renewalPwdFormRules = reactive<FormRules>({
 
 function getRenewalPwdCode() {
   FormValidatorsUtil.getVerifyCode(interval, coudButtonCount, codeButtonDisabled, callback => {
-    UserApi.askMailCaptcha({ email: formData.value.email }, () => callback());
+    UserApi.askResetMailCaptcha({ email: formData.value.email }, () => callback());
   });
 }
 
