@@ -2,7 +2,6 @@ package com.bleuon.service;
 
 import com.bleuon.entity.User;
 import com.bleuon.entity.dto.UserDto;
-import com.bleuon.utils.http.R;
 
 /**
  * @description:
@@ -12,7 +11,9 @@ import com.bleuon.utils.http.R;
  */
 public interface IUserService {
 
-    R<UserDto> findById(User vo);
+    UserDto findById(String id);
+
+    UserDto findByEmail(String email);
 
     boolean renewal(User vo);
 

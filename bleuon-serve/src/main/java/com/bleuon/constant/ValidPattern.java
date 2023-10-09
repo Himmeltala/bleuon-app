@@ -18,11 +18,6 @@ public class ValidPattern {
 
     public static final String USERNAME = "^(?![_-])[\\u4e00-\\u9fa5a-zA-Z][\\u4e00-\\u9fa5a-zA-Z0-9_-]{4,16}$";
 
-    /**
-     * JSON 字符串合法性
-     */
-    public static final String JSON = "\\{\"([a-zA-Z_]+)\":(.+)}";
-
     public static final String CELL_TYPE = "(basic|flowchart)";
 
     /**

@@ -38,21 +38,11 @@ export async function findById(params: TemplateFlowchartData) {
  *
  * @param body
  * @param success
- * @param error
  */
-export async function replicate(
-  body: TemplateFlowchartData,
-  success?: (res: R) => void,
-  error?: Function
-) {
-  request
-    .post<R>("/community/template/replicate", body)
-    .then(({ data }) => {
-      success && success(data);
-    })
-    .catch(err => {
-      error && error(err);
-    });
+export async function replicate(body: TemplateFlowchartData, success?: (res: R) => void) {
+  request.post<R>("/community/template/replicate", body).then(({ data }) => {
+    success && success(data);
+  });
 }
 
 /**
@@ -60,21 +50,11 @@ export async function replicate(
  *
  * @param body
  * @param success
- * @param error
  */
-export async function renewal(
-  body: TemplateFlowchartData,
-  success?: (res: R) => void,
-  error?: Function
-) {
-  request
-    .put("/community/template/renewal", body)
-    .then(({ data }) => {
-      success && success(data);
-    })
-    .catch(err => {
-      error && error(err);
-    });
+export async function renewal(body: TemplateFlowchartData, success?: (res: R) => void) {
+  request.put("/community/template/renewal", body).then(({ data }) => {
+    success && success(data);
+  });
 }
 
 /**

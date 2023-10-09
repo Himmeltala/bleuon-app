@@ -29,4 +29,9 @@ public class CollectFlowchartVo implements Serializable {
     private String flowchartId;
     private Timestamp createDate;
 
+    public CollectFlowchartVo(String collectUid, String flowchartId) {
+        this.collectUid = collectUid;
+        this.flowchartId = flowchartId;
+    }
+
 }

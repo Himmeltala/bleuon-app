@@ -109,17 +109,17 @@ onMounted(() => {
             </div>
           </div>
           <div class="f-c-c">
-            <div class="mt-5" id="bleuon-flowchart-content"></div>
+            <div id="bleuon-flowchart-content" class="mt-5"></div>
           </div>
         </div>
         <div class="information mt-5 p-5 bg-bg-overlay">
           <div class="font-500 text-1.2rem">描述：{{ data.description }}</div>
           <div class="mt-5">
-            <el-tag class="mr-5" v-for="item in JSON.parse(data.tags)">{{ item }}</el-tag>
+            <el-tag v-for="item in JSON.parse(data.tags)" class="mr-5">{{ item }}</el-tag>
           </div>
           <router-link :to="'/u/profile/' + data.flowchart.user.id">
             <div class="cursor-pointer f-c-e mt-5">
-              <img class="mr-4 w-10 h-10 rd-50%" :src="data.flowchart.user.avatar" />
+              <img :src="data.flowchart.user.avatar" class="mr-4 w-10 h-10 rd-50%" />
               作者：{{ data.flowchart.user.username }}
             </div>
           </router-link>

@@ -31,7 +31,7 @@ const formRules = reactive<FormRules>({
 
 function confirmLogin() {
   FormValidatorsUtil.validate(formRef.value, async () => {
-    UserApi.accountLogin(formData, token => {
+    UserApi.authLogin(formData, token => {
       localStorage.setToken(KeyVals.MAINAPP_TOKEN_KEY, token);
       UserApi.fineByToken().then(data => {
         useStorage<UserData>(KeyVals.MAINAPP_USER, {}).value = data;

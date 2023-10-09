@@ -81,17 +81,11 @@ export function add(success: (res: R<FlowchartData>) => void) {
  *
  * @param body
  * @param success
- * @param error
  */
-export function replicate(body: FlowchartData, success?: (res: R) => void, error?: Function) {
-  request
-    .post<R<FlowchartData>>("/flowchart/replicate", body)
-    .then(({ data }) => {
-      success && success(data);
-    })
-    .catch(err => {
-      error && error(err);
-    });
+export function replicate(body: FlowchartData, success?: (res: R) => void) {
+  request.post<R<FlowchartData>>("/flowchart/replicate", body).then(({ data }) => {
+    success && success(data);
+  });
 }
 
 /**
@@ -99,18 +93,14 @@ export function replicate(body: FlowchartData, success?: (res: R) => void, error
  *
  * @param params
  * @param success
- * @param error
  */
-export function eraseById(params: { id?: string }, success: Function, error?: Function) {
+export function eraseById(params: { id?: string }, success: Function) {
   request
     .delete<R<void>>("/flowchart/erase/by/id", {
       params
     })
     .then(() => {
       success && success();
-    })
-    .catch(err => {
-      error && error(err);
     });
 }
 
@@ -170,10 +160,7 @@ export function release(body: TemplateFlowchartData, success?: Function) {
  * @param success
  */
 export function cancelRelease(params: { flowchartId: string }, success?: Function) {
-  request
-    .delete<R<void>>("/flowchart/cancel/release", { params })
-    .then(() => {
-      success && success();
-    })
-    .catch(err => {});
+  request.delete<R<void>>("/flowchart/cancel/release", { params }).then(() => {
+    success && success();
+  });
 }

@@ -11,14 +11,14 @@ import { UserApi } from "@mainapp/apis";
 const user = useStorage<UserData>(KeyVals.MAINAPP_USER, {});
 
 function confirmLogout() {
-  UserApi.logout(() => {
+  UserApi.authLogout(() => {
     location.reload();
   });
 }
 
 const root = document.querySelector("html");
 const mode = useStorage(KeyVals.MAINAPP_THEME_MODE, "");
-const isDark = ref(mode.value == "dark" ? true : false);
+const isDark = ref(mode.value == "dark");
 
 function switchThemeMode() {
   const name = isDark.value ? "dark" : "light";
@@ -30,7 +30,7 @@ function switchThemeMode() {
 <template>
   <div class="f-c-c relative">
     <el-dropdown :teleported="false">
-      <img class="rd-50% w-10 h-10 cursor-pointer" :src="user.avatar" />
+      <img :src="user.avatar" class="rd-50% w-10 h-10 cursor-pointer" />
       <template #dropdown>
         <el-dropdown-menu>
           <div class="b-b-solid b-border-primary b-b-1 pb-2 mb-2">
@@ -70,10 +70,10 @@ function switchThemeMode() {
             </el-dropdown-item>
             <el-dropdown-item>
               <el-switch
-                @change="switchThemeMode"
+                v-model="isDark"
                 :active-text="isDark ? '黑夜' : '白天'"
                 size="small"
-                v-model="isDark" />
+                @change="switchThemeMode" />
             </el-dropdown-item>
           </div>
           <div>

@@ -49,15 +49,12 @@ public class Flowchart implements Serializable {
     @TableField("grid_size")
     private Double gridSize;
 
-    @Pattern(regexp = ValidPattern.JSON, message = "网格配置 JSON 格式错误！")
     @TableField("draw_grid")
     private String drawGrid;
 
-    @Pattern(regexp = ValidPattern.JSON, message = "JSON 数据格式错误！")
     @TableField("connector_default")
     private String connectorDefault;
 
-    @Pattern(regexp = ValidPattern.JSON, message = "JSON 数据格式错误！")
     @TableField("router_default")
     private String routerDefault;
 

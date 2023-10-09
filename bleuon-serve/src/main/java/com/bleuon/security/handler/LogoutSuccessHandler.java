@@ -5,10 +5,10 @@ import com.bleuon.constant.KeyVals;
 import com.bleuon.utils.JwtUtil;
 import com.bleuon.utils.http.R;
 import io.jsonwebtoken.Claims;
-import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -21,10 +21,10 @@ import java.io.IOException;
  * @author zheng
  */
 @Component
+@RequiredArgsConstructor
 public class LogoutSuccessHandler implements org.springframework.security.web.authentication.logout.LogoutSuccessHandler {
 
-    @Resource
-    private RedisTemplate<String, String> redisTemplate;
+    private final RedisTemplate<String, String> redisTemplate;
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -32,7 +32,7 @@ public class LogoutSuccessHandler implements org.springframework.security.web.au
         String authToken = request.getHeader(KeyVals.Token);
         Claims claims = JwtUtil.parseJwt(authToken);
 
-        R success = R.success("退出成功！");
+        R<Object> success = R.success("退出成功！");
 
         if (claims != null) {
             String jwtUuid = claims.getId();

@@ -17,9 +17,6 @@ public interface FlowchartMapper extends BaseMapper<Flowchart> {
 
     /**
      * 更新流程图
-     *
-     * @param data
-     * @return 影响行数
      */
     Integer renewal(Flowchart data);
 

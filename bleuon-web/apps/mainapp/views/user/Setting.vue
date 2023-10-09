@@ -26,7 +26,8 @@ function renewalBasicData() {
   });
 }
 
-function resetBasicData() {}
+function resetBasicData() {
+}
 
 let interval: number;
 const renewalPwdDialog = ref(false);
@@ -80,13 +81,13 @@ const renewalPwdFormRules = reactive<FormRules>({
 
 function getRenewalPwdCode() {
   FormValidatorsUtil.getVerifyCode(interval, coudButtonCount, codeButtonDisabled, callback => {
-    UserApi.askResetMailCaptcha({ email: formData.value.email }, () => callback());
+    UserApi.askResetEmailCaptcha({ email: formData.value.email }, () => callback());
   });
 }
 
 function confirmRenewalPwd() {
   FormValidatorsUtil.validate(renewalPwdFormRef.value, () => {
-    UserApi.verifyMailCaptcha(
+    UserApi.verifyEmailCaptcha(
       { captcha: renewalPwdFormData.captcha, email: formData.value.email },
       () => {
         UserApi.renewalByToken(
@@ -94,7 +95,7 @@ function confirmRenewalPwd() {
             password: renewalPwdFormData.password
           },
           () => {
-            UserApi.logout(() => {
+            UserApi.authLogout(() => {
               location.reload();
               ElMessage.success("请重新登录！");
             });
@@ -170,7 +171,7 @@ function confirmRenewalPwd() {
               </div>
               <div class="ml-10 f-c-s">
                 <div class="text-text-secondary mr-10">{{ formData.phone }}</div>
-                <el-button size="small" text bg>更换</el-button>
+                <el-button bg size="small" text>更换</el-button>
               </div>
             </div>
             <div class="mt-5 f-c-s">
@@ -180,7 +181,7 @@ function confirmRenewalPwd() {
               </div>
               <div class="ml-10 f-c-s">
                 <div class="text-text-secondary mr-10">{{ formData.email }}</div>
-                <el-button size="small" text bg>更换</el-button>
+                <el-button bg size="small" text>更换</el-button>
               </div>
             </div>
             <div class="mt-5 f-c-s">
@@ -191,10 +192,10 @@ function confirmRenewalPwd() {
               <div class="ml-10 f-c-s">
                 <div class="text-text-secondary mr-10">******</div>
                 <el-button
-                  size="small"
-                  type="danger"
-                  text
                   bg
+                  size="small"
+                  text
+                  type="danger"
                   @click="renewalPwdDialog = !renewalPwdDialog">
                   修改
                 </el-button>
@@ -205,28 +206,28 @@ function confirmRenewalPwd() {
         <el-dialog v-model="renewalPwdDialog" title="修改密码" width="30%">
           <el-form
             ref="renewalPwdFormRef"
-            label-width="80px"
-            label-position="left"
             :model="renewalPwdFormData"
-            :rules="renewalPwdFormRules">
+            :rules="renewalPwdFormRules"
+            label-position="left"
+            label-width="80px">
             <el-form-item label="验证码" prop="captcha">
               <div class="f-c-b flex-wrap w-100%">
                 <div class="w-45%">
                   <el-input
-                    class="w-100%"
-                    size="small"
+                    v-model="renewalPwdFormData.captcha"
                     :maxlength="6"
                     :minlength="6"
-                    v-model="renewalPwdFormData.captcha"
+                    class="w-100%"
                     clearable
-                    placeholder="请输入6位验证码" />
+                    placeholder="请输入6位验证码"
+                    size="small" />
                 </div>
                 <div class="w-50% f-c-s">
                   <el-button
-                    plain
-                    type="primary"
-                    size="small"
                     :disabled="codeButtonDisabled"
+                    plain
+                    size="small"
+                    type="primary"
                     @click="getRenewalPwdCode">
                     <span v-if="coudButtonCount < 60 && coudButtonCount >= 0">
                       请等待 {{ coudButtonCount }}s

@@ -80,7 +80,7 @@ function handleClick() {
       display: block;
 
       .options__icon:hover {
-        --uno: bg-#383838f2;
+        --uno: bg- #383838f2;
       }
     }
   }
@@ -92,7 +92,7 @@ function handleClick() {
       --uno: cursor-pointer px-4 py-2 rd-2 transition-all-300;
 
       &:hover {
-        --uno: bg-#f3f5f9;
+        --uno: bg- #f3f5f9;
       }
     }
   }

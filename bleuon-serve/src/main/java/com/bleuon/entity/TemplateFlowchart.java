@@ -31,7 +31,6 @@ public class TemplateFlowchart implements Serializable {
     private Integer copies;
     private Integer stars;
 
-    @Pattern(regexp = ValidPattern.JSON, message = "不是合法的 JSON 字符串！")
     private String tags;
     private String scene;
     private String price;

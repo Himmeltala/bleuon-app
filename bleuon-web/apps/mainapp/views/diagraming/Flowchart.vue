@@ -49,7 +49,8 @@ function updateFlowchartData() {
   flowchartData.value.connectorDefault = JSON.stringify(Data.linkConnectorConfig.value);
   flowchartData.value.routerDefault = JSON.stringify(Data.linkRouterConfig.value);
   flowchartData.value.dataUri = getDataUri(paper.value, graph.value);
-  FlowchartApi.renewal(flowchartData.value, () => {});
+  FlowchartApi.renewal(flowchartData.value, () => {
+  });
 }
 
 const updateThrottle = PreventUtil.throttle(updateFlowchartData, 3000);
@@ -340,15 +341,15 @@ await fetchData();
         </el-form-item>
         <el-form-item label="标签">
           <el-input
-            @keyup.enter="onEnterReleaseTag"
             v-model="releaseTagVal"
-            placeholder="按下回车键添加标签，最多添加5个" />
+            placeholder="按下回车键添加标签，最多添加5个"
+            @keyup.enter="onEnterReleaseTag" />
           <div class="f-c-s mt-2">
             <el-tag
-              closable
-              class="mr-2"
               v-for="(item, index) in releaseTagList"
               :key="item"
+              class="mr-2"
+              closable
               @close="closeReleaseTag(index)">
               {{ item }}
             </el-tag>
@@ -368,7 +369,7 @@ await fetchData();
             </template>
             取消
           </el-button>
-          <el-button @click="cancelRelease" type="danger" v-else>
+          <el-button v-else type="danger" @click="cancelRelease">
             <template #icon>
               <div class="i-tabler-x"></div>
             </template>

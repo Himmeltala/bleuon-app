@@ -73,9 +73,9 @@ await fetchData();
             :file-name="item.fileName"
             :is-reset="false"
             :path="isMyFlowchart(item) ? '/flowchart/' + item.id : '/share/flowchart/' + item.id"
-            @replicate="replicateFlowchart(item)"
             @delete="deleteFlowchart(item.id, index)"
-            @download="downloadFlowchart(item)">
+            @download="downloadFlowchart(item)"
+            @replicate="replicateFlowchart(item)">
             <template #footer>
               <div class="f-c-s flex-nowrap mt-4 w-100%">
                 <div class="mr-2 i-tabler-chart-bubble text-theme-primary"></div>

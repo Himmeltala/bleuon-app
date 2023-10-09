@@ -61,13 +61,13 @@ const formRules = reactive<FormRules>({
 
 function confirmGetVerifyCode() {
   FormValidatorsUtil.getVerifyCode(interval, coudButtonCount, codeButtonDisabled, callback => {
-    UserApi.askRegisterMailCaptcha({ email: formData.email }, () => callback());
+    UserApi.askRegisterEmailCaptcha({ email: formData.email }, () => callback());
   });
 }
 
 function confirmSubmitForm() {
   FormValidatorsUtil.validate(formRef.value, () => {
-    UserApi.registerWithMailCaptcha(
+    UserApi.verifyRegisterEmailCaptcha(
       formData,
       { email: formData.email, captcha: formData.captcha },
       () => {

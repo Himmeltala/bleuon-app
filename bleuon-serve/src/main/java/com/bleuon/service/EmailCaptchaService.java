@@ -26,7 +26,7 @@ public class EmailCaptchaService {
 
     private final JavaMailSender sender;
     private final RedisTemplate<String, String> redisTemplate;
-    @Value("${spring.mail.sender}")
+    @Value("${spring.mail.username}")
     private String address;
     @Value("${spring.mail.timeout}")
     private Integer timeout;

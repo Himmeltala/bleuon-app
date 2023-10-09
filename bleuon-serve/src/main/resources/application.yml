@@ -1,4 +1,8 @@
 spring:
+  servlet:
+    multipart:
+      max-file-size: 4MB
+      max-request-size: 4MB
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
@@ -16,7 +20,6 @@ spring:
     password: zrnkjyheqjbnheaa
     default-encoding: UTF-8
     port: 587
-    sender: himmelbleu@qq.com
     timeout: 1
     expire: 3
 

@@ -40,8 +40,9 @@ public class EntranceController {
     /**
      * 获取邮箱验证码
      */
-    @GetMapping("/aks-mail-captcha")
-    public R<Object> askMailCaptcha(@Validated EmailCaptchaVo params, HttpServletRequest http) {
+    @GetMapping("/aks/email-captcha")
+    public R<Object> askMailCaptcha(@Validated EmailCaptchaVo params,
+                                    HttpServletRequest http) {
         boolean duplicate = captchaService.memorize(params.getEmail(), IpUtil.getIp(http));
         if (duplicate) return R.error("60s 内只能发送一次！");
         String captcha = captchaService.getCaptcha(params.getEmail() + ":captcha");
@@ -52,8 +53,9 @@ public class EntranceController {
     /**
      * 获取邮箱登录验证码
      */
-    @GetMapping("/ask/login-mail-captcha")
-    public R<Object> askLoginMailCaptcha(@Validated EmailCaptchaVo params, HttpServletRequest http) {
+    @GetMapping("/ask/login-email-captcha")
+    public R<Object> askLoginMailCaptcha(@Validated EmailCaptchaVo params,
+                                         HttpServletRequest http) {
         boolean duplicate = captchaService.memorize(params.getEmail(), IpUtil.getIp(http));
         if (duplicate) return R.error("60s 内只能发送一次！");
 
@@ -63,33 +65,35 @@ public class EntranceController {
         }
 
         String captcha = captchaService.getCaptcha(params.getEmail() + ":captcha");
-        boolean status = captchaService.transmit(params.getEmail(), "BleuOn：验证码", "您的验证码是：" + captcha + ", 验证码有效期：3 分钟。");
+        boolean status = captchaService.transmit(params.getEmail(), "BleuOn：登录验证码", "您的验证码是：" + captcha + ", 验证码有效期：3 分钟。");
         return status ? R.success("验证码发送成功，请注意查收！") : R.error("验证码发送失败！");
     }
 
     /**
      * 获取邮箱注册验证码
      */
-    @GetMapping("/ask/register-mail-captcha")
-    public R<Object> askRegisterMailCaptcha(@Validated EmailCaptchaVo params, HttpServletRequest http) {
+    @GetMapping("/ask/register-email-captcha")
+    public R<Object> askRegisterMailCaptcha(@Validated EmailCaptchaVo params,
+                                            HttpServletRequest http) {
         boolean duplicate = captchaService.memorize(params.getEmail(), IpUtil.getIp(http));
         if (duplicate) return R.error("60s 内只能发送一次！");
 
         UserDto exists = userService.findByEmail(params.getEmail());
         if (!Objects.isNull(exists)) {
-            return R.error("邮箱已被注册！");
+            return R.error("邮箱被注册！");
         }
 
         String captcha = captchaService.getCaptcha(params.getEmail() + ":captcha");
-        boolean status = captchaService.transmit(params.getEmail(), "BleuOn：验证码", "您的验证码是：" + captcha + ", 验证码有效期：3 分钟。");
+        boolean status = captchaService.transmit(params.getEmail(), "BleuOn：注册验证码", "您的验证码是：" + captcha + ", 验证码有效期：3 分钟。");
         return status ? R.success("验证码发送成功，请注意查收！") : R.error("验证码发送失败！");
     }
 
     /**
      * 获取密码重置的邮箱验证码
      */
-    @GetMapping("/ask/reset-mail-captcha")
-    public R<Object> askResetMailCaptcha(@Validated EmailCaptchaVo params, HttpServletRequest http) {
+    @GetMapping("/ask/reset-email-captcha")
+    public R<Object> askResetMailCaptcha(@Validated EmailCaptchaVo params,
+                                         HttpServletRequest http) {
         boolean duplicate = captchaService.memorize(params.getEmail(), IpUtil.getIp(http));
         if (duplicate) return R.error("60s 内只能发送一次！");
 
@@ -99,14 +103,14 @@ public class EntranceController {
         }
 
         String captcha = captchaService.getCaptcha(params.getEmail() + ":captcha");
-        boolean status = captchaService.transmit(params.getEmail(), "BleuOn：验证码", "您的验证码是：" + captcha + ", 验证码有效期：3 分钟。");
+        boolean status = captchaService.transmit(params.getEmail(), "BleuOn：密码重置验证码", "您的验证码是：" + captcha + ", 验证码有效期：3 分钟。");
         return status ? R.success("验证码发送成功，请注意查收！") : R.error("验证码发送失败！");
     }
 
     /**
      * 校验验证码
      */
-    @PostMapping("/verify-mail-captcha")
+    @PostMapping("/verify/email-captcha")
     public R<Token> verifyMailCode(@RequestBody @Validated EmailCaptchaVo body) {
         String key = body.getEmail() + ":captcha";
         boolean expired = captchaService.hasCaptchaExpire(key);
@@ -118,18 +122,11 @@ public class EntranceController {
     }
 
     /**
-     * 邮箱、用户名或手机号注册
-     */
-    @PostMapping("/account-register")
-    public R<Object> accountRegister(@RequestBody @Validated User body) {
-        return entranceService.registerByAccount(body);
-    }
-
-    /**
      * 校验邮箱注册验证码
      */
-    @PostMapping("/register/with/mail-captcha")
-    public R<Object> registerWithMailCaptcha(@RequestBody @Validated User body, @Validated EmailCaptchaVo params) {
+    @PostMapping("/verify/register-email-captcha")
+    public R<Object> verifyRegisterMailCaptcha(@RequestBody @Validated User body,
+                                               @Validated EmailCaptchaVo params) {
         String key = body.getEmail() + ":captcha";
         boolean expired = captchaService.hasCaptchaExpire(key);
         if (expired) return R.error("验证码过期或不存在！", null);
@@ -143,8 +140,8 @@ public class EntranceController {
     /**
      * 校验邮箱登录验证码
      */
-    @PostMapping("/login/with/mail-captcha")
-    public R<Token> loginWithMailCaptcha(@RequestBody @Validated EmailCaptchaVo body) {
+    @PostMapping("/verify/login-email-captcha")
+    public R<Token> verifyLoginMailCaptcha(@RequestBody @Validated EmailCaptchaVo body) {
         String key = body.getEmail() + ":captcha";
         boolean expired = captchaService.hasCaptchaExpire(key);
         if (expired) return R.error("验证码过期或不存在！", null);
@@ -156,10 +153,20 @@ public class EntranceController {
             if (Objects.isNull(exists)) {
                 return R.error("该用户不存在！");
             } else {
-                Token token = tokenService.grant(new CustomUserDetails(exists.getId(), exists.getUsername(), "******", new ArrayList<>()));
+                Token token = tokenService.grant(new CustomUserDetails(exists.getId(),
+                        exists.getUsername(),
+                        "******", new ArrayList<>()));
                 return R.success("登录成功！", token);
             }
         } else return R.error("验证码错误！", null);
+    }
+
+    /**
+     * 邮箱、用户名或手机号注册
+     */
+    @PostMapping("/account-register")
+    public R<Object> accountRegister(@RequestBody @Validated User body) {
+        return entranceService.registerByAccount(body);
     }
 
     @PostMapping("/reset-password")

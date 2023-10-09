@@ -2,10 +2,9 @@ package com.bleuon.config;
 
 import com.bleuon.security.filter.VerifyJwtFilter;
 import com.bleuon.security.handler.*;
-import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -16,26 +15,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@RequiredArgsConstructor
 public class SecurityConfig {
 
-    @Resource
-    private VerifyJwtFilter verifyJwtFilter;
-
-    @Resource
-    private LoginSuccessHandler loginSuccessHandler;
-
-    @Resource
-    private LoginFailureHandler loginFailureHandler;
-
-    @Resource
-    private LogoutSuccessHandler logoutSuccessHandler;
-
-    @Resource
-    private VerifyJwtEntryPointHandler verifyJwtEntryPointHandler;
-
-    @Resource
-    private VerifyJwtAccessDeniedHandler verifyJwtAccessDeniedHandler;
+    private final VerifyJwtFilter verifyJwtFilter;
+    private final LoginSuccessHandler loginSuccessHandler;
+    private final LoginFailureHandler loginFailureHandler;
+    private final LogoutSuccessHandler logoutSuccessHandler;
+    private final VerifyJwtEntryPointHandler verifyJwtEntryPointHandler;
+    private final VerifyJwtAccessDeniedHandler verifyJwtAccessDeniedHandler;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {

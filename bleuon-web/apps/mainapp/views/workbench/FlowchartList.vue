@@ -197,9 +197,9 @@ async function searchFiles() {
           :file-image="item.dataUri"
           :file-name="item.fileName"
           :path="'/flowchart/' + item.id"
-          @replicate="replicateFlowchart(item)"
           @delete="deleteFlowchart(item.id, index)"
           @download="downloadFlowchart(item)"
+          @replicate="replicateFlowchart(item)"
           @reset="resetFlowchart(index)">
           <template #footer>
             <div class="f-c-s flex-nowrap mt-4 w-100%">
@@ -217,9 +217,9 @@ async function searchFiles() {
         <el-form :model="flowchartList[clickedIndex]" :rules="fileNameRules">
           <el-form-item prop="fileName">
             <el-input
-              @keyup.enter="renewalFlowchart"
               v-model="flowchartList[clickedIndex].fileName"
-              placeholder="请输入文件名称" />
+              placeholder="请输入文件名称"
+              @keyup.enter="renewalFlowchart" />
           </el-form-item>
         </el-form>
         <template #footer>

@@ -11,7 +11,7 @@ import { UserApi } from "@mainapp/apis";
 const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
 
 function confirmLogout() {
-  UserApi.logout(() => {
+  UserApi.authLogout(() => {
     location.reload();
   });
 }
@@ -43,7 +43,7 @@ function confirmLogout() {
             </router-link>
             <el-popconfirm title="是否确定退出登录？" @confirm="confirmLogout">
               <template #reference>
-                <el-button type="danger" text bg>
+                <el-button bg text type="danger">
                   <span>退出</span>
                   <template #icon>
                     <div class="i-tabler-logout"></div>
@@ -54,7 +54,7 @@ function confirmLogout() {
           </template>
           <template v-else>
             <router-link class="mr-4" to="/entrance">
-              <el-button text bg>
+              <el-button bg text>
                 <span>登录</span>
                 <template #icon>
                   <div class="i-tabler-key"></div>

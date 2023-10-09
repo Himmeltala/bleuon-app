@@ -7,7 +7,6 @@ import com.bleuon.entity.dto.UserDto;
 import com.bleuon.exception.JdbcErrorException;
 import com.bleuon.mapper.UserMapper;
 import com.bleuon.service.IUserService;
-import com.bleuon.utils.http.R;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -29,14 +28,13 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public R<UserDto> findById(User params) {
-        User user = query().eq("id", params.getId()).one();
-        if (!Objects.isNull(user)) {
-            UserDto dto = new UserDto();
-            BeanUtil.copyProperties(user, dto);
-            return R.success(dto);
-        }
-        return R.failed("不存在该用户！");
+    public UserDto findById(String id) {
+        User exists = query().eq("id", id).one();
+        if (Objects.isNull(exists)) return null;
+
+        UserDto dto = new UserDto();
+        BeanUtil.copyProperties(exists, dto);
+        return dto;
     }
 
     public UserDto findByEmail(String email) {
@@ -46,16 +44,6 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
         UserDto dto = new UserDto();
         BeanUtil.copyProperties(exists, dto);
         return dto;
-    }
-
-    public R<UserDto> findByUsername(String username) {
-        User user = query().eq("username", username).one();
-        if (!Objects.isNull(user)) {
-            UserDto dto = new UserDto();
-            BeanUtil.copyProperties(user, dto);
-            return R.success(dto);
-        }
-        return R.failed("不存在该用户！");
     }
 
     @Transactional

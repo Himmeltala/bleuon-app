@@ -23,7 +23,7 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
     <div class="user-data bg-bg-primary">
       <div class="f-s-b pt-30 pb-20 px-50">
         <div class="f-c-c">
-          <img class="rd-50% h-30 w-30" :src="formData.avatar" />
+          <img :src="formData.avatar" class="rd-50% h-30 w-30" />
           <div class="ml-10">
             <div class="username f-c-s mb-5">
               <div class="font-bold text-1.5rem mr-10">{{ formData.username }}</div>

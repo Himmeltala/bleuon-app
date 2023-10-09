@@ -36,7 +36,6 @@ public class OfficialCell implements Serializable {
     @TableField
     private Double height;
 
-    @Pattern(regexp = ValidPattern.JSON, message = "不是合法的 JSON 字符串！")
     @TableField
     private String attrs;
 

@@ -8,9 +8,120 @@
 import request from "./use-axios";
 
 /**
+ * 获取验证码
+ *
+ * @param params
+ * @param success
+ */
+export function askMailCaptcha(
+  params: {
+    email: string;
+  },
+  success?: Function
+) {
+  request.get<R>("/entrance/aks/email-captcha", { params }).then(({ data }) => {
+    success && success(data);
+  });
+}
+
+/**
+ * 获取邮箱登录验证码
+ */
+export function askLoginEmailCaptcha(
+  params: {
+    email: string;
+  },
+  success?: Function
+) {
+  request.get<R>("/entrance/ask/login-email-captcha", { params }).then(({ data }) => {
+    success && success(data);
+  });
+}
+
+/**
+ * 获取邮箱注册验证码
+ */
+export function askRegisterEmailCaptcha(
+  params: {
+    email: string;
+  },
+  success?: Function
+) {
+  request.get<R>("/entrance/ask/register-email-captcha", { params }).then(({ data }) => {
+    success && success(data);
+  });
+}
+
+/**
+ * 获取密码重置的邮箱验证码
+ */
+export function askResetEmailCaptcha(
+  params: {
+    email: string;
+  },
+  success?: Function
+) {
+  request.get<R>("/entrance/ask/reset-email-captcha", { params }).then(({ data }) => {
+    success && success(data);
+  });
+}
+
+/**
+ * 校验邮箱验证码
+ */
+export function verifyEmailCaptcha(
+  body: {
+    email: string;
+    captcha: string;
+  },
+  success: (res: TokenR) => void
+) {
+  request.post<R<TokenR>>("/entrance/verify/email-captcha", body).then(({ data }) => {
+    success(data.data);
+  });
+}
+
+/**
+ * 校验邮箱验证码注册
+ */
+export function verifyRegisterEmailCaptcha(
+  body: UserData,
+  params: { email: string; captcha: string },
+  success?: Function
+) {
+  request.post<R>("/entrance/verify/register-email-captcha", body, { params }).then(({ data }) => {
+    success && success(data);
+  });
+}
+
+/**
+ * 校验邮箱验证码登录
+ */
+export function verifyLoginEmailCaptcha(
+  body: {
+    email: string;
+    captcha: string;
+  },
+  success: (res: TokenR) => void
+) {
+  request.post<R<TokenR>>("/entrance/verify/login-email-captcha", body).then(({ data }) => {
+    success(data.data);
+  });
+}
+
+/**
+ * 邮箱、用户名或手机号注册
+ */
+export function accountRegister(body: UserData, success?: Function) {
+  request.post<R>("/entrance/account-register", body).then(({ data }) => {
+    success && success(data);
+  });
+}
+
+/**
  * 邮箱、用户名或手机号登录
  */
-export function accountLogin(body: UserData, success: (res: TokenR) => void) {
+export function authLogin(body: UserData, success: (res: TokenR) => void) {
   const headers = {
     "Content-Type": "application/x-www-form-urlencoded"
   };
@@ -21,134 +132,14 @@ export function accountLogin(body: UserData, success: (res: TokenR) => void) {
 }
 
 /**
- * 校验邮箱验证码登录
- */
-export function loginWithMailCaptcha(
-  body: {
-    email: string;
-    captcha: string;
-  },
-  success: (res: TokenR) => void
-) {
-  request.post<R<TokenR>>("/entrance/login/with/mail-captcha", body).then(({ data }) => {
-    success(data.data);
-  });
-}
-
-/**
  * 请求退出登录
  */
-export function logout(success: Function, error?: Function) {
-  request
-    .post<R>("/auth/logout")
-    .then(({ data }) => {
-      if (data.code === 200) {
-        localStorage.removeItem(KeyVals.MAINAPP_TOKEN_KEY);
-        success && success(data);
-      } else error && error();
-    })
-    .catch(err => {
-      error && error();
-    });
-}
-
-/**
- * 邮箱、用户名或手机号注册
- */
-export function accountRegister(body: UserData, success?: Function, error?: Function) {
-  request
-    .post<R>("/entrance/account-register", body)
-    .then(({ data }) => {
+export function authLogout(success: Function, error?: Function) {
+  request.post<R>("/auth/logout").then(({ data }) => {
+    if (data.code === 200) {
+      localStorage.removeItem(KeyVals.MAINAPP_TOKEN_KEY);
       success && success(data);
-    })
-    .catch(err => {
-      error && error(err);
-    });
-}
-
-/**
- * 校验邮箱验证码注册
- */
-export function registerWithMailCaptcha(
-  body: UserData,
-  params: { email: string; captcha: string },
-  success?: Function
-) {
-  request.post<R>("/entrance/register/with/mail-captcha", body, { params }).then(({ data }) => {
-    success && success(data);
-  });
-}
-
-/**
- * 获取验证码
- *
- * @param params
- */
-export function askMailCaptcha(
-  params: {
-    email: string;
-  },
-  success?: Function
-) {
-  request.get<R>("/entrance/aks-mail-captcha", { params }).then(({ data }) => {
-    success && success(data);
-  });
-}
-
-/**
- * 获取密码重置的邮箱验证码
- */
-export function askResetMailCaptcha(
-  params: {
-    email: string;
-  },
-  success?: Function
-) {
-  request.get<R>("/entrance/ask/reset-mail-captcha", { params }).then(({ data }) => {
-    success && success(data);
-  });
-}
-
-/**
- * 获取邮箱登录验证码
- */
-export function askLoginMailCaptcha(
-  params: {
-    email: string;
-  },
-  success?: Function
-) {
-  request.get<R>("/entrance/ask/login-mail-captcha", { params }).then(({ data }) => {
-    success && success(data);
-  });
-}
-
-/**
- * 获取邮箱注册验证码
- */
-export function askRegisterMailCaptcha(
-  params: {
-    email: string;
-  },
-  success?: Function
-) {
-  request.get<R>("/entrance/ask/register-mail-captcha", { params }).then(({ data }) => {
-    success && success(data);
-  });
-}
-
-/**
- * 校验邮箱验证码
- */
-export function verifyMailCaptcha(
-  body: {
-    email: string;
-    captcha: string;
-  },
-  success: (res: TokenR) => void
-) {
-  request.post<R<TokenR>>("/entrance/verify-mail-captcha", body).then(({ data }) => {
-    success(data.data);
+    } else error && error();
   });
 }
 
@@ -156,6 +147,7 @@ export function verifyMailCaptcha(
  * 重置密码
  *
  * @param body 用户实体类
+ * @param success
  */
 export function resetPassword(body: UserData, success: Function) {
   request.post<R>("/entrance/reset-password", body).then(({ data }) => {
@@ -176,15 +168,9 @@ export async function fineByToken() {
  *
  * @param body
  * @param success
- * @param error
  */
-export async function renewalByToken(body: UserData, success?: Function, error?: Function) {
-  request
-    .post<R>("/user/renewal/by/token", body)
-    .then(({ data }) => {
-      success && success(data);
-    })
-    .catch(err => {
-      error && error();
-    });
+export async function renewalByToken(body: UserData, success?: Function) {
+  request.post<R>("/user/renewal/by/token", body).then(({ data }) => {
+    success && success(data);
+  });
 }

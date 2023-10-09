@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 const props = defineProps({
   /**
    * 显示的文本内容
@@ -61,15 +61,15 @@ function clickEdit() {
     <div v-show="isEdit" class="f-c-c">
       <div class="mr-5">
         <el-input
-          @keyup.enter="onKeyupEnter"
-          @change="onInputChange"
           v-model="editText"
+          :placeholder="placeholder"
           :size="size"
-          :placeholder="placeholder" />
+          @change="onInputChange"
+          @keyup.enter="onKeyupEnter" />
       </div>
       <div class="i-tabler-edit-off hover" @click="isEdit = !isEdit"></div>
     </div>
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style lang="scss" scoped></style>

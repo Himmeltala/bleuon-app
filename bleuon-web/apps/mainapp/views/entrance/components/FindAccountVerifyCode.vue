@@ -48,7 +48,7 @@ function confirmGetVerifyCode() {
     coudButtonCount,
     codeButtonDisabled,
     (callback: any) => {
-      UserApi.askResetMailCaptcha({ email: formData.email }, () => callback());
+      UserApi.askResetEmailCaptcha({ email: formData.email }, () => callback());
     }
   );
 }
@@ -57,7 +57,7 @@ const isVerifySuccess = ref(false);
 
 function confirmSubmitForm() {
   FormValidatorsUtil.validate(formRef.value, () => {
-    UserApi.verifyMailCaptcha(formData, () => {
+    UserApi.verifyEmailCaptcha(formData, () => {
       isVerifySuccess.value = true;
       emits("update:email", formData.email);
     });
