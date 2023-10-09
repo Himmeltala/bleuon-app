@@ -52,6 +52,9 @@ public class User implements Serializable {
     private String position;
 
     @TableField
+    private String degree;
+
+    @TableField
     private String avatar;
 
     @TableField

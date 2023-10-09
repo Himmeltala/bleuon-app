@@ -5,6 +5,7 @@ declare type UserData = Partial<{
   phone: string;
   email: string;
   profession: string;
+  degree: string;
   company: string;
   position: string;
   avatar: string;

@@ -11,7 +11,7 @@ import { DateUtil } from "@common/utils";
 import { downloadWithDataUri } from "@mainapp/lib/tools";
 
 // components
-import WorkbenchHeader from "@mainapp/components/WorkbenchHeader.vue";
+import WorkbenchHeader from "@mainapp/components/workbench/WorkbenchHeader.vue";
 import File from "@mainapp/components/File.vue";
 
 const collect = shallowRef();

@@ -174,3 +174,7 @@ export async function renewalByToken(body: UserData, success?: Function) {
     success && success(data);
   });
 }
+
+export function renewalAvatar(formData: FormData) {
+  return request.post("/user/renewal/avatar", formData);
+}

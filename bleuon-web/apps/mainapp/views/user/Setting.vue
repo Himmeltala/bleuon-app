@@ -21,13 +21,13 @@ function renewalBasicData() {
     profession: formData.value.profession,
     company: formData.value.company,
     position: formData.value.position,
-    avatar: formData.value.avatar,
-    signature: formData.value.signature
+    signature: formData.value.signature,
+    degree: formData.value.degree,
+    sex: formData.value.sex
   });
 }
 
-function resetBasicData() {
-}
+function resetBasicData() {}
 
 let interval: number;
 const renewalPwdDialog = ref(false);
@@ -105,6 +105,10 @@ function confirmRenewalPwd() {
     );
   });
 }
+
+function onUploadSuccess(response: R<string>) {
+  formData.value.avatar = response.data;
+}
 </script>
 
 <template>
@@ -123,9 +127,9 @@ function confirmRenewalPwd() {
                   <EditInput v-model:text="formData.username" :base-modification="true"></EditInput>
                 </el-form-item>
                 <el-form-item label="行业">
-                  <el-select v-model="formData.profession" placeholder="请选择您的行业">
+                  <el-select v-model="formData.position" placeholder="请选择您的行业">
                     <el-option
-                      v-for="item in ElSelectData.professionList"
+                      v-for="item in ElSelectData.posotionList"
                       :key="item.value"
                       :label="item.label"
                       :value="item.value" />
@@ -134,11 +138,23 @@ function confirmRenewalPwd() {
                 <el-form-item label="公司">
                   <el-input v-model="formData.company" clearable />
                 </el-form-item>
-                <el-form-item label="职业（学历）">
-                  <el-input v-model="formData.position" clearable />
+                <el-form-item label="学历">
+                  <el-select v-model="formData.degree" placeholder="请选择您的学历">
+                    <el-option
+                      v-for="item in ElSelectData.degreeList"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value" />
+                  </el-select>
                 </el-form-item>
-                <el-form-item label="头像地址">
-                  <el-input v-model="formData.avatar" clearable />
+                <el-form-item label="性别">
+                  <el-select v-model="formData.sex" placeholder="请选择您的性别">
+                    <el-option
+                      v-for="item in ElSelectData.sexList"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value" />
+                  </el-select>
                 </el-form-item>
                 <el-form-item label="个人简介">
                   <el-input
@@ -150,8 +166,11 @@ function confirmRenewalPwd() {
                 </el-form-item>
               </el-form>
             </div>
-            <div class="w-30% text-right">
-              <img :src="formData.avatar" class="rd-50% h-40 w-40" />
+            <div class="w-30% f-c-e cursor-pointer">
+              <UploadImage
+                :img-url="formData.avatar"
+                :start-upload="formData => UserApi.renewalAvatar(formData)"
+                @on-success="response => onUploadSuccess(response)" />
             </div>
           </div>
           <div class="f-c-c mt-10">

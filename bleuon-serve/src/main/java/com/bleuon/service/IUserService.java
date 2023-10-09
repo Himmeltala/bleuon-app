@@ -2,6 +2,7 @@ package com.bleuon.service;
 
 import com.bleuon.entity.User;
 import com.bleuon.entity.dto.UserDto;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @description:
@@ -15,6 +16,7 @@ public interface IUserService {
 
     UserDto findByEmail(String email);
 
-    boolean renewal(User vo);
+    boolean renewal(User user);
 
+    String renewalAvatar(User user, MultipartFile file);
 }

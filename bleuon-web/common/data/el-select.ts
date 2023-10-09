@@ -5,7 +5,7 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-export const professionList = [
+export const posotionList = [
   {
     value: "国防和航空",
     label: "国防和航空"
@@ -131,5 +131,51 @@ export const rankingList = [
   {
     value: "最佳",
     label: "最佳"
+  }
+];
+
+export const sexList = [
+  {
+    value: "男",
+    label: "男"
+  },
+  {
+    value: "女",
+    label: "女"
+  },
+  {
+    value: "保密",
+    label: "保密"
+  }
+];
+
+export const degreeList = [
+  {
+    value: "小学",
+    label: "小学"
+  },
+  {
+    value: "初中",
+    label: "初中"
+  },
+  {
+    value: "高中",
+    label: "高中"
+  },
+  {
+    value: "专科",
+    label: "专科"
+  },
+  {
+    value: "本科",
+    label: "本科"
+  },
+  {
+    value: "硕士",
+    label: "硕士"
+  },
+  {
+    value: "博士",
+    label: "博士"
   }
 ];

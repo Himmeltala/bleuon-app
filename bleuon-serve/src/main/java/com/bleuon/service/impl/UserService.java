@@ -7,10 +7,12 @@ import com.bleuon.entity.dto.UserDto;
 import com.bleuon.exception.JdbcErrorException;
 import com.bleuon.mapper.UserMapper;
 import com.bleuon.service.IUserService;
+import com.bleuon.utils.FileUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Objects;
 
@@ -25,6 +27,7 @@ import java.util.Objects;
 public class UserService extends ServiceImpl<UserMapper, User> implements IUserService {
 
     private final UserMapper mapper;
+    private final FileUtil fileUtil;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
@@ -48,13 +51,40 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
 
     @Transactional
     @Override
-    public boolean renewal(User body) {
+    public boolean renewal(User user) {
         try {
-            if (body.getPassword() != null) {
-                body.setPassword(passwordEncoder.encode(body.getPassword()));
+            if (user.getPassword() != null) {
+                user.setPassword(passwordEncoder.encode(user.getPassword()));
             }
-            Integer status = mapper.renewal(body);
+            Integer status = mapper.renewal(user);
             return status > 0;
+        } catch (Exception e) {
+            throw new JdbcErrorException(e.getCause());
+        }
+    }
+
+    @Transactional
+    @Override
+    public String renewalAvatar(User user, MultipartFile file) {
+        try {
+            String filename = file.getOriginalFilename();
+            if (filename != null && filename.lastIndexOf(".") != -1) {
+                String fileExtension = filename.substring(filename.lastIndexOf(".") + 1);
+                filename = user.getId() + "." + fileExtension;
+                String filepath = "/static/images/avatar";
+
+                boolean writeSuccess = fileUtil.writeToResources(filepath, filename, file.getInputStream());
+
+                if (writeSuccess) {
+                    String avatarUrl = "http://localhost:8080/api/file/preview/image?filepath=" + filepath + "&filename=" + filename;
+                    user.setAvatar(avatarUrl);
+                    boolean renewalSuccess = renewal(user);
+                    if (renewalSuccess) {
+                        return avatarUrl;
+                    }
+                }
+            }
+            return "";
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());
         }

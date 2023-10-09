@@ -115,6 +115,7 @@ public class EntranceController {
         String key = body.getEmail() + ":captcha";
         boolean expired = captchaService.hasCaptchaExpire(key);
         if (expired) return R.error("验证码过期或不存在！");
+
         if (captchaService.hasCaptchaEqual(key, body.getCaptcha())) {
             captchaService.removeCaptcha(key);
             return R.success("校验成功！");
@@ -129,12 +130,12 @@ public class EntranceController {
                                                @Validated EmailCaptchaVo params) {
         String key = body.getEmail() + ":captcha";
         boolean expired = captchaService.hasCaptchaExpire(key);
-        if (expired) return R.error("验证码过期或不存在！", null);
+        if (expired) return R.error("验证码过期或不存在！");
 
         if (captchaService.hasCaptchaEqual(key, params.getCaptcha())) {
             captchaService.removeCaptcha(key);
             return entranceService.registerByEmail(body);
-        } else return R.error("验证码错误！", null);
+        } else return R.error("验证码错误！");
     }
 
     /**
@@ -144,7 +145,7 @@ public class EntranceController {
     public R<Token> verifyLoginMailCaptcha(@RequestBody @Validated EmailCaptchaVo body) {
         String key = body.getEmail() + ":captcha";
         boolean expired = captchaService.hasCaptchaExpire(key);
-        if (expired) return R.error("验证码过期或不存在！", null);
+        if (expired) return R.error("验证码过期或不存在！");
 
         if (captchaService.hasCaptchaEqual(key, body.getCaptcha())) {
             captchaService.removeCaptcha(key);
@@ -158,7 +159,7 @@ public class EntranceController {
                         "******", new ArrayList<>()));
                 return R.success("登录成功！", token);
             }
-        } else return R.error("验证码错误！", null);
+        } else return R.error("验证码错误！");
     }
 
     /**

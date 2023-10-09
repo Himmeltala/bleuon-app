@@ -35,6 +35,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(auth -> {
             auth.requestMatchers("/api/entrance/**").permitAll();
             auth.requestMatchers("/api/expose/**").permitAll();
+            auth.requestMatchers("/api/file/**").permitAll();
             auth.anyRequest().authenticated();
         });
 

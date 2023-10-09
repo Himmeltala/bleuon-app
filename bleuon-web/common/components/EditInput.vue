@@ -1,4 +1,11 @@
 <script lang="ts" setup>
+/**
+ * @description 输入框文本编辑
+ * @author zheng
+ * @since 2023/10/7
+ * @link https://github.com/himmelbleu/bleuon-app
+ */
+
 const props = defineProps({
   /**
    * 显示的文本内容
