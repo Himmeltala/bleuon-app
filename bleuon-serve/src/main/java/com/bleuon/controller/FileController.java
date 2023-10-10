@@ -4,14 +4,12 @@ import com.bleuon.annotaion.RequestMappingPrefix;
 import com.bleuon.constant.KeyVals;
 import com.bleuon.entity.vo.FileParamsVo;
 import com.bleuon.service.FileService;
-import com.bleuon.utils.FileUtil;
 import com.bleuon.utils.JwtUtil;
 import com.bleuon.utils.http.R;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,21 +29,16 @@ import java.io.IOException;
 public class FileController {
 
     private final FileService service;
-    private final FileUtil fileUtil;
 
     @GetMapping(value = "/preview/image")
     public void previewImageFile(FileParamsVo params, HttpServletResponse response) {
         try {
-            MediaType contentType = fileUtil.getContentType(params.getFilename());
-            response.setContentType(contentType.toString());
-
-            byte[] bytes = fileUtil.readFromResources(params.getFilepath(), params.getFilename());
-            try (ServletOutputStream outputStream = response.getOutputStream()) {
-                outputStream.write(bytes);
+            byte[] bytes = service.load(params.getFilename(), params.getFilepath(), response);
+            try (ServletOutputStream output = response.getOutputStream()) {
+                output.write(bytes);
             }
         } catch (IOException e) {
             e.printStackTrace();
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
 

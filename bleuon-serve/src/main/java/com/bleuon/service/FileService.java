@@ -1,8 +1,9 @@
 package com.bleuon.service;
 
-import com.bleuon.exception.JdbcErrorException;
 import com.bleuon.utils.FileUtil;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -48,6 +49,17 @@ public class FileService {
             return "";
         } catch (IOException e) {
             throw new RuntimeException(e.getCause());
+        }
+    }
+
+    public byte[] load(String filename, String filepath, HttpServletResponse response) {
+        try {
+            MediaType contentType = fileUtil.getContentType(filename);
+            response.setContentType(contentType.toString());
+            return fileUtil.readFromResources(filepath, filename);
+        }  catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 

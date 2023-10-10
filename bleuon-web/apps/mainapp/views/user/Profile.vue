@@ -13,12 +13,18 @@ import CommonHeader from "@mainapp/components/CommonHeader.vue";
 import CreateDynamic from "@mainapp/components/user/CreateDynamic.vue";
 
 const route = useRoute();
+const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
 const formData = ref(await UserApi.findById(`${route.params.id}`));
-const activeName = ref<"dynamics">("dynamics");
+const activeName = ref<"createDynamic" | "dynamicList">("createDynamic");
 
 const handleClick = (tab: TabsPaneContext, event: Event) => {
-  console.log(tab, event);
+  console.log(tab);
 };
+
+function submitDynamic(value: string) {
+  console.log(value);
+  // 调用接口发布动态
+}
 </script>
 
 <template>
@@ -61,10 +67,15 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
     <div class="mt-5 mb-5 px-50">
       <div class="bg-bg-overlay px-5 pb-5 rd-2">
         <el-tabs class="min-h-60vh" v-model="activeName" @tab-click="handleClick">
-          <el-tab-pane label="动态列表" name="dynamics">
-            <CreateDynamic></CreateDynamic>
+          <el-tab-pane v-if="token.id === formData.id" label="发布动态" name="createDynamic">
+            <CreateDynamic @submit="submitDynamic"></CreateDynamic>
             <template #label>
-              <span :class="{ 'font-bold': activeName === 'dynamics' }">动态列表</span>
+              <span :class="{ 'font-bold': activeName === 'createDynamic' }">发布动态</span>
+            </template>
+          </el-tab-pane>
+          <el-tab-pane :lazy="true" label="动态列表" name="dynamicList">
+            <template #label>
+              <span :class="{ 'font-bold': activeName === 'dynamicList' }">动态列表</span>
             </template>
           </el-tab-pane>
         </el-tabs>

@@ -41,6 +41,10 @@ class UploadAdapter {
   }
 }
 
+const emits = defineEmits<{
+  (event: "submit", value: string): void;
+}>();
+
 const editor = ref<HTMLDivElement>();
 let ckeditor: ClassicEditor;
 
@@ -65,11 +69,18 @@ onMounted(() => {
       ElMessage.error(error);
     });
 });
+
+function startSubmit() {
+  emits("submit", ckeditor.getData());
+}
 </script>
 
 <template>
   <div>
     <div ref="editor"></div>
+    <div class="f-c-e mt-5">
+      <el-button type="primary" @click="startSubmit">发布动态</el-button>
+    </div>
   </div>
 </template>
 

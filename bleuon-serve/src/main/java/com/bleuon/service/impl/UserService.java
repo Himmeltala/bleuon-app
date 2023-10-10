@@ -29,7 +29,6 @@ import java.util.Objects;
 public class UserService extends ServiceImpl<UserMapper, User> implements IUserService {
 
     private final UserMapper mapper;
-    private final FileUtil fileUtil;
     private final FileService fileService;
     private final BCryptPasswordEncoder passwordEncoder;
 
