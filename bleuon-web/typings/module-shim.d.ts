@@ -1,11 +1,14 @@
-export {};
+import axios, { AxiosRequestConfig } from "axios";
 
 declare module "vue" {
-  interface ComponentCustomProperties {
-  }
+  interface ComponentCustomProperties {}
 }
 
 declare module "axios" {
-  interface AxiosInstance {
+  interface AxiosRequestConfig {
+    /**
+     * 是否关闭消息提示
+     */
+    nomessage?: boolean;
   }
 }

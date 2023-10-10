@@ -53,3 +53,15 @@ declare type TemplateFlowchartData = Partial<{
   // not table file
   fileName: string;
 }>;
+
+declare type DynamicData = Partial<{
+  id: string;
+  title: string;
+  content: string;
+  description: string;
+  digg: number;
+  bury: number;
+  createDate: string;
+  modifyDate: string;
+  userId: string;
+}>;

@@ -7,6 +7,7 @@
  */
 
 import { UserApi } from "@mainapp/apis";
+import { DateUtil } from "@common/utils";
 
 // components
 import CommonHeader from "@mainapp/components/CommonHeader.vue";
@@ -24,6 +25,28 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
 function submitDynamic(value: string) {
   console.log(value);
   // 调用接口发布动态
+}
+
+const dynamicList = ref(await UserApi.findAllDynamics(`${route.params.id}`));
+
+function diggDynamic(item: DynamicData) {
+  item.digg += 1;
+  UserApi.renewalDynamic({ digg: item.digg, id: item.id }, () => {
+    ElMessage.success("支持成功！");
+  });
+}
+
+function buryDynamic(item: DynamicData) {
+  item.bury += 1;
+  UserApi.renewalDynamic({ bury: item.bury, id: item.id }, () => {
+    ElMessage.success("反对成功！");
+  });
+}
+
+function eraseDynamic(item: DynamicData, index: number) {
+  UserApi.eraseDynamic({ id: item.id }, () => {
+    dynamicList.value.splice(index, 1);
+  });
 }
 </script>
 
@@ -74,6 +97,51 @@ function submitDynamic(value: string) {
             </template>
           </el-tab-pane>
           <el-tab-pane :lazy="true" label="动态列表" name="dynamicList">
+            <div v-if="dynamicList">
+              <div
+                class="b-b-1 b-border-primary b-b-solid pb-5 f-s-s mt-5"
+                v-for="(item, index) in dynamicList"
+                :key="item.id">
+                <div class="mr-15">
+                  <img class="w-15 h-15 rd-50%" :src="formData.avatar" />
+                </div>
+                <div>
+                  <div class="text-0.9rem text-text-regular">
+                    {{ formData.username }}
+                  </div>
+                  <div class="text-1.2rem mt-2 text-text-regular">
+                    {{ item.title }}
+                  </div>
+                  <div class="mt-4">
+                    <div class="mt-4">{{ item.content }}</div>
+                  </div>
+                  <div class="f-c-s mt-6 text-text-secondary text-0.9rem">
+                    <div class="mr-15 hover f-c-c" @click="diggDynamic(item)">
+                      <div class="i-tabler-thumb-up mr-1"></div>
+                      {{ item.digg }}
+                    </div>
+                    <div class="hover f-c-c" @click="buryDynamic(item)">
+                      <div class="i-tabler-thumb-down mr-1"></div>
+                      {{ item.bury }}
+                    </div>
+                    <div class="ml-15 f-c-s">
+                      <div class="i-tabler-clock mr-1"></div>
+                      {{ DateUtil.formatted(item.createDate) }}
+                    </div>
+                    <div class="ml-15" v-if="formData.id == token.id">
+                      <el-button
+                        @click="eraseDynamic(item, index)"
+                        type="danger"
+                        size="small"
+                        text
+                        bg>
+                        删除
+                      </el-button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
             <template #label>
               <span :class="{ 'font-bold': activeName === 'dynamicList' }">动态列表</span>
             </template>

@@ -30,30 +30,24 @@ request.interceptors.request.use(
 
 request.interceptors.response.use(
   config => {
-    const { data } = config;
+    const { data, config: configuration } = config;
 
-    if (data.code === 500) {
-      if (data.message) {
-        ElMessage.error(data.message);
-      }
-      return Promise.reject(config);
-    } else if (data.code === 400) {
-      if (data.message) {
-        ElMessage.warning(data.message);
-      }
-    } else if (data.code === 403) {
-      location.reload();
-      localStorage.removeItem(KeyVals.MAINAPP_TOKEN_KEY);
-    }
-
-    if (
-      data.code === 200 &&
-      !InterceptorUtil.notInterceptUrl(config.config, {
-        fuzzy: ["find", "replicate", "community/template/renewal"]
-      })
-    ) {
-      if (data.message) {
-        ElMessage.success(data.message);
+    if (!configuration.nomessage) {
+      if (data.code == 500) {
+        data.message && ElMessage.error(data.message);
+        return Promise.reject(config);
+      } else if (data.code == 403) {
+        location.reload();
+        localStorage.removeItem(KeyVals.MAINAPP_TOKEN_KEY);
+      } else if (data.code == 400) {
+        data.message && ElMessage.warning(data.message);
+      } else if (
+        data.code == 200 &&
+        !InterceptorUtil.notInterceptUrl(config.config, {
+          fuzzy: ["find", "replicate"]
+        })
+      ) {
+        data.message && ElMessage.success(data.message);
       }
     }
 

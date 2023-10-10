@@ -183,10 +183,50 @@ export async function renewal(body: UserData, success?: Function) {
   });
 }
 
+/**
+ * 更新用户头像
+ *
+ * @param formData
+ * @returns
+ */
 export function renewalAvatar(formData: FormData) {
   return request.post("/user/renewal/avatar", formData);
 }
 
+/**
+ * 上传 ckeditor 图片
+ *
+ * @param file
+ * @returns
+ */
 export function uploadCkEditorImage(file: any) {
   return request.post("/file/upload/ckeditor/image", file);
+}
+
+/**
+ * 查询动态列表
+ *
+ * @param uid
+ */
+export async function findAllDynamics(uid: string) {
+  const { data } = await request.get<R<DynamicData[]>>("/user/find/all/dynamics", {
+    params: { uid }
+  });
+  return data.data;
+}
+
+export function renewalDynamic(data: DynamicData, success?: Function) {
+  request
+    .post<R>("/user/renewal/dynamic", data, {
+      nomessage: true
+    })
+    .then(() => {
+      success && success();
+    });
+}
+
+export function eraseDynamic(params: DynamicData, success?: Function) {
+  request.delete<R>("/user/erase/dynamic", { params }).then(() => {
+    success && success();
+  });
 }

@@ -2,8 +2,10 @@ package com.bleuon.controller;
 
 import com.bleuon.annotaion.RequestMappingPrefix;
 import com.bleuon.constant.KeyVals;
+import com.bleuon.entity.Dynamic;
 import com.bleuon.entity.User;
 import com.bleuon.entity.dto.UserDto;
+import com.bleuon.service.impl.DynamicService;
 import com.bleuon.service.impl.UserService;
 import com.bleuon.utils.JwtUtil;
 import com.bleuon.utils.http.R;
@@ -14,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -27,6 +30,7 @@ import java.util.Objects;
 public class UserController {
 
     private final UserService userService;
+    private final DynamicService dynamicService;
 
     @GetMapping("/find/by/id")
     public R<UserDto> findById(@Validated User params) {
@@ -71,6 +75,24 @@ public class UserController {
         }
 
         return R.failed("上传头像失败！");
+    }
+
+    @GetMapping("/find/all/dynamics")
+    public R<List<Dynamic>> findAllDynamics(@RequestParam String uid) {
+        List<Dynamic> list = dynamicService.findAll(uid);
+        return R.success(list);
+    }
+
+    @PostMapping("/renewal/dynamic")
+    public R<Object> renewalDynamic(@RequestBody Dynamic data) {
+        boolean status = dynamicService.renewal(data);
+        return status ? R.success("更新成功！") : R.error("更新失败！");
+    }
+
+    @DeleteMapping("/erase/dynamic")
+    public R<Object> eraseDynamic(Dynamic params) {
+        boolean status = dynamicService.eraseDynamic(params);
+        return status ? R.success("删除成功！") : R.error("删除失败！");
     }
 
 }

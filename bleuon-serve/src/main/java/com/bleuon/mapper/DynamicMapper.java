@@ -14,4 +14,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 @CacheNamespace
 public interface DynamicMapper extends BaseMapper<Dynamic> {
+
+    Integer renewal(Dynamic data);
+
 }
