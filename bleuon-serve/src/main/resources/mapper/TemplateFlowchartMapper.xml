@@ -83,7 +83,7 @@
         WHERE tf.id = #{id};
     </select>
 
-    <update id="renewal">
+    <update id="renewal" parameterType="com.bleuon.entity.TemplateFlowchart">
         UPDATE t_template_flowcharts
         <set>
             <trim suffixOverrides=",">
@@ -100,12 +100,12 @@
         WHERE id = #{id}
     </update>
 
-    <insert id="add">
+    <insert id="add" parameterType="com.bleuon.entity.TemplateFlowchart">
         INSERT INTO t_template_flowcharts(id, tags, scene, price, description, flowchart_id)
         VALUES (#{id}, #{tags}, #{scene}, #{price}, #{description}, #{flowchartId});
     </insert>
 
-    <delete id="erase">
+    <delete id="erase" parameterType="com.bleuon.entity.TemplateFlowchart">
         DELETE
         FROM t_template_flowcharts
         WHERE flowchart_id = #{flowchartId};

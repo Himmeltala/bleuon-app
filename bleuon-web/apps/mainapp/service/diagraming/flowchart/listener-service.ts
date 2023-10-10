@@ -5,8 +5,8 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import { dia } from "@mainapp/lib";
 import * as Data from "@mainapp/data/diagraming/flowchart";
+import { dia } from "@mainapp/lib";
 
 /**
  * 安装 Link 工具

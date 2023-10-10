@@ -77,7 +77,7 @@ function collectFlowchart() {
         <div class="mt-2">
           <div class="text-text-secondary text-0.8rem f-c-c">
             <div class="i-tabler-clock mr-1"></div>
-            上次更新：{{ DateUtil.formatted("yyyy-MM-dd HH:mm:ss", flowchartData.modifyDate) }}
+            上次更新：{{ DateUtil.formatted(flowchartData.modifyDate) }}
           </div>
         </div>
       </div>

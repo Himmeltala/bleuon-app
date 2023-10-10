@@ -5,49 +5,6 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-export const posotionList = [
-  {
-    value: "国防和航空",
-    label: "国防和航空"
-  },
-  {
-    value: "计算机硬件",
-    label: "计算机硬件"
-  },
-  {
-    value: "计算机软件",
-    label: "计算机软件"
-  },
-  {
-    value: "计算机网络",
-    label: "计算机网络"
-  },
-  {
-    value: "互联网",
-    label: "互联网"
-  },
-  {
-    value: "半导体",
-    label: "半导体"
-  },
-  {
-    value: "电信",
-    label: "电信"
-  },
-  {
-    value: "律师",
-    label: "律师"
-  },
-  {
-    value: "法律服务",
-    label: "法律服务"
-  },
-  {
-    value: "生物技术",
-    label: "生物技术"
-  }
-];
-
 /**
  * 公开流程图的场景类别
  */
@@ -134,6 +91,9 @@ export const rankingList = [
   }
 ];
 
+/**
+ * 性别
+ */
 export const sexList = [
   {
     value: "男",
@@ -149,6 +109,55 @@ export const sexList = [
   }
 ];
 
+/**
+ * 行业
+ */
+export const positionList = [
+  {
+    value: "国防和航空",
+    label: "国防和航空"
+  },
+  {
+    value: "计算机硬件",
+    label: "计算机硬件"
+  },
+  {
+    value: "计算机软件",
+    label: "计算机软件"
+  },
+  {
+    value: "计算机网络",
+    label: "计算机网络"
+  },
+  {
+    value: "互联网",
+    label: "互联网"
+  },
+  {
+    value: "半导体",
+    label: "半导体"
+  },
+  {
+    value: "电信",
+    label: "电信"
+  },
+  {
+    value: "律师",
+    label: "律师"
+  },
+  {
+    value: "法律服务",
+    label: "法律服务"
+  },
+  {
+    value: "生物技术",
+    label: "生物技术"
+  }
+];
+
+/**
+ * 学历
+ */
 export const degreeList = [
   {
     value: "小学",
@@ -177,5 +186,39 @@ export const degreeList = [
   {
     value: "博士",
     label: "博士"
+  }
+];
+
+/**
+ * 职业
+ */
+export const professionList = [
+  {
+    value: "Java",
+    label: "Java"
+  },
+  {
+    value: "C/C++",
+    label: "C/C++"
+  },
+  {
+    value: "PHP",
+    label: "PHP"
+  },
+  {
+    value: "Python",
+    label: "Python"
+  },
+  {
+    value: ".NET",
+    label: ".NET"
+  },
+  {
+    value: "JavaScript",
+    label: "JavaScript"
+  },
+  {
+    value: "Android",
+    label: "Android"
   }
 ];

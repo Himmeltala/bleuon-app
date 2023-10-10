@@ -132,7 +132,7 @@ await fetchData();
           </router-link>
         </el-form-item>
         <el-form-item label="截止日期">
-          {{ DateUtil.formatted("yyyy-MM-dd HH:mm:ss", flowchartData.deadShareDate) }}
+          {{ DateUtil.formatted(flowchartData.deadShareDate) }}
         </el-form-item>
       </el-form>
     </el-dialog>

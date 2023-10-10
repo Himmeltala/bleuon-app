@@ -5,8 +5,8 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import { dia, elementTools } from "jointjs";
 import { DateUtil } from "@common/utils";
+import { dia, elementTools } from "jointjs";
 
 /**
  * Rect 缩放工具
@@ -199,7 +199,7 @@ export function convertSvgToImage(
   const image = new Image();
   image.src = dataUri;
 
-  image.onload = function() {
+  image.onload = function () {
     canvas.width = config.width || 1000;
     canvas.height = config.height || 1000;
     context.fillStyle = config.bgColor || "#ffffff";
@@ -209,9 +209,7 @@ export function convertSvgToImage(
     const dataURL = canvas.toDataURL(`image/${type}`);
     const link = document.createElement("a");
     link.href = dataURL;
-    link.download = `${config.fileName || "未命名的文件"}-${DateUtil.formatted(
-      "yyyy-MM-dd HH_mm_ss"
-    )}.${type}`;
+    link.download = `${config.fileName || "未命名的文件"}-${DateUtil.formatted()}.${type}`;
     link.click();
 
     success && success("下载成功！");
@@ -262,7 +260,7 @@ export function downloadWithDataUri(
 
   image.src = data.dataUri;
 
-  image.onload = function() {
+  image.onload = function () {
     canvas.width = data.width || 1000;
     canvas.height = data.height || 1000;
     context.fillStyle = data.bgColor || "#ffffff";
@@ -272,9 +270,7 @@ export function downloadWithDataUri(
     const dataURL = canvas.toDataURL(`image/${type}`);
     const link = document.createElement("a");
     link.href = dataURL;
-    link.download = `${data.fileName || "未命名的文件"}-${DateUtil.formatted(
-      "yyyy-MM-dd HH_mm_ss"
-    )}.${type}`;
+    link.download = `${data.fileName || "未命名的文件"}-${DateUtil.formatted()}.${type}`;
     link.click();
 
     success && success("下载成功！");

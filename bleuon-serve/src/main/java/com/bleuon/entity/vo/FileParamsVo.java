@@ -1,6 +1,8 @@
 package com.bleuon.entity.vo;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @description: 获取文件的参数格式

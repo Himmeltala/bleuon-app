@@ -4,14 +4,15 @@ declare type UserData = Partial<{
   password: string;
   phone: string;
   email: string;
-  profession: string;
-  degree: string;
   company: string;
+  degree: string;
+  profession: string;
   position: string;
   avatar: string;
   signature: string;
   sex: string;
   registerDate: string;
+  modifyDate: string;
 }>;
 
 declare type FlowchartData = Partial<{
@@ -49,6 +50,6 @@ declare type TemplateFlowchartData = Partial<{
   createDate: string;
   flowchartId: string;
   flowchart: FlowchartData;
-  //
+  // not table file
   fileName: string;
 }>;

@@ -81,7 +81,7 @@ onMounted(() => {
               <div class="f-c-s mt-2 text-text-secondary">
                 <div class="i-tabler-clock-edit mr-2"></div>
                 <span>
-                  {{ DateUtil.formatted("yyyy-MM-dd HH:mm:ss", data.flowchart.modifyDate) }}
+                  {{ DateUtil.formatted(data.flowchart.modifyDate) }}
                 </span>
               </div>
             </div>

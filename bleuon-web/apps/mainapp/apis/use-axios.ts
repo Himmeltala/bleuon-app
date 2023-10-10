@@ -5,8 +5,8 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import axios from "axios";
 import { InterceptorUtil } from "@common/utils";
+import axios from "axios";
 
 const request = axios.create({
   baseURL: `http://localhost:8080/api`

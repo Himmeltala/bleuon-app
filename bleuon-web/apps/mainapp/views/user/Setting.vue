@@ -8,7 +8,7 @@
 
 import { UserApi } from "@mainapp/apis";
 import { ElSelectData } from "@common/data";
-import { FormValidatorsUtil } from "@common/utils";
+import { FormValidatorsUtil, DateUtil } from "@common/utils";
 
 // components
 import CommonHeader from "@mainapp/components/CommonHeader.vue";
@@ -16,18 +16,16 @@ import CommonHeader from "@mainapp/components/CommonHeader.vue";
 const formData = useStorage<UserData>(KeyVals.MAINAPP_USER, {});
 
 function renewalBasicData() {
-  UserApi.renewalByToken({
+  UserApi.renewal({
     username: formData.value.username,
     profession: formData.value.profession,
     company: formData.value.company,
     position: formData.value.position,
-    signature: formData.value.signature,
     degree: formData.value.degree,
+    signature: formData.value.signature,
     sex: formData.value.sex
   });
 }
-
-function resetBasicData() {}
 
 let interval: number;
 const renewalPwdDialog = ref(false);
@@ -90,7 +88,7 @@ function confirmRenewalPwd() {
     UserApi.verifyEmailCaptcha(
       { captcha: renewalPwdFormData.captcha, email: formData.value.email },
       () => {
-        UserApi.renewalByToken(
+        UserApi.renewal(
           {
             password: renewalPwdFormData.password
           },
@@ -122,14 +120,23 @@ function onUploadSuccess(response: R<string>) {
           </div>
           <div class="f-s-b">
             <div class="w-50%">
-              <el-form :model="formData" label-position="left" label-width="auto">
+              <el-form :model="formData" label-position="left" label-width="90px">
                 <el-form-item label="昵称">
                   <EditInput v-model:text="formData.username" :base-modification="true"></EditInput>
                 </el-form-item>
                 <el-form-item label="行业">
                   <el-select v-model="formData.position" placeholder="请选择您的行业">
                     <el-option
-                      v-for="item in ElSelectData.posotionList"
+                      v-for="item in ElSelectData.positionList"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value" />
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="职业">
+                  <el-select v-model="formData.profession" placeholder="请选择您的职业">
+                    <el-option
+                      v-for="item in ElSelectData.professionList"
                       :key="item.value"
                       :label="item.label"
                       :value="item.value" />
@@ -167,14 +174,19 @@ function onUploadSuccess(response: R<string>) {
               </el-form>
             </div>
             <div class="w-30% f-c-e cursor-pointer">
-              <UploadImage
+              <AvatarUpload
                 :img-url="formData.avatar"
                 :start-upload="formData => UserApi.renewalAvatar(formData)"
                 @on-success="response => onUploadSuccess(response)" />
             </div>
           </div>
+          <div class="mt-5 f-c-e text-0.8rem text-text-secondary">
+            <div class="f-c-c">
+              <div class="i-ep-clock mr-1"></div>
+              上次更新：{{ DateUtil.formatted(formData.modifyDate) }}
+            </div>
+          </div>
           <div class="f-c-c mt-10">
-            <el-button @click="resetBasicData">重置</el-button>
             <el-button type="primary" @click="renewalBasicData">保存资料</el-button>
           </div>
         </div>
@@ -222,7 +234,7 @@ function onUploadSuccess(response: R<string>) {
             </div>
           </div>
         </div>
-        <el-dialog v-model="renewalPwdDialog" title="修改密码" width="30%">
+        <el-dialog v-model="renewalPwdDialog" title="修改密码" width="25%">
           <el-form
             ref="renewalPwdFormRef"
             :model="renewalPwdFormData"

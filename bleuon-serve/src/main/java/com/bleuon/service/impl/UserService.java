@@ -6,12 +6,14 @@ import com.bleuon.entity.User;
 import com.bleuon.entity.dto.UserDto;
 import com.bleuon.exception.JdbcErrorException;
 import com.bleuon.mapper.UserMapper;
+import com.bleuon.service.FileService;
 import com.bleuon.service.IUserService;
 import com.bleuon.utils.FileUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Objects;
@@ -28,6 +30,7 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
 
     private final UserMapper mapper;
     private final FileUtil fileUtil;
+    private final FileService fileService;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
@@ -67,23 +70,16 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
     @Override
     public String renewalAvatar(User user, MultipartFile file) {
         try {
-            String filename = file.getOriginalFilename();
-            if (filename != null && filename.lastIndexOf(".") != -1) {
-                String fileExtension = filename.substring(filename.lastIndexOf(".") + 1);
-                filename = user.getId() + "." + fileExtension;
-                String filepath = "/static/images/avatar";
+            String imgUrl = fileService.upload("/static/images/avatar", user.getId(), file);
 
-                boolean writeSuccess = fileUtil.writeToResources(filepath, filename, file.getInputStream());
-
-                if (writeSuccess) {
-                    String avatarUrl = "http://localhost:8080/api/file/preview/image?filepath=" + filepath + "&filename=" + filename;
-                    user.setAvatar(avatarUrl);
-                    boolean renewalSuccess = renewal(user);
-                    if (renewalSuccess) {
-                        return avatarUrl;
-                    }
+            if (StringUtils.hasText(imgUrl)) {
+                user.setAvatar(imgUrl);
+                boolean success = renewal(user);
+                if (success) {
+                    return imgUrl;
                 }
             }
+
             return "";
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());

@@ -129,7 +129,7 @@ await fetchData();
             </div>
             <div class="text-text-secondary text-0.8rem mt-2 f-c-s">
               <div class="i-tabler-clock-edit mr-1"></div>
-              {{ DateUtil.formatted("MM-dd HH:mm:ss", item.flowchart.modifyDate) }}
+              {{ DateUtil.formatted(item.flowchart.modifyDate, "MM-dd HH:mm:ss") }}
             </div>
             <router-link :to="'/u/profile/' + item.flowchart.user.id">
               <div class="text-text-secondary cursor-pointer f-c-s mt-4">

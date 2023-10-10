@@ -158,8 +158,16 @@ export function resetPassword(body: UserData, success: Function) {
 /**
  * 通过 token 查询用户信息
  */
-export async function fineByToken() {
-  const { data } = await request.get<R<UserData>>("/user/find/by/token");
+export async function find() {
+  const { data } = await request.get<R<UserData>>("/user/find");
+  return data.data;
+}
+
+/**
+ * 通过 token 查询用户信息
+ */
+export async function findById(id: string) {
+  const { data } = await request.get<R<UserData>>("/user/find/by/id", { params: { id } });
   return data.data;
 }
 
@@ -169,12 +177,16 @@ export async function fineByToken() {
  * @param body
  * @param success
  */
-export async function renewalByToken(body: UserData, success?: Function) {
-  request.post<R>("/user/renewal/by/token", body).then(({ data }) => {
+export async function renewal(body: UserData, success?: Function) {
+  request.post<R>("/user/renewal", body).then(({ data }) => {
     success && success(data);
   });
 }
 
 export function renewalAvatar(formData: FormData) {
   return request.post("/user/renewal/avatar", formData);
+}
+
+export function uploadCkEditorImage(file: any) {
+  return request.post("/file/upload/ckeditor/image", file);
 }

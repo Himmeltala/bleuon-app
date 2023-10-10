@@ -6,15 +6,15 @@
  */
 
 export function formatted(
-  format: "yyyy-MM-dd HH:mm:ss" | "HH:mm:ss" | "yyyy-MM-dd" | string,
-  timestamp?: string
+  timestamp?: string,
+  format?: "yyyy-MM-dd HH:mm:ss" | "HH:mm:ss" | "yyyy-MM-dd" | "MM-dd HH:mm:ss"
 ): string {
-  let date;
-  if (!timestamp) {
-    date = new Date();
-  } else {
+  let date = new Date(),
+    pattern = `${format || "yyyy-MM-dd HH:mm:ss"}`;
+  if (timestamp) {
     date = new Date(timestamp);
   }
+
   const year = String(date.getFullYear());
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
@@ -22,12 +22,12 @@ export function formatted(
   const minutes = String(date.getMinutes()).padStart(2, "0");
   const seconds = String(date.getSeconds()).padStart(2, "0");
 
-  format = format.replace("yyyy", year);
-  format = format.replace("MM", month);
-  format = format.replace("dd", day);
-  format = format.replace("HH", hours);
-  format = format.replace("mm", minutes);
-  format = format.replace("ss", seconds);
+  pattern = pattern.replace("yyyy", year);
+  pattern = pattern.replace("MM", month);
+  pattern = pattern.replace("dd", day);
+  pattern = pattern.replace("HH", hours);
+  pattern = pattern.replace("mm", minutes);
+  pattern = pattern.replace("ss", seconds);
 
-  return format;
+  return pattern;
 }

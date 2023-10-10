@@ -50,7 +50,7 @@ const router = createRouter({
       path: "/u",
       children: [
         {
-          path: "profile/:uid",
+          path: "profile/:id",
           name: "public-profile",
           meta: { title: "个人空间" },
           component: () => import("@mainapp/views/user/Profile.vue")

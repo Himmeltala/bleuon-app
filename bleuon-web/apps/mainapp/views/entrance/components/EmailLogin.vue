@@ -48,7 +48,7 @@ function confirmSubmitForm() {
   FormValidatorsUtil.validate(formRef.value, () => {
     UserApi.verifyLoginEmailCaptcha(formData, token => {
       localStorage.setToken(KeyVals.MAINAPP_TOKEN_KEY, token);
-      UserApi.fineByToken().then(data => {
+      UserApi.find().then(data => {
         useStorage<UserData>(KeyVals.MAINAPP_USER, {}).value = data;
         router.push("/workbench");
       });

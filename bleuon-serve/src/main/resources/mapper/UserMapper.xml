@@ -4,7 +4,7 @@
 
     <cache-ref namespace="com.bleuon.mapper.UserMapper"/>
 
-    <update id="renewal">
+    <update id="renewal" parameterType="com.bleuon.entity.User">
         UPDATE t_users
         <set>
             <trim suffixOverrides=",">
@@ -13,7 +13,7 @@
                 <if test="password != null">`password` = #{password},</if>
                 <if test="phone != null">phone = #{phone},</if>
                 <if test="profession != null">profession = #{profession},</if>
-                <if test="degree != null">degree = #{degree}</if>
+                <if test="degree != null">degree = #{degree},</if>
                 <if test="company != null">company = #{company},</if>
                 <if test="position != null">position = #{position},</if>
                 <if test="avatar != null">avatar = #{avatar},</if>

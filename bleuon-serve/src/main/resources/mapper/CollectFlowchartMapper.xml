@@ -40,14 +40,14 @@
           AND cf.flowchart_id = #{flowchartId};
     </select>
 
-    <delete id="erase">
+    <delete id="erase" parameterType="com.bleuon.entity.vo.CollectFlowchartVo">
         DELETE
         FROM co_collect_flowchart
         WHERE collect_uid = #{collectUid}
           AND flowchart_id = #{flowchartId}
     </delete>
 
-    <insert id="add">
+    <insert id="add" parameterType="com.bleuon.entity.vo.CollectFlowchartVo">
         INSERT INTO co_collect_flowchart(collect_uid, flowchart_id)
         VALUES (#{collectUid}, #{flowchartId})
     </insert>

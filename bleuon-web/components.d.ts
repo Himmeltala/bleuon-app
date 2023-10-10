@@ -7,6 +7,7 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AvatarUpload: typeof import('./common/components/AvatarUpload.vue')['default']
     EditInput: typeof import('./common/components/EditInput.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElColorPicker: typeof import('element-plus/es')['ElColorPicker']

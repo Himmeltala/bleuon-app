@@ -83,7 +83,7 @@ await fetchData();
               </div>
               <div class="text-text-secondary text-0.8rem mt-2 f-c-s">
                 <div class="i-tabler-clock-edit mr-1"></div>
-                {{ DateUtil.formatted("MM-dd HH:mm:ss", item.modifyDate) }}
+                {{ DateUtil.formatted(item.modifyDate, "MM-dd HH:mm:ss") }}
               </div>
               <div class="f-c-s text-text-secondary text-0.8rem mt-2">
                 <img :src="item.belongUser.avatar" class="mr-2 w-6 h-6 rd-50%" />

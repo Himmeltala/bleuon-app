@@ -208,7 +208,7 @@ async function searchFiles() {
             </div>
             <div class="text-text-secondary text-0.8rem mt-4 f-c-s">
               <div class="i-tabler-clock-edit mr-1"></div>
-              {{ DateUtil.formatted("MM-dd HH:mm:ss", item.modifyDate) }}
+              {{ DateUtil.formatted(item.modifyDate, "MM-dd HH:mm:ss") }}
             </div>
           </template>
         </File>

@@ -56,14 +56,14 @@ function startUpload(options: any): XMLHttpRequest | Promise<unknown> {
 </script>
 
 <template>
-  <div class="image-upload">
-    <div class="imagebox h-40 w-40 relative">
-      <div class="hoverbox rd-50% h-100% w-100%" @click="dialog = !dialog">
-        <div class="f-c-c h-100% w-100%">点击上传图片</div>
+  <div class="avatar-upload">
+    <div class="avatar-box h-40 w-40 relative">
+      <div class="hover-box rd-50% h-100% w-100%" @click="dialog = !dialog">
+        <div class="f-c-c h-100% w-100%">点击上传头像</div>
       </div>
       <img :src="imgUrl" class="rd-50% h-100% w-100%" />
     </div>
-    <el-dialog v-model="dialog" title="上传图片" width="30%">
+    <el-dialog v-model="dialog" title="上传头像" width="30%">
       <el-upload
         drag
         ref="upload"
@@ -75,7 +75,7 @@ function startUpload(options: any): XMLHttpRequest | Promise<unknown> {
         :http-request="startUpload"
         list-type="picture">
         <div class="f-c-c">
-          <div class="i-ep-upload-filled w-30 h-30"></div>
+          <div class="i-ep-upload-filled w-30 h-30 text-text-secondary"></div>
         </div>
         <div class="text-0.8rem">拖拽文件至此，或点击上传</div>
         <template #tip>
@@ -87,18 +87,19 @@ function startUpload(options: any): XMLHttpRequest | Promise<unknown> {
 </template>
 
 <style scoped lang="scss">
-.imagebox {
-  .hoverbox {
+.avatar-box {
+  .hover-box {
     display: none;
   }
 
   &:hover {
-    .hoverbox {
+    .hover-box {
       display: block;
       position: absolute;
       top: 0;
       right: 0;
-      background-color: #00000073;
+      background-color: var(--bleuon-bg-color);
+      opacity: 0.8;
     }
   }
 }

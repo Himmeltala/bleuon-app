@@ -49,8 +49,7 @@ function updateFlowchartData() {
   flowchartData.value.connectorDefault = JSON.stringify(Data.linkConnectorConfig.value);
   flowchartData.value.routerDefault = JSON.stringify(Data.linkRouterConfig.value);
   flowchartData.value.dataUri = getDataUri(paper.value, graph.value);
-  FlowchartApi.renewal(flowchartData.value, () => {
-  });
+  FlowchartApi.renewal(flowchartData.value, () => {});
 }
 
 const updateThrottle = PreventUtil.throttle(updateFlowchartData, 3000);

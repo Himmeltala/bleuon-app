@@ -25,6 +25,7 @@ public class UserDto implements Serializable {
     private String profession;
     private String company;
     private String position;
+    private String degree;
     private String avatar;
     private String signature;
     private String sex;
