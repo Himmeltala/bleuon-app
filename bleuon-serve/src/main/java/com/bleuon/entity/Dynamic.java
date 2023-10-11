@@ -3,6 +3,8 @@ package com.bleuon.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.bleuon.constant.ValidPattern;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,11 +24,11 @@ import java.sql.Timestamp;
 @TableName("t_dynamics")
 public class Dynamic implements Serializable {
 
+    @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
     @TableId
     private String id;
-    private String title;
+
     private String content;
-    private String description;
     private Integer digg;
     private Integer bury;
 

@@ -29,7 +29,7 @@ public class UserDto implements Serializable {
     private String avatar;
     private String signature;
     private String sex;
-    private Timestamp registerDate;
+    private Timestamp createDate;
     private Timestamp modifyDate;
 
 }

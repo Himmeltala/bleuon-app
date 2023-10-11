@@ -11,7 +11,7 @@ declare type UserData = Partial<{
   avatar: string;
   signature: string;
   sex: string;
-  registerDate: string;
+  createDate: string;
   modifyDate: string;
 }>;
 
@@ -48,6 +48,7 @@ declare type TemplateFlowchartData = Partial<{
   description: string;
   ranking: string;
   createDate: string;
+  modifyDate: string;
   flowchartId: string;
   flowchart: FlowchartData;
   // not table file
@@ -56,9 +57,7 @@ declare type TemplateFlowchartData = Partial<{
 
 declare type DynamicData = Partial<{
   id: string;
-  title: string;
   content: string;
-  description: string;
   digg: number;
   bury: number;
   createDate: string;

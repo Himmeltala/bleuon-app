@@ -34,7 +34,6 @@ function confirmLogin() {
     UserApi.authLogin(formData, token => {
       localStorage.setToken(KeyVals.MAINAPP_TOKEN_KEY, token);
       UserApi.findById().then(data => {
-        useStorage<UserData>(KeyVals.MAINAPP_USER, {}).value = data;
         router.push("/workbench");
       });
     });

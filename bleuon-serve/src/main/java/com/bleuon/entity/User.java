@@ -64,8 +64,8 @@ public class User implements Serializable {
     @TableField
     private String sex;
 
-    @TableField("register_date")
-    private Timestamp registerDate;
+    @TableField("create_date")
+    private Timestamp createDate;
 
     @TableField("modify_date")
     private Timestamp modifyDate;

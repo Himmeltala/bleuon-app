@@ -57,7 +57,7 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
             if (user.getPassword() != null) {
                 user.setPassword(passwordEncoder.encode(user.getPassword()));
             }
-            Integer status = mapper.renewal(user);
+            Integer status = mapper.upgrade(user);
             return status > 0;
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());

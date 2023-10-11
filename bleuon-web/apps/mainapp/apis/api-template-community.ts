@@ -49,6 +49,7 @@ export async function replicate(body: TemplateFlowchartData, success?: (res: R) 
  * 更新模板
  *
  * @param body
+ * @param config
  * @param success
  */
 export async function upgrade(

@@ -40,6 +40,9 @@ public class TemplateFlowchart implements Serializable {
     @TableField("create_date")
     private Timestamp createDate;
 
+    @TableField("modify_date")
+    private Timestamp modifyDate;
+
     @TableField("flowchart_id")
     private String flowchartId;
 

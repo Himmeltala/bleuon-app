@@ -76,7 +76,6 @@ public class EntranceService extends ServiceImpl<UserMapper, User> {
             body.setId(uuid);
             body.setUsername("用户_" + uuid);
             body.setPassword(passwordEncoder.encode(body.getPassword()));
-            body.setRegisterDate(new Timestamp(new Date().getTime()));
             boolean status = this.save(body);
 
             if (status) {

@@ -88,8 +88,8 @@ public class UserController {
     }
 
     @PostMapping("/upgrade/dynamic")
-    public R<Object> upgradeDynamic(@RequestBody Dynamic data) {
-        boolean status = dynamicService.upgrade(data);
+    public R<Object> upgradeDynamic(@RequestBody Dynamic body) {
+        boolean status = dynamicService.upgrade(body);
         return status ? R.success("更新成功！") : R.error("更新失败！");
     }
 
@@ -97,6 +97,15 @@ public class UserController {
     public R<Object> deleteDynamicById(Dynamic params) {
         boolean status = dynamicService.deleteById(params);
         return status ? R.success("删除成功！") : R.error("删除失败！");
+    }
+
+    @PostMapping("/add/dynamic")
+    public R<Object> addDynamic(@RequestHeader(KeyVals.Token) String token, @RequestBody Dynamic body) {
+        Claims claims = JwtUtil.parseJwt(token);
+        String uid = (String) claims.get("id");
+        body.setUserId(uid);
+        boolean status = dynamicService.add(body);
+        return status ? R.success("添加成功！") : R.error("添加失败！");
     }
 
 }

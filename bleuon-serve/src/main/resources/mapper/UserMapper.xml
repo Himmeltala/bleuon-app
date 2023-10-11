@@ -4,7 +4,7 @@
 
     <cache-ref namespace="com.bleuon.mapper.UserMapper"/>
 
-    <update id="renewal" parameterType="com.bleuon.entity.User">
+    <update id="upgrade" parameterType="com.bleuon.entity.User">
         UPDATE t_users
         <set>
             <trim suffixOverrides=",">

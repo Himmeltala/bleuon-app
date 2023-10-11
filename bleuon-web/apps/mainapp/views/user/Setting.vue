@@ -13,7 +13,7 @@ import { FormValidatorsUtil, DateUtil } from "@common/utils";
 // components
 import CommonHeader from "@mainapp/components/CommonHeader.vue";
 
-const formData = useStorage<UserData>(KeyVals.MAINAPP_USER, {});
+const formData = ref(await UserApi.findById());
 
 function upgradeBasicData() {
   UserApi.upgrade({
@@ -93,10 +93,7 @@ function confirmResetPwd() {
             password: resetPwdFormData.password
           },
           () => {
-            UserApi.authLogout(() => {
-              location.reload();
-              ElMessage.success("请重新登录！");
-            });
+            UserApi.authLogout();
           }
         );
       }

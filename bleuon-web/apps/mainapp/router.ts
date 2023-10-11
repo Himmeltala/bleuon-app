@@ -51,7 +51,7 @@ const router = createRouter({
       children: [
         {
           path: "profile/:id",
-          name: "public-profile",
+          name: "auth-profile",
           meta: { title: "个人空间" },
           component: () => import("@mainapp/views/user/Profile.vue")
         },
@@ -102,7 +102,7 @@ const router = createRouter({
       children: [
         {
           path: "flowchart/:id",
-          name: "public-share-flowchart",
+          name: "auth-share-flowchart",
           meta: { title: "分享的流程图" },
           component: () => import("@mainapp/views/share/ShareFlowchart.vue")
         }
@@ -145,9 +145,7 @@ router.beforeEach((to, from, next) => {
 
   if (name.startsWith("auth-") && !isAuth) {
     next("/entrance");
-    ElMessage.error("您未登录！已导航至登录页");
-  } else if (name.startsWith("public-")) {
-    next();
+    ElMessage.warning("没有登陆！");
   } else if (name.startsWith("enter-") && isAuth) {
     next("/workbench");
   } else {

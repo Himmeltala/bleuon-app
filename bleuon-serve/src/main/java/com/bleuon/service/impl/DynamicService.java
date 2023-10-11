@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @description:
@@ -30,9 +31,9 @@ public class DynamicService extends ServiceImpl<DynamicMapper, Dynamic> implemen
 
     @Transactional
     @Override
-    public boolean upgrade(Dynamic data) {
+    public boolean upgrade(Dynamic body) {
         try {
-            Integer status = mapper.upgrade(data);
+            Integer status = mapper.upgrade(body);
             return status > 0;
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());
@@ -44,6 +45,19 @@ public class DynamicService extends ServiceImpl<DynamicMapper, Dynamic> implemen
     public boolean deleteById(Dynamic params) {
         try {
             return removeById(params.getId());
+        } catch (Exception e) {
+            throw new JdbcErrorException(e.getCause());
+        }
+    }
+
+    @Transactional
+    @Override
+    public boolean add(Dynamic body) {
+        try {
+            String uuid = UUID.randomUUID().toString();
+            body.setId(uuid);
+
+            return save(body);
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());
         }

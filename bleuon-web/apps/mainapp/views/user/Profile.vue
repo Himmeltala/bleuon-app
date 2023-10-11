@@ -16,18 +16,19 @@ import CreateDynamic from "@mainapp/components/user/CreateDynamic.vue";
 const route = useRoute();
 const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
 const formData = ref(await UserApi.findById(`${route.params.id}`));
-const activeName = ref<"createDynamic" | "dynamicList">("createDynamic");
+const activeName = ref<"createDynamic">("createDynamic");
 
 const handleClick = (tab: TabsPaneContext, event: Event) => {
   console.log(tab);
 };
 
-function submitDynamic(value: string) {
-  console.log(value);
-  // 调用接口发布动态
-}
-
 const dynamicList = ref(await UserApi.findAllDynamic(`${route.params.id}`));
+
+function submitDynamic(value: string) {
+  UserApi.addDynamic({ content: value }, async () => {
+    dynamicList.value = await UserApi.findAllDynamic(`${route.params.id}`);
+  });
+}
 
 function diggDynamic(item: DynamicData) {
   item.digg += 1;
@@ -43,7 +44,7 @@ function buryDynamic(item: DynamicData) {
   });
 }
 
-function eraseDynamic(item: DynamicData, index: number) {
+function deleteDynamic(item: DynamicData, index: number) {
   UserApi.deleteDynamic({ id: item.id }, () => {
     dynamicList.value.splice(index, 1);
   });
@@ -90,51 +91,46 @@ function eraseDynamic(item: DynamicData, index: number) {
     <div class="mt-5 mb-5 px-50">
       <div class="bg-bg-overlay px-5 pb-5 rd-2">
         <el-tabs class="min-h-60vh" v-model="activeName" @tab-click="handleClick">
-          <el-tab-pane v-if="token.id === formData.id" label="发布动态" name="createDynamic">
-            <CreateDynamic @submit="submitDynamic"></CreateDynamic>
-            <template #label>
-              <span :class="{ 'font-bold': activeName === 'createDynamic' }">发布动态</span>
-            </template>
-          </el-tab-pane>
-          <el-tab-pane :lazy="true" label="动态列表" name="dynamicList">
-            <div v-if="dynamicList">
+          <el-tab-pane label="发布动态" name="createDynamic">
+            <CreateDynamic
+              v-if="token.id === formData.id"
+              class="mt-5 mb-10"
+              @submit="submitDynamic"></CreateDynamic>
+            <div class="font-bold text-text-regular">动态列表</div>
+            <div v-if="dynamicList" class="mt-10">
               <div
                 class="b-b-1 b-border-primary b-b-solid pb-5 f-s-s mt-5"
                 v-for="(item, index) in dynamicList"
                 :key="item.id">
-                <div class="mr-15">
+                <div class="mr-10">
                   <img class="w-15 h-15 rd-50%" :src="formData.avatar" />
                 </div>
                 <div>
-                  <div class="text-0.9rem text-text-regular">
-                    {{ formData.username }}
+                  <div>
+                    <div class="text-text-regular">
+                      {{ formData.username }}
+                    </div>
+                    <div class="mt-1 f-c-s text-0.8rem text-text-regular">
+                      <div class="i-tabler-clock mr-1"></div>
+                      {{ DateUtil.formatted(item.createDate) }}
+                    </div>
                   </div>
-                  <div class="text-1.2rem mt-2 text-text-regular">
-                    {{ item.title }}
-                  </div>
-                  <div class="mt-4">
-                    <div class="mt-4">{{ item.content }}</div>
-                  </div>
+                  <div class="mt-4" v-html="item.content"></div>
                   <div class="f-c-s mt-6 text-text-secondary text-0.9rem">
                     <div class="mr-15 hover f-c-c" @click="diggDynamic(item)">
                       <div class="i-tabler-thumb-up mr-1"></div>
                       {{ item.digg }}
                     </div>
-                    <div class="hover f-c-c" @click="buryDynamic(item)">
+                    <div class="mr-15 hover f-c-c" @click="buryDynamic(item)">
                       <div class="i-tabler-thumb-down mr-1"></div>
                       {{ item.bury }}
                     </div>
-                    <div class="ml-15 f-c-s">
-                      <div class="i-tabler-clock mr-1"></div>
-                      {{ DateUtil.formatted(item.createDate) }}
-                    </div>
-                    <div class="ml-15" v-if="formData.id == token.id">
+                    <div v-if="formData.id == token.id">
                       <el-button
-                        @click="eraseDynamic(item, index)"
+                        @click="deleteDynamic(item, index)"
                         type="danger"
                         size="small"
-                        text
-                        bg>
+                        text>
                         删除
                       </el-button>
                     </div>
@@ -143,7 +139,7 @@ function eraseDynamic(item: DynamicData, index: number) {
               </div>
             </div>
             <template #label>
-              <span :class="{ 'font-bold': activeName === 'dynamicList' }">动态列表</span>
+              <span :class="{ 'font-bold': activeName === 'createDynamic' }">发布动态</span>
             </template>
           </el-tab-pane>
         </el-tabs>

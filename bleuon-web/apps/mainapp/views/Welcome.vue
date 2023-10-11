@@ -11,9 +11,7 @@ import { UserApi } from "@mainapp/apis";
 const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
 
 function confirmLogout() {
-  UserApi.authLogout(() => {
-    location.reload();
-  });
+  UserApi.authLogout();
 }
 </script>
 

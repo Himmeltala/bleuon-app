@@ -26,6 +26,9 @@ export function askMailCaptcha(
 
 /**
  * 获取邮箱登录验证码
+ *
+ * @param params
+ * @param success
  */
 export function askLoginEmailCaptcha(
   params: {
@@ -40,6 +43,9 @@ export function askLoginEmailCaptcha(
 
 /**
  * 获取邮箱注册验证码
+ *
+ * @param params
+ * @param success
  */
 export function askRegisterEmailCaptcha(
   params: {
@@ -54,6 +60,9 @@ export function askRegisterEmailCaptcha(
 
 /**
  * 获取密码重置的邮箱验证码
+ *
+ * @param params
+ * @param success
  */
 export function askResetEmailCaptcha(
   params: {
@@ -68,6 +77,9 @@ export function askResetEmailCaptcha(
 
 /**
  * 校验邮箱验证码
+ *
+ * @param body
+ * @param success
  */
 export function verifyEmailCaptcha(
   body: {
@@ -83,6 +95,10 @@ export function verifyEmailCaptcha(
 
 /**
  * 校验邮箱验证码注册
+ *
+ * @param body
+ * @param params
+ * @param success
  */
 export function verifyRegisterEmailCaptcha(
   body: UserData,
@@ -96,6 +112,9 @@ export function verifyRegisterEmailCaptcha(
 
 /**
  * 校验邮箱验证码登录
+ *
+ * @param body
+ * @param success
  */
 export function verifyLoginEmailCaptcha(
   body: {
@@ -111,6 +130,9 @@ export function verifyLoginEmailCaptcha(
 
 /**
  * 邮箱、用户名或手机号注册
+ *
+ * @param body
+ * @param success
  */
 export function accountRegister(body: UserData, success?: Function) {
   request.post<R>("/entrance/account-register", body).then(({ data }) => {
@@ -120,6 +142,9 @@ export function accountRegister(body: UserData, success?: Function) {
 
 /**
  * 邮箱、用户名或手机号登录
+ *
+ * @param body
+ * @param success
  */
 export function authLogin(body: UserData, success: (res: TokenR) => void) {
   const headers = {
@@ -133,10 +158,14 @@ export function authLogin(body: UserData, success: (res: TokenR) => void) {
 
 /**
  * 请求退出登录
+ *
+ * @param success
+ * @param error
  */
-export function authLogout(success: Function, error?: Function) {
+export function authLogout(success?: Function, error?: Function) {
   request.post<R>("/auth/logout").then(({ data }) => {
     if (data.code === 200) {
+      location.reload();
       localStorage.removeItem(KeyVals.MAINAPP_TOKEN_KEY);
       success && success(data);
     } else error && error();
@@ -157,6 +186,9 @@ export function resetPassword(body: UserData, success: Function) {
 
 /**
  * 查询用户信息
+ *
+ * @param id
+ * @returns
  */
 export async function findById(id?: string) {
   const { data } = await request.get<R<UserData>>("/user/find/by/id", { params: { id } });
@@ -199,6 +231,7 @@ export function uploadCkEditorImage(file: any) {
  * 查询动态列表
  *
  * @param uid
+ * @returns
  */
 export async function findAllDynamic(uid: string) {
   const { data } = await request.get<R<DynamicData[]>>("/user/find/all/dynamic", {
@@ -231,6 +264,18 @@ export function upgradeDynamic(data: DynamicData, success?: Function) {
  */
 export function deleteDynamic(params: DynamicData, success?: Function) {
   request.delete<R>("/user/delete/dynamic", { params }).then(() => {
+    success && success();
+  });
+}
+
+/**
+ * 新增动态
+ *
+ * @param body
+ * @param success
+ */
+export function addDynamic(body: DynamicData, success?: Function) {
+  request.post<R>("/user/add/dynamic", body).then(() => {
     success && success();
   });
 }

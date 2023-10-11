@@ -8,9 +8,7 @@
         UPDATE t_dynamics
         <set>
             <trim suffixOverrides=",">
-                <if test="title != null">title = #{title},</if>
                 <if test="content != null">content = #{content},</if>
-                <if test="description != null">`description` = #{description},</if>
                 <if test="digg != null">digg = #{digg},</if>
                 <if test="bury != null">bury = #{bury},</if>
             </trim>

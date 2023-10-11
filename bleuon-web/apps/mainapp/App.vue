@@ -10,20 +10,10 @@ import { UserApi } from "@mainapp/apis";
 
 const html = document.querySelector("html");
 const themeMode = useStorage(KeyVals.MAINAPP_THEME_MODE, "");
-const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
-const user = useStorage<UserData>(KeyVals.MAINAPP_USER, {});
 
 onBeforeMount(() => {
   const name = themeMode.value === "dark" ? "dark" : "light";
   html.className = name;
-});
-
-onMounted(() => {
-  if (token) {
-    UserApi.findById().then(res => {
-      user.value = res;
-    });
-  }
 });
 </script>
 

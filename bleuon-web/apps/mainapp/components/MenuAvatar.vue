@@ -8,12 +8,10 @@
 
 import { UserApi } from "@mainapp/apis";
 
-const user = useStorage<UserData>(KeyVals.MAINAPP_USER, {});
+const user = ref(await UserApi.findById());
 
 function confirmLogout() {
-  UserApi.authLogout(() => {
-    location.reload();
-  });
+  UserApi.authLogout();
 }
 
 const root = document.querySelector("html");

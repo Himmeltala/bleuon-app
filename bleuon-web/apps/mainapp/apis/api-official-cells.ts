@@ -11,6 +11,7 @@ import request from "./use-axios";
  * 通过条件查询图形列表
  *
  * @param params
+ * @returns
  */
 export async function findAllByCriteria(params: { type: "basic" | "flowchart" }) {
   const { data } = await request.get<R>("/cell/official/find/all/by/criteria", { params });

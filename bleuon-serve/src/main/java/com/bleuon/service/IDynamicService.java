@@ -14,7 +14,9 @@ public interface IDynamicService {
 
     List<Dynamic> findAllByUid(String uid);
 
-    boolean upgrade(Dynamic data);
+    boolean upgrade(Dynamic body);
 
     boolean deleteById(Dynamic params);
+
+    boolean add(Dynamic body);
 }
