@@ -21,7 +21,7 @@ const props = defineProps({
 });
 
 const emits = defineEmits<{
-  (event: "onSuccess", response: R<string>): void;
+  (event: "update:imgUrl", imgUrl: string): void;
 }>();
 
 const upload = ref<UploadInstance>();
@@ -45,7 +45,7 @@ const beforeUpload: UploadProps["beforeUpload"] = rawFile => {
 const onSuccessUpload: UploadProps["onSuccess"] = response => {
   dialog.value = !dialog.value;
   upload.value!.clearFiles();
-  emits("onSuccess", response.data);
+  emits("update:imgUrl", response.data.data);
 };
 
 function startUpload(options: any): XMLHttpRequest | Promise<unknown> {

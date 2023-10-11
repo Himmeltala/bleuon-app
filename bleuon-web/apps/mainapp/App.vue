@@ -20,7 +20,7 @@ onBeforeMount(() => {
 
 onMounted(() => {
   if (token) {
-    UserApi.find().then(res => {
+    UserApi.findById().then(res => {
       user.value = res;
     });
   }

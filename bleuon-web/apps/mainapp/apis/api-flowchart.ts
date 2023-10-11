@@ -12,8 +12,8 @@ import request from "./use-axios";
  * @param body
  * @param success
  */
-export function renewal(body: FlowchartData, success?: (data: R) => void) {
-  request.put<R>("/flowchart/renewal", body).then(({ data }) => {
+export function upgrade(body: FlowchartData, success?: (data: R) => void) {
+  request.put<R>("/flowchart/upgrade", body).then(({ data }) => {
     success && success(data);
   });
 }
@@ -94,9 +94,9 @@ export function replicate(body: FlowchartData, success?: (res: R) => void) {
  * @param params
  * @param success
  */
-export function eraseById(params: { id?: string }, success: Function) {
+export function deleteById(params: { id?: string }, success: Function) {
   request
-    .delete<R<void>>("/flowchart/erase/by/id", {
+    .delete<R<void>>("/flowchart/delete/by/id", {
       params
     })
     .then(() => {
@@ -135,8 +135,8 @@ export async function addCollect(body: { flowchartId: string }, success?: Functi
  * @param params
  * @param success
  */
-export async function eraseCollect(params: { flowchartId: string }, success?: Function) {
-  await request.delete<R<void>>("/flowchart/erase/collect", { params }).then(() => {
+export async function deleteCollect(params: { flowchartId: string }, success?: Function) {
+  await request.delete<R<void>>("/flowchart/delete/collect", { params }).then(() => {
     success && success();
   });
 }

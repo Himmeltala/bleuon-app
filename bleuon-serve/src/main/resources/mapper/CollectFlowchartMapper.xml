@@ -40,7 +40,7 @@
           AND cf.flowchart_id = #{flowchartId};
     </select>
 
-    <delete id="erase" parameterType="com.bleuon.entity.vo.CollectFlowchartVo">
+    <delete id="delete" parameterType="com.bleuon.entity.vo.CollectFlowchartVo">
         DELETE
         FROM co_collect_flowchart
         WHERE collect_uid = #{collectUid}

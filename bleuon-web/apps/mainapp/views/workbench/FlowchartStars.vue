@@ -40,7 +40,7 @@ function replicateFlowchart(data: any) {
 }
 
 function deleteFlowchart(flowchartId: string, index: number) {
-  FlowchartApi.eraseCollect({ flowchartId }, () => {
+  FlowchartApi.deleteCollect({ flowchartId }, () => {
     collect.value.splice(index, 1);
     triggerRef(collect);
   });

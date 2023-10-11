@@ -57,9 +57,9 @@ public class TemplateCommunityController {
         return Objects.isNull(flowchart) ? R.error("导入模板失败！") : R.success("导入模板成功！");
     }
 
-    @PutMapping("/renewal")
-    public R<Object> renewal(@RequestBody @Validated TemplateFlowchart data) {
-        boolean status = templateFlowchartService.renewal(data);
+    @PutMapping("/upgrade")
+    public R<Object> upgrade(@RequestBody @Validated TemplateFlowchart data) {
+        boolean status = templateFlowchartService.upgrade(data);
         return status ? R.success("更新成功！") : R.failed("更新失败！");
     }
 
@@ -76,7 +76,7 @@ public class TemplateCommunityController {
         }
 
         data.setStars(data.getStars() + 1);
-        boolean success = templateFlowchartService.renewal(data);
+        boolean success = templateFlowchartService.upgrade(data);
 
         return success ? R.success("收藏成功！") : R.failed("收藏失败！");
     }

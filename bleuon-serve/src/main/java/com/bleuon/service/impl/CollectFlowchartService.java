@@ -32,8 +32,8 @@ public class CollectFlowchartService implements ICollectFlowchartService {
     }
 
     @Override
-    public boolean erase(CollectFlowchartVo body) {
-        Integer row = mapper.erase(body);
+    public boolean delete(CollectFlowchartVo body) {
+        Integer row = mapper.delete(body);
         return row > 0;
     }
 

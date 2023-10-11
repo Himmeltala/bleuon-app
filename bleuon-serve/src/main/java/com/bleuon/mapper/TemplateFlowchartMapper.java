@@ -20,9 +20,9 @@ public interface TemplateFlowchartMapper {
 
     TemplateFlowchart find(TemplateFlowchart params);
 
-    Integer renewal(TemplateFlowchart data);
+    Integer upgrade(TemplateFlowchart data);
 
     Integer add(TemplateFlowchart data);
 
-    Integer erase(TemplateFlowchart data);
+    Integer delete(TemplateFlowchart data);
 }

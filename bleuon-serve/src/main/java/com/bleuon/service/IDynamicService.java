@@ -12,9 +12,9 @@ import java.util.List;
  */
 public interface IDynamicService {
 
-    List<Dynamic> findAll(String uid);
+    List<Dynamic> findAllByUid(String uid);
 
-    boolean renewal(Dynamic data);
+    boolean upgrade(Dynamic data);
 
-    boolean eraseDynamic(Dynamic params);
+    boolean deleteById(Dynamic params);
 }

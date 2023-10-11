@@ -16,7 +16,7 @@ public interface IUserService {
 
     UserDto findByEmail(String email);
 
-    boolean renewal(User user);
+    boolean upgrade(User user);
 
-    String renewalAvatar(User user, MultipartFile file);
+    String upgradeAvatar(User user, MultipartFile file);
 }

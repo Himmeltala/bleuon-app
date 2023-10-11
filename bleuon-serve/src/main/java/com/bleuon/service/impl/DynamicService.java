@@ -24,15 +24,15 @@ public class DynamicService extends ServiceImpl<DynamicMapper, Dynamic> implemen
     private final DynamicMapper mapper;
 
     @Override
-    public List<Dynamic> findAll(String uid) {
+    public List<Dynamic> findAllByUid(String uid) {
         return query().eq("user_id", uid).list();
     }
 
     @Transactional
     @Override
-    public boolean renewal(Dynamic data) {
+    public boolean upgrade(Dynamic data) {
         try {
-            Integer status = mapper.renewal(data);
+            Integer status = mapper.upgrade(data);
             return status > 0;
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());
@@ -41,7 +41,7 @@ public class DynamicService extends ServiceImpl<DynamicMapper, Dynamic> implemen
 
     @Transactional
     @Override
-    public boolean eraseDynamic(Dynamic params) {
+    public boolean deleteById(Dynamic params) {
         try {
             return removeById(params.getId());
         } catch (Exception e) {

@@ -2,6 +2,7 @@ package com.bleuon.controller;
 
 import com.bleuon.annotaion.RequestMappingPrefix;
 import com.bleuon.constant.KeyVals;
+import com.bleuon.constant.ValidPattern;
 import com.bleuon.entity.Dynamic;
 import com.bleuon.entity.User;
 import com.bleuon.entity.dto.UserDto;
@@ -10,6 +11,7 @@ import com.bleuon.service.impl.UserService;
 import com.bleuon.utils.JwtUtil;
 import com.bleuon.utils.http.R;
 import io.jsonwebtoken.Claims;
+import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
@@ -33,31 +35,33 @@ public class UserController {
     private final DynamicService dynamicService;
 
     @GetMapping("/find/by/id")
-    public R<UserDto> findById(@Validated User params) {
-        UserDto exists = userService.findById(params.getId());
+    public R<UserDto> findById(@RequestHeader(KeyVals.Token) String token,
+                               @Validated
+                               @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
+                               @RequestParam(required = false)
+                               String id) {
+        UserDto exists;
+        if (!StringUtils.hasText(id)) {
+            Claims claims = JwtUtil.parseJwt(token);
+            exists = userService.findById((String) claims.get("id"));
+        } else {
+            exists = userService.findById(id);
+        }
         return !Objects.isNull(exists) ? R.success(exists) : R.failed("未查询到该用户！");
     }
 
-    @GetMapping("/find")
-    public R<UserDto> find(@RequestHeader(KeyVals.Token) String token) {
-        Claims claims = JwtUtil.parseJwt(token);
-        String uid = (String) claims.get("id");
-        UserDto exists = userService.findById(uid);
-        return !Objects.isNull(exists) ? R.success(exists) : R.failed("未查询到该用户！");
-    }
-
-    @PostMapping("/renewal")
-    public R<Object> renewal(@RequestHeader(KeyVals.Token) String token, @RequestBody @Validated User body) {
+    @PostMapping("/upgrade")
+    public R<Object> upgrade(@RequestHeader(KeyVals.Token) String token, @RequestBody @Validated User body) {
         Claims claims = JwtUtil.parseJwt(token);
         String uid = (String) claims.get("id");
         body.setId(uid);
-        boolean status = userService.renewal(body);
+        boolean status = userService.upgrade(body);
 
-        return status ? R.success("更新资料成功！") : R.failed("更新资料失败！");
+        return status ? R.success("更新资料成功！") : R.error("更新资料失败！");
     }
 
-    @PostMapping("/renewal/avatar")
-    public R<String> renewalAvatar(@RequestHeader(KeyVals.Token) String token,
+    @PostMapping("/upgrade/avatar")
+    public R<String> upgradeAvatar(@RequestHeader(KeyVals.Token) String token,
                                    @RequestParam MultipartFile file) {
         if (file.isEmpty()) {
             return R.error("请选择一个图片！");
@@ -68,30 +72,30 @@ public class UserController {
         User user = new User();
         user.setId(uid);
 
-        String imgUrl = userService.renewalAvatar(user, file);
+        String imgUrl = userService.upgradeAvatar(user, file);
 
         if (StringUtils.hasText(imgUrl)) {
             return R.success("上传头像成功！", imgUrl);
         }
 
-        return R.failed("上传头像失败！");
+        return R.error("上传头像失败！");
     }
 
-    @GetMapping("/find/all/dynamics")
-    public R<List<Dynamic>> findAllDynamics(@RequestParam String uid) {
-        List<Dynamic> list = dynamicService.findAll(uid);
+    @GetMapping("/find/all/dynamic")
+    public R<List<Dynamic>> findAllDynamic(@RequestParam String uid) {
+        List<Dynamic> list = dynamicService.findAllByUid(uid);
         return R.success(list);
     }
 
-    @PostMapping("/renewal/dynamic")
-    public R<Object> renewalDynamic(@RequestBody Dynamic data) {
-        boolean status = dynamicService.renewal(data);
+    @PostMapping("/upgrade/dynamic")
+    public R<Object> upgradeDynamic(@RequestBody Dynamic data) {
+        boolean status = dynamicService.upgrade(data);
         return status ? R.success("更新成功！") : R.error("更新失败！");
     }
 
-    @DeleteMapping("/erase/dynamic")
-    public R<Object> eraseDynamic(Dynamic params) {
-        boolean status = dynamicService.eraseDynamic(params);
+    @DeleteMapping("/delete/dynamic")
+    public R<Object> deleteDynamicById(Dynamic params) {
+        boolean status = dynamicService.deleteById(params);
         return status ? R.success("删除成功！") : R.error("删除失败！");
     }
 

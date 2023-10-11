@@ -18,7 +18,6 @@ declare module 'vue' {
     ElDropdownMenu: typeof import('element-plus/es')['ElDropdownMenu']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
-    ElIcon: typeof import('element-plus/es')['ElIcon']
     ElInput: typeof import('element-plus/es')['ElInput']
     ElInputNumber: typeof import('element-plus/es')['ElInputNumber']
     ElLink: typeof import('element-plus/es')['ElLink']
@@ -35,6 +34,5 @@ declare module 'vue' {
     ElUpload: typeof import('element-plus/es')['ElUpload']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    UploadImage: typeof import('./common/components/UploadImage.vue')['default']
   }
 }

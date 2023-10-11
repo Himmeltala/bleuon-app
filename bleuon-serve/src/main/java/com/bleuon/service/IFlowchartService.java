@@ -15,7 +15,7 @@ import java.util.List;
  */
 public interface IFlowchartService {
 
-    boolean renewal(Flowchart body);
+    boolean upgrade(Flowchart body);
 
     Flowchart findById(String flowchartId);
 
@@ -27,7 +27,7 @@ public interface IFlowchartService {
 
     Flowchart replicate(Flowchart data, String uid);
 
-    boolean eraseById(String flowchartId);
+    boolean deleteById(String flowchartId);
 
     R<Object> release(TemplateFlowchart body);
 

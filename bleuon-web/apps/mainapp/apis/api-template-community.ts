@@ -51,8 +51,12 @@ export async function replicate(body: TemplateFlowchartData, success?: (res: R) 
  * @param body
  * @param success
  */
-export async function renewal(body: TemplateFlowchartData, success?: (res: R) => void) {
-  request.put("/community/template/renewal", body).then(({ data }) => {
+export async function upgrade(
+  body: TemplateFlowchartData,
+  config?: { nomessage: boolean },
+  success?: (res: R) => void
+) {
+  request.put("/community/template/upgrade", body, config).then(({ data }) => {
     success && success(data);
   });
 }

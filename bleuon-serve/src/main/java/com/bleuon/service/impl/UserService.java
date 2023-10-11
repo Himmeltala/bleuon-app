@@ -8,7 +8,6 @@ import com.bleuon.exception.JdbcErrorException;
 import com.bleuon.mapper.UserMapper;
 import com.bleuon.service.FileService;
 import com.bleuon.service.IUserService;
-import com.bleuon.utils.FileUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -53,7 +52,7 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
 
     @Transactional
     @Override
-    public boolean renewal(User user) {
+    public boolean upgrade(User user) {
         try {
             if (user.getPassword() != null) {
                 user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -67,13 +66,13 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
 
     @Transactional
     @Override
-    public String renewalAvatar(User user, MultipartFile file) {
+    public String upgradeAvatar(User user, MultipartFile file) {
         try {
             String imgUrl = fileService.upload("/static/images/avatar", user.getId(), file);
 
             if (StringUtils.hasText(imgUrl)) {
                 user.setAvatar(imgUrl);
-                boolean success = renewal(user);
+                boolean success = upgrade(user);
                 if (success) {
                     return imgUrl;
                 }

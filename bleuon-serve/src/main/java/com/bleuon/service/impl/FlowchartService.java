@@ -36,7 +36,7 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
 
     @Transactional
     @Override
-    public boolean renewal(Flowchart body) {
+    public boolean upgrade(Flowchart body) {
         try {
             Integer status = flowchartMapper.renewal(body);
             return status > 0;
@@ -64,7 +64,7 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
 
         if (DateUtil.isAfter(flowchart.getDeadShareDate())) {
             flowchart.setDeadShareDate(null);
-            renewal(flowchart);
+            upgrade(flowchart);
             return R.failed("该流程图分享已过期！", null);
         }
 
@@ -153,7 +153,7 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
 
     @Transactional
     @Override
-    public boolean eraseById(String flowchartId) {
+    public boolean deleteById(String flowchartId) {
         try {
             return removeById(flowchartId);
         } catch (Exception e) {
@@ -171,7 +171,7 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
             }
 
             flowchart.setIsPublic(1);
-            boolean status = renewal(flowchart);
+            boolean status = upgrade(flowchart);
 
             if (status) {
                 body.setId(UUID.randomUUID().toString());
@@ -194,11 +194,11 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
             Flowchart flowchart = new Flowchart();
             flowchart.setId(flowchartId);
             flowchart.setIsPublic(0);
-            boolean status = renewal(flowchart);
+            boolean status = upgrade(flowchart);
             if (status) {
                 TemplateFlowchart templateFlowchart = new TemplateFlowchart();
                 templateFlowchart.setFlowchartId(flowchartId);
-                boolean b = templateFlowchartService.erase(templateFlowchart);
+                boolean b = templateFlowchartService.delete(templateFlowchart);
                 if (!b) {
                     return R.failed("取消发布失败！");
                 }

@@ -27,24 +27,24 @@ function submitDynamic(value: string) {
   // 调用接口发布动态
 }
 
-const dynamicList = ref(await UserApi.findAllDynamics(`${route.params.id}`));
+const dynamicList = ref(await UserApi.findAllDynamic(`${route.params.id}`));
 
 function diggDynamic(item: DynamicData) {
   item.digg += 1;
-  UserApi.renewalDynamic({ digg: item.digg, id: item.id }, () => {
+  UserApi.upgradeDynamic({ digg: item.digg, id: item.id }, () => {
     ElMessage.success("支持成功！");
   });
 }
 
 function buryDynamic(item: DynamicData) {
   item.bury += 1;
-  UserApi.renewalDynamic({ bury: item.bury, id: item.id }, () => {
+  UserApi.upgradeDynamic({ bury: item.bury, id: item.id }, () => {
     ElMessage.success("反对成功！");
   });
 }
 
 function eraseDynamic(item: DynamicData, index: number) {
-  UserApi.eraseDynamic({ id: item.id }, () => {
+  UserApi.deleteDynamic({ id: item.id }, () => {
     dynamicList.value.splice(index, 1);
   });
 }

@@ -65,7 +65,10 @@ onMounted(() => {
     "blank:mousewheel": evt => ListenerService.onMousewheelBlank(evt, paper.value)
   });
 
-  TemplateCommunityApi.renewal({ views: data.value.views + 1, id: data.value.id });
+  TemplateCommunityApi.upgrade(
+    { views: data.value.views + 1, id: data.value.id },
+    { nomessage: true }
+  );
 });
 </script>
 

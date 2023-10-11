@@ -34,9 +34,9 @@ public class FlowchartController {
     private final FlowchartService flowchartService;
     private final CollectFlowchartService collectFlowchartService;
 
-    @PutMapping("/renewal")
-    public R<Object> renewal(@RequestBody @Validated Flowchart body) {
-        boolean status = flowchartService.renewal(body);
+    @PutMapping("/upgrade")
+    public R<Object> upgrade(@RequestBody @Validated Flowchart body) {
+        boolean status = flowchartService.upgrade(body);
         return status ? R.success("更新流程图成功！") : R.failed("更新流程图失败！");
     }
 
@@ -73,9 +73,9 @@ public class FlowchartController {
         return flowchart != null ? R.success("复制流程图成功！", flowchart) : R.failed("复制流程图失败！", null);
     }
 
-    @DeleteMapping("/erase/by/id")
-    public R<Object> eraseById(@Validated Flowchart params) {
-        boolean status = flowchartService.eraseById(params.getId());
+    @DeleteMapping("/delete/by/id")
+    public R<Object> deleteById(@Validated Flowchart params) {
+        boolean status = flowchartService.deleteById(params.getId());
         return status ? R.success("删除流程图成功！") : R.failed("删除流程图失败！");
     }
 
@@ -89,13 +89,13 @@ public class FlowchartController {
         return list != null ? R.success(list) : R.failed("没有收藏流程图！", null);
     }
 
-    @DeleteMapping("/erase/collect")
-    public R<Object> eraseCollect(@RequestHeader(KeyVals.Token) String token,
-                                  @Validated CollectFlowchartVo params) {
+    @DeleteMapping("/delete/collect")
+    public R<Object> deleteCollect(@RequestHeader(KeyVals.Token) String token,
+                                   @Validated CollectFlowchartVo params) {
         Claims claims = JwtUtil.parseJwt(token);
         String uid = (String) claims.get("id");
         params.setCollectUid(uid);
-        boolean status = collectFlowchartService.erase(params);
+        boolean status = collectFlowchartService.delete(params);
         return status ? R.success("删除收藏的流程图成功！") : R.failed("删除收藏的流程图失败！");
     }
 

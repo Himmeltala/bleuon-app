@@ -17,10 +17,10 @@ public interface ITemplateFlowchartService {
 
     R<TemplateFlowchart> findById(TemplateFlowchart body);
 
-    boolean renewal(TemplateFlowchart body);
+    boolean upgrade(TemplateFlowchart body);
 
     boolean add(TemplateFlowchart body);
 
-    boolean erase(TemplateFlowchart body);
+    boolean delete(TemplateFlowchart body);
 
 }

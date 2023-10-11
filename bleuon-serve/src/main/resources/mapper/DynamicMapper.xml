@@ -4,7 +4,7 @@
 
     <cache-ref namespace="com.bleuon.mapper.DynamicMapper"/>
 
-    <update id="renewal" parameterType="com.bleuon.entity.Dynamic">
+    <update id="upgrade" parameterType="com.bleuon.entity.Dynamic">
         UPDATE t_dynamics
         <set>
             <trim suffixOverrides=",">

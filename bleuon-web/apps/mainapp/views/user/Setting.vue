@@ -15,8 +15,8 @@ import CommonHeader from "@mainapp/components/CommonHeader.vue";
 
 const formData = useStorage<UserData>(KeyVals.MAINAPP_USER, {});
 
-function renewalBasicData() {
-  UserApi.renewal({
+function upgradeBasicData() {
+  UserApi.upgrade({
     username: formData.value.username,
     profession: formData.value.profession,
     company: formData.value.company,
@@ -28,20 +28,20 @@ function renewalBasicData() {
 }
 
 let interval: number;
-const renewalPwdDialog = ref(false);
-const coudButtonCount = ref(60);
-const codeButtonDisabled = ref(false);
+const resetPwdDialog = ref(false);
+const resetButtonCount = ref(60);
+const resetButtonDisabled = ref(false);
 const isCodeCorrect = ref(false);
 const isPasswordCorrect = ref(false);
 const isRePasswdCorrect = ref(false);
 
-const renewalPwdFormRef = ref();
-const renewalPwdFormData = reactive({
+const resetPwdFormRef = ref();
+const resetPwdFormData = reactive({
   captcha: "",
   password: "",
   rePasswd: ""
 });
-const renewalPwdFormRules = reactive<FormRules>({
+const resetPwdFormRules = reactive<FormRules>({
   captcha: [
     {
       required: true,
@@ -67,30 +67,30 @@ const renewalPwdFormRules = reactive<FormRules>({
       trigger: "blur"
     },
     {
-      validator: FormValidatorsUtil.rePasswdValidator(isRePasswdCorrect, renewalPwdFormData),
+      validator: FormValidatorsUtil.rePasswdValidator(isRePasswdCorrect, resetPwdFormData),
       trigger: "change"
     },
     {
-      validator: FormValidatorsUtil.rePasswdValidator(isRePasswdCorrect, renewalPwdFormData),
+      validator: FormValidatorsUtil.rePasswdValidator(isRePasswdCorrect, resetPwdFormData),
       trigger: "blur"
     }
   ]
 });
 
-function getRenewalPwdCode() {
-  FormValidatorsUtil.getVerifyCode(interval, coudButtonCount, codeButtonDisabled, callback => {
+function getResetPwdCode() {
+  FormValidatorsUtil.getVerifyCode(interval, resetButtonCount, resetButtonDisabled, callback => {
     UserApi.askResetEmailCaptcha({ email: formData.value.email }, () => callback());
   });
 }
 
-function confirmRenewalPwd() {
-  FormValidatorsUtil.validate(renewalPwdFormRef.value, () => {
+function confirmResetPwd() {
+  FormValidatorsUtil.validate(resetPwdFormRef.value, () => {
     UserApi.verifyEmailCaptcha(
-      { captcha: renewalPwdFormData.captcha, email: formData.value.email },
+      { captcha: resetPwdFormData.captcha, email: formData.value.email },
       () => {
-        UserApi.renewal(
+        UserApi.upgrade(
           {
-            password: renewalPwdFormData.password
+            password: resetPwdFormData.password
           },
           () => {
             UserApi.authLogout(() => {
@@ -102,10 +102,6 @@ function confirmRenewalPwd() {
       }
     );
   });
-}
-
-function onUploadSuccess(response: R<string>) {
-  formData.value.avatar = response.data;
 }
 </script>
 
@@ -175,9 +171,8 @@ function onUploadSuccess(response: R<string>) {
             </div>
             <div class="w-30% f-c-e cursor-pointer">
               <AvatarUpload
-                :img-url="formData.avatar"
-                :start-upload="formData => UserApi.renewalAvatar(formData)"
-                @on-success="response => onUploadSuccess(response)" />
+                v-model:img-url="formData.avatar"
+                :start-upload="formData => UserApi.upgradeAvatar(formData)" />
             </div>
           </div>
           <div class="mt-5 f-c-e text-0.8rem text-text-secondary">
@@ -187,7 +182,7 @@ function onUploadSuccess(response: R<string>) {
             </div>
           </div>
           <div class="f-c-c mt-10">
-            <el-button type="primary" @click="renewalBasicData">保存资料</el-button>
+            <el-button type="primary" @click="upgradeBasicData">保存资料</el-button>
           </div>
         </div>
         <div class="bg-bg-overlay rd-2 my-5 p-10">
@@ -227,25 +222,25 @@ function onUploadSuccess(response: R<string>) {
                   size="small"
                   text
                   type="danger"
-                  @click="renewalPwdDialog = !renewalPwdDialog">
+                  @click="resetPwdDialog = !resetPwdDialog">
                   修改
                 </el-button>
               </div>
             </div>
           </div>
         </div>
-        <el-dialog v-model="renewalPwdDialog" title="修改密码" width="25%">
+        <el-dialog v-model="resetPwdDialog" title="修改密码" width="25%">
           <el-form
-            ref="renewalPwdFormRef"
-            :model="renewalPwdFormData"
-            :rules="renewalPwdFormRules"
+            ref="resetPwdFormRef"
+            :model="resetPwdFormData"
+            :rules="resetPwdFormRules"
             label-position="left"
             label-width="80px">
             <el-form-item label="验证码" prop="captcha">
               <div class="f-c-b flex-wrap w-100%">
                 <div class="w-45%">
                   <el-input
-                    v-model="renewalPwdFormData.captcha"
+                    v-model="resetPwdFormData.captcha"
                     :maxlength="6"
                     :minlength="6"
                     class="w-100%"
@@ -255,13 +250,13 @@ function onUploadSuccess(response: R<string>) {
                 </div>
                 <div class="w-50% f-c-s">
                   <el-button
-                    :disabled="codeButtonDisabled"
+                    :disabled="resetButtonDisabled"
                     plain
                     size="small"
                     type="primary"
-                    @click="getRenewalPwdCode">
-                    <span v-if="coudButtonCount < 60 && coudButtonCount >= 0">
-                      请等待 {{ coudButtonCount }}s
+                    @click="getResetPwdCode">
+                    <span v-if="resetButtonCount < 60 && resetButtonCount >= 0">
+                      请等待 {{ resetButtonCount }}s
                     </span>
                     <span v-else>获取验证码</span>
                   </el-button>
@@ -270,7 +265,7 @@ function onUploadSuccess(response: R<string>) {
             </el-form-item>
             <el-form-item label="新的密码" prop="password">
               <el-input
-                v-model="renewalPwdFormData.password"
+                v-model="resetPwdFormData.password"
                 :maxlength="16"
                 :minlength="8"
                 clearable
@@ -280,7 +275,7 @@ function onUploadSuccess(response: R<string>) {
             </el-form-item>
             <el-form-item label="确认密码" prop="rePasswd">
               <el-input
-                v-model="renewalPwdFormData.rePasswd"
+                v-model="resetPwdFormData.rePasswd"
                 :maxlength="16"
                 :minlength="8"
                 clearable
@@ -291,11 +286,11 @@ function onUploadSuccess(response: R<string>) {
           </el-form>
           <template #footer>
             <span class="dialog-footer">
-              <el-button @click="renewalPwdDialog = false">取消</el-button>
+              <el-button @click="resetPwdDialog = false">取消</el-button>
               <el-button
                 :disabled="!isCodeCorrect || !isPasswordCorrect || !isRePasswdCorrect"
                 type="primary"
-                @click="confirmRenewalPwd">
+                @click="confirmResetPwd">
                 确认
               </el-button>
             </span>

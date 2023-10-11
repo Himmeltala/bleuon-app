@@ -156,29 +156,21 @@ export function resetPassword(body: UserData, success: Function) {
 }
 
 /**
- * 通过 token 查询用户信息
+ * 查询用户信息
  */
-export async function find() {
-  const { data } = await request.get<R<UserData>>("/user/find");
-  return data.data;
-}
-
-/**
- * 通过 token 查询用户信息
- */
-export async function findById(id: string) {
+export async function findById(id?: string) {
   const { data } = await request.get<R<UserData>>("/user/find/by/id", { params: { id } });
   return data.data;
 }
 
 /**
- * 通过 token 更新用户资料
+ * 更新用户资料
  *
  * @param body
  * @param success
  */
-export async function renewal(body: UserData, success?: Function) {
-  request.post<R>("/user/renewal", body).then(({ data }) => {
+export async function upgrade(body: UserData, success?: Function) {
+  request.post<R>("/user/upgrade", body).then(({ data }) => {
     success && success(data);
   });
 }
@@ -189,8 +181,8 @@ export async function renewal(body: UserData, success?: Function) {
  * @param formData
  * @returns
  */
-export function renewalAvatar(formData: FormData) {
-  return request.post("/user/renewal/avatar", formData);
+export function upgradeAvatar(formData: FormData) {
+  return request.post("/user/upgrade/avatar", formData);
 }
 
 /**
@@ -208,16 +200,22 @@ export function uploadCkEditorImage(file: any) {
  *
  * @param uid
  */
-export async function findAllDynamics(uid: string) {
-  const { data } = await request.get<R<DynamicData[]>>("/user/find/all/dynamics", {
+export async function findAllDynamic(uid: string) {
+  const { data } = await request.get<R<DynamicData[]>>("/user/find/all/dynamic", {
     params: { uid }
   });
   return data.data;
 }
 
-export function renewalDynamic(data: DynamicData, success?: Function) {
+/**
+ * 更新动态
+ *
+ * @param data id
+ * @param success
+ */
+export function upgradeDynamic(data: DynamicData, success?: Function) {
   request
-    .post<R>("/user/renewal/dynamic", data, {
+    .post<R>("/user/upgrade/dynamic", data, {
       nomessage: true
     })
     .then(() => {
@@ -225,8 +223,14 @@ export function renewalDynamic(data: DynamicData, success?: Function) {
     });
 }
 
-export function eraseDynamic(params: DynamicData, success?: Function) {
-  request.delete<R>("/user/erase/dynamic", { params }).then(() => {
+/**
+ * 删除动态
+ *
+ * @param params id
+ * @param success
+ */
+export function deleteDynamic(params: DynamicData, success?: Function) {
+  request.delete<R>("/user/delete/dynamic", { params }).then(() => {
     success && success();
   });
 }

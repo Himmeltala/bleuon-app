@@ -17,7 +17,7 @@ public interface ICollectFlowchartService {
 
     List<CollectFlowchartDto> findAllCollectByCriteria(FlowchartCriteria criteria);
 
-    boolean erase(CollectFlowchartVo data);
+    boolean delete(CollectFlowchartVo data);
 
     R<Object> add(CollectFlowchartVo data);
 

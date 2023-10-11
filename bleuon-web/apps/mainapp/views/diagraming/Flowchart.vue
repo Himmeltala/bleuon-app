@@ -49,7 +49,7 @@ function updateFlowchartData() {
   flowchartData.value.connectorDefault = JSON.stringify(Data.linkConnectorConfig.value);
   flowchartData.value.routerDefault = JSON.stringify(Data.linkRouterConfig.value);
   flowchartData.value.dataUri = getDataUri(paper.value, graph.value);
-  FlowchartApi.renewal(flowchartData.value, () => {});
+  FlowchartApi.upgrade(flowchartData.value, () => {});
 }
 
 const updateThrottle = PreventUtil.throttle(updateFlowchartData, 3000);
@@ -130,7 +130,7 @@ const shareFormRules = reactive<FormRules<any>>({
 function confirmShare() {
   FormValidatorsUtil.validate(shareFormRef.value, () => {
     flowchartData.value.isShare = 1;
-    FlowchartApi.renewal(flowchartData.value, res => {
+    FlowchartApi.upgrade(flowchartData.value, res => {
       if (res.code === 200) {
         ElMessage.success("分享成功！");
       } else {
@@ -144,7 +144,7 @@ function confirmShare() {
 function cancelShare() {
   flowchartData.value.isShare = 0;
   flowchartData.value.deadShareDate = null;
-  FlowchartApi.renewal(flowchartData.value, res => {
+  FlowchartApi.upgrade(flowchartData.value, res => {
     if (res.code === 200) {
       ElMessage.success("取消分享成功！");
     } else {

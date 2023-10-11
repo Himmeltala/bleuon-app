@@ -40,9 +40,9 @@ public class TemplateFlowchartService implements ITemplateFlowchartService {
 
     @Override
     @Transactional
-    public boolean renewal(TemplateFlowchart body) {
+    public boolean upgrade(TemplateFlowchart body) {
         try {
-            Integer status = mapper.renewal(body);
+            Integer status = mapper.upgrade(body);
             return status > 0;
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());
@@ -62,9 +62,9 @@ public class TemplateFlowchartService implements ITemplateFlowchartService {
 
     @Override
     @Transactional
-    public boolean erase(TemplateFlowchart body) {
+    public boolean delete(TemplateFlowchart body) {
         try {
-            Integer status = mapper.erase(body);
+            Integer status = mapper.delete(body);
             return status > 0;
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());

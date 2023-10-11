@@ -27,7 +27,7 @@ const fileNameRules = reactive({
 });
 
 function renewalFlowchart() {
-  FlowchartApi.renewal(flowchartList.value[clickedIndex.value], () => {
+  FlowchartApi.upgrade(flowchartList.value[clickedIndex.value], () => {
     dialogVisible.value = !dialogVisible.value;
   });
 }
@@ -58,7 +58,7 @@ function replicateFlowchart(data: FlowchartData) {
 }
 
 function deleteFlowchart(id: string, index: number) {
-  FlowchartApi.eraseById({ id }, async () => {
+  FlowchartApi.deleteById({ id }, async () => {
     flowchartList.value.splice(index, 1);
   });
 }

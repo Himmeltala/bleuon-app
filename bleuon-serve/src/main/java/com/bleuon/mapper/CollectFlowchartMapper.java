@@ -20,7 +20,7 @@ public interface CollectFlowchartMapper {
 
     List<CollectFlowchartDto> findAllCollectByCriteria(FlowchartCriteria criteria);
 
-    Integer erase(CollectFlowchartVo body);
+    Integer delete(CollectFlowchartVo body);
 
     Integer add(CollectFlowchartVo body);
 
