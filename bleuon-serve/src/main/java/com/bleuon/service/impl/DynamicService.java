@@ -1,7 +1,10 @@
 package com.bleuon.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bleuon.entity.Dynamic;
+import com.bleuon.entity.vo.DynamicCriteria;
+import com.bleuon.entity.vo.Sequence;
 import com.bleuon.exception.JdbcErrorException;
 import com.bleuon.mapper.DynamicMapper;
 import com.bleuon.service.IDynamicService;
@@ -25,8 +28,16 @@ public class DynamicService extends ServiceImpl<DynamicMapper, Dynamic> implemen
     private final DynamicMapper mapper;
 
     @Override
-    public List<Dynamic> findAllByUid(String uid) {
-        return query().eq("user_id", uid).list();
+    public List<Dynamic> findAllByCriteria(DynamicCriteria criteria) {
+        QueryWrapper<Dynamic> wrapper = new QueryWrapper<>();
+        wrapper.eq("user_id", criteria.getUid());
+
+        List<Sequence> sequences = criteria.getSequences();
+        if (sequences != null) {
+            sequences.forEach(e -> wrapper.orderBy(true, e.getIsAsc(), e.getCol()));
+        }
+
+        return super.list(wrapper);
     }
 
     @Transactional

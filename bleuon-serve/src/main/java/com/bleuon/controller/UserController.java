@@ -6,6 +6,8 @@ import com.bleuon.constant.ValidPattern;
 import com.bleuon.entity.Dynamic;
 import com.bleuon.entity.User;
 import com.bleuon.entity.dto.UserDto;
+import com.bleuon.entity.vo.DynamicCriteria;
+import com.bleuon.entity.vo.FlowchartCriteria;
 import com.bleuon.service.impl.DynamicService;
 import com.bleuon.service.impl.UserService;
 import com.bleuon.utils.JwtUtil;
@@ -81,9 +83,9 @@ public class UserController {
         return R.error("上传头像失败！");
     }
 
-    @GetMapping("/find/all/dynamic")
-    public R<List<Dynamic>> findAllDynamic(@RequestParam String uid) {
-        List<Dynamic> list = dynamicService.findAllByUid(uid);
+    @PostMapping("/find/all/dynamic/by/criteria")
+    public R<List<Dynamic>> findAllDynamic(@RequestBody DynamicCriteria criteria) {
+        List<Dynamic> list = dynamicService.findAllByCriteria(criteria);
         return R.success(list);
     }
 

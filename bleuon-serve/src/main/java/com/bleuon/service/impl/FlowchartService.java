@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bleuon.entity.Flowchart;
 import com.bleuon.entity.TemplateFlowchart;
 import com.bleuon.entity.vo.FlowchartCriteria;
+import com.bleuon.entity.vo.Sequence;
 import com.bleuon.exception.JdbcErrorException;
 import com.bleuon.mapper.FlowchartMapper;
 import com.bleuon.service.IFlowchartService;
@@ -92,7 +93,7 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
             wrapper.eq("is_legal", criteria.getIsLegal());
         }
 
-        List<FlowchartCriteria.Sequence> sequences = criteria.getSequences();
+        List<Sequence> sequences = criteria.getSequences();
         if (sequences != null) {
             sequences.forEach(e -> wrapper.orderBy(true, e.getIsAsc(), e.getCol()));
         }

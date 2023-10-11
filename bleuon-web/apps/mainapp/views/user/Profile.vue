@@ -22,11 +22,18 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
   console.log(tab);
 };
 
-const dynamicList = ref(await UserApi.findAllDynamic(`${route.params.id}`));
+const dynamicList = ref([]);
+
+async function fetchDynamicList(params?: any) {
+  dynamicList.value = await UserApi.findAllDynamicByCriteria({
+    ...params,
+    ...{ uid: `${route.params.id}` }
+  });
+}
 
 function submitDynamic(value: string) {
   UserApi.addDynamic({ content: value }, async () => {
-    dynamicList.value = await UserApi.findAllDynamic(`${route.params.id}`);
+    await fetchDynamicList();
   });
 }
 
@@ -49,6 +56,8 @@ function deleteDynamic(item: DynamicData, index: number) {
     dynamicList.value.splice(index, 1);
   });
 }
+
+await fetchDynamicList({ sequences: [{ isAsc: false, col: "create_date" }] });
 </script>
 
 <template>

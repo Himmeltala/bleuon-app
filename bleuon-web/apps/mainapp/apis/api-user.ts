@@ -233,10 +233,14 @@ export function uploadCkEditorImage(file: any) {
  * @param uid
  * @returns
  */
-export async function findAllDynamic(uid: string) {
-  const { data } = await request.get<R<DynamicData[]>>("/user/find/all/dynamic", {
-    params: { uid }
-  });
+export async function findAllDynamicByCriteria(criteria: {
+  uid: string;
+  sequences?: { isAsc: boolean; col: string }[];
+}) {
+  const { data } = await request.post<R<DynamicData[]>>(
+    "/user/find/all/dynamic/by/criteria",
+    criteria
+  );
   return data.data;
 }
 

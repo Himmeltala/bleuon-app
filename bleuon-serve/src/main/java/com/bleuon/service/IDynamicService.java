@@ -1,6 +1,7 @@
 package com.bleuon.service;
 
 import com.bleuon.entity.Dynamic;
+import com.bleuon.entity.vo.DynamicCriteria;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  */
 public interface IDynamicService {
 
-    List<Dynamic> findAllByUid(String uid);
+    List<Dynamic> findAllByCriteria(DynamicCriteria criteria);
 
     boolean upgrade(Dynamic body);
 
