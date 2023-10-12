@@ -17,17 +17,8 @@ import MyShareFlowchart from "@mainapp/components/consumer/MyShareFlowchart.vue"
 const route = useRoute();
 const formData = ref(await ConsumerApi.findById(`${route.params.id}`));
 
-type TabIndexType = "MyDynamic" | "MyPublicFlowchart" | "MyShareFlowchart";
-const tabIndex = ref<TabIndexType>("MyDynamic");
-const tabs = {
-  MyDynamic,
-  MyPublicFlowchart,
-  MyShareFlowchart
-};
-
-function changeTabIndex(name: TabIndexType) {
-  tabIndex.value = name;
-}
+const tabs = [MyDynamic, MyPublicFlowchart, MyShareFlowchart];
+const tabIndex = ref(0);
 </script>
 
 <template>
@@ -68,41 +59,18 @@ function changeTabIndex(name: TabIndexType) {
       </div>
     </div>
     <div class="my-2 px-50">
-      <div class="bg-bg-overlay rd-2 p-5 mb-2 f-c-s">
-        <div
-          :class="tabIndex === 'MyDynamic' ? 'active' : 'noactive'"
-          class="slider mr-5"
-          @click="changeTabIndex('MyDynamic')">
-          动态列表
-        </div>
-        <div
-          :class="tabIndex === 'MyPublicFlowchart' ? 'active' : 'noactive'"
-          class="slider mr-5"
-          @click="changeTabIndex('MyPublicFlowchart')">
-          公开的流程图
-        </div>
-        <div
-          :class="tabIndex === 'MyShareFlowchart' ? 'active' : 'noactive'"
-          class="slider"
-          @click="changeTabIndex('MyShareFlowchart')">
-          分享的流程图
-        </div>
-      </div>
-      <component :is="tabs[tabIndex]" :consumer="formData"></component>
+      <TabPage :tabs="tabs" :tab-index="tabIndex">
+        <template #item>
+          <div class="f-c-s bg-bg-overlay p-5 mb-2">
+            <TabPageItem class="mr-5" :index="0" v-model="tabIndex">动态列表</TabPageItem>
+            <TabPageItem class="mr-5" :index="1" v-model="tabIndex">公开的流程图</TabPageItem>
+            <TabPageItem :index="2" v-model="tabIndex">分享的流程图</TabPageItem>
+          </div>
+        </template>
+        <component :is="tabs[tabIndex]" :consumer="formData"></component>
+      </TabPage>
     </div>
   </div>
 </template>
 
-<style lang="scss" scoped>
-.active {
-  --uno: b-b-theme-primary text-theme-primary;
-}
-
-.noactive {
-  --uno: b-b-transparent text-text-secondary;
-}
-
-.slider {
-  --uno: b-b-solid b-b-2 font-bold pb-2 hover;
-}
-</style>
+<style lang="scss" scoped></style>

@@ -16,7 +16,7 @@ const flowchartList = ref(await ConsumerApi.findAllFlowchart({ isShare: 1 }));
 
 <template>
   <div class="my-share-flowchart">
-    <div class="file-list mt-5 f-s-s flex-wrap flex-gap-1.25rem">
+    <div class="file-list f-s-s flex-wrap flex-gap-1.25rem">
       <File
         v-for="item in flowchartList"
         :key="item.id"

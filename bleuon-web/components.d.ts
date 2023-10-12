@@ -34,5 +34,7 @@ declare module 'vue' {
     ElUpload: typeof import('element-plus/es')['ElUpload']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    TabPage: typeof import('./common/components/TabPage.vue')['default']
+    TabPageItem: typeof import('./common/components/TabPageItem.vue')['default']
   }
 }

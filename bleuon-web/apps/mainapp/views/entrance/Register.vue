@@ -17,42 +17,25 @@ defineProps({
 });
 defineEmits(["update:dynamicCompName"]);
 
-const tabIndex = ref<"AccountRegister" | "EmailRegister">("EmailRegister");
-const tabs = {
-  AccountRegister,
-  EmailRegister
-};
+const tabs = [AccountRegister, EmailRegister];
+const tabIndex = ref(0);
 </script>
 
 <template>
   <div class="register w-100% h-100% relative f-c-c">
     <div class="w-40%">
       <div class="mb-10 text-1.6rem">欢迎注册 BleuOn</div>
-      <div class="mb-10 f-c-s">
-        <div
-          :class="
-            tabIndex === 'EmailRegister'
-              ? 'active font-bold b-b-solid b-b-primary b-b-2'
-              : 'text-text-secondary'
-          "
-          class="mr-10 cursor-pointer pb-4 text-1.1rem"
-          @click="tabIndex = 'EmailRegister'">
-          邮箱注册
-        </div>
-        <div
-          :class="
-            tabIndex === 'AccountRegister'
-              ? 'active font-bold b-b-solid b-b-primary b-b-2'
-              : 'text-text-secondary'
-          "
-          class="cursor-pointer pb-4 text-1.1rem"
-          @click="tabIndex = 'AccountRegister'">
-          账号注册
-        </div>
-      </div>
-      <KeepAlive>
-        <component :is="tabs[tabIndex]"></component>
-      </KeepAlive>
+      <TabPage :tabs="tabs" :tab-index="tabIndex">
+        <template #item>
+          <div class="f-c-s mb-5">
+            <TabPageItem class="mr-5" :index="0" v-model="tabIndex">邮箱注册</TabPageItem>
+            <TabPageItem :index="1" v-model="tabIndex">账号注册</TabPageItem>
+          </div>
+        </template>
+        <KeepAlive>
+          <component :is="tabs[tabIndex]"></component>
+        </KeepAlive>
+      </TabPage>
       <div
         class="text-primary cursor-pointer f-c-e"
         @click="$emit('update:dynamicCompName', 'Login')">

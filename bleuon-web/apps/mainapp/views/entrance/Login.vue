@@ -17,47 +17,23 @@ defineProps({
 });
 defineEmits(["update:dynamicCompName"]);
 
-type TabIndexType = "AccountLogin" | "EmailLogin";
-const tabIndex = ref<TabIndexType>("AccountLogin");
-const tabs = {
-  AccountLogin,
-  EmailLogin
-};
-
-function changeTabIndex(name: TabIndexType) {
-  tabIndex.value = name;
-}
+const tabs = [AccountLogin, EmailLogin];
+const tabIndex = ref(0);
 </script>
 
 <template>
   <div class="login w-100% h-100% relative f-c-c">
     <div class="w-40%">
       <div class="mb-10 text-1.6rem">欢迎使用 BleuOn</div>
-      <div class="mb-10 f-c-s">
-        <div
-          :class="
-            tabIndex === 'AccountLogin'
-              ? 'active font-bold b-b-solid b-b-primary b-b-2'
-              : 'text-text-secondary'
-          "
-          class="mr-10 cursor-pointer pb-4 text-1.1rem"
-          @click="changeTabIndex('AccountLogin')">
-          账号登录
-        </div>
-        <div
-          :class="
-            tabIndex === 'EmailLogin'
-              ? 'active font-bold b-b-solid b-b-primary b-b-2'
-              : 'text-text-secondary'
-          "
-          class="cursor-pointer pb-4 text-1.1rem"
-          @click="changeTabIndex('EmailLogin')">
-          邮箱登录
-        </div>
-      </div>
-      <KeepAlive>
+      <TabPage :tabs="tabs" :tab-index="tabIndex">
+        <template #item>
+          <div class="f-c-s mb-5">
+            <TabPageItem class="mr-5" :index="0" v-model="tabIndex">账号登录</TabPageItem>
+            <TabPageItem :index="1" v-model="tabIndex">邮箱登录</TabPageItem>
+          </div>
+        </template>
         <component :is="tabs[tabIndex]"></component>
-      </KeepAlive>
+      </TabPage>
       <div class="f-c-b">
         <div
           class="text-text-secondary cursor-pointer"
