@@ -4,7 +4,7 @@
 
     <cache-ref namespace="com.bleuon.mapper.FlowchartMapper"/>
 
-    <update id="renewal" parameterType="com.bleuon.entity.Flowchart">
+    <update id="upgrade" parameterType="com.bleuon.entity.Flowchart">
         UPDATE t_flowcharts
         <set>
             <trim suffixOverrides=",">

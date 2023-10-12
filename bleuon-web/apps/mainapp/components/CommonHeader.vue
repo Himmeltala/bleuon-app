@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 /**
- * @description user 页面下的头部组件
+ * @description consumer 页面下的头部组件
  * @author zheng
  * @since 2023/8/23
  * @link https://github.com/himmelbleu/bleuon-app
@@ -33,7 +33,7 @@ defineProps({
       <router-link to="/community/discussion">
         <div :class="{ active: activeName === 'discussion' }" class="hover">社区</div>
       </router-link>
-      <router-link to="/community/template">
+      <router-link to="/community/blueprint">
         <div :class="{ active: activeName === 'template' }" class="hover">模板</div>
       </router-link>
     </div>

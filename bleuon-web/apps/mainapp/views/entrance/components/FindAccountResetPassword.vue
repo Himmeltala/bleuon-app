@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { FormValidatorsUtil } from "@common/utils";
-import { UserApi } from "@mainapp/apis";
+import { ConsumerApi } from "@mainapp/apis";
 
 const props = defineProps({
   email: {
@@ -51,7 +51,7 @@ onMounted(() => {
 
 function confirmSubmitForm() {
   FormValidatorsUtil.validate(formRef.value, () => {
-    UserApi.resetPassword(formData, () => {
+    ConsumerApi.resetPassword(formData, () => {
       ElMessage.success("密码重置成功，请返回登录！");
     });
   });

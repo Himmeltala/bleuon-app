@@ -90,9 +90,9 @@ function createFlowchart() {
     </div>
     <div class="mt-5 pb-5 b-b-1 b-b-solid b-border-primary">
       <div
-        :class="{ active: activeItem == 'auth-template-community' }"
+        :class="{ active: activeItem == 'auth-blueprint-community' }"
         class="menu-item f-c-s"
-        @click="navigateTo('auth-template-community')">
+        @click="navigateTo('auth-blueprint-community')">
         <div class="mr-2 i-tabler-template"></div>
         模板社区
       </div>

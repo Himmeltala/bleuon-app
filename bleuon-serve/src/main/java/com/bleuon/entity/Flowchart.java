@@ -67,6 +67,9 @@ public class Flowchart implements Serializable {
     @TableField("is_share")
     private Integer isShare;
 
+    @TableField("is_blueprint")
+    private Integer isBlueprint;
+
     @TableField("create_date")
     private Timestamp createDate;
 
@@ -76,16 +79,16 @@ public class Flowchart implements Serializable {
     @TableField("dead_share_date")
     private Timestamp deadShareDate;
 
-    @TableField("user_id")
-    private String userId;
+    @TableField("consumer_id")
+    private String consumerId;
 
     @TableField(exist = false)
-    private User user;
+    private Consumer user;
 
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    static class User implements Serializable {
+    static class Consumer implements Serializable {
         private String id;
         private String username;
         private String avatar;

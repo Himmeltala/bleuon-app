@@ -53,13 +53,13 @@ const router = createRouter({
           path: "profile/:id",
           name: "auth-profile",
           meta: { title: "个人空间" },
-          component: () => import("@mainapp/views/user/Profile.vue")
+          component: () => import("@mainapp/views/consumer/Profile.vue")
         },
         {
           path: "setting",
           name: "auth-setting",
           meta: { title: "个人设置" },
-          component: () => import("@mainapp/views/user/Setting.vue")
+          component: () => import("@mainapp/views/consumer/Setting.vue")
         }
       ]
     },
@@ -67,10 +67,10 @@ const router = createRouter({
       path: "/community",
       children: [
         {
-          path: "template",
-          name: "auth-template-community",
+          path: "blueprint",
+          name: "auth-blueprint-community",
           meta: { title: "模板社区" },
-          component: () => import("@mainapp/views/community/TemplateCommunity.vue")
+          component: () => import("@mainapp/views/community/BlueprintCommunity.vue")
         },
         {
           path: "discussion",
@@ -81,13 +81,13 @@ const router = createRouter({
       ]
     },
     {
-      path: "/template",
+      path: "/blueprint",
       children: [
         {
           path: "flowchart/:id",
-          name: "auth-template-flowchart",
+          name: "auth-blueprint-flowchart",
           meta: { title: "流程图模板" },
-          component: () => import("@mainapp/views/community/template/FlowchartTemplateDetail.vue")
+          component: () => import("@mainapp/views/community/BlueprintFlowchartDetail.vue")
         }
       ]
     },

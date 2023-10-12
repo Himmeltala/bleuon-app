@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { UserApi } from "@mainapp/apis";
+import { ConsumerApi } from "@mainapp/apis";
 import { FormValidatorsUtil } from "@common/utils";
 
 const router = useRouter();
@@ -39,16 +39,16 @@ function confirmGetVerifyCode() {
     coudButtonCount,
     codeButtonDisabled,
     (callback: any) => {
-      UserApi.askLoginEmailCaptcha({ email: formData.email }, () => callback());
+      ConsumerApi.askLoginEmailCaptcha({ email: formData.email }, () => callback());
     }
   );
 }
 
 function confirmSubmitForm() {
   FormValidatorsUtil.validate(formRef.value, () => {
-    UserApi.verifyLoginEmailCaptcha(formData, token => {
+    ConsumerApi.verifyLoginEmailCaptcha(formData, token => {
       localStorage.setToken(KeyVals.MAINAPP_TOKEN_KEY, token);
-      UserApi.findById().then(data => {
+      ConsumerApi.findById().then(data => {
         router.push("/workbench");
       });
     });

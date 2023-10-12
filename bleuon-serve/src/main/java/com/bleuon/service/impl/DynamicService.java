@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,7 +32,7 @@ public class DynamicService extends ServiceImpl<DynamicMapper, Dynamic> implemen
     @Override
     public List<Dynamic> findAllByCriteria(DynamicCriteria criteria) {
         QueryWrapper<Dynamic> wrapper = new QueryWrapper<>();
-        wrapper.eq("user_id", criteria.getUid());
+        wrapper.eq("consumer_id", criteria.getConsumerId());
 
         List<Sequence> sequences = criteria.getSequences();
         if (sequences != null) {
@@ -44,6 +46,7 @@ public class DynamicService extends ServiceImpl<DynamicMapper, Dynamic> implemen
     @Override
     public boolean upgrade(Dynamic body) {
         try {
+            body.setModifyDate(new Timestamp(new Date().getTime()));
             Integer status = mapper.upgrade(body);
             return status > 0;
         } catch (Exception e) {

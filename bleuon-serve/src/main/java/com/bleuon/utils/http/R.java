@@ -40,39 +40,39 @@ public class R<T> {
     }
 
     public static <T> R<T> error(String message) {
-        return new R<>(HttpCode.ERROR.getCode(), message, null);
+        return new R<>(Status.ERROR.getCode(), message, null);
     }
 
     public static <T> R<T> error(String message, T data) {
-        return new R<>(HttpCode.ERROR.getCode(), message, data);
+        return new R<>(Status.ERROR.getCode(), message, data);
     }
 
     public static <T> R<T> error(T data) {
-        return new R<>(HttpCode.SUCCESS.getCode(), data);
+        return new R<>(Status.SUCCESS.getCode(), data);
     }
 
     public static <T> R<T> success(String message) {
-        return new R<>(HttpCode.SUCCESS.getCode(), message, null);
+        return new R<>(Status.SUCCESS.getCode(), message, null);
     }
 
     public static <T> R<T> success(String message, T data) {
-        return new R<>(HttpCode.SUCCESS.getCode(), message, data);
+        return new R<>(Status.SUCCESS.getCode(), message, data);
     }
 
     public static <T> R<T> success(T data) {
-        return new R<>(HttpCode.SUCCESS.getCode(), data);
+        return new R<>(Status.SUCCESS.getCode(), data);
     }
 
     public static <T> R<T> failed(String message) {
-        return new R<>(HttpCode.FAILED.getCode(), message, null);
+        return new R<>(Status.FAILED.getCode(), message, null);
     }
 
     public static <T> R<T> failed(String message, T data) {
-        return new R<>(HttpCode.FAILED.getCode(), message, data);
+        return new R<>(Status.FAILED.getCode(), message, data);
     }
 
     public static <T> R<T> failed(T data) {
-        return new R<>(HttpCode.FAILED.getCode(), data);
+        return new R<>(Status.FAILED.getCode(), data);
     }
 
 }

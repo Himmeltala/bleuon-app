@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { FormValidatorsUtil } from "@common/utils";
-import { UserApi } from "@mainapp/apis";
+import { ConsumerApi } from "@mainapp/apis";
 
 const formData = reactive({
   username: "",
@@ -45,7 +45,7 @@ const formRules = reactive<FormRules>({
 
 function confirmRegister() {
   FormValidatorsUtil.validate(formRef.value, async () => {
-    UserApi.accountRegister(formData, () => {
+    ConsumerApi.accountRegister(formData, () => {
       ElMessage.success("请返回登录页面进行登录！");
     });
   });

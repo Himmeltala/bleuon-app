@@ -2,8 +2,8 @@ package com.bleuon.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.bleuon.entity.BlueprintFlowchart;
 import com.bleuon.entity.Flowchart;
-import com.bleuon.entity.TemplateFlowchart;
 import com.bleuon.entity.vo.FlowchartCriteria;
 import com.bleuon.entity.vo.Sequence;
 import com.bleuon.exception.JdbcErrorException;
@@ -33,13 +33,14 @@ import java.util.UUID;
 public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> implements IFlowchartService {
 
     private final FlowchartMapper flowchartMapper;
-    private final TemplateFlowchartService templateFlowchartService;
+    private final BlueprintFlowchartService blueprintFlowchartService;
 
     @Transactional
     @Override
     public boolean upgrade(Flowchart body) {
         try {
-            Integer status = flowchartMapper.renewal(body);
+            body.setModifyDate(new Timestamp(new Date().getTime()));
+            Integer status = flowchartMapper.upgrade(body);
             return status > 0;
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());
@@ -75,7 +76,7 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
     @Override
     public List<Flowchart> findAllByCriteria(FlowchartCriteria criteria) {
         QueryWrapper<Flowchart> wrapper = new QueryWrapper<>();
-        wrapper.eq("user_id", criteria.getUid());
+        wrapper.eq("consumer_id", criteria.getConsumerId());
 
         if (StringUtils.hasText(criteria.getFileName())) {
             wrapper.like("file_name", criteria.getFileName());
@@ -103,13 +104,13 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
 
     @Transactional
     @Override
-    public Flowchart add(String uid) {
+    public Flowchart add(String consumerId) {
         try {
             String uuid = UUID.randomUUID().toString();
             // 创建表
             Flowchart flowchart = new Flowchart();
             flowchart.setId(uuid);
-            flowchart.setUserId(uid);
+            flowchart.setConsumerId(consumerId);
             Timestamp timestamp = new Timestamp(new Date().getTime());
             flowchart.setCreateDate(timestamp);
             flowchart.setModifyDate(timestamp);
@@ -125,13 +126,13 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
 
     @Transactional
     @Override
-    public Flowchart replicate(Flowchart body, String uid) {
+    public Flowchart replicate(Flowchart body, String consumerId) {
         try {
             String uuid = UUID.randomUUID().toString();
             // 创建表
             Flowchart copyFlowchart = new Flowchart();
             copyFlowchart.setId(uuid);
-            copyFlowchart.setUserId(uid);
+            copyFlowchart.setConsumerId(consumerId);
             copyFlowchart.setCreateDate(new Timestamp(new Date().getTime()));
             copyFlowchart.setModifyDate(body.getModifyDate());
             copyFlowchart.setFileName(body.getFileName());
@@ -164,7 +165,7 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
 
     @Transactional
     @Override
-    public R<Object> release(TemplateFlowchart body) {
+    public R<Object> release(BlueprintFlowchart body) {
         try {
             Flowchart flowchart = query().eq("id", body.getFlowchartId()).one();
             if (flowchart.getIsPublic() == 1) {
@@ -176,7 +177,7 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
 
             if (status) {
                 body.setId(UUID.randomUUID().toString());
-                boolean f = templateFlowchartService.add(body);
+                boolean f = blueprintFlowchartService.add(body);
                 if (f) {
                     return R.success("公开成功！");
                 }
@@ -197,9 +198,9 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
             flowchart.setIsPublic(0);
             boolean status = upgrade(flowchart);
             if (status) {
-                TemplateFlowchart templateFlowchart = new TemplateFlowchart();
-                templateFlowchart.setFlowchartId(flowchartId);
-                boolean b = templateFlowchartService.delete(templateFlowchart);
+                BlueprintFlowchart blueprintFlowchart = new BlueprintFlowchart();
+                blueprintFlowchart.setFlowchartId(flowchartId);
+                boolean b = blueprintFlowchartService.delete(blueprintFlowchart);
                 if (!b) {
                     return R.failed("取消发布失败！");
                 }

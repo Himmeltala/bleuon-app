@@ -29,7 +29,7 @@ const paper = shallowRef<dia.Paper>();
 const graph = shallowRef<dia.Graph>();
 const route = useRoute();
 
-const flowchartData = ref<FlowchartData>({});
+const flowchartData = ref<FlowchartModel>({});
 const textInputRef = shallowRef<HTMLInputElement>();
 
 provide(KeyVals.BLEUON_FLOWCHART_PAPER, paper);

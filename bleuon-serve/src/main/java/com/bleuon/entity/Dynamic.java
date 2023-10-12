@@ -38,7 +38,7 @@ public class Dynamic implements Serializable {
     @TableField("modify_date")
     private Timestamp modifyDate;
 
-    @TableField("user_id")
-    private String userId;
+    @TableField("consumer_id")
+    private String consumerId;
 
 }

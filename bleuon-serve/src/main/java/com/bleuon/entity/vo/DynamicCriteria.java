@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public class DynamicCriteria {
 
-    private String uid;
+    private String consumerId;
 
     private List<Sequence> sequences;
 

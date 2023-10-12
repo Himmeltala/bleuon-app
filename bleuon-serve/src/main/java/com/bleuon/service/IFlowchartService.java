@@ -1,7 +1,7 @@
 package com.bleuon.service;
 
 import com.bleuon.entity.Flowchart;
-import com.bleuon.entity.TemplateFlowchart;
+import com.bleuon.entity.BlueprintFlowchart;
 import com.bleuon.entity.vo.FlowchartCriteria;
 import com.bleuon.utils.http.R;
 
@@ -23,13 +23,14 @@ public interface IFlowchartService {
 
     List<Flowchart> findAllByCriteria(FlowchartCriteria criteria);
 
-    Flowchart add(String uid);
+    Flowchart add(String consumerId);
 
-    Flowchart replicate(Flowchart data, String uid);
+    Flowchart replicate(Flowchart data, String consumerId);
 
     boolean deleteById(String flowchartId);
 
-    R<Object> release(TemplateFlowchart body);
+    R<Object> release(BlueprintFlowchart body);
 
     R<Object> cancelRelease(String flowchartId);
+
 }

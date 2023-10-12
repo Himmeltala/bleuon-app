@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bleuon.mapper.CollectingFlowchartMapper">
+
+    <cache-ref namespace="com.bleuon.mapper.CollectingFlowchartMapper"/>
+
+    <resultMap id="findMap" type="com.bleuon.entity.dto.CollectingFlowchartDto" autoMapping="true">
+        <id column="id" property="id"/>
+        <association javaType="com.bleuon.entity.dto.CollectingFlowchartDto$Consumer" property="belongConsumer" columnPrefix="u_"
+                     autoMapping="true">
+            <id column="id" property="id"/>
+        </association>
+    </resultMap>
+
+    <select id="findAllByCriteria" resultMap="findMap">
+        SELECT f.*,
+        u.id u_id,
+        u.username u_username,
+        u.avatar u_avatar
+        FROM t_flowcharts f
+        INNER JOIN t_consumers u ON u.id = f.consumer_id
+        INNER JOIN co_collecting_flowchart cf ON cf.flowchart_id = f.id
+        WHERE cf.consumer_id = #{consumerId}
+        <trim prefix="AND" prefixOverrides="AND">
+            <if test="fileName != null and fileName != ''">
+                f.file_name = #{fileName}
+            </if>
+        </trim>
+    </select>
+
+    <select id="find" resultMap="findMap">
+        SELECT f.*,
+               u.id       u_id,
+               u.username u_username,
+               u.avatar   u_avatar
+        FROM t_flowcharts f
+                 INNER JOIN t_consumers u ON u.id = f.consumer_id
+                 INNER JOIN co_collecting_flowchart cf ON cf.flowchart_id = f.id
+        WHERE cf.consumer_id = #{collectUid}
+          AND cf.flowchart_id = #{flowchartId};
+    </select>
+
+    <delete id="delete" parameterType="com.bleuon.entity.vo.CollectingFlowchartVo">
+        DELETE
+        FROM co_collecting_flowchart
+        WHERE consumer_id = #{collectUid}
+          AND flowchart_id = #{flowchartId}
+    </delete>
+
+    <insert id="add" parameterType="com.bleuon.entity.vo.CollectingFlowchartVo">
+        INSERT INTO co_collecting_flowchart(consumer_id, flowchart_id)
+        VALUES (#{collectUid}, #{flowchartId})
+    </insert>
+
+</mapper>

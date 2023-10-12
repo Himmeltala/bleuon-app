@@ -37,7 +37,7 @@ function resetFlowchart(index: number) {
   clickedIndex.value = index;
 }
 
-function downloadFlowchart(data: FlowchartData) {
+function downloadFlowchart(data: FlowchartModel) {
   downloadWithDataUri(
     data,
     "jpeg",
@@ -50,7 +50,7 @@ function downloadFlowchart(data: FlowchartData) {
   );
 }
 
-function replicateFlowchart(data: FlowchartData) {
+function replicateFlowchart(data: FlowchartModel) {
   data.fileName = "复制_" + data.fileName;
   FlowchartApi.replicate(data, async () => {
     await fetchData({});
@@ -190,7 +190,7 @@ async function searchFiles() {
         </div>
       </div>
       <div class="mt-5 text-text-regular text-0.9rem">文件</div>
-      <div class="file-list mt-5 f-c-s flex-wrap flex-gap-1.25rem">
+      <div class="file-list mt-5 f-s-s flex-wrap flex-gap-1.25rem">
         <File
           v-for="(item, index) in flowchartList"
           :key="item.id"
@@ -206,9 +206,38 @@ async function searchFiles() {
               <div class="mr-2 i-tabler-chart-bubble text-theme-primary"></div>
               <div class="text-0.9rem text-ellipsis line-clamp-1">{{ item.fileName }}</div>
             </div>
-            <div class="text-text-secondary text-0.8rem mt-4 f-c-s">
-              <div class="i-tabler-clock-edit mr-1"></div>
-              {{ DateUtil.formatted(item.modifyDate, "MM-dd HH:mm:ss") }}
+            <div class="status mt-4">
+              <el-tag size="small" v-if="item.isShare" :class="{ 'mr-2': item.isShare }">
+                分享
+              </el-tag>
+              <el-tag
+                size="small"
+                type="success"
+                v-if="item.isPublic"
+                :class="{ 'mr-2': item.isPublic }">
+                公开
+              </el-tag>
+              <el-tag
+                size="small"
+                type="warning"
+                v-if="item.isBlueprint"
+                :class="{ 'mr-2': item.isBlueprint }">
+                模板
+              </el-tag>
+              <el-tag
+                v-if="!item.isPublic && !item.isBlueprint && !item.isShare"
+                type="info"
+                size="small">
+                私密
+              </el-tag>
+            </div>
+            <div class="text-0.8rem mt-4">
+              <div class="text-text-regular">
+                创建:{{ DateUtil.formatted(item.createDate, "MM-dd HH:mm:ss") }}
+              </div>
+              <div class="text-text-secondary mt-1">
+                修改:{{ DateUtil.formatted(item.modifyDate, "MM-dd HH:mm:ss") }}
+              </div>
             </div>
           </template>
         </File>

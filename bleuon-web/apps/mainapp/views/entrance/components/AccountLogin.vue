@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { UserApi } from "@mainapp/apis";
+import { ConsumerApi } from "@mainapp/apis";
 import { FormValidatorsUtil } from "@common/utils";
 
 const router = useRouter();
@@ -8,7 +8,7 @@ const isAccountCorrect = ref(false);
 const isPasswordCorrect = ref(false);
 
 const formRef = ref();
-const formData = reactive<UserData>({
+const formData = reactive<ConsumerModel>({
   username: "",
   password: ""
 });
@@ -31,9 +31,9 @@ const formRules = reactive<FormRules>({
 
 function confirmLogin() {
   FormValidatorsUtil.validate(formRef.value, async () => {
-    UserApi.authLogin(formData, token => {
+    ConsumerApi.authLogin(formData, token => {
       localStorage.setToken(KeyVals.MAINAPP_TOKEN_KEY, token);
-      UserApi.findById().then(data => {
+      ConsumerApi.findById().then(data => {
         router.push("/workbench");
       });
     });

@@ -12,7 +12,7 @@ import request from "./use-axios";
  * @param body
  * @param success
  */
-export function upgrade(body: FlowchartData, success?: (data: R) => void) {
+export function upgrade(body: FlowchartModel, success?: (data: R) => void) {
   request.put<R>("/flowchart/upgrade", body).then(({ data }) => {
     success && success(data);
   });
@@ -25,7 +25,7 @@ export function upgrade(body: FlowchartData, success?: (data: R) => void) {
  * @returns
  */
 export async function findById(params: { id: string }) {
-  const { data } = await request.get<R<FlowchartData>>("/flowchart/find/by/id", { params });
+  const { data } = await request.get<R<FlowchartModel>>("/flowchart/find/by/id", { params });
   return data.data;
 }
 
@@ -38,7 +38,7 @@ export async function findById(params: { id: string }) {
  */
 export async function exposeFindOne(params: { id: string }, error?: Function) {
   try {
-    const { data } = await request.get<R<FlowchartData>>("/expose/flowchart/find/one", { params });
+    const { data } = await request.get<R<FlowchartModel>>("/expose/flowchart/find/one", { params });
     return data.data;
   } catch (err) {
     error && error(err);
@@ -58,7 +58,7 @@ export async function findAllByCriteria(criteria: {
   isShare?: number;
   isLegal?: number;
 }) {
-  const { data } = await request.post<R<FlowchartData[]>>(
+  const { data } = await request.post<R<FlowchartModel[]>>(
     "/flowchart/find/all/by/criteria",
     criteria
   );
@@ -70,8 +70,8 @@ export async function findAllByCriteria(criteria: {
  *
  * @param success
  */
-export function add(success: (res: R<FlowchartData>) => void) {
-  request.post<R<FlowchartData>>("/flowchart/add").then(({ data }) => {
+export function add(success: (res: R<FlowchartModel>) => void) {
+  request.post<R<FlowchartModel>>("/flowchart/add").then(({ data }) => {
     success && success(data);
   });
 }
@@ -82,8 +82,8 @@ export function add(success: (res: R<FlowchartData>) => void) {
  * @param body
  * @param success
  */
-export function replicate(body: FlowchartData, success?: (res: R) => void) {
-  request.post<R<FlowchartData>>("/flowchart/replicate", body).then(({ data }) => {
+export function replicate(body: FlowchartModel, success?: (res: R) => void) {
+  request.post<R<FlowchartModel>>("/flowchart/replicate", body).then(({ data }) => {
     success && success(data);
   });
 }
@@ -147,7 +147,7 @@ export async function deleteCollect(params: { flowchartId: string }, success?: F
  * @param body
  * @param success
  */
-export function release(body: TemplateFlowchartData, success?: Function) {
+export function release(body: BlueprintFlowchartModel, success?: Function) {
   request.post<R<void>>("/flowchart/release", body).then(() => {
     success && success();
   });

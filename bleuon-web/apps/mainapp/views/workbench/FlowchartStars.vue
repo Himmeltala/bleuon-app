@@ -81,14 +81,19 @@ await fetchData();
                 <div class="mr-2 i-tabler-chart-bubble text-theme-primary"></div>
                 <div class="text-0.9rem text-ellipsis line-clamp-1">{{ item.fileName }}</div>
               </div>
-              <div class="text-text-secondary text-0.8rem mt-2 f-c-s">
-                <div class="i-tabler-clock-edit mr-1"></div>
-                {{ DateUtil.formatted(item.modifyDate, "MM-dd HH:mm:ss") }}
-              </div>
               <div class="f-c-s text-text-secondary text-0.8rem mt-2">
                 <img :src="item.belongUser.avatar" class="mr-2 w-6 h-6 rd-50%" />
                 <div>
-                  {{ isMyFlowchart(item) ? "我的" : item.belongUser.username }}
+                  <el-tag size="small" v-if="isMyFlowchart(item)">我的</el-tag>
+                  <span v-else>{{ item.belongUser.username }}</span>
+                </div>
+              </div>
+              <div class="text-0.8rem mt-4">
+                <div class="text-text-regular">
+                  创建:{{ DateUtil.formatted(item.createDate, "MM-dd HH:mm:ss") }}
+                </div>
+                <div class="text-text-secondary mt-1">
+                  修改:{{ DateUtil.formatted(item.modifyDate, "MM-dd HH:mm:ss") }}
                 </div>
               </div>
             </template>

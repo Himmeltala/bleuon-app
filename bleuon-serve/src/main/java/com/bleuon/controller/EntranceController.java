@@ -2,14 +2,14 @@ package com.bleuon.controller;
 
 import com.bleuon.annotaion.RequestMappingPrefix;
 import com.bleuon.entity.CustomUserDetails;
-import com.bleuon.entity.User;
+import com.bleuon.entity.Consumer;
 import com.bleuon.entity.dto.Token;
-import com.bleuon.entity.dto.UserDto;
+import com.bleuon.entity.dto.ConsumerDto;
 import com.bleuon.entity.vo.EmailCaptchaVo;
 import com.bleuon.service.EmailCaptchaService;
 import com.bleuon.service.EntranceService;
 import com.bleuon.service.TokenService;
-import com.bleuon.service.impl.UserService;
+import com.bleuon.service.impl.ConsumerService;
 import com.bleuon.utils.http.IpUtil;
 import com.bleuon.utils.http.R;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,7 +32,7 @@ import java.util.Objects;
 @RequestMappingPrefix("/entrance")
 public class EntranceController {
 
-    private final UserService userService;
+    private final ConsumerService consumerService;
     private final TokenService tokenService;
     private final EntranceService entranceService;
     private final EmailCaptchaService captchaService;
@@ -59,7 +59,7 @@ public class EntranceController {
         boolean duplicate = captchaService.memorize(params.getEmail(), IpUtil.getIp(http));
         if (duplicate) return R.error("60s 内只能发送一次！");
 
-        UserDto exists = userService.findByEmail(params.getEmail());
+        ConsumerDto exists = consumerService.findByEmail(params.getEmail());
         if (Objects.isNull(exists)) {
             return R.error("邮箱不存在！");
         }
@@ -78,7 +78,7 @@ public class EntranceController {
         boolean duplicate = captchaService.memorize(params.getEmail(), IpUtil.getIp(http));
         if (duplicate) return R.error("60s 内只能发送一次！");
 
-        UserDto exists = userService.findByEmail(params.getEmail());
+        ConsumerDto exists = consumerService.findByEmail(params.getEmail());
         if (!Objects.isNull(exists)) {
             return R.error("邮箱被注册！");
         }
@@ -97,7 +97,7 @@ public class EntranceController {
         boolean duplicate = captchaService.memorize(params.getEmail(), IpUtil.getIp(http));
         if (duplicate) return R.error("60s 内只能发送一次！");
 
-        UserDto exists = userService.findByEmail(params.getEmail());
+        ConsumerDto exists = consumerService.findByEmail(params.getEmail());
         if (Objects.isNull(exists)) {
             return R.error("邮箱没有注册！");
         }
@@ -126,7 +126,7 @@ public class EntranceController {
      * 校验邮箱注册验证码
      */
     @PostMapping("/verify/register-email-captcha")
-    public R<Object> verifyRegisterMailCaptcha(@RequestBody @Validated User body,
+    public R<Object> verifyRegisterMailCaptcha(@RequestBody @Validated Consumer body,
                                                @Validated EmailCaptchaVo params) {
         String key = body.getEmail() + ":captcha";
         boolean expired = captchaService.hasCaptchaExpire(key);
@@ -150,7 +150,7 @@ public class EntranceController {
         if (captchaService.hasCaptchaEqual(key, body.getCaptcha())) {
             captchaService.removeCaptcha(key);
 
-            UserDto exists = userService.findByEmail(body.getEmail());
+            ConsumerDto exists = consumerService.findByEmail(body.getEmail());
             if (Objects.isNull(exists)) {
                 return R.error("该用户不存在！");
             } else {
@@ -166,12 +166,12 @@ public class EntranceController {
      * 邮箱、用户名或手机号注册
      */
     @PostMapping("/account-register")
-    public R<Object> accountRegister(@RequestBody @Validated User body) {
+    public R<Object> accountRegister(@RequestBody @Validated Consumer body) {
         return entranceService.registerByAccount(body);
     }
 
     @PostMapping("/reset-password")
-    public R<Object> resetPassword(@RequestBody @Validated User body) {
+    public R<Object> resetPassword(@RequestBody @Validated Consumer body) {
         return entranceService.resetPassword(body);
     }
 

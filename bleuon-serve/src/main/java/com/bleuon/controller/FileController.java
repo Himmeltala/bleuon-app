@@ -1,19 +1,15 @@
 package com.bleuon.controller;
 
 import com.bleuon.annotaion.RequestMappingPrefix;
-import com.bleuon.constant.KeyVals;
 import com.bleuon.entity.vo.FileParamsVo;
 import com.bleuon.service.FileService;
-import com.bleuon.utils.JwtUtil;
 import com.bleuon.utils.http.R;
-import io.jsonwebtoken.Claims;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -42,16 +38,13 @@ public class FileController {
         }
     }
 
-    @PostMapping("/upload/ckeditor/image")
-    public R<Object> uploadCkeditorImage(@RequestHeader(KeyVals.Token) String token, MultipartFile file) {
+    @PostMapping("/upload/image")
+    public R<Object> uploadCkeditorImage(MultipartFile file, String path) {
         if (file.isEmpty()) {
             return R.error("请选择一个图片！");
         }
 
-        Claims claims = JwtUtil.parseJwt(token);
-        String uid = (String) claims.get("id");
-
-        String imgUrl = service.upload("/static/images/ckeditor/" + uid, null, file);
+        String imgUrl = service.upload("/static/images/" + path, null, file);
         if (StringUtils.hasText(imgUrl)) {
             return R.success("上传成功！", imgUrl);
         } else {

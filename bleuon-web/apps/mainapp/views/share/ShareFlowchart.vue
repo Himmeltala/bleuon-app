@@ -26,7 +26,7 @@ const graph = shallowRef<dia.Graph>();
 const route = useRoute();
 const router = useRouter();
 
-const flowchartData = ref<FlowchartData>({});
+const flowchartData = ref<FlowchartModel>({});
 const textInputRef = shallowRef<HTMLInputElement>();
 
 provide(KeyVals.BLEUON_FLOWCHART_PAPER, paper);

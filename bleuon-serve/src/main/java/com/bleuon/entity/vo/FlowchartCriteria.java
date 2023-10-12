@@ -18,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 public class FlowchartCriteria implements Serializable {
 
-    private String uid;
+    private String consumerId;
     private String fileName;
     private Integer isPublic;
     private Integer isLegal;

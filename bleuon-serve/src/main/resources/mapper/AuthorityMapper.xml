@@ -5,19 +5,19 @@
     <cache-ref namespace="com.bleuon.mapper.AuthorityMapper"/>
 
     <insert id="setAuthority">
-        INSERT INTO co_user_role(user_id, role_id, user_name)
+        INSERT INTO co_consumer_role(consumer_id, role_id, user_name)
         VALUES (#{id}, #{role}, #{uname})
     </insert>
 
     <select id="getAuthority" resultType="java.lang.String">
         SELECT a.value
-        FROM co_user_role AS cur
+        FROM co_consumer_role AS cur
         INNER JOIN p_roles AS r ON r.id = cur.role_id
         INNER JOIN co_auth_role AS car ON car.role_id = cur.role_id
         INNER JOIN p_auths AS a ON a.id = car.auth_id
         <trim prefix="WHERE" prefixOverrides="AND">
             <if test="id != null">
-                AND cur.user_id = #{id}
+                AND cur.consumer_id = #{id}
             </if>
             <if test="username != null">
                 AND cur.user_name = #{username}

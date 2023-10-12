@@ -57,7 +57,7 @@ public class FileService {
             MediaType contentType = fileUtil.getContentType(filename);
             response.setContentType(contentType.toString());
             return fileUtil.readFromResources(filepath, filename);
-        }  catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             return null;
         }

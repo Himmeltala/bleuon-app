@@ -6,12 +6,12 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import { UserApi } from "@mainapp/apis";
+import { ConsumerApi } from "@mainapp/apis";
 
-const user = ref(await UserApi.findById());
+const consumer = ref(await ConsumerApi.findById());
 
 function confirmLogout() {
-  UserApi.authLogout();
+  ConsumerApi.authLogout();
 }
 
 const root = document.querySelector("html");
@@ -28,7 +28,7 @@ function switchThemeMode() {
 <template>
   <div class="f-c-c relative">
     <el-dropdown :teleported="false">
-      <img :src="user.avatar" class="rd-50% w-10 h-10 cursor-pointer" />
+      <img :src="consumer.avatar" class="rd-50% w-10 h-10 cursor-pointer" />
       <template #dropdown>
         <el-dropdown-menu>
           <div class="b-b-solid b-border-primary b-b-1 pb-2 mb-2">
@@ -49,7 +49,7 @@ function switchThemeMode() {
               </router-link>
             </el-dropdown-item>
             <el-dropdown-item>
-              <router-link :to="'/u/profile/' + user.id">
+              <router-link :to="'/u/profile/' + consumer.id">
                 <div class="f-c-s">
                   <div class="i-tabler-user mr-2"></div>
                   个人主页

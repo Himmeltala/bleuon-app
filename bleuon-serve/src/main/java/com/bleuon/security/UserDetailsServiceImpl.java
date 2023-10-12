@@ -2,9 +2,9 @@ package com.bleuon.security;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bleuon.entity.CustomUserDetails;
-import com.bleuon.entity.User;
+import com.bleuon.entity.Consumer;
 import com.bleuon.mapper.AuthorityMapper;
-import com.bleuon.mapper.UserMapper;
+import com.bleuon.mapper.ConsumerMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -26,13 +26,13 @@ import java.util.Objects;
  */
 @Service
 @RequiredArgsConstructor
-public class UserDetailsServiceImpl extends ServiceImpl<UserMapper, User> implements UserDetailsService {
+public class UserDetailsServiceImpl extends ServiceImpl<ConsumerMapper, Consumer> implements UserDetailsService {
 
     private final AuthorityMapper mapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User exists = findUserByFiled(username);
+        Consumer exists = findUserByFiled(username);
 
         if (Objects.isNull(exists)) {
             throw new UsernameNotFoundException("用户名或密码错误！");
@@ -42,7 +42,7 @@ public class UserDetailsServiceImpl extends ServiceImpl<UserMapper, User> implem
         return new CustomUserDetails(exists.getId(), exists.getUsername(), exists.getPassword(), authorities);
     }
 
-    private User findUserByFiled(String field) {
+    private Consumer findUserByFiled(String field) {
         return query()
                 .eq("username", field)
                 .or()
