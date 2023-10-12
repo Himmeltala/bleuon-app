@@ -1,4 +1,4 @@
-package com.bleuon.controller;
+package com.bleuon.controller.expose;
 
 import com.bleuon.annotaion.RequestMappingPrefix;
 import com.bleuon.entity.vo.FileParamsVo;
@@ -21,7 +21,7 @@ import java.io.IOException;
  * @date: 2023/10/9
  */
 @RequiredArgsConstructor
-@RequestMappingPrefix("/file")
+@RequestMappingPrefix("/public/file")
 public class FileController {
 
     private final FileService service;

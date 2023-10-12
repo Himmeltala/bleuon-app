@@ -14,11 +14,11 @@ import { downloadWithDataUri } from "@mainapp/lib/tools";
 import WorkbenchHeader from "@mainapp/components/workbench/WorkbenchHeader.vue";
 import File from "@mainapp/components/File.vue";
 
-const collect = shallowRef();
+const collectList = shallowRef<FlowchartModel[]>([]);
 const searchVal = ref("");
 
 async function fetchData(params?: any) {
-  collect.value = await FlowchartApi.findAllCollectByCriteria(params);
+  collectList.value = await FlowchartApi.findAllCollectByCriteria(params);
 }
 
 async function searchFiles() {
@@ -34,22 +34,22 @@ function downloadFlowchart(data: any) {
   );
 }
 
-function replicateFlowchart(data: any) {
+function replicateFlowchart(data: FlowchartModel) {
   data.fileName = "复制_收藏_" + data.fileName;
   FlowchartApi.replicate(data, res => ElMessage.success(res.message));
 }
 
 function deleteFlowchart(flowchartId: string, index: number) {
   FlowchartApi.deleteCollect({ flowchartId }, () => {
-    collect.value.splice(index, 1);
-    triggerRef(collect);
+    collectList.value.splice(index, 1);
+    triggerRef(collectList);
   });
 }
 
 const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
 
-function isMyFlowchart(item: any) {
-  return item.belongConsumer.id == token.id;
+function isMyFlowchart(item: FlowchartModel) {
+  return item.consumer.id == token.id;
 }
 
 await fetchData();
@@ -65,9 +65,9 @@ await fetchData();
       </div>
       <div class="mt-5 text-text-regular text-0.9rem">文件</div>
       <div class="file-list mt-5 f-c-s flex-wrap flex-gap-1.25rem">
-        <template v-if="collect">
+        <template v-if="collectList">
           <File
-            v-for="(item, index) in collect"
+            v-for="(item, index) in collectList"
             :key="item.id"
             :file-image="item.dataUri"
             :file-name="item.fileName"
@@ -82,10 +82,10 @@ await fetchData();
                 <div class="text-0.9rem text-ellipsis line-clamp-1">{{ item.fileName }}</div>
               </div>
               <div class="f-c-s text-text-secondary text-0.8rem mt-2">
-                <img :src="item.belongConsumer.avatar" class="mr-2 w-6 h-6 rd-50%" />
+                <img :src="item.consumer.avatar" class="mr-2 w-6 h-6 rd-50%" />
                 <div>
                   <el-tag size="small" v-if="isMyFlowchart(item)">我的</el-tag>
-                  <span v-else>{{ item.belongConsumer.username }}</span>
+                  <span v-else>{{ item.consumer.username }}</span>
                 </div>
               </div>
               <div class="text-0.8rem mt-4">

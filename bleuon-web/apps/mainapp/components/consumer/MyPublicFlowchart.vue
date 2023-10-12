@@ -11,7 +11,14 @@ import { DateUtil } from "@common/utils";
 
 import File from "@mainapp/components/File.vue";
 
-const flowchartList = ref(await ConsumerApi.findAllFlowchart({ isPublic: 1 }));
+const props = defineProps({
+  consumer: {
+    type: Object as PropType<any>
+  }
+});
+const flowchartList = ref(
+  await ConsumerApi.findAllFlowchart({ consumerId: `${props.consumer.id}`, isPublic: 1 })
+);
 </script>
 
 <template>

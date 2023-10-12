@@ -14,5 +14,5 @@ import request from "./use-axios";
  * @returns
  */
 export function uploadCkEditorImage(formData: FormData) {
-  return request.post<R>("/file/upload/image", formData);
+  return request.post<R>("/public/file/upload/image", formData);
 }

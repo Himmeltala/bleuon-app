@@ -1,7 +1,7 @@
 package com.bleuon.service.impl;
 
-import com.bleuon.entity.dto.CollectingFlowchartDto;
-import com.bleuon.entity.vo.CollectingFlowchartVo;
+import com.bleuon.entity.CollectingFlowchart;
+import com.bleuon.entity.Flowchart;
 import com.bleuon.entity.vo.FlowchartCriteria;
 import com.bleuon.exception.JdbcErrorException;
 import com.bleuon.mapper.CollectingFlowchartMapper;
@@ -27,22 +27,22 @@ public class CollectingFlowchartService implements ICollectingFlowchartService {
     private final CollectingFlowchartMapper mapper;
 
     @Override
-    public List<CollectingFlowchartDto> findAllByCriteria(FlowchartCriteria criteria) {
+    public List<Flowchart> findAllByCriteria(FlowchartCriteria criteria) {
         return mapper.findAllByCriteria(criteria);
     }
 
     @Override
-    public boolean delete(CollectingFlowchartVo body) {
+    public boolean delete(CollectingFlowchart body) {
         Integer row = mapper.delete(body);
         return row > 0;
     }
 
     @Override
     @Transactional
-    public R<Object> add(CollectingFlowchartVo body) {
+    public R<Object> add(CollectingFlowchart body) {
         try {
-            CollectingFlowchartDto one = mapper.find(body);
-            if (!Objects.isNull(one)) return R.failed("您已经收藏过了！");
+            Flowchart exists = mapper.find(body);
+            if (!Objects.isNull(exists)) return R.failed("您已经收藏过了！");
 
             Integer row = mapper.add(body);
             if (row > 0) return R.success("收藏成功！");

@@ -42,7 +42,7 @@ public class FileService {
                 boolean writeSuccess = fileUtil.writeToResources(writePath, filename, file.getInputStream());
 
                 if (writeSuccess) {
-                    return "http://localhost:8080/api/file/preview/image?filepath=" + writePath + "&filename=" + filename;
+                    return "http://localhost:8080/api/public/file/preview/image?filepath=" + writePath + "&filename=" + filename;
                 }
             }
 

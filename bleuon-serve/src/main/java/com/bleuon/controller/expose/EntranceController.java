@@ -1,10 +1,10 @@
-package com.bleuon.controller;
+package com.bleuon.controller.expose;
 
 import com.bleuon.annotaion.RequestMappingPrefix;
-import com.bleuon.entity.CustomUserDetails;
 import com.bleuon.entity.Consumer;
-import com.bleuon.entity.dto.Token;
+import com.bleuon.entity.CustomUserDetails;
 import com.bleuon.entity.dto.ConsumerDto;
+import com.bleuon.entity.dto.Token;
 import com.bleuon.entity.vo.EmailCaptchaVo;
 import com.bleuon.service.EmailCaptchaService;
 import com.bleuon.service.EntranceService;
@@ -29,7 +29,7 @@ import java.util.Objects;
  * @date: 2023/8/25
  */
 @RequiredArgsConstructor
-@RequestMappingPrefix("/entrance")
+@RequestMappingPrefix("/public/entrance")
 public class EntranceController {
 
     private final ConsumerService consumerService;

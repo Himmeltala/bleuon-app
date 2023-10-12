@@ -13,11 +13,13 @@ import CommonHeader from "@mainapp/components/CommonHeader.vue";
 import MyDynamic from "@mainapp/components/consumer/MyDynamic.vue";
 import MyPublicFlowchart from "@mainapp/components/consumer/MyPublicFlowchart.vue";
 import MyShareFlowchart from "@mainapp/components/consumer/MyShareFlowchart.vue";
+import MyStarConsumer from "@mainapp/components/consumer/MyStarConsumer.vue";
 
 const route = useRoute();
+const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
 const formData = ref(await ConsumerApi.findById(`${route.params.id}`));
 
-const tabs = [MyDynamic, MyPublicFlowchart, MyShareFlowchart];
+const tabs = [MyDynamic, MyPublicFlowchart, MyShareFlowchart, MyStarConsumer];
 const tabIndex = ref(0);
 </script>
 
@@ -64,7 +66,10 @@ const tabIndex = ref(0);
           <div class="f-c-s bg-bg-overlay p-5 mb-2">
             <TabPageItem class="mr-5" :index="0" v-model="tabIndex">动态列表</TabPageItem>
             <TabPageItem class="mr-5" :index="1" v-model="tabIndex">公开的流程图</TabPageItem>
-            <TabPageItem :index="2" v-model="tabIndex">分享的流程图</TabPageItem>
+            <TabPageItem class="mr-5" :index="2" v-model="tabIndex">分享的流程图</TabPageItem>
+            <TabPageItem :index="3" v-if="token.id === formData.id" v-model="tabIndex">
+              关注的用户
+            </TabPageItem>
           </div>
         </template>
         <component :is="tabs[tabIndex]" :consumer="formData"></component>

@@ -1,4 +1,4 @@
-package com.bleuon.entity.vo;
+package com.bleuon.entity;
 
 import com.bleuon.constant.ValidPattern;
 import jakarta.validation.constraints.Pattern;
@@ -18,19 +18,19 @@ import java.sql.Timestamp;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CollectingFlowchartVo implements Serializable {
+public class CollectingFlowchart implements Serializable {
 
     private Integer id;
 
     @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
-    private String collectUid;
+    private String consumerId;
 
     @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
     private String flowchartId;
     private Timestamp createDate;
 
-    public CollectingFlowchartVo(String collectUid, String flowchartId) {
-        this.collectUid = collectUid;
+    public CollectingFlowchart(String consumerId, String flowchartId) {
+        this.consumerId = consumerId;
         this.flowchartId = flowchartId;
     }
 

@@ -54,7 +54,7 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
 
     @Transactional
     @Override
-    public R<Flowchart> exposeFindOne(String id) {
+    public R<Flowchart> findIsShare(String id) {
         Flowchart flowchart = query()
                 .eq("id", id)
                 .eq("is_share", 1)

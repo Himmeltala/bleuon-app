@@ -1,7 +1,7 @@
 package com.bleuon.service;
 
-import com.bleuon.entity.Flowchart;
 import com.bleuon.entity.BlueprintFlowchart;
+import com.bleuon.entity.Flowchart;
 import com.bleuon.entity.vo.FlowchartCriteria;
 import com.bleuon.utils.http.R;
 
@@ -19,7 +19,7 @@ public interface IFlowchartService {
 
     Flowchart findById(String flowchartId);
 
-    R<Flowchart> exposeFindOne(String id);
+    R<Flowchart> findIsShare(String id);
 
     List<Flowchart> findAllByCriteria(FlowchartCriteria criteria);
 

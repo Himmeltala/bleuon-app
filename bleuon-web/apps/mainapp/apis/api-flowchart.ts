@@ -36,9 +36,11 @@ export async function findById(params: { id: string }) {
  * @param error
  * @returns
  */
-export async function exposeFindOne(params: { id: string }, error?: Function) {
+export async function findIsShare(params: { id: string }, error?: Function) {
   try {
-    const { data } = await request.get<R<FlowchartModel>>("/expose/flowchart/find/one", { params });
+    const { data } = await request.get<R<FlowchartModel>>("/public/flowchart/find/share", {
+      params
+    });
     return data.data;
   } catch (err) {
     error && error(err);
@@ -111,9 +113,12 @@ export function deleteById(params: { id?: string }, success: Function) {
  * @returns
  */
 export async function findAllCollectByCriteria(params: { fileName?: string }) {
-  const { data } = await request.get<R<any[]>>("/flowchart/find/all/collect/by/criteria", {
-    params
-  });
+  const { data } = await request.get<R<FlowchartModel[]>>(
+    "/flowchart/find/all/collect/by/criteria",
+    {
+      params
+    }
+  );
   return data.data;
 }
 

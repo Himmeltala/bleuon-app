@@ -19,7 +19,7 @@ export function askMailCaptcha(
   },
   success?: Function
 ) {
-  request.get<R>("/entrance/aks/email-captcha", { params }).then(({ data }) => {
+  request.get<R>("/public/entrance/aks/email-captcha", { params }).then(({ data }) => {
     success && success(data);
   });
 }
@@ -36,7 +36,7 @@ export function askLoginEmailCaptcha(
   },
   success?: Function
 ) {
-  request.get<R>("/entrance/ask/login-email-captcha", { params }).then(({ data }) => {
+  request.get<R>("/public/entrance/ask/login-email-captcha", { params }).then(({ data }) => {
     success && success(data);
   });
 }
@@ -53,7 +53,7 @@ export function askRegisterEmailCaptcha(
   },
   success?: Function
 ) {
-  request.get<R>("/entrance/ask/register-email-captcha", { params }).then(({ data }) => {
+  request.get<R>("/public/entrance/ask/register-email-captcha", { params }).then(({ data }) => {
     success && success(data);
   });
 }
@@ -70,7 +70,7 @@ export function askResetEmailCaptcha(
   },
   success?: Function
 ) {
-  request.get<R>("/entrance/ask/reset-email-captcha", { params }).then(({ data }) => {
+  request.get<R>("/public/entrance/ask/reset-email-captcha", { params }).then(({ data }) => {
     success && success(data);
   });
 }
@@ -88,7 +88,7 @@ export function verifyEmailCaptcha(
   },
   success: (res: TokenR) => void
 ) {
-  request.post<R<TokenR>>("/entrance/verify/email-captcha", body).then(({ data }) => {
+  request.post<R<TokenR>>("/public/entrance/verify/email-captcha", body).then(({ data }) => {
     success(data.data);
   });
 }
@@ -105,9 +105,11 @@ export function verifyRegisterEmailCaptcha(
   params: { email: string; captcha: string },
   success?: Function
 ) {
-  request.post<R>("/entrance/verify/register-email-captcha", body, { params }).then(({ data }) => {
-    success && success(data);
-  });
+  request
+    .post<R>("/public/entrance/verify/register-email-captcha", body, { params })
+    .then(({ data }) => {
+      success && success(data);
+    });
 }
 
 /**
@@ -123,7 +125,7 @@ export function verifyLoginEmailCaptcha(
   },
   success: (res: TokenR) => void
 ) {
-  request.post<R<TokenR>>("/entrance/verify/login-email-captcha", body).then(({ data }) => {
+  request.post<R<TokenR>>("/public/entrance/verify/login-email-captcha", body).then(({ data }) => {
     success(data.data);
   });
 }
@@ -135,7 +137,7 @@ export function verifyLoginEmailCaptcha(
  * @param success
  */
 export function accountRegister(body: ConsumerModel, success?: Function) {
-  request.post<R>("/entrance/account-register", body).then(({ data }) => {
+  request.post<R>("/public/entrance/account-register", body).then(({ data }) => {
     success && success(data);
   });
 }
@@ -179,7 +181,7 @@ export function authLogout(success?: Function, error?: Function) {
  * @param success
  */
 export function resetPassword(body: ConsumerModel, success: Function) {
-  request.post<R>("/entrance/reset-password", body).then(({ data }) => {
+  request.post<R>("/public/entrance/reset-password", body).then(({ data }) => {
     success(data);
   });
 }
@@ -277,7 +279,11 @@ export function addDynamic(body: DynamicModel, success?: Function) {
 /**
  * 查询公开、分享的流程图
  */
-export async function findAllFlowchart(params: { isPublic?: 1 | 0; isShare?: 1 | 0 }) {
+export async function findAllFlowchart(params: {
+  consumerId: string;
+  isPublic?: 1 | 0;
+  isShare?: 1 | 0;
+}) {
   const { data } = await request.get<R<FlowchartModel[]>>("/consumer/find/all/flowchart", {
     params
   });

@@ -4,13 +4,12 @@ import { DateUtil } from "@common/utils";
 
 import ClassicCkEditor from "@mainapp/components/ClassicCkEditor.vue";
 
-defineProps({
+const props = defineProps({
   consumer: {
     type: Object as PropType<any>
   }
 });
 
-const route = useRoute();
 const dynamicList = ref([]);
 const dynamicValue = ref("");
 const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
@@ -18,7 +17,7 @@ const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
 async function fetchDynamicList() {
   dynamicList.value = await ConsumerApi.findAllDynamicByCriteria({
     sequences: [{ isAsc: false, col: "create_date" }],
-    consumerId: `${route.params.id}`
+    consumerId: `${props.consumer.id}`
   });
 }
 
@@ -58,11 +57,8 @@ await fetchDynamicList();
 
 <template>
   <div class="my-dynamic">
-    <div class="px-5 py-5 rd-2 bg-bg-overlay">
-      <ClassicCkEditor
-        v-if="token.id === consumer.id"
-        v-model="dynamicValue"
-        :upload-img="uploadDynamicImg"></ClassicCkEditor>
+    <div class="px-5 py-5 rd-2 bg-bg-overlay" v-if="token.id === consumer.id">
+      <ClassicCkEditor v-model="dynamicValue" :upload-img="uploadDynamicImg"></ClassicCkEditor>
       <div class="f-c-e mt-2">
         <el-button type="primary" @click="commitDynamic">发表动态</el-button>
       </div>

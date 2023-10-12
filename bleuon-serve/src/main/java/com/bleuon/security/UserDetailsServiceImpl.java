@@ -1,8 +1,8 @@
 package com.bleuon.security;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.bleuon.entity.CustomUserDetails;
 import com.bleuon.entity.Consumer;
+import com.bleuon.entity.CustomUserDetails;
 import com.bleuon.mapper.AuthorityMapper;
 import com.bleuon.mapper.ConsumerMapper;
 import lombok.RequiredArgsConstructor;
