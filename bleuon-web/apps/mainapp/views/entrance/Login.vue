@@ -18,7 +18,6 @@ defineProps({
 defineEmits(["update:dynamicCompName"]);
 
 type TabIndexType = "AccountLogin" | "EmailLogin";
-
 const tabIndex = ref<TabIndexType>("AccountLogin");
 const tabs = {
   AccountLogin,

@@ -83,7 +83,7 @@ public class Flowchart implements Serializable {
     private String consumerId;
 
     @TableField(exist = false)
-    private Consumer user;
+    private Consumer consumer;
 
     @Data
     @NoArgsConstructor

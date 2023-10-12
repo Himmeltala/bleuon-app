@@ -1,75 +1,39 @@
 <script lang="ts" setup>
 /**
- * @description 个人资料中心
+ * @description 个人空间
  * @author zheng
  * @since 2023/8/23
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import { ConsumerApi, FileApi } from "@mainapp/apis";
-import { DateUtil } from "@common/utils";
+import { ConsumerApi } from "@mainapp/apis";
 
 // components
 import CommonHeader from "@mainapp/components/CommonHeader.vue";
-import ClassicCkEditor from "@mainapp/components/ClassicCkEditor.vue";
+import MyDynamic from "@mainapp/components/consumer/MyDynamic.vue";
+import MyPublicFlowchart from "@mainapp/components/consumer/MyPublicFlowchart.vue";
+import MyShareFlowchart from "@mainapp/components/consumer/MyShareFlowchart.vue";
 
 const route = useRoute();
-const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
 const formData = ref(await ConsumerApi.findById(`${route.params.id}`));
-const activeName = ref<"createDynamic">("createDynamic");
 
-const handleClick = (tab: TabsPaneContext) => {
-  console.log(tab);
+type TabIndexType = "MyDynamic" | "MyPublicFlowchart" | "MyShareFlowchart";
+const tabIndex = ref<TabIndexType>("MyDynamic");
+const tabs = {
+  MyDynamic,
+  MyPublicFlowchart,
+  MyShareFlowchart
 };
 
-const dynamicValue = ref("");
-const dynamicList = ref([]);
-
-async function fetchDynamicList() {
-  dynamicList.value = await ConsumerApi.findAllDynamicByCriteria({
-    sequences: [{ isAsc: false, col: "create_date" }],
-    consumerId: `${route.params.id}`
-  });
+function changeTabIndex(name: TabIndexType) {
+  tabIndex.value = name;
 }
-
-function uploadDynamicImg(formData: FormData) {
-  formData.append("path", "/dynamic");
-  return FileApi.uploadCkEditorImage(formData);
-}
-
-function commitDynamic() {
-  ConsumerApi.addDynamic({ content: dynamicValue.value }, async () => {
-    await fetchDynamicList();
-  });
-}
-
-function diggDynamic(item: DynamicModel) {
-  item.digg += 1;
-  ConsumerApi.upgradeDynamic({ digg: item.digg, id: item.id }, () => {
-    ElMessage.success("支持成功！");
-  });
-}
-
-function buryDynamic(item: DynamicModel) {
-  item.bury += 1;
-  ConsumerApi.upgradeDynamic({ bury: item.bury, id: item.id }, () => {
-    ElMessage.success("反对成功！");
-  });
-}
-
-function deleteDynamic(item: DynamicModel, index: number) {
-  ConsumerApi.deleteDynamic({ id: item.id }, () => {
-    dynamicList.value.splice(index, 1);
-  });
-}
-
-await fetchDynamicList();
 </script>
 
 <template>
   <div class="profile slim-slider h-100vh flow-auto bg-bg-page">
     <CommonHeader active-name="personal"></CommonHeader>
-    <div class="f-s-b py-20 px-20 mx-50 mt-5 rd-2 bg-bg-overlay">
+    <div class="f-s-b py-20 px-20 mx-50 mt-2 rd-2 bg-bg-overlay">
       <div class="f-c-c">
         <router-link to="/u/setting">
           <img :src="formData.avatar" class="cursor-pointer rd-50% h-30 w-30" />
@@ -103,69 +67,42 @@ await fetchDynamicList();
         </div>
       </div>
     </div>
-    <div class="mt-5 mb-5 px-50">
-      <div class="bg-bg-overlay px-5 pb-5 rd-2">
-        <el-tabs class="min-h-60vh" v-model="activeName" @tab-click="handleClick">
-          <el-tab-pane label="发布动态" name="createDynamic">
-            <div class="mt-5 mb-10">
-              <ClassicCkEditor
-                v-if="token.id === formData.id"
-                v-model="dynamicValue"
-                :upload-img="uploadDynamicImg"></ClassicCkEditor>
-              <div class="f-c-e mt-2">
-                <el-button type="primary" @click="commitDynamic">发表动态</el-button>
-              </div>
-            </div>
-            <div class="font-bold text-text-regular">动态列表</div>
-            <div v-if="dynamicList" class="mt-10">
-              <div
-                class="b-b-1 b-border-primary b-b-solid pb-5 f-s-s mt-5"
-                v-for="(item, index) in dynamicList"
-                :key="item.id">
-                <div class="mr-10">
-                  <img class="w-15 h-15 rd-50%" :src="formData.avatar" />
-                </div>
-                <div>
-                  <div>
-                    <div class="text-text-regular">
-                      {{ formData.username }}
-                    </div>
-                    <div class="mt-1 f-c-s text-0.8rem text-text-regular">
-                      <div class="i-tabler-clock mr-1"></div>
-                      {{ DateUtil.formatted(item.createDate) }}
-                    </div>
-                  </div>
-                  <div class="mt-4" v-html="item.content"></div>
-                  <div class="f-c-s mt-6 text-text-secondary text-0.9rem">
-                    <div class="mr-15 hover f-c-c" @click="diggDynamic(item)">
-                      <div class="i-tabler-thumb-up mr-1"></div>
-                      {{ item.digg }}
-                    </div>
-                    <div class="mr-15 hover f-c-c" @click="buryDynamic(item)">
-                      <div class="i-tabler-thumb-down mr-1"></div>
-                      {{ item.bury }}
-                    </div>
-                    <div v-if="formData.id == token.id">
-                      <el-button
-                        @click="deleteDynamic(item, index)"
-                        type="danger"
-                        size="small"
-                        text>
-                        删除
-                      </el-button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <template #label>
-              <span :class="{ 'font-bold': activeName === 'createDynamic' }">发布动态</span>
-            </template>
-          </el-tab-pane>
-        </el-tabs>
+    <div class="my-2 px-50">
+      <div class="bg-bg-overlay rd-2 p-5 mb-2 f-c-s">
+        <div
+          :class="tabIndex === 'MyDynamic' ? 'active' : 'noactive'"
+          class="slider mr-5"
+          @click="changeTabIndex('MyDynamic')">
+          动态列表
+        </div>
+        <div
+          :class="tabIndex === 'MyPublicFlowchart' ? 'active' : 'noactive'"
+          class="slider mr-5"
+          @click="changeTabIndex('MyPublicFlowchart')">
+          公开的流程图
+        </div>
+        <div
+          :class="tabIndex === 'MyShareFlowchart' ? 'active' : 'noactive'"
+          class="slider"
+          @click="changeTabIndex('MyShareFlowchart')">
+          分享的流程图
+        </div>
       </div>
+      <component :is="tabs[tabIndex]" :consumer="formData"></component>
     </div>
   </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.active {
+  --uno: b-b-theme-primary text-theme-primary;
+}
+
+.noactive {
+  --uno: b-b-transparent text-text-secondary;
+}
+
+.slider {
+  --uno: b-b-solid b-b-2 font-bold pb-2 hover;
+}
+</style>

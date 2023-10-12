@@ -1,0 +1,110 @@
+<script setup lang="ts">
+import { ConsumerApi, FileApi } from "@mainapp/apis";
+import { DateUtil } from "@common/utils";
+
+import ClassicCkEditor from "@mainapp/components/ClassicCkEditor.vue";
+
+defineProps({
+  consumer: {
+    type: Object as PropType<any>
+  }
+});
+
+const route = useRoute();
+const dynamicList = ref([]);
+const dynamicValue = ref("");
+const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
+
+async function fetchDynamicList() {
+  dynamicList.value = await ConsumerApi.findAllDynamicByCriteria({
+    sequences: [{ isAsc: false, col: "create_date" }],
+    consumerId: `${route.params.id}`
+  });
+}
+
+function uploadDynamicImg(formData: FormData) {
+  formData.append("path", "/dynamic");
+  return FileApi.uploadCkEditorImage(formData);
+}
+
+function commitDynamic() {
+  ConsumerApi.addDynamic({ content: dynamicValue.value }, async () => {
+    await fetchDynamicList();
+  });
+}
+
+function diggDynamic(item: DynamicModel) {
+  item.digg += 1;
+  ConsumerApi.upgradeDynamic({ digg: item.digg, id: item.id }, () => {
+    ElMessage.success("支持成功！");
+  });
+}
+
+function buryDynamic(item: DynamicModel) {
+  item.bury += 1;
+  ConsumerApi.upgradeDynamic({ bury: item.bury, id: item.id }, () => {
+    ElMessage.success("反对成功！");
+  });
+}
+
+function deleteDynamic(item: DynamicModel, index: number) {
+  ConsumerApi.deleteDynamic({ id: item.id }, () => {
+    dynamicList.value.splice(index, 1);
+  });
+}
+
+await fetchDynamicList();
+</script>
+
+<template>
+  <div class="my-dynamic">
+    <div class="px-5 py-5 rd-2 bg-bg-overlay">
+      <ClassicCkEditor
+        v-if="token.id === consumer.id"
+        v-model="dynamicValue"
+        :upload-img="uploadDynamicImg"></ClassicCkEditor>
+      <div class="f-c-e mt-2">
+        <el-button type="primary" @click="commitDynamic">发表动态</el-button>
+      </div>
+    </div>
+    <div v-if="dynamicList">
+      <div
+        class="bg-bg-overlay rd-2 px-5 py-5 f-s-s mt-2"
+        v-for="(item, index) in dynamicList"
+        :key="item.id">
+        <div class="mr-10">
+          <img class="w-15 h-15 rd-50%" :src="consumer.avatar" />
+        </div>
+        <div>
+          <div>
+            <div class="text-text-regular">
+              {{ consumer.username }}
+            </div>
+            <div class="mt-1 f-c-s text-0.8rem text-text-regular">
+              <div class="i-tabler-clock mr-1"></div>
+              {{ DateUtil.formatted(item.createDate) }}
+            </div>
+          </div>
+          <div class="mt-4" v-html="item.content"></div>
+          <div class="f-c-s mt-6 text-text-secondary text-0.9rem">
+            <div class="mr-15 hover f-c-c" @click="diggDynamic(item)">
+              <div class="i-tabler-thumb-up mr-1"></div>
+              {{ item.digg }}
+            </div>
+            <div class="mr-15 hover f-c-c" @click="buryDynamic(item)">
+              <div class="i-tabler-thumb-down mr-1"></div>
+              {{ item.bury }}
+            </div>
+            <div v-if="consumer.id == token.id">
+              <el-button @click="deleteDynamic(item, index)" type="danger" size="small" text>
+                删除
+              </el-button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style scoped lang="scss"></style>

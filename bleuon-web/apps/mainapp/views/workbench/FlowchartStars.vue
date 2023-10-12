@@ -49,7 +49,7 @@ function deleteFlowchart(flowchartId: string, index: number) {
 const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
 
 function isMyFlowchart(item: any) {
-  return item.belongUser.id == token.id;
+  return item.belongConsumer.id == token.id;
 }
 
 await fetchData();
@@ -82,10 +82,10 @@ await fetchData();
                 <div class="text-0.9rem text-ellipsis line-clamp-1">{{ item.fileName }}</div>
               </div>
               <div class="f-c-s text-text-secondary text-0.8rem mt-2">
-                <img :src="item.belongUser.avatar" class="mr-2 w-6 h-6 rd-50%" />
+                <img :src="item.belongConsumer.avatar" class="mr-2 w-6 h-6 rd-50%" />
                 <div>
                   <el-tag size="small" v-if="isMyFlowchart(item)">我的</el-tag>
-                  <span v-else>{{ item.belongUser.username }}</span>
+                  <span v-else>{{ item.belongConsumer.username }}</span>
                 </div>
               </div>
               <div class="text-0.8rem mt-4">
