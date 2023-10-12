@@ -1,13 +1,28 @@
 <script setup lang="ts">
 /**
- * @description 发布动态
+ * @description Classic Ckeditor 富文本编辑器
  * @author zheng
- * @since 2023/10/10
+ * @since 2023/10/12
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import { UserApi } from "@mainapp/apis";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import { AxiosResponse } from "axios";
+
+const props = defineProps({
+  modelValue: {
+    type: String,
+    required: true
+  },
+  uploadImg: {
+    type: Function as PropType<(formData: FormData) => Promise<AxiosResponse<R>>>,
+    required: true
+  }
+});
+
+const emits = defineEmits<{
+  (event: "update:modelValue", value: string): void;
+}>();
 
 class UploadAdapter {
   loader: any;
@@ -26,11 +41,11 @@ class UploadAdapter {
   }
 
   uploadFile(file: any, resolve: any) {
-    const formdata = new FormData();
-    formdata.append("file", file);
-    UserApi.uploadCkEditorImage(formdata).then(res => {
+    const formData = new FormData();
+    formData.append("file", file);
+    props.uploadImg(formData).then(({ data }) => {
       resolve({
-        default: res.data.data
+        default: data.data
       });
     });
   }
@@ -40,10 +55,6 @@ class UploadAdapter {
     server.abortUpload();
   }
 }
-
-const emits = defineEmits<{
-  (event: "submit", value: string): void;
-}>();
 
 const editor = ref<HTMLDivElement>();
 let ckeditor: ClassicEditor;
@@ -64,23 +75,20 @@ onMounted(() => {
       ckeditor.plugins.get("FileRepository").createUploadAdapter = loader => {
         return new UploadAdapter(loader);
       };
+
+      ckeditor.model.document.on("change:data", () => {
+        emits("update:modelValue", ckeditor.getData());
+      });
     })
     .catch(error => {
       ElMessage.error(error);
     });
 });
-
-function startSubmit() {
-  emits("submit", ckeditor.getData());
-}
 </script>
 
 <template>
-  <div>
+  <div class="classic-ckeditor">
     <div ref="editor"></div>
-    <div class="f-c-e mt-5">
-      <el-button type="primary" @click="startSubmit">发布动态</el-button>
-    </div>
   </div>
 </template>
 

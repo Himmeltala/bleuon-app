@@ -214,17 +214,17 @@ export async function upgrade(body: UserData, success?: Function) {
  * @returns
  */
 export function upgradeAvatar(formData: FormData) {
-  return request.post("/user/upgrade/avatar", formData);
+  return request.post<R>("/user/upgrade/avatar", formData);
 }
 
 /**
  * 上传 ckeditor 图片
  *
- * @param file
+ * @param formData
  * @returns
  */
-export function uploadCkEditorImage(file: any) {
-  return request.post("/file/upload/ckeditor/image", file);
+export function uploadCkEditorImage(formData: FormData) {
+  return request.post<R>("/file/upload/ckeditor/image", formData);
 }
 
 /**

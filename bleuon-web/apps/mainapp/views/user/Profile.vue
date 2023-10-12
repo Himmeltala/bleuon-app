@@ -11,28 +11,29 @@ import { DateUtil } from "@common/utils";
 
 // components
 import CommonHeader from "@mainapp/components/CommonHeader.vue";
-import CreateDynamic from "@mainapp/components/user/CreateDynamic.vue";
+import ClassicCkEditor from "@mainapp/components/ClassicCkEditor.vue";
 
 const route = useRoute();
 const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
 const formData = ref(await UserApi.findById(`${route.params.id}`));
 const activeName = ref<"createDynamic">("createDynamic");
 
-const handleClick = (tab: TabsPaneContext, event: Event) => {
+const handleClick = (tab: TabsPaneContext) => {
   console.log(tab);
 };
 
+const dynamicValue = ref("");
 const dynamicList = ref([]);
 
-async function fetchDynamicList(params?: any) {
+async function fetchDynamicList() {
   dynamicList.value = await UserApi.findAllDynamicByCriteria({
-    ...params,
-    ...{ uid: `${route.params.id}` }
+    sequences: [{ isAsc: false, col: "create_date" }],
+    uid: `${route.params.id}`
   });
 }
 
-function submitDynamic(value: string) {
-  UserApi.addDynamic({ content: value }, async () => {
+function commitDynamic() {
+  UserApi.addDynamic({ content: dynamicValue.value }, async () => {
     await fetchDynamicList();
   });
 }
@@ -57,13 +58,13 @@ function deleteDynamic(item: DynamicData, index: number) {
   });
 }
 
-await fetchDynamicList({ sequences: [{ isAsc: false, col: "create_date" }] });
+await fetchDynamicList();
 </script>
 
 <template>
   <div class="profile slim-slider h-100vh flow-auto bg-bg-page">
     <CommonHeader active-name="personal"></CommonHeader>
-    <div class="f-s-b py-20 px-5 mx-50 mt-5 rd-2 bg-bg-overlay">
+    <div class="f-s-b py-20 px-20 mx-50 mt-5 rd-2 bg-bg-overlay">
       <div class="f-c-c">
         <router-link to="/u/setting">
           <img :src="formData.avatar" class="cursor-pointer rd-50% h-30 w-30" />
@@ -101,10 +102,15 @@ await fetchDynamicList({ sequences: [{ isAsc: false, col: "create_date" }] });
       <div class="bg-bg-overlay px-5 pb-5 rd-2">
         <el-tabs class="min-h-60vh" v-model="activeName" @tab-click="handleClick">
           <el-tab-pane label="发布动态" name="createDynamic">
-            <CreateDynamic
-              v-if="token.id === formData.id"
-              class="mt-5 mb-10"
-              @submit="submitDynamic"></CreateDynamic>
+            <div class="mt-5 mb-10">
+              <ClassicCkEditor
+                v-if="token.id === formData.id"
+                v-model="dynamicValue"
+                :upload-img="formData => UserApi.uploadCkEditorImage(formData)"></ClassicCkEditor>
+              <div class="f-c-e mt-2">
+                <el-button type="primary" @click="commitDynamic">发表动态</el-button>
+              </div>
+            </div>
             <div class="font-bold text-text-regular">动态列表</div>
             <div v-if="dynamicList" class="mt-10">
               <div
