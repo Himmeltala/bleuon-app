@@ -86,9 +86,9 @@ export function verifyEmailCaptcha(
     email: string;
     captcha: string;
   },
-  success: (res: TokenR) => void
+  success: (res: Token) => void
 ) {
-  request.post<R<TokenR>>("/public/entrance/verify/email-captcha", body).then(({ data }) => {
+  request.post<R<Token>>("/public/entrance/verify/email-captcha", body).then(({ data }) => {
     success(data.data);
   });
 }
@@ -123,9 +123,9 @@ export function verifyLoginEmailCaptcha(
     email: string;
     captcha: string;
   },
-  success: (res: TokenR) => void
+  success: (res: Token) => void
 ) {
-  request.post<R<TokenR>>("/public/entrance/verify/login-email-captcha", body).then(({ data }) => {
+  request.post<R<Token>>("/public/entrance/verify/login-email-captcha", body).then(({ data }) => {
     success(data.data);
   });
 }
@@ -148,12 +148,12 @@ export function accountRegister(body: ConsumerModel, success?: Function) {
  * @param body
  * @param success
  */
-export function authLogin(body: ConsumerModel, success: (res: TokenR) => void) {
+export function authLogin(body: ConsumerModel, success: (res: Token) => void) {
   const headers = {
     "Content-Type": "application/x-www-form-urlencoded"
   };
 
-  request.post<R<TokenR>>("/auth/login", body, { headers }).then(({ data }) => {
+  request.post<R<Token>>("/auth/login", body, { headers }).then(({ data }) => {
     success(data.data);
   });
 }
@@ -192,8 +192,8 @@ export function resetPassword(body: ConsumerModel, success: Function) {
  * @param id
  * @returns
  */
-export async function findById(id?: string) {
-  const { data } = await request.get<R<ConsumerModel>>("/consumer/find/by/id", { params: { id } });
+export async function findById(id: string) {
+  const { data } = await request.get<R<ConsumerModel>>(`/consumer/find/${id}`);
   return data.data;
 }
 
@@ -204,7 +204,7 @@ export async function findById(id?: string) {
  * @param success
  */
 export async function upgrade(body: ConsumerModel, success?: Function) {
-  request.put<R>("/consumer/upgrade", body).then(({ data }) => {
+  request.put<R>(`/consumer/upgrade`, body).then(({ data }) => {
     success && success(data);
   });
 }
@@ -213,10 +213,11 @@ export async function upgrade(body: ConsumerModel, success?: Function) {
  * 更新用户头像
  *
  * @param formData
+ * @param id
  * @returns
  */
-export function upgradeAvatar(formData: FormData) {
-  return request.put<R>("/consumer/upgrade/avatar", formData);
+export function upgradeAvatar(formData: FormData, id: string) {
+  return request.put<R>(`/consumer/upgrade/avatar/${id}`, formData);
 }
 
 /**
@@ -230,7 +231,7 @@ export async function findAllDynamicByCriteria(criteria: {
   sequences?: { isAsc: boolean; col: string }[];
 }) {
   const { data } = await request.post<R<DynamicModel[]>>(
-    "/consumer/find/all/dynamic/by/criteria",
+    "/consumer/find/all/dynamic/criteria",
     criteria
   );
   return data.data;
@@ -305,7 +306,7 @@ export async function findAllCollectingConsumerByCriteria(params: {
   sequences?: { isAsc: boolean; col: string }[];
 }) {
   const { data } = await request.get<R<CollectingConsumerModel[]>>(
-    "/consumer/find/all/collecting/by/criteria",
+    "/consumer/find/all/collecting/criteria",
     { params }
   );
   return data.data;

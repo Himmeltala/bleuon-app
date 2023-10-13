@@ -16,7 +16,7 @@ import MyShareFlowchart from "@mainapp/components/consumer/MyShareFlowchart.vue"
 import MyStarConsumer from "@mainapp/components/consumer/MyStarConsumer.vue";
 
 const route = useRoute();
-const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
+const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
 const formData = ref<ConsumerModel>();
 
 const tabs = [MyDynamic, MyPublicFlowchart, MyShareFlowchart, MyStarConsumer];

@@ -33,7 +33,7 @@ function confirmLogin() {
   FormValidatorsUtil.validate(formRef.value, async () => {
     ConsumerApi.authLogin(formData, token => {
       localStorage.setToken(KeyVals.MAINAPP_TOKEN_KEY, token);
-      ConsumerApi.findById().then(data => {
+      ConsumerApi.findById(token.id).then(data => {
         router.push("/workbench");
       });
     });

@@ -8,7 +8,7 @@
 
 import { ConsumerApi } from "@mainapp/apis";
 
-const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
+const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
 
 function confirmLogout() {
   ConsumerApi.authLogout();

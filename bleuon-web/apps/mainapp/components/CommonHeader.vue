@@ -9,7 +9,7 @@
 // components
 import MenuAvatar from "@mainapp/components/MenuAvatar.vue";
 
-const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
+const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
 
 defineProps({
   activeName: {

@@ -1,5 +1,6 @@
 package com.bleuon.entity.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,8 +17,15 @@ import java.sql.Timestamp;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(
+        description = "用户实体类，屏蔽了铭感信息"
+)
 public class ConsumerDto implements Serializable {
 
+    @Schema(
+            description = "UUID",
+            example = "ea209fbb-8f0e-483e-be86-c3629ecbe6d1"
+    )
     private String id;
     private String username;
     private String phone;

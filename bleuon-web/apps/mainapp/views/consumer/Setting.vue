@@ -13,10 +13,12 @@ import { FormValidatorsUtil, DateUtil } from "@common/utils";
 // components
 import CommonHeader from "@mainapp/components/CommonHeader.vue";
 
-const formData = ref(await ConsumerApi.findById());
+const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
+const formData = ref(await ConsumerApi.findById(token.id));
 
 function upgradeBasicData() {
   ConsumerApi.upgrade({
+    id: token.id,
     username: formData.value.username,
     profession: formData.value.profession,
     company: formData.value.company,
@@ -90,6 +92,7 @@ function confirmResetPwd() {
       () => {
         ConsumerApi.upgrade(
           {
+            id: token.id,
             password: resetPwdFormData.password
           },
           () => {
@@ -169,7 +172,7 @@ function confirmResetPwd() {
             <div class="w-30% f-c-e cursor-pointer">
               <AvatarUpload
                 v-model:img-url="formData.avatar"
-                :start-upload="formData => ConsumerApi.upgradeAvatar(formData)" />
+                :start-upload="formData => ConsumerApi.upgradeAvatar(formData, token.id)" />
             </div>
           </div>
           <div class="mt-5 f-c-e text-0.8rem text-text-secondary">

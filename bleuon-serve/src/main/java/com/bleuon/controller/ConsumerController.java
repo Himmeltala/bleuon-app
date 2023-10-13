@@ -19,6 +19,9 @@ import com.bleuon.service.impl.FlowchartService;
 import com.bleuon.utils.JwtUtil;
 import com.bleuon.utils.http.R;
 import io.jsonwebtoken.Claims;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @description:
@@ -36,6 +40,7 @@ import java.util.List;
  * @author: zheng
  * @date: 2023/10/6
  */
+@Tag(name = "用户")
 @RequiredArgsConstructor
 @RequestMappingPrefix("/consumer")
 public class ConsumerController {
@@ -45,48 +50,45 @@ public class ConsumerController {
     private final FlowchartService flowchartService;
     private final CollectingConsumerService collectingConsumerService;
 
+    @Operation(summary = "通过 id 查询用户数据")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:consumer:find')")
-    @GetMapping("/find/by/id")
+    @GetMapping("/find/{id}")
     public R<ConsumerDto> findById(
-            @RequestHeader(KeyVals.Token) String token,
             @Validated
+            @PathVariable
+            @Parameter(description = "用户 ID", example = "ea209fbb-8f0e-483e-be86-c3629ecbe6d1")
             @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
-            @RequestParam(required = false)
             String id
     ) {
-        ConsumerDto exists;
-        if (StringUtils.hasText(id)) {
-            exists = consumerService.findById(id);
-        } else {
-            Claims claims = JwtUtil.parseJwt(token);
-            exists = consumerService.findById((String) claims.get("id"));
-        }
-
-        return (exists != null) ? R.success(exists) : R.failed("未查询到该用户！");
+        ConsumerDto exists = consumerService.findById(id);
+        return !Objects.isNull(exists) ? R.success(exists) : R.failed("未查询到该用户！");
     }
 
+    @Operation(summary = "更新用户数据")
     @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:consumer:upgrade')")
-    @PutMapping("/upgrade")
-    public R<Object> upgrade(@RequestHeader(KeyVals.Token) String token, @RequestBody @Validated Consumer body) {
-        Claims claims = JwtUtil.parseJwt(token);
-        body.setId((String) claims.get("id"));
+    @PutMapping("/upgrade/{id}")
+    public R<Object> upgrade(@Validated @RequestBody Consumer body) {
         boolean status = consumerService.upgrade(body);
 
         return status ? R.success("更新资料成功！") : R.error("更新资料失败！");
     }
 
+    @Operation(summary = "更新用户头像")
     @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:consumer:upgrade')")
-    @PutMapping("/upgrade/avatar")
-    public R<String> upgradeAvatar(@RequestHeader(KeyVals.Token) String token,
-                                   @RequestParam MultipartFile file) {
+    @PutMapping("/upgrade/avatar/{id}")
+    public R<String> upgradeAvatar(
+            @Validated
+            @PathVariable
+            @Parameter(description = "用户 ID", example = "ea209fbb-8f0e-483e-be86-c3629ecbe6d1")
+            @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
+            String id,
+            @RequestParam MultipartFile file
+    ) {
         if (file.isEmpty()) {
             return R.error("请选择一个图片！");
         }
 
-        Claims claims = JwtUtil.parseJwt(token);
-        String userId = (String) claims.get("id");
-
-        String imgUrl = consumerService.upgradeAvatar(new Consumer(userId), file);
+        String imgUrl = consumerService.upgradeAvatar(new Consumer(id), file);
 
         if (StringUtils.hasText(imgUrl)) {
             return R.success("上传头像成功！", imgUrl);
@@ -95,13 +97,15 @@ public class ConsumerController {
         }
     }
 
+    @Operation(summary = "查询用户所有动态")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:consumer:find')")
-    @PostMapping("/find/all/dynamic/by/criteria")
+    @PostMapping("/find/all/dynamic/criteria")
     public R<List<Dynamic>> findAllDynamic(@Validated @RequestBody DynamicCriteria criteria) {
         List<Dynamic> list = dynamicService.findAllByCriteria(criteria);
         return R.success(list);
     }
 
+    @Operation(summary = "更新单个动态")
     @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:consumer:upgrade')")
     @PutMapping("/upgrade/dynamic")
     public R<Object> upgradeDynamic(@Validated @RequestBody Dynamic body) {
@@ -109,6 +113,7 @@ public class ConsumerController {
         return status ? R.success("更新成功！") : R.error("更新失败！");
     }
 
+    @Operation(summary = "通过 id 删除动态")
     @PreAuthorize("hasAnyAuthority('sys:delete', 'sys:consumer:delete')")
     @DeleteMapping("/delete/dynamic")
     public R<Object> deleteDynamicById(Dynamic params) {
@@ -116,16 +121,15 @@ public class ConsumerController {
         return status ? R.success("删除成功！") : R.error("删除失败！");
     }
 
+    @Operation(summary = "新增单个动态")
     @PreAuthorize("hasAnyAuthority('sys:add', 'sys:consumer:add')")
     @PostMapping("/add/dynamic")
-    public R<Object> addDynamic(@RequestHeader(KeyVals.Token) String token, @Validated @RequestBody Dynamic body) {
-        Claims claims = JwtUtil.parseJwt(token);
-        String consumerId = (String) claims.get("id");
-        body.setConsumerId(consumerId);
+    public R<Object> addDynamic(@Validated @RequestBody Dynamic body) {
         boolean status = dynamicService.add(body);
         return status ? R.success("添加成功！") : R.error("添加失败！");
     }
 
+    @Operation(summary = "查询用户所有的流程图")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:consumer:find')")
     @GetMapping("/find/all/flowchart")
     public R<List<Flowchart>> findAllFlowchart(@Validated FlowchartCriteria criteria) {
@@ -136,13 +140,15 @@ public class ConsumerController {
         return R.success(list);
     }
 
+    @Operation(summary = "根据条件查询用户的关注列表")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:consumer:find')")
-    @GetMapping("/find/all/collecting/by/criteria")
+    @GetMapping("/find/all/collecting/criteria")
     public R<List<CollectingConsumer>> findAllCollectingConsumerByCriteria(@Validated ConsumerCriteria criteria) {
         List<CollectingConsumer> list = collectingConsumerService.findAllByCriteria(criteria);
         return R.success(list);
     }
 
+    @Operation(summary = "新增单个关注用户")
     @PreAuthorize("hasAnyAuthority('sys:add', 'sys:consumer:add')")
     @PostMapping("/add/collecting/consumer")
     public R<Object> addCollectingConsumer(@Validated @RequestBody CollectingConsumer body) {

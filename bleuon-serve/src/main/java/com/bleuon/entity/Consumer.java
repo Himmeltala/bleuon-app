@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.bleuon.constant.ValidPattern;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -20,8 +21,15 @@ import java.sql.Timestamp;
 @TableName("t_consumers")
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(
+        description = "用户实体类"
+)
 public class Consumer implements Serializable {
 
+    @Schema(
+            description = "UUID",
+            example = "ea209fbb-8f0e-483e-be86-c3629ecbe6d1"
+    )
     @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
     @TableId
     private String id;

@@ -46,7 +46,7 @@ function deleteFlowchart(flowchartId: string, index: number) {
   });
 }
 
-const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
+const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
 
 function isMyFlowchart(item: FlowchartModel) {
   return item.consumer.id == token.id;

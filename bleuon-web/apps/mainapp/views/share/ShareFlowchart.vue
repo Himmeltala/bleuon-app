@@ -32,7 +32,7 @@ const textInputRef = shallowRef<HTMLInputElement>();
 provide(KeyVals.BLEUON_FLOWCHART_PAPER, paper);
 provide(KeyVals.BLEUON_FLOWCHART_GRAPH, graph);
 provide(KeyVals.BLEUON_FLOWCHART_DATA, flowchartData);
-const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
+const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
 
 async function fetchData() {
   const data = await FlowchartApi.findIsShare({ id: route.params.id.toString() }, () => {

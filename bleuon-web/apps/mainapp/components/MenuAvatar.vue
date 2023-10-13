@@ -8,7 +8,8 @@
 
 import { ConsumerApi } from "@mainapp/apis";
 
-const consumer = ref(await ConsumerApi.findById());
+const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
+const consumer = ref(await ConsumerApi.findById(token.id));
 
 function confirmLogout() {
   ConsumerApi.authLogout();

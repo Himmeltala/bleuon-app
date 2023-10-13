@@ -48,7 +48,7 @@ function confirmSubmitForm() {
   FormValidatorsUtil.validate(formRef.value, () => {
     ConsumerApi.verifyLoginEmailCaptcha(formData, token => {
       localStorage.setToken(KeyVals.MAINAPP_TOKEN_KEY, token);
-      ConsumerApi.findById().then(data => {
+      ConsumerApi.findById(token.id).then(data => {
         router.push("/workbench");
       });
     });

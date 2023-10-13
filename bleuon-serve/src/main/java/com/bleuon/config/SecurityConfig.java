@@ -36,6 +36,11 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> {
             auth.requestMatchers("/api/public/**").permitAll();
+            auth.requestMatchers(
+                    "/swagger-ui/**",
+                    "/v3/api-docs/**",
+                    "/swagger-ui.html").permitAll();
+
             auth.anyRequest().authenticated();
         });
 
@@ -55,11 +60,11 @@ public class SecurityConfig {
                 .accessDeniedHandler(verifyJwtAccessDeniedHandler)
         );
 
+        http.addFilterBefore(verifyJwtFilter, UsernamePasswordAuthenticationFilter.class);
+
         http.csrf(AbstractHttpConfigurer::disable);
         http.cors(AbstractHttpConfigurer::disable);
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
-        http.addFilterBefore(verifyJwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

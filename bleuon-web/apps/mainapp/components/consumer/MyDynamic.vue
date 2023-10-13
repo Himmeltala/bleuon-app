@@ -12,7 +12,7 @@ const props = defineProps({
 
 const list = ref([]);
 const ckeditorValue = ref("");
-const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
+const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
 
 async function fetchList() {
   list.value = await ConsumerApi.findAllDynamicByCriteria({
@@ -27,7 +27,7 @@ function uploadImage(formData: FormData) {
 }
 
 function commit() {
-  ConsumerApi.addDynamic({ content: ckeditorValue.value }, async () => {
+  ConsumerApi.addDynamic({ content: ckeditorValue.value, consumerId: token.id }, async () => {
     await fetchList();
   });
 }

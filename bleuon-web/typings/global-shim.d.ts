@@ -11,7 +11,7 @@ declare type R<T = any> = {
   message: string;
 };
 
-declare type TokenR = {
+declare type Token = {
   expire: number;
   value: string;
   username: string;

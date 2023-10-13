@@ -17,7 +17,7 @@ import MenuAvatar from "@mainapp/components/MenuAvatar.vue";
 const paper = inject<Ref<dia.Paper>>(KeyVals.BLEUON_FLOWCHART_PAPER);
 const graph = inject<Ref<dia.Graph>>(KeyVals.BLEUON_FLOWCHART_GRAPH);
 const flowchartData = inject<Ref<FlowchartModel>>(KeyVals.BLEUON_FLOWCHART_DATA);
-const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
+const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
 
 const emits = defineEmits(["change"]);
 
