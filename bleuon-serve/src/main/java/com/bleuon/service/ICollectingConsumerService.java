@@ -13,8 +13,12 @@ import java.util.List;
  */
 public interface ICollectingConsumerService {
 
+    CollectingConsumer findByCriteria(ConsumerCriteria criteria);
+
     List<CollectingConsumer> findAllByCriteria(ConsumerCriteria criteria);
 
     boolean add(CollectingConsumer body);
+
+    boolean delete(CollectingConsumer params);
 
 }

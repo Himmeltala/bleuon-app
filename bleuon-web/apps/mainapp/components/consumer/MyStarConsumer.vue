@@ -17,6 +17,12 @@ const props = defineProps({
 const starList = ref(
   await ConsumerApi.findAllCollectingConsumerByCriteria({ collectingCid: props.consumer.id })
 );
+
+function cancelStar(item: CollectingConsumerModel, index:number) {
+  ConsumerApi.deleteCollecting({ id: item.id }, () => {
+    starList.value.splice(index, 1)
+  });
+}
 </script>
 
 <template>
@@ -38,7 +44,7 @@ const starList = ref(
       </div>
       <div class="options">
         <div>
-          <el-button type="danger" size="small">取消关注</el-button>
+          <el-button type="danger" size="small" @click="cancelStar(item, index)">取消关注</el-button>
         </div>
       </div>
     </div>

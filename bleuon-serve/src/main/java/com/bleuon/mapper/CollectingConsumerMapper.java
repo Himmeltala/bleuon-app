@@ -21,4 +21,8 @@ public interface CollectingConsumerMapper {
 
     Integer add(CollectingConsumer body);
 
+    Integer delete(CollectingConsumer params);
+
+    CollectingConsumer findByCriteria(ConsumerCriteria criteria);
+
 }

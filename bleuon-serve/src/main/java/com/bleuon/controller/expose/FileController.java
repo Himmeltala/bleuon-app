@@ -4,6 +4,8 @@ import com.bleuon.annotaion.RequestMappingPrefix;
 import com.bleuon.entity.vo.FileParamsVo;
 import com.bleuon.service.FileService;
 import com.bleuon.utils.http.R;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -22,10 +24,12 @@ import java.io.IOException;
  */
 @RequiredArgsConstructor
 @RequestMappingPrefix("/public/file")
+@Tag(name = "文件")
 public class FileController {
 
     private final FileService service;
 
+    @Operation(summary = "获取图片二进制")
     @GetMapping(value = "/preview/image")
     public void previewImageFile(FileParamsVo params, HttpServletResponse response) {
         try {
@@ -38,6 +42,7 @@ public class FileController {
         }
     }
 
+    @Operation(summary = "校验注册验证码")
     @PostMapping("/upload/image")
     public R<Object> uploadCkeditorImage(MultipartFile file, String path) {
         if (file.isEmpty()) {

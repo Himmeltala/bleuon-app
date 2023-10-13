@@ -24,8 +24,22 @@
         WHERE cc.collecting_cid = #{collectingCid};
     </select>
 
+    <select id="findByCriteria" resultType="com.bleuon.entity.CollectingConsumer"
+            parameterType="com.bleuon.entity.vo.ConsumerCriteria">
+        SELECT cc.*
+        FROM co_conllecting_consumer cc
+        WHERE cc.collecting_cid = #{collectingCid}
+          AND cc.consumer_id = #{consumerId};
+    </select>
+
     <insert id="add" parameterType="com.bleuon.entity.CollectingConsumer">
         INSERT INTO co_conllecting_consumer(id, collecting_cid, consumer_id)
         VALUES (#{id}, #{collectingCid}, #{consumerId});
     </insert>
+
+    <delete id="delete" parameterType="com.bleuon.entity.CollectingConsumer">
+        DELETE
+        FROM co_conllecting_consumer
+        WHERE id = #{id};
+    </delete>
 </mapper>

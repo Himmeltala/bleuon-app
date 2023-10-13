@@ -311,3 +311,27 @@ export async function findAllCollectingConsumerByCriteria(params: {
   );
   return data.data;
 }
+
+/**
+ * 新增一个关注用户
+ *
+ * @param body
+ * @param success
+ */
+export function addCollecting(body: CollectingConsumerModel, success?: Function) {
+  request.post<R>("/consumer/add/collecting", body).then(() => {
+    success && success();
+  });
+}
+
+/**
+ * 删除一个关注用户
+ *
+ * @param params
+ * @param success
+ */
+export function deleteCollecting(params: CollectingConsumerModel, success?: Function) {
+  request.delete<R>("/consumer/delete/collecting", { params }).then(() => {
+    success && success();
+  });
+}

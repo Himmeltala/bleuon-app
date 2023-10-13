@@ -26,6 +26,10 @@ async function fetchData(id: string | string[]) {
   formData.value = await ConsumerApi.findById(id.toString());
 }
 
+function collectConsumer() {
+  ConsumerApi.addCollecting({ collectingCid: token.id, consumerId: formData.value.id });
+}
+
 onBeforeRouteUpdate(async updateGuard => {
   await fetchData(updateGuard.params.id);
 });
@@ -44,9 +48,14 @@ await fetchData(route.params.id);
         <div class="ml-10">
           <div class="username f-c-s mb-5">
             <div class="font-bold text-1.5rem mr-10">{{ formData.username }}</div>
-            <router-link to="/u/setting">
-              <el-button>编辑资料</el-button>
-            </router-link>
+            <template v-if="token.id === formData.id">
+              <router-link to="/u/setting">
+                <el-button>编辑资料</el-button>
+              </router-link>
+            </template>
+            <template v-else>
+              <el-button type="primary" plain @click="collectConsumer">关注用户</el-button>
+            </template>
           </div>
           <div class="usertags mb-5">
             <el-tag v-if="formData.position" class="mr-4" type="warning">

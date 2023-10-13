@@ -12,6 +12,8 @@ import com.bleuon.service.TokenService;
 import com.bleuon.service.impl.ConsumerService;
 import com.bleuon.utils.http.IpUtil;
 import com.bleuon.utils.http.R;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -30,6 +32,7 @@ import java.util.Objects;
  */
 @RequiredArgsConstructor
 @RequestMappingPrefix("/public/entrance")
+@Tag(name = "入口")
 public class EntranceController {
 
     private final ConsumerService consumerService;
@@ -37,9 +40,7 @@ public class EntranceController {
     private final EntranceService entranceService;
     private final EmailCaptchaService captchaService;
 
-    /**
-     * 获取邮箱验证码
-     */
+    @Operation(summary = "获取邮箱验证码，没有其他逻辑，输入邮箱直接获取验证码")
     @GetMapping("/aks/email-captcha")
     public R<Object> askMailCaptcha(@Validated EmailCaptchaVo params,
                                     HttpServletRequest http) {
@@ -50,9 +51,7 @@ public class EntranceController {
         return status ? R.success("验证码发送成功，请注意查收！") : R.error("验证码发送失败！");
     }
 
-    /**
-     * 获取邮箱登录验证码
-     */
+    @Operation(summary = "获取登录邮箱验证码，在此之前判断邮箱是否存在")
     @GetMapping("/ask/login-email-captcha")
     public R<Object> askLoginMailCaptcha(@Validated EmailCaptchaVo params,
                                          HttpServletRequest http) {
@@ -69,9 +68,8 @@ public class EntranceController {
         return status ? R.success("验证码发送成功，请注意查收！") : R.error("验证码发送失败！");
     }
 
-    /**
-     * 获取邮箱注册验证码
-     */
+
+    @Operation(summary = "获取注册邮箱验证码，在此之前判断邮箱是否被注册")
     @GetMapping("/ask/register-email-captcha")
     public R<Object> askRegisterMailCaptcha(@Validated EmailCaptchaVo params,
                                             HttpServletRequest http) {
@@ -88,9 +86,7 @@ public class EntranceController {
         return status ? R.success("验证码发送成功，请注意查收！") : R.error("验证码发送失败！");
     }
 
-    /**
-     * 获取密码重置的邮箱验证码
-     */
+    @Operation(summary = "获取重置密码邮箱验证码，在此之前判断邮箱是否注册或存在")
     @GetMapping("/ask/reset-email-captcha")
     public R<Object> askResetMailCaptcha(@Validated EmailCaptchaVo params,
                                          HttpServletRequest http) {
@@ -107,9 +103,7 @@ public class EntranceController {
         return status ? R.success("验证码发送成功，请注意查收！") : R.error("验证码发送失败！");
     }
 
-    /**
-     * 校验验证码
-     */
+    @Operation(summary = "校验邮箱验证码，需判断是否过期或存在")
     @PostMapping("/verify/email-captcha")
     public R<Token> verifyMailCode(@RequestBody @Validated EmailCaptchaVo body) {
         String key = body.getEmail() + ":captcha";
@@ -122,9 +116,8 @@ public class EntranceController {
         } else return R.error("验证码错误！");
     }
 
-    /**
-     * 校验邮箱注册验证码
-     */
+
+    @Operation(summary = "校验注册验证码")
     @PostMapping("/verify/register-email-captcha")
     public R<Object> verifyRegisterMailCaptcha(@RequestBody @Validated Consumer body,
                                                @Validated EmailCaptchaVo params) {
@@ -138,9 +131,7 @@ public class EntranceController {
         } else return R.error("验证码错误！");
     }
 
-    /**
-     * 校验邮箱登录验证码
-     */
+    @Operation(summary = "校验登录验证码")
     @PostMapping("/verify/login-email-captcha")
     public R<Token> verifyLoginMailCaptcha(@RequestBody @Validated EmailCaptchaVo body) {
         String key = body.getEmail() + ":captcha";
@@ -162,14 +153,13 @@ public class EntranceController {
         } else return R.error("验证码错误！");
     }
 
-    /**
-     * 邮箱、用户名或手机号注册
-     */
+    @Operation(summary = "用户名称注册")
     @PostMapping("/account-register")
     public R<Object> accountRegister(@RequestBody @Validated Consumer body) {
         return entranceService.registerByAccount(body);
     }
 
+    @Operation(summary = "重置用户密码")
     @PostMapping("/reset-password")
     public R<Object> resetPassword(@RequestBody @Validated Consumer body) {
         return entranceService.resetPassword(body);

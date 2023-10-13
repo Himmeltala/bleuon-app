@@ -1,7 +1,6 @@
 package com.bleuon.controller;
 
 import com.bleuon.annotaion.RequestMappingPrefix;
-import com.bleuon.constant.KeyVals;
 import com.bleuon.constant.ValidPattern;
 import com.bleuon.entity.CollectingConsumer;
 import com.bleuon.entity.Consumer;
@@ -16,9 +15,7 @@ import com.bleuon.service.impl.CollectingConsumerService;
 import com.bleuon.service.impl.ConsumerService;
 import com.bleuon.service.impl.DynamicService;
 import com.bleuon.service.impl.FlowchartService;
-import com.bleuon.utils.JwtUtil;
 import com.bleuon.utils.http.R;
-import io.jsonwebtoken.Claims;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -148,12 +145,29 @@ public class ConsumerController {
         return R.success(list);
     }
 
-    @Operation(summary = "新增单个关注用户")
+    @Operation(summary = "新增单个关注用户", description = "需要传递 collectingCid、consumerId。")
     @PreAuthorize("hasAnyAuthority('sys:add', 'sys:consumer:add')")
-    @PostMapping("/add/collecting/consumer")
-    public R<Object> addCollectingConsumer(@Validated @RequestBody CollectingConsumer body) {
+    @PostMapping("/add/collecting")
+    public R<Object> addCollecting(@Validated @RequestBody CollectingConsumer body) {
+        ConsumerCriteria criteria = new ConsumerCriteria();
+        criteria.setConsumerId(body.getConsumerId());
+        criteria.setCollectingCid(body.getCollectingCid());
+        CollectingConsumer exists = collectingConsumerService.findByCriteria(criteria);
+
+        if (!Objects.isNull(exists)) {
+            return R.error("您已经关注过了！");
+        }
+
         boolean status = collectingConsumerService.add(body);
-        return status ? R.success("关注成功！") : R.failed("关注失败！");
+        return status ? R.success("关注成功！") : R.error("关注失败！");
+    }
+
+    @Operation(summary = "删除单个关注用户", description = "传递一个 ID 即可")
+    @PreAuthorize("hasAnyAuthority('sys:delete', 'sys:consumer:delete')")
+    @DeleteMapping("/delete/collecting")
+    public R<Object> deleteCollecting(@Validated CollectingConsumer params) {
+        boolean status = collectingConsumerService.delete(params);
+        return status ? R.success("取消关注成功！") : R.error("取消关注失败！");
     }
 
 }

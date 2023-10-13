@@ -11,6 +11,8 @@ import com.bleuon.service.impl.FlowchartService;
 import com.bleuon.utils.JwtUtil;
 import com.bleuon.utils.http.R;
 import io.jsonwebtoken.Claims;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StringUtils;
@@ -28,12 +30,14 @@ import java.util.Objects;
  */
 @RequiredArgsConstructor
 @RequestMappingPrefix("/blueprint")
+@Tag(name = "流程图模板")
 public class BlueprintController {
 
     private final FlowchartService flowchartService;
     private final CollectingFlowchartService collectFlowchartService;
     private final BlueprintFlowchartService blueprintFlowchartService;
 
+    @Operation(summary = "查询所有流程图模板")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:consumer:find')")
     @GetMapping("/find/all")
     public R<List<BlueprintFlowchart>> findAll(@Validated BlueprintFlowchart params) {
@@ -44,12 +48,14 @@ public class BlueprintController {
         return blueprintFlowchartService.findAll(params);
     }
 
+    @Operation(summary = "根据流程图模板 ID 查询单个流程图模板")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:consumer:find')")
     @GetMapping("/find/by/id")
     public R<BlueprintFlowchart> findById(@Validated BlueprintFlowchart params) {
         return blueprintFlowchartService.findById(params);
     }
 
+    @Operation(summary = "导入流程图模板为个人流程图")
     @PreAuthorize("hasAnyAuthority('sys:add', 'sys:consumer:add')")
     @PostMapping("/replicate")
     public R<Object> replicate(@RequestHeader(KeyVals.Token) String token,
@@ -62,6 +68,7 @@ public class BlueprintController {
         return Objects.isNull(flowchart) ? R.error("导入模板失败！") : R.success("导入模板成功！");
     }
 
+    @Operation(summary = "更新流程图模板，如点赞")
     @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:consumer:upgrade')")
     @PutMapping("/upgrade")
     public R<Object> upgrade(@RequestBody @Validated BlueprintFlowchart data) {
@@ -69,6 +76,7 @@ public class BlueprintController {
         return status ? R.success("更新成功！") : R.failed("更新失败！");
     }
 
+    @Operation(summary = "收藏流程图模板")
     @PreAuthorize("hasAnyAuthority('sys:add', 'sys:consumer:add')")
     @PostMapping("/add/collecting")
     public R<Object> addCollecting(@RequestHeader(KeyVals.Token) String token,

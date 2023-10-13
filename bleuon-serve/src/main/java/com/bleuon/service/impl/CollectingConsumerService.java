@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -25,9 +26,15 @@ public class CollectingConsumerService implements ICollectingConsumerService {
     private final CollectingConsumerMapper mapper;
 
     @Override
+    public CollectingConsumer findByCriteria(ConsumerCriteria criteria) {
+        return mapper.findByCriteria(criteria);
+    }
+
+    @Override
     public List<CollectingConsumer> findAllByCriteria(ConsumerCriteria criteria) {
         return mapper.findAllByCriteria(criteria);
     }
+
 
     @Transactional
     @Override
@@ -37,6 +44,16 @@ public class CollectingConsumerService implements ICollectingConsumerService {
             body.setId(uuid);
             Integer added = mapper.add(body);
             return added > 0;
+        } catch (Exception e) {
+            throw new JdbcErrorException(e.getCause());
+        }
+    }
+
+    @Override
+    public boolean delete(CollectingConsumer params) {
+        try {
+            Integer deled = mapper.delete(params);
+            return deled > 0;
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());
         }

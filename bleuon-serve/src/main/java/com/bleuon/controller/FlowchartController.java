@@ -12,6 +12,8 @@ import com.bleuon.service.impl.FlowchartService;
 import com.bleuon.utils.JwtUtil;
 import com.bleuon.utils.http.R;
 import io.jsonwebtoken.Claims;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,11 +31,13 @@ import java.util.Objects;
  */
 @RequiredArgsConstructor
 @RequestMappingPrefix("/flowchart")
+@Tag(name = "流程图")
 public class FlowchartController {
 
     private final FlowchartService flowchartService;
     private final CollectingFlowchartService collectingFlowchartService;
 
+    @Operation(summary = "更新流程图")
     @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:consumer:upgrade')")
     @PutMapping("/upgrade")
     public R<Object> upgrade(@RequestBody @Validated Flowchart body) {
@@ -41,6 +45,7 @@ public class FlowchartController {
         return status ? R.success("更新流程图成功！") : R.failed("更新流程图失败！");
     }
 
+    @Operation(summary = "根据 ID 查询流程图")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:consumer:find')")
     @GetMapping("/find/by/id")
     public R<Flowchart> findById(@Validated Flowchart params) {
@@ -48,6 +53,7 @@ public class FlowchartController {
         return Objects.isNull(result) ? R.failed("该流程图不存在！", null) : R.success(result);
     }
 
+    @Operation(summary = "根据条件查询所有流程图")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:consumer:find')")
     @PostMapping("/find/all/by/criteria")
     public R<List<Flowchart>> findAllByCriteria(@RequestHeader(KeyVals.Token) String token,
@@ -58,6 +64,7 @@ public class FlowchartController {
         return list.isEmpty() ? R.failed("没有查询到流程图！", null) : R.success(list);
     }
 
+    @Operation(summary = "新增一个流程图")
     @PreAuthorize("hasAnyAuthority('sys:add', 'sys:consumer:add')")
     @PostMapping("/add")
     public R<Flowchart> add(@RequestHeader(KeyVals.Token) String token) {
@@ -67,6 +74,7 @@ public class FlowchartController {
         return flowchart != null ? R.success("创建流程图成功！", flowchart) : R.failed("创建流程图失败！", null);
     }
 
+    @Operation(summary = "将流程图导入到个人文件中")
     @PreAuthorize("hasAnyAuthority('sys:add', 'sys:consumer:add')")
     @PostMapping("/replicate")
     public R<Flowchart> replicate(@RequestHeader(KeyVals.Token) String token,
@@ -77,6 +85,7 @@ public class FlowchartController {
         return flowchart != null ? R.success("复制流程图成功！", flowchart) : R.failed("复制流程图失败！", null);
     }
 
+    @Operation(summary = "删除单个流程图")
     @PreAuthorize("hasAnyAuthority('sys:delete', 'sys:consumer:delete')")
     @DeleteMapping("/delete/by/id")
     public R<Object> deleteById(@Validated Flowchart params) {
@@ -84,6 +93,7 @@ public class FlowchartController {
         return status ? R.success("删除流程图成功！") : R.failed("删除流程图失败！");
     }
 
+    @Operation(summary = "根据条件查询所有收藏的流程图")
     @PreAuthorize("hasAnyAuthority('sys:add', 'sys:consumer:add')")
     @GetMapping("/find/all/collect/by/criteria")
     public R<List<Flowchart>> findAllCollectByCriteria(@RequestHeader(KeyVals.Token) String token,
@@ -94,6 +104,7 @@ public class FlowchartController {
         return list != null ? R.success(list) : R.failed("没有收藏流程图！", null);
     }
 
+    @Operation(summary = "删除单个收藏的流程图")
     @PreAuthorize("hasAnyAuthority('sys:delete', 'sys:consumer:delete')")
     @DeleteMapping("/delete/collect")
     public R<Object> deleteCollect(@RequestHeader(KeyVals.Token) String token,
@@ -104,6 +115,7 @@ public class FlowchartController {
         return status ? R.success("删除收藏的流程图成功！") : R.failed("删除收藏的流程图失败！");
     }
 
+    @Operation(summary = "收藏单个流程图")
     @PreAuthorize("hasAnyAuthority('sys:add', 'sys:consumer:add')")
     @PostMapping("/add/collect")
     public R<Object> addCollect(@RequestHeader(KeyVals.Token) String token,
@@ -114,12 +126,14 @@ public class FlowchartController {
         return collectingFlowchartService.add(body);
     }
 
+    @Operation(summary = "把流程图公开到模板社区")
     @PreAuthorize("hasAnyAuthority('sys:add', 'sys:consumer:add')")
     @PostMapping("/release")
     public R<Object> release(@RequestBody @Validated BlueprintFlowchart body) {
         return flowchartService.release(body);
     }
 
+    @Operation(summary = "取消已公开到模板社区的流程图")
     @PreAuthorize("hasAnyAuthority('sys:delete', 'sys:consumer:delete')")
     @DeleteMapping("/cancel/release")
     public R<Object> cancelRelease(
