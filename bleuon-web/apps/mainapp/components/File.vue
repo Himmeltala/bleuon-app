@@ -21,6 +21,10 @@ defineProps({
   isReset: {
     type: Boolean,
     default: true
+  },
+  showDropdown: {
+    type: Boolean,
+    default: true
   }
 });
 
@@ -38,7 +42,7 @@ const emits = defineEmits(["download", "replicate", "delete", "reset"]);
         <div v-else class="w-100% h-100% rd-2 cursor-pointer bg-white"></div>
       </router-link>
     </div>
-    <el-dropdown :teleported="false">
+    <el-dropdown v-if="showDropdown" :teleported="false">
       <div class="file-options absolute top--11.75rem left-0.8rem">
         <div class="file-options-icon f-c-c cursor-pointer w-10 h-6 rd-2 bg-gray-600">
           <div class="i-tabler-dots text-white"></div>

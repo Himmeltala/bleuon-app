@@ -74,7 +74,14 @@ public class ConsumerService extends ServiceImpl<ConsumerMapper, Consumer> imple
         try {
             String imgUrl = fileService.upload("/static/images/avatar", consumer.getId(), file);
 
-            if (StringUtils.hasText(imgUrl) && upgrade(consumer)) {
+            if (!StringUtils.hasText(imgUrl)) {
+                return "";
+            }
+
+            consumer.setAvatar(imgUrl);
+            boolean upgraded = upgrade(consumer);
+
+            if (upgraded) {
                 return imgUrl;
             }
 

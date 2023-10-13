@@ -53,8 +53,7 @@ public class FlowchartController {
     public R<List<Flowchart>> findAllByCriteria(@RequestHeader(KeyVals.Token) String token,
                                                 @RequestBody FlowchartCriteria criteria) {
         Claims claims = JwtUtil.parseJwt(token);
-        String consumerId = (String) claims.get("id");
-        criteria.setCollectingCid(consumerId);
+        criteria.setCollectingCid((String) claims.get("id"));
         List<Flowchart> list = flowchartService.findAllByCriteria(criteria);
         return list.isEmpty() ? R.failed("没有查询到流程图！", null) : R.success(list);
     }

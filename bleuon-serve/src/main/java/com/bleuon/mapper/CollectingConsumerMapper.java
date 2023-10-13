@@ -19,4 +19,6 @@ public interface CollectingConsumerMapper {
 
     List<CollectingConsumer> findAllByCriteria(ConsumerCriteria criteria);
 
+    Integer add(CollectingConsumer body);
+
 }

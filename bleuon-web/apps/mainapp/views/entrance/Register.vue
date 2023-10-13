@@ -17,7 +17,7 @@ defineProps({
 });
 defineEmits(["update:dynamicCompName"]);
 
-const tabs = [AccountRegister, EmailRegister];
+const tabs = [EmailRegister, AccountRegister];
 const tabIndex = ref(0);
 </script>
 
@@ -32,9 +32,7 @@ const tabIndex = ref(0);
             <TabPageItem :index="1" v-model="tabIndex">账号注册</TabPageItem>
           </div>
         </template>
-        <KeepAlive>
-          <component :is="tabs[tabIndex]"></component>
-        </KeepAlive>
+        <component :is="tabs[tabIndex]"></component>
       </TabPage>
       <div
         class="text-primary cursor-pointer f-c-e"

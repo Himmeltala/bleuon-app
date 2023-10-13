@@ -31,12 +31,10 @@ const email = ref("");
   <div class="find-account w-100% h-100% relative f-c-c">
     <div class="w-40%">
       <div class="mb-10 text-1.6rem">找回您的密码</div>
-      <KeepAlive>
-        <component
-          :is="tabs[tabIndex]"
-          v-model:dynamic-comp-name="tabIndex"
-          v-model:email="email"></component>
-      </KeepAlive>
+      <component
+        :is="tabs[tabIndex]"
+        v-model:dynamic-comp-name="tabIndex"
+        v-model:email="email"></component>
       <div
         class="f-c-e text-primary cursor-pointer"
         @click="$emit('update:dynamicCompName', 'Login')">

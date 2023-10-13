@@ -204,7 +204,7 @@ export async function findById(id?: string) {
  * @param success
  */
 export async function upgrade(body: ConsumerModel, success?: Function) {
-  request.post<R>("/consumer/upgrade", body).then(({ data }) => {
+  request.put<R>("/consumer/upgrade", body).then(({ data }) => {
     success && success(data);
   });
 }
@@ -216,7 +216,7 @@ export async function upgrade(body: ConsumerModel, success?: Function) {
  * @returns
  */
 export function upgradeAvatar(formData: FormData) {
-  return request.post<R>("/consumer/upgrade/avatar", formData);
+  return request.put<R>("/consumer/upgrade/avatar", formData);
 }
 
 /**
@@ -244,7 +244,7 @@ export async function findAllDynamicByCriteria(criteria: {
  */
 export function upgradeDynamic(data: DynamicModel, success?: Function) {
   request
-    .post<R>("/consumer/upgrade/dynamic", data, {
+    .put<R>("/consumer/upgrade/dynamic", data, {
       nomessage: true
     })
     .then(() => {
@@ -283,7 +283,7 @@ export function addDynamic(body: DynamicModel, success?: Function) {
  * @returns
  */
 export async function findAllFlowchart(params: {
-  consumerId: string;
+  collectingCid: string;
   isPublic?: 1 | 0;
   isShare?: 1 | 0;
 }) {

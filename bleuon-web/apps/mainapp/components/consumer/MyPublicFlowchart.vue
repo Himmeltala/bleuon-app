@@ -17,7 +17,7 @@ const props = defineProps({
   }
 });
 const flowchartList = ref(
-  await ConsumerApi.findAllFlowchart({ consumerId: `${props.consumer.id}`, isPublic: 1 })
+  await ConsumerApi.findAllFlowchart({ collectingCid: `${props.consumer.id}`, isPublic: 1 })
 );
 </script>
 
@@ -29,6 +29,7 @@ const flowchartList = ref(
         :key="item.id"
         :file-image="item.dataUri"
         :file-name="item.fileName"
+        :show-dropdown="false"
         :path="'/flowchart/' + item.id">
         <template #footer>
           <div class="f-c-s flex-nowrap mt-4 w-100%">

@@ -17,14 +17,20 @@ import MyStarConsumer from "@mainapp/components/consumer/MyStarConsumer.vue";
 
 const route = useRoute();
 const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
-const formData = ref(await ConsumerApi.findById(`${route.params.id}`));
+const formData = ref<ConsumerModel>();
 
 const tabs = [MyDynamic, MyPublicFlowchart, MyShareFlowchart, MyStarConsumer];
 const tabIndex = ref(0);
 
-watch(route, async () => {
-  formData.value = await ConsumerApi.findById(`${route.params.id}`);
+async function fetchData(id: string | string[]) {
+  formData.value = await ConsumerApi.findById(id.toString());
+}
+
+onBeforeRouteUpdate(async updateGuard => {
+  await fetchData(updateGuard.params.id);
 });
+
+await fetchData(route.params.id);
 </script>
 
 <template>

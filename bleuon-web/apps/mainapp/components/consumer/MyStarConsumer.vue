@@ -30,7 +30,9 @@ const starList = ref(
           <img :src="item.consumer.avatar" class="w-15 h-15 rd-50% mr-5" />
         </router-link>
         <div>
-          <div class="font-400 text-1.1rem">{{ item.consumer.username }}</div>
+          <router-link :to="'/u/profile/' + item.consumer.id">
+            <div class="hover font-400 text-1.1rem">{{ item.consumer.username }}</div>
+          </router-link>
           <div class="mt-4 text-text-regular text-0.8rem">{{ item.consumer.signature }}</div>
         </div>
       </div>

@@ -66,7 +66,7 @@ public class ConsumerController {
     }
 
     @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:consumer:upgrade')")
-    @PostMapping("/upgrade")
+    @PutMapping("/upgrade")
     public R<Object> upgrade(@RequestHeader(KeyVals.Token) String token, @RequestBody @Validated Consumer body) {
         Claims claims = JwtUtil.parseJwt(token);
         body.setId((String) claims.get("id"));
@@ -76,7 +76,7 @@ public class ConsumerController {
     }
 
     @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:consumer:upgrade')")
-    @PostMapping("/upgrade/avatar")
+    @PutMapping("/upgrade/avatar")
     public R<String> upgradeAvatar(@RequestHeader(KeyVals.Token) String token,
                                    @RequestParam MultipartFile file) {
         if (file.isEmpty()) {
@@ -97,14 +97,14 @@ public class ConsumerController {
 
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:consumer:find')")
     @PostMapping("/find/all/dynamic/by/criteria")
-    public R<List<Dynamic>> findAllDynamic(@RequestBody DynamicCriteria criteria) {
+    public R<List<Dynamic>> findAllDynamic(@Validated @RequestBody DynamicCriteria criteria) {
         List<Dynamic> list = dynamicService.findAllByCriteria(criteria);
         return R.success(list);
     }
 
     @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:consumer:upgrade')")
-    @PostMapping("/upgrade/dynamic")
-    public R<Object> upgradeDynamic(@RequestBody Dynamic body) {
+    @PutMapping("/upgrade/dynamic")
+    public R<Object> upgradeDynamic(@Validated @RequestBody Dynamic body) {
         boolean status = dynamicService.upgrade(body);
         return status ? R.success("更新成功！") : R.error("更新失败！");
     }
@@ -118,7 +118,7 @@ public class ConsumerController {
 
     @PreAuthorize("hasAnyAuthority('sys:add', 'sys:consumer:add')")
     @PostMapping("/add/dynamic")
-    public R<Object> addDynamic(@RequestHeader(KeyVals.Token) String token, @RequestBody Dynamic body) {
+    public R<Object> addDynamic(@RequestHeader(KeyVals.Token) String token, @Validated @RequestBody Dynamic body) {
         Claims claims = JwtUtil.parseJwt(token);
         String consumerId = (String) claims.get("id");
         body.setConsumerId(consumerId);
@@ -128,7 +128,7 @@ public class ConsumerController {
 
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:consumer:find')")
     @GetMapping("/find/all/flowchart")
-    public R<List<Flowchart>> findAllFlowchart(FlowchartCriteria criteria) {
+    public R<List<Flowchart>> findAllFlowchart(@Validated FlowchartCriteria criteria) {
         ArrayList<Sequence> sequences = new ArrayList<>();
         sequences.add(new Sequence(false, "modify_date"));
         criteria.setSequences(sequences);
@@ -137,10 +137,17 @@ public class ConsumerController {
     }
 
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:consumer:find')")
-    @GetMapping("find/all/collecting/by/criteria")
+    @GetMapping("/find/all/collecting/by/criteria")
     public R<List<CollectingConsumer>> findAllCollectingConsumerByCriteria(@Validated ConsumerCriteria criteria) {
         List<CollectingConsumer> list = collectingConsumerService.findAllByCriteria(criteria);
         return R.success(list);
+    }
+
+    @PreAuthorize("hasAnyAuthority('sys:add', 'sys:consumer:add')")
+    @PostMapping("/add/collecting/consumer")
+    public R<Object> addCollectingConsumer(@Validated @RequestBody CollectingConsumer body) {
+        boolean status = collectingConsumerService.add(body);
+        return status ? R.success("关注成功！") : R.failed("关注失败！");
     }
 
 }

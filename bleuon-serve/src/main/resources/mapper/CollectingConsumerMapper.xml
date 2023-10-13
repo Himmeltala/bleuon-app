@@ -23,4 +23,9 @@
                  JOIN t_consumers c ON cc.consumer_id = c.id
         WHERE cc.collecting_cid = #{collectingCid};
     </select>
+
+    <insert id="add" parameterType="com.bleuon.entity.CollectingConsumer">
+        INSERT INTO co_conllecting_consumer(id, collecting_cid, consumer_id)
+        VALUES (#{id}, #{collectingCid}, #{consumerId});
+    </insert>
 </mapper>
