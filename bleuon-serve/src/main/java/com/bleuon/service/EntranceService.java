@@ -3,7 +3,7 @@ package com.bleuon.service;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bleuon.constant.AuthorityType;
-import com.bleuon.entity.Consumer;
+import com.bleuon.entity.ConsumerModel;
 import com.bleuon.mapper.AuthorityMapper;
 import com.bleuon.mapper.ConsumerMapper;
 import com.bleuon.utils.http.R;
@@ -17,18 +17,18 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class EntranceService extends ServiceImpl<ConsumerMapper, Consumer> {
+public class EntranceService extends ServiceImpl<ConsumerMapper, ConsumerModel> {
 
     private final BCryptPasswordEncoder passwordEncoder;
     private final AuthorityMapper authorityMapper;
 
-    public R<Object> resetPassword(Consumer consumer) {
-        UpdateWrapper<Consumer> updateWrapper = new UpdateWrapper<>();
-        String password = passwordEncoder.encode(consumer.getPassword());
+    public R<Object> resetPassword(ConsumerModel model) {
+        UpdateWrapper<ConsumerModel> updateWrapper = new UpdateWrapper<>();
+        String password = passwordEncoder.encode(model.getPassword());
         updateWrapper
-                .eq("email", consumer.getEmail())
+                .eq("email", model.getEmail())
                 .set("password", password);
-        boolean f = update(consumer, updateWrapper);
+        boolean f = update(model, updateWrapper);
         if (f) {
             return R.success("密码重置成功！");
         } else {
@@ -37,9 +37,9 @@ public class EntranceService extends ServiceImpl<ConsumerMapper, Consumer> {
     }
 
     @Transactional
-    public R<Object> registerByAccount(Consumer body) {
+    public R<Object> registerByAccount(ConsumerModel body) {
         try {
-            Consumer exists = query().eq("username", body.getUsername()).one();
+            ConsumerModel exists = query().eq("username", body.getUsername()).one();
 
             if (!Objects.isNull(exists)) {
                 return R.error("用户名已被注册！");
@@ -61,9 +61,9 @@ public class EntranceService extends ServiceImpl<ConsumerMapper, Consumer> {
     }
 
     @Transactional
-    public R<Object> registerByEmail(Consumer body) {
+    public R<Object> registerByEmail(ConsumerModel body) {
         try {
-            Consumer exists = query().eq("email", body.getEmail()).one();
+            ConsumerModel exists = query().eq("email", body.getEmail()).one();
 
             if (!Objects.isNull(exists)) {
                 return R.error("邮箱已被注册！");

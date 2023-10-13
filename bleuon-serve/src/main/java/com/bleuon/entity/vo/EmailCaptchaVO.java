@@ -18,7 +18,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmailCaptchaVo implements Serializable {
+public class EmailCaptchaVO implements Serializable {
 
     @Email(message = "不是合法的邮箱地址！")
     private String email;

@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.bleuon.constant.ValidPattern;
-import com.bleuon.entity.dto.ConsumerDto;
+import com.bleuon.entity.dto.ConsumerDTO;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,7 +23,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @TableName("t_flowcharts")
-public class Flowchart implements Serializable {
+public class FlowchartModel implements Serializable {
 
     @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
     @TableId
@@ -84,6 +84,6 @@ public class Flowchart implements Serializable {
     private String consumerId;
 
     @TableField(exist = false)
-    private ConsumerDto consumer;
+    private ConsumerDTO consumer;
 
 }

@@ -9,7 +9,6 @@
 import type { ActiveItem } from "@mainapp/typings/workbench";
 import { FlowchartApi } from "@mainapp/apis";
 
-const router = useRouter();
 defineProps({
   activeItem: {
     type: String as PropType<ActiveItem>,
@@ -17,6 +16,9 @@ defineProps({
   }
 });
 const emits = defineEmits(["update:activeItem"]);
+
+const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
+const router = useRouter();
 
 function navigateTo(routerName: ActiveItem) {
   emits("update:activeItem", routerName);
@@ -30,7 +32,7 @@ onBeforeMount(() => {
 });
 
 function createFlowchart() {
-  FlowchartApi.add(res => {
+  FlowchartApi.add({ consumerId: token.id }, res => {
     router.push(`/flowchart/${res.data.id}`);
   });
 }

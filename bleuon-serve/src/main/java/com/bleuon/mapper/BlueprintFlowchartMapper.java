@@ -1,7 +1,6 @@
 package com.bleuon.mapper;
 
-import com.bleuon.entity.BlueprintFlowchart;
-import org.apache.ibatis.annotations.CacheNamespace;
+import com.bleuon.entity.BlueprintFlowchartModel;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -13,16 +12,15 @@ import java.util.List;
  * @date: 2023/10/5
  */
 @Mapper
-@CacheNamespace
 public interface BlueprintFlowchartMapper {
 
-    List<BlueprintFlowchart> findAll(BlueprintFlowchart params);
+    List<BlueprintFlowchartModel> findAll(BlueprintFlowchartModel model);
 
-    BlueprintFlowchart find(BlueprintFlowchart params);
+    BlueprintFlowchartModel find(BlueprintFlowchartModel model);
 
-    Integer upgrade(BlueprintFlowchart data);
+    Integer upgrade(BlueprintFlowchartModel model);
 
-    Integer add(BlueprintFlowchart data);
+    Integer add(BlueprintFlowchartModel model);
 
-    Integer delete(BlueprintFlowchart data);
+    Integer delete(BlueprintFlowchartModel model);
 }

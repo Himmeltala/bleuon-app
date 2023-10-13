@@ -2,8 +2,8 @@ package com.bleuon.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.bleuon.entity.BlueprintFlowchart;
-import com.bleuon.entity.Flowchart;
+import com.bleuon.entity.BlueprintFlowchartModel;
+import com.bleuon.entity.FlowchartModel;
 import com.bleuon.entity.vo.FlowchartCriteria;
 import com.bleuon.entity.vo.Sequence;
 import com.bleuon.exception.JdbcErrorException;
@@ -27,17 +27,17 @@ import java.util.*;
  */
 @Service
 @RequiredArgsConstructor
-public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> implements IFlowchartService {
+public class FlowchartService extends ServiceImpl<FlowchartMapper, FlowchartModel> implements IFlowchartService {
 
     private final FlowchartMapper flowchartMapper;
     private final BlueprintFlowchartService blueprintFlowchartService;
 
     @Transactional
     @Override
-    public boolean upgrade(Flowchart body) {
+    public boolean upgrade(FlowchartModel model) {
         try {
-            body.setModifyDate(new Timestamp(new Date().getTime()));
-            Integer status = flowchartMapper.upgrade(body);
+            model.setModifyDate(new Timestamp(new Date().getTime()));
+            Integer status = flowchartMapper.upgrade(model);
             return status > 0;
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());
@@ -45,14 +45,14 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
     }
 
     @Override
-    public Flowchart findById(String flowchartId) {
+    public FlowchartModel findById(String flowchartId) {
         return query().eq("id", flowchartId).one();
     }
 
     @Transactional
     @Override
-    public R<Flowchart> findIsShare(String id) {
-        Flowchart flowchart = query()
+    public R<FlowchartModel> findIsShare(String id) {
+        FlowchartModel flowchart = query()
                 .eq("id", id)
                 .eq("is_share", 1)
                 .one();
@@ -71,8 +71,8 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
     }
 
     @Override
-    public List<Flowchart> findAllByCriteria(FlowchartCriteria criteria) {
-        QueryWrapper<Flowchart> wrapper = new QueryWrapper<>();
+    public List<FlowchartModel> findAllByCriteria(FlowchartCriteria criteria) {
+        QueryWrapper<FlowchartModel> wrapper = new QueryWrapper<>();
         wrapper.eq("consumer_id", criteria.getCollectingCid());
 
         if (StringUtils.hasText(criteria.getFileName())) {
@@ -101,11 +101,11 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
 
     @Transactional
     @Override
-    public Flowchart add(String consumerId) {
+    public FlowchartModel add(String consumerId) {
         try {
             String uuid = UUID.randomUUID().toString();
             // 创建表
-            Flowchart flowchart = new Flowchart();
+            FlowchartModel flowchart = new FlowchartModel();
             flowchart.setId(uuid);
             flowchart.setConsumerId(consumerId);
             Timestamp timestamp = new Timestamp(new Date().getTime());
@@ -123,28 +123,28 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
 
     @Transactional
     @Override
-    public Flowchart replicate(Flowchart body, String consumerId) {
+    public FlowchartModel replicate(FlowchartModel model) {
         try {
             String uuid = UUID.randomUUID().toString();
             // 创建表
-            Flowchart copyFlowchart = new Flowchart();
-            copyFlowchart.setId(uuid);
-            copyFlowchart.setConsumerId(consumerId);
-            copyFlowchart.setCreateDate(new Timestamp(new Date().getTime()));
-            copyFlowchart.setModifyDate(body.getModifyDate());
-            copyFlowchart.setFileName(body.getFileName());
-            copyFlowchart.setJson(body.getJson());
-            copyFlowchart.setDataUri(body.getDataUri());
-            copyFlowchart.setWidth(body.getWidth());
-            copyFlowchart.setHeight(body.getHeight());
-            copyFlowchart.setBgColor(body.getBgColor());
-            copyFlowchart.setGridSize(body.getGridSize());
-            copyFlowchart.setRouterDefault(body.getRouterDefault());
-            copyFlowchart.setConnectorDefault(body.getConnectorDefault());
+            FlowchartModel rep = new FlowchartModel();
+            rep.setId(uuid);
+            rep.setConsumerId(model.getConsumerId());
+            rep.setModifyDate(model.getModifyDate());
+            rep.setFileName(model.getFileName());
+            rep.setJson(model.getJson());
+            rep.setDataUri(model.getDataUri());
+            rep.setWidth(model.getWidth());
+            rep.setHeight(model.getHeight());
+            rep.setBgColor(model.getBgColor());
+            rep.setGridSize(model.getGridSize());
+            rep.setRouterDefault(model.getRouterDefault());
+            rep.setConnectorDefault(model.getConnectorDefault());
 
-            save(copyFlowchart);
+            boolean success = save(rep);
+            if (!success) return null;
 
-            return copyFlowchart;
+            return rep;
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());
         }
@@ -162,9 +162,9 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
 
     @Transactional
     @Override
-    public R<Object> release(BlueprintFlowchart body) {
+    public R<Object> release(BlueprintFlowchartModel model) {
         try {
-            Flowchart flowchart = query().eq("id", body.getFlowchartId()).one();
+            FlowchartModel flowchart = query().eq("id", model.getFlowchartId()).one();
 
             if (flowchart.getIsPublic() == 1) {
                 return R.failed("已经公开过了！");
@@ -182,8 +182,8 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
                 return R.failed("公开失败!");
             }
 
-            body.setId(UUID.randomUUID().toString());
-            boolean added = blueprintFlowchartService.add(body);
+            model.setId(UUID.randomUUID().toString());
+            boolean added = blueprintFlowchartService.add(model);
 
             return added ? R.success("公开成功！") : R.failed("公开失败!");
         } catch (Exception e) {
@@ -195,7 +195,7 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
     @Override
     public R<Object> cancelRelease(String flowchartId) {
         try {
-            Flowchart flowchart = new Flowchart();
+            FlowchartModel flowchart = new FlowchartModel();
             flowchart.setId(flowchartId);
             flowchart.setIsPublic(0);
             boolean status = upgrade(flowchart);
@@ -204,7 +204,7 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
                 return R.failed("取消发布失败！");
             }
 
-            BlueprintFlowchart blueprintFlowchart = new BlueprintFlowchart();
+            BlueprintFlowchartModel blueprintFlowchart = new BlueprintFlowchartModel();
             blueprintFlowchart.setFlowchartId(flowchartId);
             boolean canceled = blueprintFlowchartService.delete(blueprintFlowchart);
 

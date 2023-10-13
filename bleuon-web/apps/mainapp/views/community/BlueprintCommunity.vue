@@ -12,6 +12,7 @@ import { ElSelectData } from "@common/data";
 
 // components
 import CommonHeader from "@mainapp/components/CommonHeader.vue";
+import File from "@mainapp/components/File.vue";
 
 const scene = ref("全部");
 const price = ref("");
@@ -105,49 +106,44 @@ await fetchData();
             </el-radio-group>
           </div>
         </div>
-        <div
-          v-if="templateListData"
-          class="file-list w-75vw mt-5 mb-5 f-c-s flex-wrap flex-gap-1.25rem">
-          <div v-for="item in templateListData" :key="item.id" class="file-item pb-5 px-5 rd-2">
-            <router-link :to="'/blueprint/flowchart/' + item.id">
-              <img
-                :src="item.flowchart.dataUri"
-                class="w-100% rd-2 object-fill h-50 cursor-pointer bg-white" />
-            </router-link>
-            <div class="font-600 text-text-primary mt-2">
-              {{ item.flowchart.fileName }}
-            </div>
-            <div class="mt-2 f-c-s text-text-regular text-0.9rem">
-              <div class="f-c-s mr-4">
-                <div class="i-tabler-eye mr-2"></div>
-                <span>{{ item.views }}</span>
-              </div>
-              <div class="f-c-s mr-4">
-                <div class="i-tabler-copy mr-2"></div>
-                <span>{{ item.copies }}</span>
-              </div>
-            </div>
-            <div class="text-text-secondary text-0.8rem mt-2">
-              修改:{{ DateUtil.formatted(item.flowchart.modifyDate) }}
-            </div>
-            <router-link :to="'/u/profile/' + item.flowchart.consumer.id">
-              <div class="text-text-secondary cursor-pointer f-c-s mt-4">
-                <img :src="item.flowchart.consumer.avatar" class="mr-2 rd-50% w-6 h-6" />
-                <div>{{ item.flowchart.consumer.username }}</div>
-              </div>
-            </router-link>
-            <!-- <div class="mt-2">tags</div> -->
-          </div>
+        <div class="file-list mt-5 f-c-s flex-wrap flex-gap-1.25rem">
+          <template v-if="templateListData">
+            <File
+              v-for="item in templateListData"
+              :key="item.id"
+              :path="'/blueprint/flowchart/' + item.id"
+              :file-image="item.flowchart.dataUri"
+              :options="false">
+              <template #footer>
+                <div class="f-c-s flex-nowrap mt-4 w-100%">
+                  <div class="mr-2 i-tabler-chart-bubble text-theme-primary"></div>
+                  <div class="text-0.9rem text-ellipsis line-clamp-1">
+                    {{ item.flowchart.fileName }}
+                  </div>
+                </div>
+                <router-link :to="'/u/profile/' + item.flowchart.consumer.id">
+                  <div class="hover f-c-s text-text-secondary text-0.8rem mt-4">
+                    <img :src="item.flowchart.consumer.avatar" class="mr-2 w-6 h-6 rd-50%" />
+                    <div>
+                      {{ item.flowchart.consumer.username }}
+                    </div>
+                  </div>
+                </router-link>
+                <div class="text-0.8rem mt-4">
+                  <div class="text-text-regular">
+                    创建:{{ DateUtil.formatted(item.createDate, "MM-dd HH:mm:ss") }}
+                  </div>
+                  <div class="text-text-secondary mt-1">
+                    修改:{{ DateUtil.formatted(item.modifyDate, "MM-dd HH:mm:ss") }}
+                  </div>
+                </div>
+              </template>
+            </File>
+          </template>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<style lang="scss" scoped>
-.file-item {
-  flex: 0 1 calc(20% - 1.25rem);
-  --uno: bg-bg-overlay;
-  box-shadow: var(--el-box-shadow-lighter);
-}
-</style>
+<style lang="scss" scoped></style>

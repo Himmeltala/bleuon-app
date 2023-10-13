@@ -1,7 +1,7 @@
 package com.bleuon.security;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.bleuon.entity.Consumer;
+import com.bleuon.entity.ConsumerModel;
 import com.bleuon.entity.CustomUserDetails;
 import com.bleuon.mapper.AuthorityMapper;
 import com.bleuon.mapper.ConsumerMapper;
@@ -26,13 +26,13 @@ import java.util.Objects;
  */
 @Service
 @RequiredArgsConstructor
-public class UserDetailsServiceImpl extends ServiceImpl<ConsumerMapper, Consumer> implements UserDetailsService {
+public class UserDetailsServiceImpl extends ServiceImpl<ConsumerMapper, ConsumerModel> implements UserDetailsService {
 
     private final AuthorityMapper mapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Consumer exists = findUserByFiled(username);
+        ConsumerModel exists = findUserByFiled(username);
 
         if (Objects.isNull(exists)) {
             throw new UsernameNotFoundException("用户名或密码错误！");
@@ -42,7 +42,7 @@ public class UserDetailsServiceImpl extends ServiceImpl<ConsumerMapper, Consumer
         return new CustomUserDetails(exists.getId(), exists.getUsername(), exists.getPassword(), authorities);
     }
 
-    private Consumer findUserByFiled(String field) {
+    private ConsumerModel findUserByFiled(String field) {
         return query()
                 .eq("username", field)
                 .or()

@@ -2,8 +2,8 @@ package com.bleuon.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.bleuon.entity.Consumer;
-import com.bleuon.entity.dto.ConsumerDto;
+import com.bleuon.entity.ConsumerModel;
+import com.bleuon.entity.dto.ConsumerDTO;
 import com.bleuon.exception.JdbcErrorException;
 import com.bleuon.mapper.ConsumerMapper;
 import com.bleuon.service.FileService;
@@ -27,41 +27,41 @@ import java.util.Objects;
  */
 @Service
 @RequiredArgsConstructor
-public class ConsumerService extends ServiceImpl<ConsumerMapper, Consumer> implements IConsumerService {
+public class ConsumerService extends ServiceImpl<ConsumerMapper, ConsumerModel> implements IConsumerService {
 
     private final ConsumerMapper mapper;
     private final FileService fileService;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public ConsumerDto findById(String id) {
-        Consumer exists = query().eq("id", id).one();
+    public ConsumerDTO findById(String id) {
+        ConsumerModel exists = query().eq("id", id).one();
         if (Objects.isNull(exists)) return null;
 
-        ConsumerDto dto = new ConsumerDto();
+        ConsumerDTO dto = new ConsumerDTO();
         BeanUtil.copyProperties(exists, dto);
         return dto;
     }
 
-    public ConsumerDto findByEmail(String email) {
-        Consumer exists = query().eq("email", email).one();
+    public ConsumerDTO findByEmail(String email) {
+        ConsumerModel exists = query().eq("email", email).one();
         if (Objects.isNull(exists)) return null;
 
-        ConsumerDto dto = new ConsumerDto();
+        ConsumerDTO dto = new ConsumerDTO();
         BeanUtil.copyProperties(exists, dto);
         return dto;
     }
 
     @Transactional
     @Override
-    public boolean upgrade(Consumer consumer) {
+    public boolean upgrade(ConsumerModel model) {
         try {
-            if (consumer.getPassword() != null) {
-                consumer.setPassword(passwordEncoder.encode(consumer.getPassword()));
+            if (model.getPassword() != null) {
+                model.setPassword(passwordEncoder.encode(model.getPassword()));
             }
 
-            consumer.setModifyDate(new Timestamp(new Date().getTime()));
-            Integer status = mapper.upgrade(consumer);
+            model.setModifyDate(new Timestamp(new Date().getTime()));
+            Integer status = mapper.upgrade(model);
             return status > 0;
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());
@@ -70,16 +70,16 @@ public class ConsumerService extends ServiceImpl<ConsumerMapper, Consumer> imple
 
     @Transactional
     @Override
-    public String upgradeAvatar(Consumer consumer, MultipartFile file) {
+    public String upgradeAvatar(ConsumerModel model, MultipartFile file) {
         try {
-            String imgUrl = fileService.upload("/static/images/avatar", consumer.getId(), file);
+            String imgUrl = fileService.upload("/static/images/avatar", model.getId(), file);
 
             if (!StringUtils.hasText(imgUrl)) {
                 return "";
             }
 
-            consumer.setAvatar(imgUrl);
-            boolean upgraded = upgrade(consumer);
+            model.setAvatar(imgUrl);
+            boolean upgraded = upgrade(model);
 
             if (upgraded) {
                 return imgUrl;

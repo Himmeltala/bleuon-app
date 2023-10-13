@@ -1,8 +1,7 @@
 package com.bleuon.mapper;
 
-import com.bleuon.entity.CollectingConsumer;
+import com.bleuon.entity.CollectingConsumerModel;
 import com.bleuon.entity.vo.ConsumerCriteria;
-import org.apache.ibatis.annotations.CacheNamespace;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -14,15 +13,14 @@ import java.util.List;
  * @date: 2023/10/13
  */
 @Mapper
-@CacheNamespace
 public interface CollectingConsumerMapper {
 
-    List<CollectingConsumer> findAllByCriteria(ConsumerCriteria criteria);
+    List<CollectingConsumerModel> findAllByCriteria(ConsumerCriteria criteria);
 
-    Integer add(CollectingConsumer body);
+    Integer add(CollectingConsumerModel model);
 
-    Integer delete(CollectingConsumer params);
+    Integer delete(CollectingConsumerModel model);
 
-    CollectingConsumer findByCriteria(ConsumerCriteria criteria);
+    CollectingConsumerModel findByCriteria(ConsumerCriteria criteria);
 
 }

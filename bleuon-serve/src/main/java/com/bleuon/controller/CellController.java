@@ -1,7 +1,7 @@
 package com.bleuon.controller;
 
 import com.bleuon.annotaion.RequestMappingPrefix;
-import com.bleuon.entity.Cell;
+import com.bleuon.entity.CellModel;
 import com.bleuon.service.impl.CellService;
 import com.bleuon.utils.http.R;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,8 +29,8 @@ public class CellController {
     @Operation(summary = "根据条件查询所有的流程图图形")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:consumer:find')")
     @GetMapping("/find/all/by/criteria")
-    public R<List<Cell>> findAllByCriteria(@Validated Cell params) {
-        return service.findAllByCriteria(params);
+    public R<List<CellModel>> findAllByCriteria(@Validated CellModel model) {
+        return service.findAllByCriteria(model);
     }
 
 }

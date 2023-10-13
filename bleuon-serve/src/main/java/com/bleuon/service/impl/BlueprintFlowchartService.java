@@ -1,6 +1,6 @@
 package com.bleuon.service.impl;
 
-import com.bleuon.entity.BlueprintFlowchart;
+import com.bleuon.entity.BlueprintFlowchartModel;
 import com.bleuon.exception.JdbcErrorException;
 import com.bleuon.mapper.BlueprintFlowchartMapper;
 import com.bleuon.service.IBlueprintFlowchartService;
@@ -27,25 +27,25 @@ public class BlueprintFlowchartService implements IBlueprintFlowchartService {
     private final BlueprintFlowchartMapper mapper;
 
     @Override
-    public R<List<BlueprintFlowchart>> findAll(BlueprintFlowchart params) {
-        List<BlueprintFlowchart> list = mapper.findAll(params);
+    public R<List<BlueprintFlowchartModel>> findAll(BlueprintFlowchartModel model) {
+        List<BlueprintFlowchartModel> list = mapper.findAll(model);
         if (Objects.isNull(list)) return R.failed("没有查询到流程图！", null);
         return R.success(list);
     }
 
     @Override
-    public R<BlueprintFlowchart> findById(BlueprintFlowchart params) {
-        BlueprintFlowchart flowchart = mapper.find(params);
+    public R<BlueprintFlowchartModel> findById(BlueprintFlowchartModel model) {
+        BlueprintFlowchartModel flowchart = mapper.find(model);
         if (Objects.isNull(flowchart)) return R.failed("没有查询到流程图！", null);
         return R.success(flowchart);
     }
 
     @Override
     @Transactional
-    public boolean upgrade(BlueprintFlowchart body) {
+    public boolean upgrade(BlueprintFlowchartModel model) {
         try {
-            body.setModifyDate(new Timestamp(new Date().getTime()));
-            Integer status = mapper.upgrade(body);
+            model.setModifyDate(new Timestamp(new Date().getTime()));
+            Integer status = mapper.upgrade(model);
             return status > 0;
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());
@@ -54,9 +54,9 @@ public class BlueprintFlowchartService implements IBlueprintFlowchartService {
 
     @Override
     @Transactional
-    public boolean add(BlueprintFlowchart body) {
+    public boolean add(BlueprintFlowchartModel model) {
         try {
-            Integer status = mapper.add(body);
+            Integer status = mapper.add(model);
             return status > 0;
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());
@@ -65,9 +65,9 @@ public class BlueprintFlowchartService implements IBlueprintFlowchartService {
 
     @Override
     @Transactional
-    public boolean delete(BlueprintFlowchart body) {
+    public boolean delete(BlueprintFlowchartModel model) {
         try {
-            Integer status = mapper.delete(body);
+            Integer status = mapper.delete(model);
             return status > 0;
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());

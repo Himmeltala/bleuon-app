@@ -17,10 +17,8 @@ import java.sql.Timestamp;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(
-        description = "用户实体类，屏蔽了铭感信息"
-)
-public class ConsumerDto implements Serializable {
+@Schema(description = "用户实体类，屏蔽了铭感信息")
+public class ConsumerDTO implements Serializable {
 
     @Schema(
             description = "UUID",

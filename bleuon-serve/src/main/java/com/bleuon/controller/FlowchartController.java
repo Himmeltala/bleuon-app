@@ -3,9 +3,9 @@ package com.bleuon.controller;
 import com.bleuon.annotaion.RequestMappingPrefix;
 import com.bleuon.constant.KeyVals;
 import com.bleuon.constant.ValidPattern;
-import com.bleuon.entity.BlueprintFlowchart;
-import com.bleuon.entity.CollectingFlowchart;
-import com.bleuon.entity.Flowchart;
+import com.bleuon.entity.BlueprintFlowchartModel;
+import com.bleuon.entity.CollectingFlowchartModel;
+import com.bleuon.entity.FlowchartModel;
 import com.bleuon.entity.vo.FlowchartCriteria;
 import com.bleuon.service.impl.CollectingFlowchartService;
 import com.bleuon.service.impl.FlowchartService;
@@ -40,97 +40,83 @@ public class FlowchartController {
     @Operation(summary = "更新流程图")
     @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:consumer:upgrade')")
     @PutMapping("/upgrade")
-    public R<Object> upgrade(@RequestBody @Validated Flowchart body) {
-        boolean status = flowchartService.upgrade(body);
+    public R<Object> upgrade(@RequestBody @Validated FlowchartModel model) {
+        boolean status = flowchartService.upgrade(model);
         return status ? R.success("更新流程图成功！") : R.failed("更新流程图失败！");
     }
 
     @Operation(summary = "根据 ID 查询流程图")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:consumer:find')")
     @GetMapping("/find/by/id")
-    public R<Flowchart> findById(@Validated Flowchart params) {
-        Flowchart result = flowchartService.findById(params.getId());
-        return Objects.isNull(result) ? R.failed("该流程图不存在！", null) : R.success(result);
+    public R<FlowchartModel> findById(@Validated FlowchartModel model) {
+        FlowchartModel result = flowchartService.findById(model.getId());
+        return Objects.isNull(result) ? R.failed("该流程图不存在！") : R.success(result);
     }
 
     @Operation(summary = "根据条件查询所有流程图")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:consumer:find')")
     @PostMapping("/find/all/by/criteria")
-    public R<List<Flowchart>> findAllByCriteria(@RequestHeader(KeyVals.Token) String token,
-                                                @RequestBody FlowchartCriteria criteria) {
-        Claims claims = JwtUtil.parseJwt(token);
-        criteria.setCollectingCid((String) claims.get("id"));
-        List<Flowchart> list = flowchartService.findAllByCriteria(criteria);
-        return list.isEmpty() ? R.failed("没有查询到流程图！", null) : R.success(list);
+    public R<List<FlowchartModel>> findAllByCriteria(@Validated @RequestBody FlowchartCriteria criteria) {
+        List<FlowchartModel> list = flowchartService.findAllByCriteria(criteria);
+        return R.success(list);
     }
 
-    @Operation(summary = "新增一个流程图")
+    @Operation(summary = "新增一个流程图", description = "consumerId 必填")
     @PreAuthorize("hasAnyAuthority('sys:add', 'sys:consumer:add')")
     @PostMapping("/add")
-    public R<Flowchart> add(@RequestHeader(KeyVals.Token) String token) {
-        Claims claims = JwtUtil.parseJwt(token);
-        String consumerId = (String) claims.get("id");
-        Flowchart flowchart = flowchartService.add(consumerId);
-        return flowchart != null ? R.success("创建流程图成功！", flowchart) : R.failed("创建流程图失败！", null);
+    public R<FlowchartModel> add(@RequestBody FlowchartModel model) {
+        FlowchartModel flowchart = flowchartService.add(model.getConsumerId());
+        return Objects.isNull(flowchart) ? R.error("创建流程图失败！") : R.success("创建流程图成功！", flowchart);
     }
 
     @Operation(summary = "将流程图导入到个人文件中")
     @PreAuthorize("hasAnyAuthority('sys:add', 'sys:consumer:add')")
     @PostMapping("/replicate")
-    public R<Flowchart> replicate(@RequestHeader(KeyVals.Token) String token,
-                                  @RequestBody @Validated Flowchart body) {
-        Claims claims = JwtUtil.parseJwt(token);
-        String consumerId = (String) claims.get("id");
-        Flowchart flowchart = flowchartService.replicate(body, consumerId);
-        return flowchart != null ? R.success("复制流程图成功！", flowchart) : R.failed("复制流程图失败！", null);
+    public R<FlowchartModel> replicate(@RequestBody @Validated FlowchartModel model) {
+        FlowchartModel success = flowchartService.replicate(model);
+        return Objects.isNull(success) ? R.error("复制流程图失败！") : R.success("复制流程图成功！", success);
     }
 
     @Operation(summary = "删除单个流程图")
     @PreAuthorize("hasAnyAuthority('sys:delete', 'sys:consumer:delete')")
     @DeleteMapping("/delete/by/id")
-    public R<Object> deleteById(@Validated Flowchart params) {
-        boolean status = flowchartService.deleteById(params.getId());
+    public R<Object> deleteById(@Validated FlowchartModel model) {
+        boolean status = flowchartService.deleteById(model.getId());
         return status ? R.success("删除流程图成功！") : R.failed("删除流程图失败！");
     }
 
     @Operation(summary = "根据条件查询所有收藏的流程图")
     @PreAuthorize("hasAnyAuthority('sys:add', 'sys:consumer:add')")
     @GetMapping("/find/all/collect/by/criteria")
-    public R<List<Flowchart>> findAllCollectByCriteria(@RequestHeader(KeyVals.Token) String token,
-                                                       @Validated FlowchartCriteria criteria) {
-        Claims claims = JwtUtil.parseJwt(token);
-        criteria.setCollectingCid((String) claims.get("id"));
-        List<Flowchart> list = collectingFlowchartService.findAllByCriteria(criteria);
-        return list != null ? R.success(list) : R.failed("没有收藏流程图！", null);
+    public R<List<FlowchartModel>> findAllCollectByCriteria(@Validated FlowchartCriteria criteria) {
+        List<FlowchartModel> list = collectingFlowchartService.findAllByCriteria(criteria);
+        return R.success(list);
     }
 
-    @Operation(summary = "删除单个收藏的流程图")
+    @Operation(summary = "删除收藏的流程图", description = "flowchartId、collectingCid 必填")
     @PreAuthorize("hasAnyAuthority('sys:delete', 'sys:consumer:delete')")
-    @DeleteMapping("/delete/collect")
-    public R<Object> deleteCollect(@RequestHeader(KeyVals.Token) String token,
-                                   @Validated CollectingFlowchart params) {
-        Claims claims = JwtUtil.parseJwt(token);
-        params.setCollectingCid((String) claims.get("id"));
-        boolean status = collectingFlowchartService.delete(params);
-        return status ? R.success("删除收藏的流程图成功！") : R.failed("删除收藏的流程图失败！");
+    @DeleteMapping("/delete/collecting")
+    public R<Object> deleteCollecting(@Validated CollectingFlowchartModel model) {
+        boolean status = collectingFlowchartService.delete(model);
+        return status ? R.success("删除成功！") : R.failed("删除失败！");
     }
 
-    @Operation(summary = "收藏单个流程图")
+    @Operation(summary = "收藏一个流程图", description = "flowchartId、collectingCid 必填")
     @PreAuthorize("hasAnyAuthority('sys:add', 'sys:consumer:add')")
-    @PostMapping("/add/collect")
-    public R<Object> addCollect(@RequestBody @Validated CollectingFlowchart body) {
-        Flowchart exists = collectingFlowchartService.find(body);
+    @PostMapping("/add/collecting")
+    public R<Object> addCollecting(@RequestBody @Validated CollectingFlowchartModel model) {
+        FlowchartModel exists = collectingFlowchartService.find(model);
         if (!Objects.isNull(exists)) return R.failed("您已经收藏过了！");
 
-        boolean added = collectingFlowchartService.add(body);
+        boolean added = collectingFlowchartService.add(model);
         return added ? R.success("收藏成功！") : R.failed("收藏失败！");
     }
 
     @Operation(summary = "把流程图公开到模板社区")
     @PreAuthorize("hasAnyAuthority('sys:add', 'sys:consumer:add')")
     @PostMapping("/release")
-    public R<Object> release(@RequestBody @Validated BlueprintFlowchart body) {
-        return flowchartService.release(body);
+    public R<Object> release(@RequestBody @Validated BlueprintFlowchartModel model) {
+        return flowchartService.release(model);
     }
 
     @Operation(summary = "取消已公开到模板社区的流程图")

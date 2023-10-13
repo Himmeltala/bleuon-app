@@ -36,11 +36,15 @@ export async function findById(params: BlueprintFlowchartModel) {
 /**
  * 导入模板
  *
- * @param body
+ * @param model
  * @param success
  */
-export async function replicate(body: BlueprintFlowchartModel, success?: (res: R) => void) {
-  request.post<R>("/blueprint/replicate", body).then(({ data }) => {
+export async function replicate(
+  model: BlueprintFlowchartModel,
+  consumerId: string,
+  success?: (res: R) => void
+) {
+  request.post<R>(`/blueprint/replicate/${consumerId}`, model).then(({ data }) => {
     success && success(data);
   });
 }

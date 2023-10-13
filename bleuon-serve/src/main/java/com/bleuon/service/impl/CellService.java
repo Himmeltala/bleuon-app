@@ -1,7 +1,7 @@
 package com.bleuon.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.bleuon.entity.Cell;
+import com.bleuon.entity.CellModel;
 import com.bleuon.mapper.CellMapper;
 import com.bleuon.service.ICellService;
 import com.bleuon.utils.http.R;
@@ -18,11 +18,11 @@ import java.util.List;
  */
 @Service
 @RequiredArgsConstructor
-public class CellService extends ServiceImpl<CellMapper, Cell> implements ICellService {
+public class CellService extends ServiceImpl<CellMapper, CellModel> implements ICellService {
 
     @Override
-    public R<List<Cell>> findAllByCriteria(Cell params) {
-        List<Cell> list = this.query().eq("type", params.getType()).list();
+    public R<List<CellModel>> findAllByCriteria(CellModel model) {
+        List<CellModel> list = this.query().eq("type", model.getType()).list();
         return R.success(list);
     }
 

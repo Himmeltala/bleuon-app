@@ -1,7 +1,7 @@
 package com.bleuon.controller.expose;
 
 import com.bleuon.annotaion.RequestMappingPrefix;
-import com.bleuon.entity.Flowchart;
+import com.bleuon.entity.FlowchartModel;
 import com.bleuon.service.impl.FlowchartService;
 import com.bleuon.utils.http.R;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,7 +25,7 @@ public class OpenFlowchartController {
 
     @Operation(summary = "查找分享的流程图")
     @GetMapping("/find/share")
-    public R<Flowchart> findIsShare(@RequestParam String id) {
+    public R<FlowchartModel> findIsShare(@RequestParam String id) {
         return service.findIsShare(id);
     }
 

@@ -2,9 +2,9 @@ package com.bleuon.controller;
 
 import com.bleuon.annotaion.RequestMappingPrefix;
 import com.bleuon.constant.KeyVals;
-import com.bleuon.entity.BlueprintFlowchart;
-import com.bleuon.entity.CollectingFlowchart;
-import com.bleuon.entity.Flowchart;
+import com.bleuon.entity.BlueprintFlowchartModel;
+import com.bleuon.entity.CollectingFlowchartModel;
+import com.bleuon.entity.FlowchartModel;
 import com.bleuon.service.impl.BlueprintFlowchartService;
 import com.bleuon.service.impl.CollectingFlowchartService;
 import com.bleuon.service.impl.FlowchartService;
@@ -40,39 +40,38 @@ public class BlueprintController {
     @Operation(summary = "查询所有流程图模板")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:consumer:find')")
     @GetMapping("/find/all")
-    public R<List<BlueprintFlowchart>> findAll(@Validated BlueprintFlowchart params) {
-        String filename = params.getFileName();
+    public R<List<BlueprintFlowchartModel>> findAll(@Validated BlueprintFlowchartModel model) {
+        String filename = model.getFileName();
         if (StringUtils.hasText(filename)) {
-            params.setFileName(filename.toLowerCase());
+            model.setFileName(filename.toLowerCase());
         }
-        return blueprintFlowchartService.findAll(params);
+        return blueprintFlowchartService.findAll(model);
     }
 
     @Operation(summary = "根据流程图模板 ID 查询单个流程图模板")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:consumer:find')")
     @GetMapping("/find/by/id")
-    public R<BlueprintFlowchart> findById(@Validated BlueprintFlowchart params) {
-        return blueprintFlowchartService.findById(params);
+    public R<BlueprintFlowchartModel> findById(@Validated BlueprintFlowchartModel model) {
+        return blueprintFlowchartService.findById(model);
     }
 
-    @Operation(summary = "导入流程图模板为个人流程图")
+    @Operation(summary = "导入流程图模板为个人流程图", description = "consumerId 必须是导入人的 UID")
     @PreAuthorize("hasAnyAuthority('sys:add', 'sys:consumer:add')")
-    @PostMapping("/replicate")
-    public R<Object> replicate(@RequestHeader(KeyVals.Token) String token,
-                               @RequestBody @Validated BlueprintFlowchart body) {
-        Claims claims = JwtUtil.parseJwt(token);
-        String consumerId = (String) claims.get("id");
-        body.setCopies(body.getCopies() + 1);
+    @PostMapping("/replicate/{consumerId}")
+    public R<Object> replicate(@PathVariable String consumerId,
+                               @RequestBody @Validated BlueprintFlowchartModel model) {
+        model.setCopies(model.getCopies() + 1);
 
-        Flowchart flowchart = flowchartService.replicate(body.getFlowchart(), consumerId);
-        return Objects.isNull(flowchart) ? R.error("导入模板失败！") : R.success("导入模板成功！");
+        model.getFlowchart().setConsumerId(consumerId);
+        FlowchartModel success = flowchartService.replicate(model.getFlowchart());
+        return Objects.isNull(success) ? R.error("导入模板失败！") : R.success("导入模板成功！");
     }
 
     @Operation(summary = "更新流程图模板，如点赞")
     @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:consumer:upgrade')")
     @PutMapping("/upgrade")
-    public R<Object> upgrade(@RequestBody @Validated BlueprintFlowchart data) {
-        boolean status = blueprintFlowchartService.upgrade(data);
+    public R<Object> upgrade(@RequestBody @Validated BlueprintFlowchartModel model) {
+        boolean status = blueprintFlowchartService.upgrade(model);
         return status ? R.success("更新成功！") : R.failed("更新失败！");
     }
 
@@ -80,17 +79,17 @@ public class BlueprintController {
     @PreAuthorize("hasAnyAuthority('sys:add', 'sys:consumer:add')")
     @PostMapping("/add/collecting")
     public R<Object> addCollecting(@RequestHeader(KeyVals.Token) String token,
-                                   @RequestBody @Validated BlueprintFlowchart body) {
+                                   @RequestBody @Validated BlueprintFlowchartModel model) {
         Claims claims = JwtUtil.parseJwt(token);
-        CollectingFlowchart collectingFlowchart = new CollectingFlowchart((String) claims.get("id"), body.getFlowchartId());
-        Flowchart exists = collectFlowchartService.find(collectingFlowchart);
+        CollectingFlowchartModel collectingFlowchart = new CollectingFlowchartModel((String) claims.get("id"), model.getFlowchartId());
+        FlowchartModel exists = collectFlowchartService.find(collectingFlowchart);
         if (!Objects.isNull(exists)) return R.failed("您已经收藏过了！");
 
         boolean added = collectFlowchartService.add(collectingFlowchart);
         if (!added) R.error("收藏失败！");
 
-        body.setStars(body.getStars() + 1);
-        boolean upgraded = blueprintFlowchartService.upgrade(body);
+        model.setStars(model.getStars() + 1);
+        boolean upgraded = blueprintFlowchartService.upgrade(model);
         return upgraded ? R.success("收藏成功！") : R.failed("收藏失败！");
     }
 

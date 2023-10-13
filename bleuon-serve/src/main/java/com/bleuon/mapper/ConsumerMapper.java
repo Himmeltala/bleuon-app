@@ -1,8 +1,7 @@
 package com.bleuon.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.bleuon.entity.Consumer;
-import org.apache.ibatis.annotations.CacheNamespace;
+import com.bleuon.entity.ConsumerModel;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -11,9 +10,8 @@ import org.apache.ibatis.annotations.Mapper;
  * @author zheng
  */
 @Mapper
-@CacheNamespace
-public interface ConsumerMapper extends BaseMapper<Consumer> {
+public interface ConsumerMapper extends BaseMapper<ConsumerModel> {
 
-    Integer upgrade(Consumer vo);
+    Integer upgrade(ConsumerModel model);
 
 }

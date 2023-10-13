@@ -178,9 +178,8 @@ export function updateLabelText(elementView: dia.ElementView, input: HTMLInputEl
  * @param success
  * @param failure
  */
-export function convertFlowchartIntoImage(
+export function downloadWithXml(
   paper: dia.Paper,
-  graph: dia.Graph,
   type: "png" | "jpeg",
   config: FlowchartModel,
   success?: Function
@@ -241,32 +240,30 @@ export function getDataUri(paper: dia.Paper) {
  * @param success
  * @param failure
  */
-export function downloadWithDataUri(
-  data: { width?: number; height?: number; bgColor?: string; dataUri?: string; fileName?: string },
-  type: "png" | "jpeg"
-) {
+export function downloadWithDataUri(data: FlowchartModel, type: "png" | "jpeg") {
   const canvas = document.createElement("canvas");
   const context = canvas.getContext("2d");
 
-  const image = new Image();
-
   if (!data.dataUri) {
+    ElMessage.error("内容为空，不能下载！");
     return;
   }
 
-  image.src = data.dataUri;
+  const dataUri = data.dataUri;
+  const image = new Image();
+  image.src = dataUri;
 
   image.onload = function () {
-    canvas.width = data.width || 1000;
-    canvas.height = data.height || 1000;
-    context.fillStyle = data.bgColor || "#ffffff";
+    canvas.width = data.width;
+    canvas.height = data.height;
+    context.fillStyle = data.bgColor;
     context.fillRect(0, 0, canvas.width, canvas.height);
     context.drawImage(image, 0, 0);
 
     const dataURL = canvas.toDataURL(`image/${type}`);
     const link = document.createElement("a");
     link.href = dataURL;
-    link.download = `${data.fileName || "未命名的文件"}-${DateUtil.formatted()}.${type}`;
+    link.download = `${data.fileName}-${DateUtil.formatted()}.${type}`;
     link.click();
   };
 }

@@ -1,7 +1,7 @@
 package com.bleuon.controller.expose;
 
 import com.bleuon.annotaion.RequestMappingPrefix;
-import com.bleuon.entity.vo.FileParamsVo;
+import com.bleuon.entity.vo.FileParamsVO;
 import com.bleuon.service.FileService;
 import com.bleuon.utils.http.R;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,9 +31,9 @@ public class FileController {
 
     @Operation(summary = "获取图片二进制")
     @GetMapping(value = "/preview/image")
-    public void previewImageFile(FileParamsVo params, HttpServletResponse response) {
+    public void previewImageFile(FileParamsVO vo, HttpServletResponse response) {
         try {
-            byte[] bytes = service.load(params.getFilename(), params.getFilepath(), response);
+            byte[] bytes = service.load(vo.getFilename(), vo.getFilepath(), response);
             try (ServletOutputStream output = response.getOutputStream()) {
                 output.write(bytes);
             }

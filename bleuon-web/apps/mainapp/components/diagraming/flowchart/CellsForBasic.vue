@@ -9,9 +9,9 @@
 import { CellsApi } from "@mainapp/apis";
 import SVG from "../SVG.vue";
 
-const data = ref(null);
+const mainDataSource = ref(null);
 
-data.value = await CellsApi.findAllByCriteria({ type: "basic" });
+mainDataSource.value = await CellsApi.findAllByCriteria({ type: "basic" });
 </script>
 
 <template>
@@ -19,8 +19,8 @@ data.value = await CellsApi.findAllByCriteria({ type: "basic" });
     <div class="mb-4 text-0.8rem font-bold">基础图形</div>
     <div class="f-c-s flex-wrap flex-gap-3">
       <SVG
-        v-for="item in data"
-        v-if="data.length"
+        v-for="item in mainDataSource"
+        v-if="mainDataSource.length"
         :attrs="JSON.parse(item.attrs)"
         :content="item.notes"
         :height="item.height"

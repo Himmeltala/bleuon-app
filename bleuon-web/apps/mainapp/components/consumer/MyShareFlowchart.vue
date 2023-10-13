@@ -28,9 +28,8 @@ const flowchartList = ref(
         v-for="item in flowchartList"
         :key="item.id"
         :file-image="item.dataUri"
-        :file-name="item.fileName"
-        :show-dropdown="false"
-        :path="'/flowchart/' + item.id">
+        :path="'/flowchart/' + item.id"
+        :options="false">
         <template #footer>
           <div class="f-c-s flex-nowrap mt-4 w-100%">
             <div class="mr-2 i-tabler-chart-bubble text-theme-primary"></div>

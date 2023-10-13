@@ -13,31 +13,43 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
- * @description:
+ * @description: 官方图形实体类
  * @package: com.bleuon.entity
  * @author: zheng
- * @date: 2023/10/10
+ * @date: 2023/9/27
  */
 @Data
+@TableName("t_cells")
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("t_dynamics")
-public class Dynamic implements Serializable {
+public class CellModel implements Serializable {
 
-    @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
     @TableId
-    private String id;
-    private String content;
-    private Integer digg;
-    private Integer bury;
+    private Integer id;
+
+    @TableField
+    private String notes;
+
+    @TableField
+    private Double width;
+
+    @TableField
+    private Double height;
+
+    @TableField
+    private String attrs;
+
+    @TableField("view_box")
+    private String viewBox;
+
+    @Pattern(regexp = ValidPattern.CELL_TYPE, message = "图形类型错误！")
+    @TableField
+    private String type;
 
     @TableField("create_date")
     private Timestamp createDate;
 
     @TableField("modify_date")
     private Timestamp modifyDate;
-
-    @TableField("consumer_id")
-    private String consumerId;
 
 }

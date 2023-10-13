@@ -1,7 +1,7 @@
 package com.bleuon.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.bleuon.entity.Cell;
+import com.bleuon.entity.CellModel;
 import org.apache.ibatis.annotations.CacheNamespace;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -13,5 +13,5 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 @CacheNamespace
-public interface CellMapper extends BaseMapper<Cell> {
+public interface CellMapper extends BaseMapper<CellModel> {
 }

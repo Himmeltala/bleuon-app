@@ -14,15 +14,19 @@ import { downloadWithDataUri } from "@mainapp/lib/tools";
 import WorkbenchHeader from "@mainapp/components/workbench/WorkbenchHeader.vue";
 import File from "@mainapp/components/File.vue";
 
-const collectList = shallowRef<FlowchartModel[]>([]);
+const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
+const mainDataSource = ref<FlowchartModel[]>([]);
 const searchVal = ref("");
 
 async function fetchData(params?: any) {
-  collectList.value = await FlowchartApi.findAllCollectByCriteria(params);
+  mainDataSource.value = await FlowchartApi.findAllCollectByCriteria({
+    ...params,
+    collectingCid: token.id
+  });
 }
 
 async function search() {
-  fetchData({ fileName: searchVal.value });
+  await fetchData({ fileName: searchVal.value });
 }
 
 function download(data: any) {
@@ -30,17 +34,14 @@ function download(data: any) {
 }
 
 function replicate(data: FlowchartModel) {
-  FlowchartApi.replicate(data, res => ElMessage.success(res.message));
+  FlowchartApi.replicate({ ...data, consumerId: token.id }, res => ElMessage.success(res.message));
 }
 
 function remove(flowchartId: string, index: number) {
-  FlowchartApi.deleteCollect({ flowchartId }, () => {
-    collectList.value.splice(index, 1);
-    triggerRef(collectList);
+  FlowchartApi.deleteCollecting({ flowchartId, collectingCid: token.id }, () => {
+    mainDataSource.value.splice(index, 1);
   });
 }
-
-const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
 
 function isMyFlowchart(item: FlowchartModel) {
   return item.consumer.id == token.id;
@@ -59,17 +60,16 @@ await fetchData();
       </div>
       <div class="mt-5 text-text-regular text-0.9rem">文件</div>
       <div class="file-list mt-5 f-c-s flex-wrap flex-gap-1.25rem">
-        <template v-if="collectList">
+        <template v-if="mainDataSource">
           <File
-            v-for="(item, index) in collectList"
+            v-for="(item, index) in mainDataSource"
             :key="item.id"
             :file-image="item.dataUri"
-            :file-name="item.fileName"
             :is-reset="false"
             :path="isMyFlowchart(item) ? '/flowchart/' + item.id : '/share/flowchart/' + item.id"
-            @delete="remove(item.id, index)"
-            @download="download(item)"
-            @replicate="replicate(item)">
+            :remove="() => remove(item.id, index)"
+            :download="() => download(item)"
+            :replicate="() => replicate(item)">
             <template #footer>
               <div class="f-c-s flex-nowrap mt-4 w-100%">
                 <div class="mr-2 i-tabler-chart-bubble text-theme-primary"></div>

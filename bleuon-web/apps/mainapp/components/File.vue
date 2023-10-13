@@ -11,24 +11,26 @@ defineProps({
     type: String,
     required: true
   },
-  fileName: {
-    type: String,
-    required: true
-  },
   fileImage: {
     type: String
   },
-  isReset: {
+  options: {
     type: Boolean,
     default: true
   },
-  showDropdown: {
-    type: Boolean,
-    default: true
+  rename: {
+    type: Function as PropType<(...args: any[]) => any>
+  },
+  download: {
+    type: Function as PropType<(...args: any[]) => any>
+  },
+  replicate: {
+    type: Function as PropType<(...args: any[]) => any>
+  },
+  remove: {
+    type: Function as PropType<(...args: any[]) => any>
   }
 });
-
-const emits = defineEmits(["download", "replicate", "delete", "reset"]);
 </script>
 
 <template>
@@ -42,7 +44,7 @@ const emits = defineEmits(["download", "replicate", "delete", "reset"]);
         <div v-else class="w-100% h-100% rd-2 cursor-pointer bg-white"></div>
       </router-link>
     </div>
-    <el-dropdown v-if="showDropdown" :teleported="false">
+    <el-dropdown v-if="options" :teleported="false">
       <div class="file-options absolute top--11.75rem left-0.8rem">
         <div class="file-options-icon f-c-c cursor-pointer w-10 h-6 rd-2 bg-gray-600">
           <div class="i-tabler-dots text-white"></div>
@@ -58,25 +60,25 @@ const emits = defineEmits(["download", "replicate", "delete", "reset"]);
               </div>
             </router-link>
           </el-dropdown-item>
-          <el-dropdown-item v-if="isReset" @click="$emit('reset')">
+          <el-dropdown-item @click="rename" v-if="rename">
             <div class="f-c-s">
               <div class="i-tabler-edit mr-2"></div>
               重命名
             </div>
           </el-dropdown-item>
-          <el-dropdown-item @click="$emit('download')">
+          <el-dropdown-item @click="download" v-if="download">
             <div class="f-c-s">
               <div class="i-tabler-download mr-2"></div>
               下载
             </div>
           </el-dropdown-item>
-          <el-dropdown-item @click="$emit('replicate')">
+          <el-dropdown-item @click="replicate" v-if="replicate">
             <div class="f-c-s">
               <div class="i-tabler-copy mr-2"></div>
               复制
             </div>
           </el-dropdown-item>
-          <el-dropdown-item @click="$emit('delete')">
+          <el-dropdown-item @click="remove" v-if="remove">
             <div class="f-c-s">
               <div class="i-tabler-trash-x mr-2"></div>
               删除

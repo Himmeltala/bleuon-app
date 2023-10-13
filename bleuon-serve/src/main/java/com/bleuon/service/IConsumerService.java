@@ -1,7 +1,7 @@
 package com.bleuon.service;
 
-import com.bleuon.entity.Consumer;
-import com.bleuon.entity.dto.ConsumerDto;
+import com.bleuon.entity.ConsumerModel;
+import com.bleuon.entity.dto.ConsumerDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -12,11 +12,11 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface IConsumerService {
 
-    ConsumerDto findById(String id);
+    ConsumerDTO findById(String id);
 
-    ConsumerDto findByEmail(String email);
+    ConsumerDTO findByEmail(String email);
 
-    boolean upgrade(Consumer consumer);
+    boolean upgrade(ConsumerModel model);
 
-    String upgradeAvatar(Consumer consumer, MultipartFile file);
+    String upgradeAvatar(ConsumerModel model, MultipartFile file);
 }

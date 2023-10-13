@@ -21,10 +21,8 @@ import java.sql.Timestamp;
 @TableName("t_consumers")
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(
-        description = "用户实体类"
-)
-public class Consumer implements Serializable {
+@Schema(description = "用户实体类")
+public class ConsumerModel implements Serializable {
 
     @Schema(
             description = "UUID",
@@ -78,7 +76,7 @@ public class Consumer implements Serializable {
     @TableField("modify_date")
     private Timestamp modifyDate;
 
-    public Consumer(String id) {
+    public ConsumerModel(String id) {
         this.id = id;
     }
 

@@ -9,15 +9,15 @@ import request from "./use-axios";
 /**
  * 更新流程图
  *
- * @param body
+ * @param model
  * @param success
  */
 export function upgrade(
-  body: FlowchartModel,
+  model: FlowchartModel,
   config?: { nomessage: boolean },
   success?: (data: R) => void
 ) {
-  request.put<R>("/flowchart/upgrade", body, config).then(({ data }) => {
+  request.put<R>("/flowchart/upgrade", model, config).then(({ data }) => {
     success && success(data);
   });
 }
@@ -25,25 +25,25 @@ export function upgrade(
 /**
  * 通过 id 获取流程图
  *
- * @param params
+ * @param model
  * @returns
  */
-export async function findById(params: { id: string }) {
-  const { data } = await request.get<R<FlowchartModel>>("/flowchart/find/by/id", { params });
+export async function findById(model: { id: string }) {
+  const { data } = await request.get<R<FlowchartModel>>("/flowchart/find/by/id", { params: model });
   return data.data;
 }
 
 /**
  * 获取流程图
  *
- * @param params
+ * @param model
  * @param error
  * @returns
  */
-export async function findIsShare(params: { id: string }, error?: Function) {
+export async function findIsShare(model: { id: string }, error?: Function) {
   try {
     const { data } = await request.get<R<FlowchartModel>>("/public/flowchart/find/share", {
-      params
+      params: model
     });
     return data.data;
   } catch (err) {
@@ -58,6 +58,7 @@ export async function findIsShare(params: { id: string }, error?: Function) {
  * @returns
  */
 export async function findAllByCriteria(criteria: {
+  collectingCid: string;
   sequences?: { isAsc: boolean; col: string }[];
   fileName?: string;
   isPublic?: number;
@@ -76,8 +77,8 @@ export async function findAllByCriteria(criteria: {
  *
  * @param success
  */
-export function add(success: (res: R<FlowchartModel>) => void) {
-  request.post<R<FlowchartModel>>("/flowchart/add").then(({ data }) => {
+export function add(model: { consumerId: string }, success: (res: R<FlowchartModel>) => void) {
+  request.post<R<FlowchartModel>>("/flowchart/add", model).then(({ data }) => {
     success && success(data);
   });
 }
@@ -85,11 +86,11 @@ export function add(success: (res: R<FlowchartModel>) => void) {
 /**
  * 复制一个流程图
  *
- * @param body
+ * @param model
  * @param success
  */
-export function replicate(body: FlowchartModel, success?: (res: R) => void) {
-  request.post<R<FlowchartModel>>("/flowchart/replicate", body).then(({ data }) => {
+export function replicate(model: FlowchartModel, success?: (res: R) => void) {
+  request.post<R<FlowchartModel>>("/flowchart/replicate", model).then(({ data }) => {
     success && success(data);
   });
 }
@@ -97,13 +98,13 @@ export function replicate(body: FlowchartModel, success?: (res: R) => void) {
 /**
  * 删除一个流程图
  *
- * @param params
+ * @param model
  * @param success
  */
-export function deleteById(params: { id?: string }, success: Function) {
+export function deleteById(model: { id?: string }, success: Function) {
   request
-    .delete<R<void>>("/flowchart/delete/by/id", {
-      params
+    .delete<R>("/flowchart/delete/by/id", {
+      params: model
     })
     .then(() => {
       success && success();
@@ -113,42 +114,48 @@ export function deleteById(params: { id?: string }, success: Function) {
 /**
  * 查询所有的收藏的流程图
  *
- * @param params
+ * @param model
  * @returns
  */
-export async function findAllCollectByCriteria(params: { fileName?: string }) {
+export async function findAllCollectByCriteria(model: {
+  fileName?: string;
+  collectingCid: string;
+}) {
   const { data } = await request.get<R<FlowchartModel[]>>(
     "/flowchart/find/all/collect/by/criteria",
     {
-      params
+      params: model
     }
   );
   return data.data;
 }
 
 /**
- * 收藏一个流程图
+ * 收藏流程图
  *
- * @param body
+ * @param model
  * @param success
  */
-export async function addCollect(
-  body: { flowchartId: string; collectingCid: string },
+export async function addCollecting(
+  model: { flowchartId: string; collectingCid: string },
   success?: Function
 ) {
-  request.post("/flowchart/add/collect", body).then(() => {
+  request.post("/flowchart/add/collecting", model).then(() => {
     success && success();
   });
 }
 
 /**
- * 删除一个收藏的流程图
+ * 删除收藏的流程图
  *
- * @param params
+ * @param model
  * @param success
  */
-export async function deleteCollect(params: { flowchartId: string }, success?: Function) {
-  await request.delete<R<void>>("/flowchart/delete/collect", { params }).then(() => {
+export async function deleteCollecting(
+  model: { flowchartId: string; collectingCid: string },
+  success?: Function
+) {
+  await request.delete<R>("/flowchart/delete/collecting", { params: model }).then(() => {
     success && success();
   });
 }
@@ -156,11 +163,11 @@ export async function deleteCollect(params: { flowchartId: string }, success?: F
 /**
  * 发布和公开流程图到模板社区
  *
- * @param body
+ * @param model
  * @param success
  */
-export function release(body: BlueprintFlowchartModel, success?: Function) {
-  request.post<R<void>>("/flowchart/release", body).then(() => {
+export function release(model: BlueprintFlowchartModel, success?: Function) {
+  request.post<R>("/flowchart/release", model).then(() => {
     success && success();
   });
 }
@@ -168,11 +175,11 @@ export function release(body: BlueprintFlowchartModel, success?: Function) {
 /**
  * 取消发布和公开一个流程图
  *
- * @param params
+ * @param model
  * @param success
  */
-export function cancelRelease(params: { flowchartId: string }, success?: Function) {
-  request.delete<R<void>>("/flowchart/cancel/release", { params }).then(() => {
+export function cancelRelease(model: { flowchartId: string }, success?: Function) {
+  request.delete<R>("/flowchart/cancel/release", { params: model }).then(() => {
     success && success();
   });
 }

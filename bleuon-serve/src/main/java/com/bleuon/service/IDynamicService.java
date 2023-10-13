@@ -1,6 +1,6 @@
 package com.bleuon.service;
 
-import com.bleuon.entity.Dynamic;
+import com.bleuon.entity.DynamicModel;
 import com.bleuon.entity.vo.DynamicCriteria;
 
 import java.util.List;
@@ -13,11 +13,11 @@ import java.util.List;
  */
 public interface IDynamicService {
 
-    List<Dynamic> findAllByCriteria(DynamicCriteria criteria);
+    List<DynamicModel> findAllByCriteria(DynamicCriteria criteria);
 
-    boolean upgrade(Dynamic body);
+    boolean upgrade(DynamicModel model);
 
-    boolean deleteById(Dynamic params);
+    boolean deleteById(DynamicModel model);
 
-    boolean add(Dynamic body);
+    boolean add(DynamicModel model);
 }

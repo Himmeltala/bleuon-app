@@ -2,11 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bleuon.mapper.CollectingConsumerMapper">
 
-    <cache-ref namespace="com.bleuon.mapper.CollectingConsumerMapper"/>
-
-    <resultMap id="findMap" type="com.bleuon.entity.CollectingConsumer" autoMapping="true">
+    <resultMap id="findMap" type="com.bleuon.entity.CollectingConsumerModel" autoMapping="true">
         <id column="id" property="id"/>
-        <association property="consumer" javaType="com.bleuon.entity.dto.ConsumerDto" columnPrefix="c_">
+        <association property="consumer" javaType="com.bleuon.entity.dto.ConsumerDTO" columnPrefix="c_">
             <id column="id" property="id"/>
             <result column="username" property="username"/>
             <result column="avatar" property="avatar"/>
@@ -24,7 +22,7 @@
         WHERE cc.collecting_cid = #{collectingCid};
     </select>
 
-    <select id="findByCriteria" resultType="com.bleuon.entity.CollectingConsumer"
+    <select id="findByCriteria" resultType="com.bleuon.entity.CollectingConsumerModel"
             parameterType="com.bleuon.entity.vo.ConsumerCriteria">
         SELECT cc.*
         FROM co_conllecting_consumer cc
@@ -32,12 +30,12 @@
           AND cc.consumer_id = #{consumerId};
     </select>
 
-    <insert id="add" parameterType="com.bleuon.entity.CollectingConsumer">
+    <insert id="add" parameterType="com.bleuon.entity.CollectingConsumerModel">
         INSERT INTO co_conllecting_consumer(id, collecting_cid, consumer_id)
         VALUES (#{id}, #{collectingCid}, #{consumerId});
     </insert>
 
-    <delete id="delete" parameterType="com.bleuon.entity.CollectingConsumer">
+    <delete id="delete" parameterType="com.bleuon.entity.CollectingConsumerModel">
         DELETE
         FROM co_conllecting_consumer
         WHERE id = #{id};

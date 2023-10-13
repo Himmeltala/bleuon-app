@@ -1,18 +1,16 @@
 package com.bleuon.service.impl;
 
-import com.bleuon.entity.CollectingFlowchart;
-import com.bleuon.entity.Flowchart;
+import com.bleuon.entity.CollectingFlowchartModel;
+import com.bleuon.entity.FlowchartModel;
 import com.bleuon.entity.vo.FlowchartCriteria;
 import com.bleuon.exception.JdbcErrorException;
 import com.bleuon.mapper.CollectingFlowchartMapper;
 import com.bleuon.service.ICollectingFlowchartService;
-import com.bleuon.utils.http.R;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @description:
@@ -27,26 +25,26 @@ public class CollectingFlowchartService implements ICollectingFlowchartService {
     private final CollectingFlowchartMapper mapper;
 
     @Override
-    public List<Flowchart> findAllByCriteria(FlowchartCriteria criteria) {
+    public List<FlowchartModel> findAllByCriteria(FlowchartCriteria criteria) {
         return mapper.findAllByCriteria(criteria);
     }
 
     @Override
-    public Flowchart find(CollectingFlowchart body) {
-        return mapper.find(body);
+    public FlowchartModel find(CollectingFlowchartModel model) {
+        return mapper.find(model);
     }
 
     @Override
-    public boolean delete(CollectingFlowchart body) {
-        Integer row = mapper.delete(body);
+    public boolean delete(CollectingFlowchartModel model) {
+        Integer row = mapper.delete(model);
         return row > 0;
     }
 
     @Override
     @Transactional
-    public boolean add(CollectingFlowchart body) {
+    public boolean add(CollectingFlowchartModel model) {
         try {
-            Integer row = mapper.add(body);
+            Integer row = mapper.add(model);
             return row > 0;
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());

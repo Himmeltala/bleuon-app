@@ -1,9 +1,8 @@
 package com.bleuon.mapper;
 
-import com.bleuon.entity.CollectingFlowchart;
-import com.bleuon.entity.Flowchart;
+import com.bleuon.entity.CollectingFlowchartModel;
+import com.bleuon.entity.FlowchartModel;
 import com.bleuon.entity.vo.FlowchartCriteria;
-import org.apache.ibatis.annotations.CacheNamespace;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -15,15 +14,14 @@ import java.util.List;
  * @date: 2023/10/2
  */
 @Mapper
-@CacheNamespace
 public interface CollectingFlowchartMapper {
 
-    List<Flowchart> findAllByCriteria(FlowchartCriteria criteria);
+    List<FlowchartModel> findAllByCriteria(FlowchartCriteria criteria);
 
-    Integer delete(CollectingFlowchart body);
+    Integer delete(CollectingFlowchartModel model);
 
-    Integer add(CollectingFlowchart body);
+    Integer add(CollectingFlowchartModel model);
 
-    Flowchart find(CollectingFlowchart body);
+    FlowchartModel find(CollectingFlowchartModel model);
 
 }

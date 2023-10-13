@@ -1,7 +1,7 @@
 package com.bleuon.service;
 
-import com.bleuon.entity.BlueprintFlowchart;
-import com.bleuon.entity.Flowchart;
+import com.bleuon.entity.BlueprintFlowchartModel;
+import com.bleuon.entity.FlowchartModel;
 import com.bleuon.entity.vo.FlowchartCriteria;
 import com.bleuon.utils.http.R;
 
@@ -15,21 +15,21 @@ import java.util.List;
  */
 public interface IFlowchartService {
 
-    boolean upgrade(Flowchart body);
+    boolean upgrade(FlowchartModel model);
 
-    Flowchart findById(String flowchartId);
+    FlowchartModel findById(String flowchartId);
 
-    R<Flowchart> findIsShare(String id);
+    R<FlowchartModel> findIsShare(String id);
 
-    List<Flowchart> findAllByCriteria(FlowchartCriteria criteria);
+    List<FlowchartModel> findAllByCriteria(FlowchartCriteria criteria);
 
-    Flowchart add(String consumerId);
+    FlowchartModel add(String consumerId);
 
-    Flowchart replicate(Flowchart data, String consumerId);
+    FlowchartModel replicate(FlowchartModel data);
 
     boolean deleteById(String flowchartId);
 
-    R<Object> release(BlueprintFlowchart body);
+    R<Object> release(BlueprintFlowchartModel model);
 
     R<Object> cancelRelease(String flowchartId);
 

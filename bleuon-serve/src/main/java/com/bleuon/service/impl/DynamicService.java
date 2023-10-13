@@ -2,7 +2,7 @@ package com.bleuon.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.bleuon.entity.Dynamic;
+import com.bleuon.entity.DynamicModel;
 import com.bleuon.entity.vo.DynamicCriteria;
 import com.bleuon.entity.vo.Sequence;
 import com.bleuon.exception.JdbcErrorException;
@@ -25,13 +25,13 @@ import java.util.UUID;
  */
 @Service
 @RequiredArgsConstructor
-public class DynamicService extends ServiceImpl<DynamicMapper, Dynamic> implements IDynamicService {
+public class DynamicService extends ServiceImpl<DynamicMapper, DynamicModel> implements IDynamicService {
 
     private final DynamicMapper mapper;
 
     @Override
-    public List<Dynamic> findAllByCriteria(DynamicCriteria criteria) {
-        QueryWrapper<Dynamic> wrapper = new QueryWrapper<>();
+    public List<DynamicModel> findAllByCriteria(DynamicCriteria criteria) {
+        QueryWrapper<DynamicModel> wrapper = new QueryWrapper<>();
         wrapper.eq("consumer_id", criteria.getConsumerId());
 
         List<Sequence> sequences = criteria.getSequences();
@@ -44,10 +44,10 @@ public class DynamicService extends ServiceImpl<DynamicMapper, Dynamic> implemen
 
     @Transactional
     @Override
-    public boolean upgrade(Dynamic body) {
+    public boolean upgrade(DynamicModel model) {
         try {
-            body.setModifyDate(new Timestamp(new Date().getTime()));
-            Integer status = mapper.upgrade(body);
+            model.setModifyDate(new Timestamp(new Date().getTime()));
+            Integer status = mapper.upgrade(model);
             return status > 0;
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());
@@ -56,9 +56,9 @@ public class DynamicService extends ServiceImpl<DynamicMapper, Dynamic> implemen
 
     @Transactional
     @Override
-    public boolean deleteById(Dynamic params) {
+    public boolean deleteById(DynamicModel model) {
         try {
-            return removeById(params.getId());
+            return removeById(model.getId());
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());
         }
@@ -66,12 +66,12 @@ public class DynamicService extends ServiceImpl<DynamicMapper, Dynamic> implemen
 
     @Transactional
     @Override
-    public boolean add(Dynamic body) {
+    public boolean add(DynamicModel model) {
         try {
             String uuid = UUID.randomUUID().toString();
-            body.setId(uuid);
+            model.setId(uuid);
 
-            return save(body);
+            return save(model);
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());
         }

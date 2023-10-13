@@ -1,8 +1,7 @@
 package com.bleuon.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.bleuon.entity.Flowchart;
-import org.apache.ibatis.annotations.CacheNamespace;
+import com.bleuon.entity.FlowchartModel;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -12,12 +11,11 @@ import org.apache.ibatis.annotations.Mapper;
  * @date: 2023/9/29
  */
 @Mapper
-@CacheNamespace
-public interface FlowchartMapper extends BaseMapper<Flowchart> {
+public interface FlowchartMapper extends BaseMapper<FlowchartModel> {
 
     /**
      * 更新流程图
      */
-    Integer upgrade(Flowchart data);
+    Integer upgrade(FlowchartModel model);
 
 }

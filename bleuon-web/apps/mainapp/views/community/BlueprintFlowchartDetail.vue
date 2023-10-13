@@ -22,13 +22,16 @@ const graph = shallowRef<dia.Graph>();
 
 const route = useRoute();
 const mainDataSource = ref<BlueprintFlowchartModel>();
+const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
 
 async function fetchData(params: BlueprintFlowchartModel) {
   mainDataSource.value = await BlueprintApi.findById(params);
 }
 
 function replicate() {
-  BlueprintApi.replicate(mainDataSource.value, message => ElMessage.success(message.message));
+  BlueprintApi.replicate(mainDataSource.value, token.id, message =>
+    ElMessage.success(message.message)
+  );
 }
 
 function collect() {

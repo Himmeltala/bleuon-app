@@ -15,7 +15,7 @@ import File from "@mainapp/components/File.vue";
 import WorkbenchHeader from "@mainapp/components/workbench/WorkbenchHeader.vue";
 
 const clickedIndex = ref(0);
-const flowchartList = ref(await FlowchartApi.findAllByCriteria({}));
+const mainDataSource = ref<FlowchartModel[]>([]);
 
 const dialogVisible = ref(false);
 const isFileNameCorrect = ref(false);
@@ -26,13 +26,22 @@ const fileNameRules = reactive({
   ]
 });
 
+const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
+
+async function fetchData(params: any) {
+  mainDataSource.value = await FlowchartApi.findAllByCriteria({
+    ...params,
+    collectingCid: token.id
+  });
+}
+
 function upgrade() {
-  FlowchartApi.upgrade(flowchartList.value[clickedIndex.value], { nomessage: false }, () => {
+  FlowchartApi.upgrade(mainDataSource.value[clickedIndex.value], { nomessage: false }, () => {
     dialogVisible.value = !dialogVisible.value;
   });
 }
 
-function reset(index: number) {
+function rename(index: number) {
   dialogVisible.value = !dialogVisible.value;
   clickedIndex.value = index;
 }
@@ -42,19 +51,15 @@ function download(data: FlowchartModel) {
 }
 
 function replicate(data: FlowchartModel) {
-  FlowchartApi.replicate(data, async () => {
+  FlowchartApi.replicate({ ...data, consumerId: token.id }, async () => {
     await fetchData({});
   });
 }
 
 function remove(id: string, index: number) {
   FlowchartApi.deleteById({ id }, async () => {
-    flowchartList.value.splice(index, 1);
+    mainDataSource.value.splice(index, 1);
   });
-}
-
-async function fetchData(params: any) {
-  flowchartList.value = await FlowchartApi.findAllByCriteria(params);
 }
 
 const searchVal = ref("");
@@ -101,6 +106,8 @@ function createDateFlowchart() {
 async function search() {
   fetchData({ fileName: searchVal.value });
 }
+
+await fetchData({});
 </script>
 
 <template>
@@ -182,15 +189,14 @@ async function search() {
       <div class="mt-5 text-text-regular text-0.9rem">文件</div>
       <div class="file-list mt-5 f-s-s flex-wrap flex-gap-1.25rem">
         <File
-          v-for="(item, index) in flowchartList"
+          v-for="(item, index) in mainDataSource"
           :key="item.id"
           :file-image="item.dataUri"
-          :file-name="item.fileName"
           :path="'/flowchart/' + item.id"
-          @delete="remove(item.id, index)"
-          @download="download(item)"
-          @replicate="replicate(item)"
-          @reset="reset(index)">
+          :rename="() => rename(index)"
+          :download="() => download(item)"
+          :replicate="() => replicate(item)"
+          :remove="() => remove(item.id, index)">
           <template #footer>
             <div class="f-c-s flex-nowrap mt-4 w-100%">
               <div class="mr-2 i-tabler-chart-bubble text-theme-primary"></div>
@@ -233,10 +239,10 @@ async function search() {
         </File>
       </div>
       <el-dialog v-model="dialogVisible" title="修改文件名称" width="30%">
-        <el-form :model="flowchartList[clickedIndex]" :rules="fileNameRules">
+        <el-form :model="mainDataSource[clickedIndex]" :rules="fileNameRules">
           <el-form-item prop="fileName">
             <el-input
-              v-model="flowchartList[clickedIndex].fileName"
+              v-model="mainDataSource[clickedIndex].fileName"
               placeholder="请输入文件名称"
               @keyup.enter="upgrade" />
           </el-form-item>

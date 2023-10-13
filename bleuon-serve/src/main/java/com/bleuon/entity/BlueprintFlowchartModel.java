@@ -26,7 +26,7 @@ import java.sql.Timestamp;
 @Schema(
         description = "流程图模板"
 )
-public class BlueprintFlowchart implements Serializable {
+public class BlueprintFlowchartModel implements Serializable {
 
     @Schema(description = "UUID")
     @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
@@ -69,7 +69,7 @@ public class BlueprintFlowchart implements Serializable {
 
     @Schema(description = "与流程图一对一关系")
     @TableField(exist = false)
-    private Flowchart flowchart;
+    private FlowchartModel flowchart;
 
     @Schema(description = "非表字段，用于查询时条件查询")
     @TableField(exist = false)

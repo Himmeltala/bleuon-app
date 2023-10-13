@@ -1,6 +1,6 @@
 package com.bleuon.service;
 
-import com.bleuon.entity.CollectingConsumer;
+import com.bleuon.entity.CollectingConsumerModel;
 import com.bleuon.entity.vo.ConsumerCriteria;
 
 import java.util.List;
@@ -13,12 +13,12 @@ import java.util.List;
  */
 public interface ICollectingConsumerService {
 
-    CollectingConsumer findByCriteria(ConsumerCriteria criteria);
+    CollectingConsumerModel findByCriteria(ConsumerCriteria criteria);
 
-    List<CollectingConsumer> findAllByCriteria(ConsumerCriteria criteria);
+    List<CollectingConsumerModel> findAllByCriteria(ConsumerCriteria criteria);
 
-    boolean add(CollectingConsumer body);
+    boolean add(CollectingConsumerModel model);
 
-    boolean delete(CollectingConsumer params);
+    boolean delete(CollectingConsumerModel model);
 
 }

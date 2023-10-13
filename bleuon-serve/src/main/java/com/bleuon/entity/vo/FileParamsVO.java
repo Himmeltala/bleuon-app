@@ -15,7 +15,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FileParamsVo implements Serializable {
+public class FileParamsVO implements Serializable {
 
     // 文件路径
     private String filepath;

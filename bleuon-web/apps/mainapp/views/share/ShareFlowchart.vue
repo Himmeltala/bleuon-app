@@ -95,7 +95,9 @@ const dialogVisible = ref(false);
 
 function replicate() {
   mainDataSource.value.fileName = mainDataSource.value.fileName;
-  FlowchartApi.replicate(mainDataSource.value, res => ElMessage.success(res.message));
+  FlowchartApi.replicate({ ...mainDataSource.value, consumerId: token.id }, res =>
+    ElMessage.success(res.message)
+  );
 }
 
 await fetchData();

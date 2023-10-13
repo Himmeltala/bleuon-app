@@ -1,8 +1,7 @@
 package com.bleuon.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.bleuon.entity.Dynamic;
-import org.apache.ibatis.annotations.CacheNamespace;
+import com.bleuon.entity.DynamicModel;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -12,9 +11,8 @@ import org.apache.ibatis.annotations.Mapper;
  * @date: 2023/10/10
  */
 @Mapper
-@CacheNamespace
-public interface DynamicMapper extends BaseMapper<Dynamic> {
+public interface DynamicMapper extends BaseMapper<DynamicModel> {
 
-    Integer upgrade(Dynamic data);
+    Integer upgrade(DynamicModel model);
 
 }

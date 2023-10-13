@@ -1,9 +1,8 @@
 package com.bleuon.service;
 
-import com.bleuon.entity.CollectingFlowchart;
-import com.bleuon.entity.Flowchart;
+import com.bleuon.entity.CollectingFlowchartModel;
+import com.bleuon.entity.FlowchartModel;
 import com.bleuon.entity.vo.FlowchartCriteria;
-import com.bleuon.utils.http.R;
 
 import java.util.List;
 
@@ -15,12 +14,12 @@ import java.util.List;
  */
 public interface ICollectingFlowchartService {
 
-    List<Flowchart> findAllByCriteria(FlowchartCriteria criteria);
+    List<FlowchartModel> findAllByCriteria(FlowchartCriteria criteria);
 
-    Flowchart find(CollectingFlowchart body);
+    FlowchartModel find(CollectingFlowchartModel model);
 
-    boolean delete(CollectingFlowchart data);
+    boolean delete(CollectingFlowchartModel model);
 
-    boolean add(CollectingFlowchart data);
+    boolean add(CollectingFlowchartModel model);
 
 }

@@ -18,7 +18,7 @@ import java.sql.Timestamp;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CollectingFlowchart implements Serializable {
+public class CollectingFlowchartModel implements Serializable {
 
     private Integer id;
 
@@ -30,7 +30,7 @@ public class CollectingFlowchart implements Serializable {
 
     private Timestamp createDate;
 
-    public CollectingFlowchart(String collectingCid, String flowchartId) {
+    public CollectingFlowchartModel(String collectingCid, String flowchartId) {
         this.collectingCid = collectingCid;
         this.flowchartId = flowchartId;
     }

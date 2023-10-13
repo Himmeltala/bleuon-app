@@ -3,7 +3,7 @@ package com.bleuon.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.bleuon.constant.ValidPattern;
-import com.bleuon.entity.dto.ConsumerDto;
+import com.bleuon.entity.dto.ConsumerDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -23,7 +23,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "关注用户实体类")
-public class CollectingConsumer implements Serializable {
+public class CollectingConsumerModel implements Serializable {
 
     @TableId
     private String id;
@@ -44,9 +44,9 @@ public class CollectingConsumer implements Serializable {
     private String collectingCid;
 
     @TableField(exist = false)
-    private ConsumerDto consumer;
+    private ConsumerDTO consumer;
 
-    public CollectingConsumer(String consumerId) {
+    public CollectingConsumerModel(String consumerId) {
         this.consumerId = consumerId;
     }
 

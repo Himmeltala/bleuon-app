@@ -7,7 +7,7 @@
  */
 
 import { dia } from "@mainapp/lib";
-import { convertFlowchartIntoImage } from "@mainapp/lib/tools";
+import { downloadWithXml } from "@mainapp/lib/tools";
 import { DateUtil } from "@common/utils";
 import { FlowchartApi } from "@mainapp/apis";
 
@@ -15,9 +15,8 @@ import { FlowchartApi } from "@mainapp/apis";
 import MenuAvatar from "@mainapp/components/MenuAvatar.vue";
 
 const paper = inject<Ref<dia.Paper>>(KeyVals.BLEUON_FLOWCHART_PAPER);
-const graph = inject<Ref<dia.Graph>>(KeyVals.BLEUON_FLOWCHART_GRAPH);
-const mainDataSource = inject<Ref<FlowchartModel>>(KeyVals.BLEUON_FLOWCHART_DATA);
 const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
+const mainDataSource = inject<Ref<FlowchartModel>>(KeyVals.BLEUON_FLOWCHART_DATA);
 
 const emits = defineEmits(["change"]);
 
@@ -25,7 +24,7 @@ function download() {
   const { width, height } = paper.value.getArea();
   mainDataSource.value.width = width;
   mainDataSource.value.height = height;
-  convertFlowchartIntoImage(paper.value, graph.value, "jpeg", mainDataSource.value);
+  downloadWithXml(paper.value, "jpeg", mainDataSource.value);
 }
 
 const calcFileName = computed({
@@ -40,12 +39,8 @@ const calcFileName = computed({
   }
 });
 
-function onEnterFileName() {
-  emits("change");
-}
-
-function collectFlowchart() {
-  FlowchartApi.addCollect({ flowchartId: mainDataSource.value.id, collectingCid: token.id });
+function collect() {
+  FlowchartApi.addCollecting({ flowchartId: mainDataSource.value.id, collectingCid: token.id });
 }
 </script>
 
@@ -66,7 +61,7 @@ function collectFlowchart() {
           :base-modification="true"
           placeholder="请输入文件名"
           size="small"
-          @enter="onEnterFileName"></EditInput>
+          @enter="$emit('change')"></EditInput>
         <div class="mt-2">
           <div class="text-text-secondary text-0.8rem f-c-c">
             <div class="i-tabler-clock mr-1"></div>
@@ -81,7 +76,7 @@ function collectFlowchart() {
           <div class="hover mr-4 i-tabler-download" @click="download"></div>
         </el-tooltip>
         <el-tooltip v-if="token" content="收藏">
-          <div class="hover mr-4 i-tabler-star" @click="collectFlowchart"></div>
+          <div class="hover mr-4 i-tabler-star" @click="collect"></div>
         </el-tooltip>
         <slot name="tools"></slot>
       </div>

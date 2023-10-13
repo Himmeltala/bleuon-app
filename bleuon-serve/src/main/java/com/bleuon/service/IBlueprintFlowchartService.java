@@ -1,6 +1,6 @@
 package com.bleuon.service;
 
-import com.bleuon.entity.BlueprintFlowchart;
+import com.bleuon.entity.BlueprintFlowchartModel;
 import com.bleuon.utils.http.R;
 
 import java.util.List;
@@ -13,14 +13,14 @@ import java.util.List;
  */
 public interface IBlueprintFlowchartService {
 
-    R<List<BlueprintFlowchart>> findAll(BlueprintFlowchart body);
+    R<List<BlueprintFlowchartModel>> findAll(BlueprintFlowchartModel model);
 
-    R<BlueprintFlowchart> findById(BlueprintFlowchart body);
+    R<BlueprintFlowchartModel> findById(BlueprintFlowchartModel model);
 
-    boolean upgrade(BlueprintFlowchart body);
+    boolean upgrade(BlueprintFlowchartModel model);
 
-    boolean add(BlueprintFlowchart body);
+    boolean add(BlueprintFlowchartModel model);
 
-    boolean delete(BlueprintFlowchart body);
+    boolean delete(BlueprintFlowchartModel model);
 
 }
