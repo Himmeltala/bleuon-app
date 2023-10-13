@@ -3,13 +3,16 @@ package com.bleuon.controller;
 import com.bleuon.annotaion.RequestMappingPrefix;
 import com.bleuon.constant.KeyVals;
 import com.bleuon.constant.ValidPattern;
+import com.bleuon.entity.CollectingConsumer;
 import com.bleuon.entity.Consumer;
 import com.bleuon.entity.Dynamic;
 import com.bleuon.entity.Flowchart;
 import com.bleuon.entity.dto.ConsumerDto;
+import com.bleuon.entity.vo.ConsumerCriteria;
 import com.bleuon.entity.vo.DynamicCriteria;
 import com.bleuon.entity.vo.FlowchartCriteria;
 import com.bleuon.entity.vo.Sequence;
+import com.bleuon.service.impl.CollectingConsumerService;
 import com.bleuon.service.impl.ConsumerService;
 import com.bleuon.service.impl.DynamicService;
 import com.bleuon.service.impl.FlowchartService;
@@ -41,6 +44,7 @@ public class ConsumerController {
     private final ConsumerService consumerService;
     private final DynamicService dynamicService;
     private final FlowchartService flowchartService;
+    private final CollectingConsumerService collectingConsumerService;
 
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:consumer:find')")
     @GetMapping("/find/by/id")
@@ -132,6 +136,13 @@ public class ConsumerController {
         sequences.add(new Sequence(false, "modify_date"));
         criteria.setSequences(sequences);
         List<Flowchart> list = flowchartService.findAllByCriteria(criteria);
+        return R.success(list);
+    }
+
+    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:consumer:find')")
+    @GetMapping("find/all/collecting/by/criteria")
+    public R<List<CollectingConsumer>> findAllCollectingConsumerByCriteria(@Validated ConsumerCriteria criteria) {
+        List<CollectingConsumer> list = collectingConsumerService.findAllByCriteria(criteria);
         return R.success(list);
     }
 

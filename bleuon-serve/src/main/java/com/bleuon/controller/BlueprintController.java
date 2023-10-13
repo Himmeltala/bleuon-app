@@ -3,8 +3,8 @@ package com.bleuon.controller;
 import com.bleuon.annotaion.RequestMappingPrefix;
 import com.bleuon.constant.KeyVals;
 import com.bleuon.entity.BlueprintFlowchart;
-import com.bleuon.entity.Flowchart;
 import com.bleuon.entity.CollectingFlowchart;
+import com.bleuon.entity.Flowchart;
 import com.bleuon.service.impl.BlueprintFlowchartService;
 import com.bleuon.service.impl.CollectingFlowchartService;
 import com.bleuon.service.impl.FlowchartService;
@@ -73,9 +73,7 @@ public class BlueprintController {
     public R<Object> addCollecting(@RequestHeader(KeyVals.Token) String token,
                                    @RequestBody @Validated BlueprintFlowchart data) {
         Claims claims = JwtUtil.parseJwt(token);
-        String consumerId = (String) claims.get("id");
-
-        R<Object> status = collectFlowchartService.add(new CollectingFlowchart(consumerId, data.getFlowchartId()));
+        R<Object> status = collectFlowchartService.add(new CollectingFlowchart((String) claims.get("id"), data.getFlowchartId()));
 
         if (status.getCode() != 200) {
             return status;

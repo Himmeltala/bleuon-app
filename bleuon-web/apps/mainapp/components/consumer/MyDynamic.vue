@@ -10,63 +10,63 @@ const props = defineProps({
   }
 });
 
-const dynamicList = ref([]);
-const dynamicValue = ref("");
+const list = ref([]);
+const ckeditorValue = ref("");
 const token = localStorage.getToken<TokenR>(KeyVals.MAINAPP_TOKEN_KEY);
 
-async function fetchDynamicList() {
-  dynamicList.value = await ConsumerApi.findAllDynamicByCriteria({
+async function fetchList() {
+  list.value = await ConsumerApi.findAllDynamicByCriteria({
     sequences: [{ isAsc: false, col: "create_date" }],
     consumerId: `${props.consumer.id}`
   });
 }
 
-function uploadDynamicImg(formData: FormData) {
+function uploadImage(formData: FormData) {
   formData.append("path", "/dynamic");
   return FileApi.uploadCkEditorImage(formData);
 }
 
-function commitDynamic() {
-  ConsumerApi.addDynamic({ content: dynamicValue.value }, async () => {
-    await fetchDynamicList();
+function commit() {
+  ConsumerApi.addDynamic({ content: ckeditorValue.value }, async () => {
+    await fetchList();
   });
 }
 
-function diggDynamic(item: DynamicModel) {
+function digg(item: DynamicModel) {
   item.digg += 1;
   ConsumerApi.upgradeDynamic({ digg: item.digg, id: item.id }, () => {
     ElMessage.success("支持成功！");
   });
 }
 
-function buryDynamic(item: DynamicModel) {
+function bury(item: DynamicModel) {
   item.bury += 1;
   ConsumerApi.upgradeDynamic({ bury: item.bury, id: item.id }, () => {
     ElMessage.success("反对成功！");
   });
 }
 
-function deleteDynamic(item: DynamicModel, index: number) {
+function remove(item: DynamicModel, index: number) {
   ConsumerApi.deleteDynamic({ id: item.id }, () => {
-    dynamicList.value.splice(index, 1);
+    list.value.splice(index, 1);
   });
 }
 
-await fetchDynamicList();
+await fetchList();
 </script>
 
 <template>
   <div class="my-dynamic">
     <div class="px-5 py-5 rd-2 bg-bg-overlay" v-if="token.id === consumer.id">
-      <ClassicCkEditor v-model="dynamicValue" :upload-img="uploadDynamicImg"></ClassicCkEditor>
+      <ClassicCkEditor v-model="ckeditorValue" :upload-img="uploadImage"></ClassicCkEditor>
       <div class="f-c-e mt-2">
-        <el-button type="primary" @click="commitDynamic">发表动态</el-button>
+        <el-button type="primary" @click="commit">发表动态</el-button>
       </div>
     </div>
-    <div v-if="dynamicList">
+    <div v-if="list">
       <div
         class="bg-bg-overlay rd-2 px-5 py-5 f-s-s mt-2"
-        v-for="(item, index) in dynamicList"
+        v-for="(item, index) in list"
         :key="item.id">
         <div class="mr-10">
           <img class="w-15 h-15 rd-50%" :src="consumer.avatar" />
@@ -83,16 +83,16 @@ await fetchDynamicList();
           </div>
           <div class="mt-4" v-html="item.content"></div>
           <div class="f-c-s mt-6 text-text-secondary text-0.9rem">
-            <div class="mr-15 hover f-c-c" @click="diggDynamic(item)">
+            <div class="mr-15 hover f-c-c" @click="digg(item)">
               <div class="i-tabler-thumb-up mr-1"></div>
               {{ item.digg }}
             </div>
-            <div class="mr-15 hover f-c-c" @click="buryDynamic(item)">
+            <div class="mr-15 hover f-c-c" @click="bury(item)">
               <div class="i-tabler-thumb-down mr-1"></div>
               {{ item.bury }}
             </div>
             <div v-if="consumer.id == token.id">
-              <el-button @click="deleteDynamic(item, index)" type="danger" size="small" text>
+              <el-button @click="remove(item, index)" type="danger" size="small" text>
                 删除
               </el-button>
             </div>

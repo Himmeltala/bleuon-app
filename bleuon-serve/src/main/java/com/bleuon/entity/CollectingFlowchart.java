@@ -21,16 +21,14 @@ import java.sql.Timestamp;
 public class CollectingFlowchart implements Serializable {
 
     private Integer id;
-
     @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
-    private String consumerId;
-
+    private String collectingCid;
     @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
     private String flowchartId;
     private Timestamp createDate;
 
-    public CollectingFlowchart(String consumerId, String flowchartId) {
-        this.consumerId = consumerId;
+    public CollectingFlowchart(String collectingCid, String flowchartId) {
+        this.collectingCid = collectingCid;
         this.flowchartId = flowchartId;
     }
 

@@ -21,6 +21,10 @@ const formData = ref(await ConsumerApi.findById(`${route.params.id}`));
 
 const tabs = [MyDynamic, MyPublicFlowchart, MyShareFlowchart, MyStarConsumer];
 const tabIndex = ref(0);
+
+watch(route, async () => {
+  formData.value = await ConsumerApi.findById(`${route.params.id}`);
+});
 </script>
 
 <template>

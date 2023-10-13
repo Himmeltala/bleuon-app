@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * @description: 获取文件的参数格式
  * @package: com.bleuon.entity.vo
@@ -13,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FileParamsVo {
+public class FileParamsVo implements Serializable {
 
     // 文件路径
     private String filepath;

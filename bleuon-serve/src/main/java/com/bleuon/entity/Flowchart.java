@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.bleuon.constant.ValidPattern;
+import com.bleuon.entity.dto.ConsumerDto;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -83,15 +84,6 @@ public class Flowchart implements Serializable {
     private String consumerId;
 
     @TableField(exist = false)
-    private Consumer consumer;
-
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    static class Consumer implements Serializable {
-        private String id;
-        private String username;
-        private String avatar;
-    }
+    private ConsumerDto consumer;
 
 }

@@ -54,7 +54,7 @@ public class FlowchartController {
                                                 @RequestBody FlowchartCriteria criteria) {
         Claims claims = JwtUtil.parseJwt(token);
         String consumerId = (String) claims.get("id");
-        criteria.setConsumerId(consumerId);
+        criteria.setCollectingCid(consumerId);
         List<Flowchart> list = flowchartService.findAllByCriteria(criteria);
         return list.isEmpty() ? R.failed("没有查询到流程图！", null) : R.success(list);
     }
@@ -88,10 +88,9 @@ public class FlowchartController {
     @PreAuthorize("hasAnyAuthority('sys:add', 'sys:consumer:add')")
     @GetMapping("/find/all/collect/by/criteria")
     public R<List<Flowchart>> findAllCollectByCriteria(@RequestHeader(KeyVals.Token) String token,
-                                                                    @Validated FlowchartCriteria criteria) {
+                                                       @Validated FlowchartCriteria criteria) {
         Claims claims = JwtUtil.parseJwt(token);
-        String consumerId = (String) claims.get("id");
-        criteria.setConsumerId(consumerId);
+        criteria.setCollectingCid((String) claims.get("id"));
         List<Flowchart> list = collectingFlowchartService.findAllByCriteria(criteria);
         return list != null ? R.success(list) : R.failed("没有收藏流程图！", null);
     }
@@ -101,8 +100,7 @@ public class FlowchartController {
     public R<Object> deleteCollect(@RequestHeader(KeyVals.Token) String token,
                                    @Validated CollectingFlowchart params) {
         Claims claims = JwtUtil.parseJwt(token);
-        String consumerId = (String) claims.get("id");
-        params.setConsumerId(consumerId);
+        params.setCollectingCid((String) claims.get("id"));
         boolean status = collectingFlowchartService.delete(params);
         return status ? R.success("删除收藏的流程图成功！") : R.failed("删除收藏的流程图失败！");
     }
@@ -113,7 +111,7 @@ public class FlowchartController {
                                 @RequestBody @Validated CollectingFlowchart body) {
         Claims claims = JwtUtil.parseJwt(token);
         String consumerId = (String) claims.get("id");
-        body.setConsumerId(consumerId);
+        body.setCollectingCid(consumerId);
         return collectingFlowchartService.add(body);
     }
 

@@ -30,7 +30,6 @@ public class BlueprintFlowchart implements Serializable {
     private Integer views;
     private Integer copies;
     private Integer stars;
-
     private String tags;
     private String scene;
     private String price;

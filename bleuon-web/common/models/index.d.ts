@@ -65,3 +65,13 @@ declare type DynamicModel = Partial<{
   modifyDate: string;
   consumerId: string;
 }>;
+
+declare type CollectingConsumerModel = Partial<{
+  id: string;
+  remark: string;
+  createDate: string;
+  modifyDate: string;
+  collectingCid: string;
+  consumerId: string;
+  consumer: ConsumerModel;
+}>;

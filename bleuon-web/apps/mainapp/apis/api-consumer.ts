@@ -278,6 +278,9 @@ export function addDynamic(body: DynamicModel, success?: Function) {
 
 /**
  * 查询公开、分享的流程图
+ *
+ * @param params
+ * @returns
  */
 export async function findAllFlowchart(params: {
   consumerId: string;
@@ -287,5 +290,23 @@ export async function findAllFlowchart(params: {
   const { data } = await request.get<R<FlowchartModel[]>>("/consumer/find/all/flowchart", {
     params
   });
+  return data.data;
+}
+
+/**
+ * 查询关注的用户列表
+ *
+ * @param params
+ * @returns
+ */
+export async function findAllCollectingConsumerByCriteria(params: {
+  collectingCid: string;
+  remark?: string;
+  sequences?: { isAsc: boolean; col: string }[];
+}) {
+  const { data } = await request.get<R<CollectingConsumerModel[]>>(
+    "/consumer/find/all/collecting/by/criteria",
+    { params }
+  );
   return data.data;
 }

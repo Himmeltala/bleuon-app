@@ -1,14 +1,13 @@
-package com.bleuon.entity;
+package com.bleuon.entity.vo;
 
 import com.bleuon.constant.ValidPattern;
-import com.bleuon.entity.dto.ConsumerDto;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * @description:
@@ -19,23 +18,14 @@ import java.sql.Timestamp;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CollectingConsumer implements Serializable {
-
-    private String id;
-    private String remark;
-    private Timestamp createDate;
-    private Timestamp modifyDate;
+public class ConsumerCriteria implements Serializable {
 
     @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
     private String consumerId;
 
     @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
     private String collectingCid;
-
-    private ConsumerDto consumer;
-
-    public CollectingConsumer(String consumerId) {
-        this.consumerId = consumerId;
-    }
+    private String remark;
+    private List<Sequence> sequences;
 
 }

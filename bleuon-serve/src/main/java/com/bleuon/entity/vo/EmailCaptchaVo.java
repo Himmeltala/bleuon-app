@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * @description:
  * @package: com.bleuon.entity.vo
@@ -16,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmailCaptchaVo {
+public class EmailCaptchaVo implements Serializable {
 
     @Email(message = "不是合法的邮箱地址！")
     private String email;
