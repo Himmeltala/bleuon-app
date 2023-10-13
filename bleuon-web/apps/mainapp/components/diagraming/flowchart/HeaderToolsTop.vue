@@ -7,7 +7,7 @@
  */
 
 import { dia } from "@mainapp/lib";
-import { convertSvgToImage } from "@mainapp/lib/tools";
+import { convertFlowchartIntoImage } from "@mainapp/lib/tools";
 import { DateUtil } from "@common/utils";
 import { FlowchartApi } from "@mainapp/apis";
 
@@ -16,34 +16,27 @@ import MenuAvatar from "@mainapp/components/MenuAvatar.vue";
 
 const paper = inject<Ref<dia.Paper>>(KeyVals.BLEUON_FLOWCHART_PAPER);
 const graph = inject<Ref<dia.Graph>>(KeyVals.BLEUON_FLOWCHART_GRAPH);
-const flowchartData = inject<Ref<FlowchartModel>>(KeyVals.BLEUON_FLOWCHART_DATA);
+const mainDataSource = inject<Ref<FlowchartModel>>(KeyVals.BLEUON_FLOWCHART_DATA);
 const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
 
 const emits = defineEmits(["change"]);
 
 function download() {
   const { width, height } = paper.value.getArea();
-  flowchartData.value.width = width;
-  flowchartData.value.height = height;
-  convertSvgToImage(
-    paper.value,
-    graph.value,
-    "jpeg",
-    flowchartData.value,
-    res => ElMessage.success(res),
-    res => ElMessage.error(res)
-  );
+  mainDataSource.value.width = width;
+  mainDataSource.value.height = height;
+  convertFlowchartIntoImage(paper.value, graph.value, "jpeg", mainDataSource.value);
 }
 
 const calcFileName = computed({
   get() {
-    if (!flowchartData.value.fileName) {
-      flowchartData.value.fileName = "未命名的文件";
+    if (!mainDataSource.value.fileName) {
+      mainDataSource.value.fileName = "未命名的文件";
     }
-    return flowchartData.value.fileName;
+    return mainDataSource.value.fileName;
   },
   set(value) {
-    flowchartData.value.fileName = value;
+    mainDataSource.value.fileName = value;
   }
 });
 
@@ -52,7 +45,7 @@ function onEnterFileName() {
 }
 
 function collectFlowchart() {
-  FlowchartApi.addCollect({ flowchartId: flowchartData.value.id, collectingCid: token.id });
+  FlowchartApi.addCollect({ flowchartId: mainDataSource.value.id, collectingCid: token.id });
 }
 </script>
 
@@ -77,7 +70,7 @@ function collectFlowchart() {
         <div class="mt-2">
           <div class="text-text-secondary text-0.8rem f-c-c">
             <div class="i-tabler-clock mr-1"></div>
-            上次更新：{{ DateUtil.formatted(flowchartData.modifyDate) }}
+            上次更新：{{ DateUtil.formatted(mainDataSource.modifyDate) }}
           </div>
         </div>
       </div>

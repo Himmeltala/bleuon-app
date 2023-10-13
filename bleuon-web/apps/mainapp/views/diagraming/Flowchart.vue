@@ -48,7 +48,7 @@ function upgradeMeta(config: { nomessage: boolean }, success?: (message: any) =>
   mainDataSource.value.json = JSON.stringify(graph.value.toJSON());
   mainDataSource.value.connectorDefault = JSON.stringify(Data.linkConnectorConfig.value);
   mainDataSource.value.routerDefault = JSON.stringify(Data.linkRouterConfig.value);
-  mainDataSource.value.dataUri = getDataUri(paper.value, graph.value);
+  mainDataSource.value.dataUri = getDataUri(paper.value);
   FlowchartApi.upgrade(mainDataSource.value, config, success);
 }
 
@@ -418,7 +418,7 @@ await fetchData();
   &:hover {
     .joint-port {
       circle {
-        fill: white !important;
+        fill: white;
         stroke: black;
         stroke-width: 1px;
         stroke-dasharray: none;

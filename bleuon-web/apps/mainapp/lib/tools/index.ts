@@ -178,41 +178,34 @@ export function updateLabelText(elementView: dia.ElementView, input: HTMLInputEl
  * @param success
  * @param failure
  */
-export function convertSvgToImage(
+export function convertFlowchartIntoImage(
   paper: dia.Paper,
   graph: dia.Graph,
   type: "png" | "jpeg",
-  config: {
-    width?: number;
-    height?: number;
-    bgColor?: string;
-    dataUri?: string;
-    fileName?: string;
-  },
-  success?: (res: string) => void,
-  failure?: (res: string) => void
+  config: FlowchartModel,
+  success?: Function
 ) {
   const canvas = document.createElement("canvas");
   const context = canvas.getContext("2d");
 
-  const dataUri = getDataUri(paper, graph);
+  const dataUri = getDataUri(paper);
   const image = new Image();
   image.src = dataUri;
 
   image.onload = function () {
-    canvas.width = config.width || 1000;
-    canvas.height = config.height || 1000;
-    context.fillStyle = config.bgColor || "#ffffff";
+    canvas.width = config.width;
+    canvas.height = config.height;
+    context.fillStyle = config.bgColor;
     context.fillRect(0, 0, canvas.width, canvas.height);
     context.drawImage(image, 0, 0);
 
     const dataURL = canvas.toDataURL(`image/${type}`);
     const link = document.createElement("a");
     link.href = dataURL;
-    link.download = `${config.fileName || "未命名的文件"}-${DateUtil.formatted()}.${type}`;
+    link.download = `${config.fileName}-${DateUtil.formatted()}.${type}`;
     link.click();
 
-    success && success("下载成功！");
+    success && success();
   };
 }
 
@@ -222,15 +215,21 @@ export function convertSvgToImage(
  * @param paper
  * @param graph
  */
-export function getDataUri(paper: dia.Paper, graph: dia.Graph) {
+export function getDataUri(paper: dia.Paper) {
   paper.hideTools();
 
-  // const elements = graph.getElements();
-  // elements.forEach(v => {
-  //   v.attr("port/port-body", "none");
-  // });
+  const svgCopy = paper.childNodes.svg.cloneNode(true);
+  // @ts-ignore
+  const circles = svgCopy.querySelectorAll<SVGCircleElement>(".joint-port-body");
 
-  const dataUri = new XMLSerializer().serializeToString(paper.childNodes.svg);
+  circles.forEach((circle: SVGCircleElement) => {
+    circle.style.fill = "transparent";
+    circle.style.stroke = "transparent";
+    circle.style.strokeWidth = "0";
+    circle.style.strokeDasharray = "none";
+  });
+
+  const dataUri = new XMLSerializer().serializeToString(svgCopy);
   return "data:image/svg+xml," + encodeURIComponent(dataUri);
 }
 
@@ -244,9 +243,7 @@ export function getDataUri(paper: dia.Paper, graph: dia.Graph) {
  */
 export function downloadWithDataUri(
   data: { width?: number; height?: number; bgColor?: string; dataUri?: string; fileName?: string },
-  type: "png" | "jpeg",
-  success?: Function,
-  failure?: Function
+  type: "png" | "jpeg"
 ) {
   const canvas = document.createElement("canvas");
   const context = canvas.getContext("2d");
@@ -254,7 +251,6 @@ export function downloadWithDataUri(
   const image = new Image();
 
   if (!data.dataUri) {
-    failure && failure("dataUri 为空，下载失败！");
     return;
   }
 
@@ -272,7 +268,5 @@ export function downloadWithDataUri(
     link.href = dataURL;
     link.download = `${data.fileName || "未命名的文件"}-${DateUtil.formatted()}.${type}`;
     link.click();
-
-    success && success("下载成功！");
   };
 }

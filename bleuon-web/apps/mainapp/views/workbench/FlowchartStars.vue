@@ -26,12 +26,7 @@ async function search() {
 }
 
 function download(data: any) {
-  downloadWithDataUri(
-    data,
-    "jpeg",
-    (res: string) => ElMessage.success(res),
-    (res: string) => ElMessage.error(res)
-  );
+  downloadWithDataUri(data, "jpeg");
 }
 
 function replicate(data: FlowchartModel) {

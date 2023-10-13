@@ -38,16 +38,7 @@ function reset(index: number) {
 }
 
 function download(data: FlowchartModel) {
-  downloadWithDataUri(
-    data,
-    "jpeg",
-    () => {
-      ElMessage.success("下载成功！");
-    },
-    () => {
-      ElMessage.error("下载失败！");
-    }
-  );
+  downloadWithDataUri(data, "jpeg");
 }
 
 function replicate(data: FlowchartModel) {
