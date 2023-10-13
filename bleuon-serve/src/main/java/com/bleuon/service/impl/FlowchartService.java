@@ -168,6 +168,7 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
     public R<Object> release(BlueprintFlowchart body) {
         try {
             Flowchart flowchart = query().eq("id", body.getFlowchartId()).one();
+
             if (flowchart.getIsPublic() == 1) {
                 return R.failed("已经公开过了！");
             }
@@ -175,15 +176,14 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
             flowchart.setIsPublic(1);
             boolean status = upgrade(flowchart);
 
-            if (status) {
-                body.setId(UUID.randomUUID().toString());
-                boolean f = blueprintFlowchartService.add(body);
-                if (f) {
-                    return R.success("公开成功！");
-                }
+            if (!status) {
+                return R.failed("公开失败!");
             }
 
-            return R.failed("公开失败！");
+            body.setId(UUID.randomUUID().toString());
+            boolean added = blueprintFlowchartService.add(body);
+
+            return added ? R.success("公开成功！") : R.failed("公开失败!");
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());
         }
@@ -197,15 +197,20 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
             flowchart.setId(flowchartId);
             flowchart.setIsPublic(0);
             boolean status = upgrade(flowchart);
-            if (status) {
-                BlueprintFlowchart blueprintFlowchart = new BlueprintFlowchart();
-                blueprintFlowchart.setFlowchartId(flowchartId);
-                boolean b = blueprintFlowchartService.delete(blueprintFlowchart);
-                if (!b) {
-                    return R.failed("取消发布失败！");
-                }
+
+            if (!status) {
+                return R.failed("取消发布失败！");
             }
-            return R.success("取消发布成功！");
+
+            BlueprintFlowchart blueprintFlowchart = new BlueprintFlowchart();
+            blueprintFlowchart.setFlowchartId(flowchartId);
+            boolean canceled = blueprintFlowchartService.delete(blueprintFlowchart);
+
+            if (!canceled) {
+                return R.failed("取消发布失败！");
+            }
+
+            return R.success("取消发布成功!");
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());
         }

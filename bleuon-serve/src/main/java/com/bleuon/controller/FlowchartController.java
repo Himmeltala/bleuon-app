@@ -123,7 +123,12 @@ public class FlowchartController {
 
     @PreAuthorize("hasAnyAuthority('sys:delete', 'sys:consumer:delete')")
     @DeleteMapping("/cancel/release")
-    public R<Object> cancelRelease(@Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！") @Validated @RequestParam String flowchartId) {
+    public R<Object> cancelRelease(
+            @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
+            @Validated
+            @RequestParam
+            String flowchartId
+    ) {
         return flowchartService.cancelRelease(flowchartId);
     }
 

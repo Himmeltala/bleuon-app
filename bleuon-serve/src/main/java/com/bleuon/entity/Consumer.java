@@ -70,4 +70,8 @@ public class Consumer implements Serializable {
     @TableField("modify_date")
     private Timestamp modifyDate;
 
+    public Consumer(String id) {
+        this.id = id;
+    }
+
 }

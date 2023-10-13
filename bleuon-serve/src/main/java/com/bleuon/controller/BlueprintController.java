@@ -13,6 +13,7 @@ import com.bleuon.utils.http.R;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,9 +37,9 @@ public class BlueprintController {
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:consumer:find')")
     @GetMapping("/find/all")
     public R<List<BlueprintFlowchart>> findAll(@Validated BlueprintFlowchart params) {
-        String fileName = params.getFileName();
-        if (fileName != null) {
-            params.setFileName(fileName.toLowerCase());
+        String filename = params.getFileName();
+        if (StringUtils.hasText(filename)) {
+            params.setFileName(filename.toLowerCase());
         }
         return blueprintFlowchartService.findAll(params);
     }
@@ -76,7 +77,7 @@ public class BlueprintController {
         R<Object> status = collectFlowchartService.add(new CollectingFlowchart((String) claims.get("id"), data.getFlowchartId()));
 
         if (status.getCode() != 200) {
-            return status;
+            return R.error("收藏失败！");
         }
 
         data.setStars(data.getStars() + 1);

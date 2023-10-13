@@ -29,7 +29,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @description:
@@ -56,21 +55,21 @@ public class ConsumerController {
             String id
     ) {
         ConsumerDto exists;
-        if (!StringUtils.hasText(id)) {
+        if (StringUtils.hasText(id)) {
+            exists = consumerService.findById(id);
+        } else {
             Claims claims = JwtUtil.parseJwt(token);
             exists = consumerService.findById((String) claims.get("id"));
-        } else {
-            exists = consumerService.findById(id);
         }
-        return !Objects.isNull(exists) ? R.success(exists) : R.failed("未查询到该用户！");
+
+        return (exists != null) ? R.success(exists) : R.failed("未查询到该用户！");
     }
 
     @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:consumer:upgrade')")
     @PostMapping("/upgrade")
     public R<Object> upgrade(@RequestHeader(KeyVals.Token) String token, @RequestBody @Validated Consumer body) {
         Claims claims = JwtUtil.parseJwt(token);
-        String consumerId = (String) claims.get("id");
-        body.setId(consumerId);
+        body.setId((String) claims.get("id"));
         boolean status = consumerService.upgrade(body);
 
         return status ? R.success("更新资料成功！") : R.error("更新资料失败！");
@@ -85,17 +84,15 @@ public class ConsumerController {
         }
 
         Claims claims = JwtUtil.parseJwt(token);
-        String consumerId = (String) claims.get("id");
-        Consumer consumer = new Consumer();
-        consumer.setId(consumerId);
+        String userId = (String) claims.get("id");
 
-        String imgUrl = consumerService.upgradeAvatar(consumer, file);
+        String imgUrl = consumerService.upgradeAvatar(new Consumer(userId), file);
 
         if (StringUtils.hasText(imgUrl)) {
             return R.success("上传头像成功！", imgUrl);
+        } else {
+            return R.error("上传头像失败！");
         }
-
-        return R.error("上传头像失败！");
     }
 
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:consumer:find')")
