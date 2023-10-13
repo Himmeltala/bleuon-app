@@ -80,18 +80,18 @@ public class BlueprintController {
     @PreAuthorize("hasAnyAuthority('sys:add', 'sys:consumer:add')")
     @PostMapping("/add/collecting")
     public R<Object> addCollecting(@RequestHeader(KeyVals.Token) String token,
-                                   @RequestBody @Validated BlueprintFlowchart data) {
+                                   @RequestBody @Validated BlueprintFlowchart body) {
         Claims claims = JwtUtil.parseJwt(token);
-        R<Object> status = collectFlowchartService.add(new CollectingFlowchart((String) claims.get("id"), data.getFlowchartId()));
+        CollectingFlowchart collectingFlowchart = new CollectingFlowchart((String) claims.get("id"), body.getFlowchartId());
+        Flowchart exists = collectFlowchartService.find(collectingFlowchart);
+        if (!Objects.isNull(exists)) return R.failed("您已经收藏过了！");
 
-        if (status.getCode() != 200) {
-            return R.error("收藏失败！");
-        }
+        boolean added = collectFlowchartService.add(collectingFlowchart);
+        if (!added) R.error("收藏失败！");
 
-        data.setStars(data.getStars() + 1);
-        boolean success = blueprintFlowchartService.upgrade(data);
-
-        return success ? R.success("收藏成功！") : R.failed("收藏失败！");
+        body.setStars(body.getStars() + 1);
+        boolean upgraded = blueprintFlowchartService.upgrade(body);
+        return upgraded ? R.success("收藏成功！") : R.failed("收藏失败！");
     }
 
 }

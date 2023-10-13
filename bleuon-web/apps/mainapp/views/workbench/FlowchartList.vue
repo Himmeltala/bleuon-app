@@ -26,18 +26,18 @@ const fileNameRules = reactive({
   ]
 });
 
-function renewalFlowchart() {
-  FlowchartApi.upgrade(flowchartList.value[clickedIndex.value], () => {
+function upgrade() {
+  FlowchartApi.upgrade(flowchartList.value[clickedIndex.value], { nomessage: false }, () => {
     dialogVisible.value = !dialogVisible.value;
   });
 }
 
-function resetFlowchart(index: number) {
+function reset(index: number) {
   dialogVisible.value = !dialogVisible.value;
   clickedIndex.value = index;
 }
 
-function downloadFlowchart(data: FlowchartModel) {
+function download(data: FlowchartModel) {
   downloadWithDataUri(
     data,
     "jpeg",
@@ -50,14 +50,13 @@ function downloadFlowchart(data: FlowchartModel) {
   );
 }
 
-function replicateFlowchart(data: FlowchartModel) {
-  data.fileName = "复制_" + data.fileName;
+function replicate(data: FlowchartModel) {
   FlowchartApi.replicate(data, async () => {
     await fetchData({});
   });
 }
 
-function deleteFlowchart(id: string, index: number) {
+function remove(id: string, index: number) {
   FlowchartApi.deleteById({ id }, async () => {
     flowchartList.value.splice(index, 1);
   });
@@ -108,14 +107,14 @@ function createDateFlowchart() {
   fetchData({ sequences: [{ col: "create_date", isAsc: isCreateDateAsc.value }] });
 }
 
-async function searchFiles() {
+async function search() {
   fetchData({ fileName: searchVal.value });
 }
 </script>
 
 <template>
   <div class="flowchart-list max-h-100vh">
-    <WorkbenchHeader v-model:value="searchVal" @enter-search="searchFiles"></WorkbenchHeader>
+    <WorkbenchHeader v-model:value="searchVal" @enter-search="search"></WorkbenchHeader>
     <div class="px-10 pb-10">
       <div class="f-c-b">
         <div>流程图</div>
@@ -197,10 +196,10 @@ async function searchFiles() {
           :file-image="item.dataUri"
           :file-name="item.fileName"
           :path="'/flowchart/' + item.id"
-          @delete="deleteFlowchart(item.id, index)"
-          @download="downloadFlowchart(item)"
-          @replicate="replicateFlowchart(item)"
-          @reset="resetFlowchart(index)">
+          @delete="remove(item.id, index)"
+          @download="download(item)"
+          @replicate="replicate(item)"
+          @reset="reset(index)">
           <template #footer>
             <div class="f-c-s flex-nowrap mt-4 w-100%">
               <div class="mr-2 i-tabler-chart-bubble text-theme-primary"></div>
@@ -248,12 +247,12 @@ async function searchFiles() {
             <el-input
               v-model="flowchartList[clickedIndex].fileName"
               placeholder="请输入文件名称"
-              @keyup.enter="renewalFlowchart" />
+              @keyup.enter="upgrade" />
           </el-form-item>
         </el-form>
         <template #footer>
           <span class="dialog-footer">
-            <el-button :disabled="!isFileNameCorrect" type="primary" @click="renewalFlowchart">
+            <el-button :disabled="!isFileNameCorrect" type="primary" @click="upgrade">
               <template #icon>
                 <div class="i-tabler-check"></div>
               </template>

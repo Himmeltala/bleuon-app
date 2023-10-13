@@ -17,10 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @description:
@@ -173,7 +170,12 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, Flowchart> im
                 return R.failed("已经公开过了！");
             }
 
+            flowchart.setIsShare(1);
             flowchart.setIsPublic(1);
+            flowchart.setIsBlueprint(1);
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(2099, Calendar.DECEMBER, 31);
+            flowchart.setDeadShareDate(new Timestamp(calendar.getTimeInMillis()));
             boolean status = upgrade(flowchart);
 
             if (!status) {

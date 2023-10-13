@@ -21,6 +21,7 @@
                 <if test="isPublic != null">is_public = #{isPublic},</if>
                 <if test="isLegal != null">is_legal = #{isLegal},</if>
                 <if test="isShare != null">is_share = #{isShare},</if>
+                <if test="isBlueprint != null">is_blueprint = #{isBlueprint},</if>
                 <if test="createDate != null">create_date = #{createDate},</if>
                 <if test="modifyDate != null">modify_date = #{modifyDate},</if>
                 <if test="deadShareDate != null">dead_share_date = #{deadShareDate},</if>

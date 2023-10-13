@@ -118,12 +118,12 @@ public class FlowchartController {
     @Operation(summary = "收藏单个流程图")
     @PreAuthorize("hasAnyAuthority('sys:add', 'sys:consumer:add')")
     @PostMapping("/add/collect")
-    public R<Object> addCollect(@RequestHeader(KeyVals.Token) String token,
-                                @RequestBody @Validated CollectingFlowchart body) {
-        Claims claims = JwtUtil.parseJwt(token);
-        String consumerId = (String) claims.get("id");
-        body.setCollectingCid(consumerId);
-        return collectingFlowchartService.add(body);
+    public R<Object> addCollect(@RequestBody @Validated CollectingFlowchart body) {
+        Flowchart exists = collectingFlowchartService.find(body);
+        if (!Objects.isNull(exists)) return R.failed("您已经收藏过了！");
+
+        boolean added = collectingFlowchartService.add(body);
+        return added ? R.success("收藏成功！") : R.failed("收藏失败！");
     }
 
     @Operation(summary = "把流程图公开到模板社区")

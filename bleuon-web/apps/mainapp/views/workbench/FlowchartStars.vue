@@ -21,11 +21,11 @@ async function fetchData(params?: any) {
   collectList.value = await FlowchartApi.findAllCollectByCriteria(params);
 }
 
-async function searchFiles() {
+async function search() {
   fetchData({ fileName: searchVal.value });
 }
 
-function downloadFlowchart(data: any) {
+function download(data: any) {
   downloadWithDataUri(
     data,
     "jpeg",
@@ -34,12 +34,11 @@ function downloadFlowchart(data: any) {
   );
 }
 
-function replicateFlowchart(data: FlowchartModel) {
-  data.fileName = "复制_收藏_" + data.fileName;
+function replicate(data: FlowchartModel) {
   FlowchartApi.replicate(data, res => ElMessage.success(res.message));
 }
 
-function deleteFlowchart(flowchartId: string, index: number) {
+function remove(flowchartId: string, index: number) {
   FlowchartApi.deleteCollect({ flowchartId }, () => {
     collectList.value.splice(index, 1);
     triggerRef(collectList);
@@ -57,7 +56,7 @@ await fetchData();
 
 <template>
   <div class="flowchart-stars max-h-100vh">
-    <WorkbenchHeader v-model:value="searchVal" @enter-search="searchFiles"></WorkbenchHeader>
+    <WorkbenchHeader v-model:value="searchVal" @enter-search="search"></WorkbenchHeader>
     <div class="px-10 pb-10">
       <div class="f-c-b">
         <div>收藏的流程图</div>
@@ -73,19 +72,37 @@ await fetchData();
             :file-name="item.fileName"
             :is-reset="false"
             :path="isMyFlowchart(item) ? '/flowchart/' + item.id : '/share/flowchart/' + item.id"
-            @delete="deleteFlowchart(item.id, index)"
-            @download="downloadFlowchart(item)"
-            @replicate="replicateFlowchart(item)">
+            @delete="remove(item.id, index)"
+            @download="download(item)"
+            @replicate="replicate(item)">
             <template #footer>
               <div class="f-c-s flex-nowrap mt-4 w-100%">
                 <div class="mr-2 i-tabler-chart-bubble text-theme-primary"></div>
                 <div class="text-0.9rem text-ellipsis line-clamp-1">{{ item.fileName }}</div>
               </div>
-              <div class="f-c-s text-text-secondary text-0.8rem mt-2">
+              <div class="status mt-4">
+                <el-tag size="small" v-if="item.isShare" :class="{ 'mr-2': item.isShare }">
+                  分享
+                </el-tag>
+                <el-tag
+                  size="small"
+                  type="success"
+                  v-if="item.isPublic"
+                  :class="{ 'mr-2': item.isPublic }">
+                  公开
+                </el-tag>
+                <el-tag
+                  size="small"
+                  type="warning"
+                  v-if="item.isBlueprint"
+                  :class="{ 'mr-2': item.isBlueprint }">
+                  模板
+                </el-tag>
+              </div>
+              <div class="f-c-s text-text-secondary text-0.8rem mt-4">
                 <img :src="item.consumer.avatar" class="mr-2 w-6 h-6 rd-50%" />
                 <div>
-                  <el-tag size="small" v-if="isMyFlowchart(item)">我的</el-tag>
-                  <span v-else>{{ item.consumer.username }}</span>
+                  {{ item.consumer.username }}
                 </div>
               </div>
               <div class="text-0.8rem mt-4">

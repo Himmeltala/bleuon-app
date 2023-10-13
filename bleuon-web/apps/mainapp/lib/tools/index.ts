@@ -139,33 +139,33 @@ export function getPorts() {
  * 更新 label 文本
  *
  * @param elementView
- * @param textInput
+ * @param input
  */
-export function updateLabelText(elementView: dia.ElementView, textInput: HTMLInputElement) {
+export function updateLabelText(elementView: dia.ElementView, input: HTMLInputElement) {
   // @ts-ignore
   const { model } = elementView;
   const { position, size } = model.attributes;
 
-  textInput.value = model.attr("label/text");
+  input.value = model.attr("label/text");
 
-  textInput.style.top = position.y + "px";
-  textInput.style.left = position.x + "px";
-  textInput.style.width = size.width + "px";
-  textInput.style.height = size.height + "px";
-  textInput.style.display = "block";
+  input.style.top = position.y + "px";
+  input.style.left = position.x + "px";
+  input.style.width = size.width + "px";
+  input.style.height = size.height + "px";
+  input.style.display = "block";
 
   function handleKeydownEvent(event: any) {
     if (event.key === "Enter") {
-      let newCellText = textInput.value;
+      let newCellText = input.value;
       model.attr("label/text", newCellText);
-      textInput.style.display = "none";
-      textInput.removeEventListener("keydown", handleKeydownEvent);
+      input.style.display = "none";
+      input.removeEventListener("keydown", handleKeydownEvent);
     }
   }
 
-  textInput.value = "";
-  textInput.addEventListener("keydown", handleKeydownEvent);
-  textInput.focus();
+  input.value = "";
+  input.addEventListener("keydown", handleKeydownEvent);
+  input.focus();
 }
 
 /**

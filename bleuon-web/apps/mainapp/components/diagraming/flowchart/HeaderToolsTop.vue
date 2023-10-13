@@ -52,7 +52,7 @@ function onEnterFileName() {
 }
 
 function collectFlowchart() {
-  FlowchartApi.addCollect({ flowchartId: flowchartData.value.id });
+  FlowchartApi.addCollect({ flowchartId: flowchartData.value.id, collectingCid: token.id });
 }
 </script>
 

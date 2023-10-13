@@ -17,8 +17,10 @@ public interface ICollectingFlowchartService {
 
     List<Flowchart> findAllByCriteria(FlowchartCriteria criteria);
 
+    Flowchart find(CollectingFlowchart body);
+
     boolean delete(CollectingFlowchart data);
 
-    R<Object> add(CollectingFlowchart data);
+    boolean add(CollectingFlowchart data);
 
 }

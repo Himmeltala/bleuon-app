@@ -20,7 +20,7 @@
         FROM t_flowcharts f
         INNER JOIN t_consumers u ON f.consumer_id = u.id
         INNER JOIN co_collecting_flowchart cf ON f.id = cf.flowchart_id
-        WHERE f.consumer_id = #{collectingCid}
+        WHERE cf.collecting_cid = #{collectingCid}
         <trim prefix="AND" prefixOverrides="AND">
             <if test="fileName != null and fileName != ''">
                 f.file_name = #{fileName}
@@ -36,8 +36,8 @@
         FROM t_flowcharts f
                  INNER JOIN t_consumers u ON u.id = f.consumer_id
                  INNER JOIN co_collecting_flowchart cf ON f.id = cf.flowchart_id
-        WHERE f.consumer_id = #{collectingCid}
-          AND f.id = #{flowchartId};
+        WHERE cf.collecting_cid = #{collectingCid}
+          AND cf.flowchart_id = #{flowchartId};
     </select>
 
     <delete id="delete" parameterType="com.bleuon.entity.CollectingFlowchart">

@@ -21,18 +21,18 @@ const paper = shallowRef<dia.Paper>();
 const graph = shallowRef<dia.Graph>();
 
 const route = useRoute();
-const data = ref<BlueprintFlowchartModel>();
+const mainDataSource = ref<BlueprintFlowchartModel>();
 
 async function fetchData(params: BlueprintFlowchartModel) {
-  data.value = await BlueprintApi.findById(params);
+  mainDataSource.value = await BlueprintApi.findById(params);
 }
 
-function replicateFlowchart() {
-  BlueprintApi.replicate(data.value, res => ElMessage.success(res.message));
+function replicate() {
+  BlueprintApi.replicate(mainDataSource.value, message => ElMessage.success(message.message));
 }
 
-function collectFlowchart() {
-  BlueprintApi.addCollect(data.value);
+function collect() {
+  BlueprintApi.addCollect(mainDataSource.value);
 }
 
 await fetchData({ id: route.params.id.toString() });
@@ -42,9 +42,9 @@ onMounted(() => {
     el: "bleuon-flowchart-content",
     width: "80vw",
     height: "100vh",
-    gridSize: data.value.flowchart.gridSize,
-    bgColor: data.value.flowchart.bgColor,
-    drawGrid: JSON.parse(data.value.flowchart.drawGrid)
+    gridSize: mainDataSource.value.flowchart.gridSize,
+    bgColor: mainDataSource.value.flowchart.bgColor,
+    drawGrid: JSON.parse(mainDataSource.value.flowchart.drawGrid)
   });
 
   paper.value = jointjs.paper;
@@ -52,12 +52,14 @@ onMounted(() => {
 
   paper.value.freeze();
 
-  if (data.value.flowchart.json) {
-    graph.value.fromJSON(JSON.parse(data.value.flowchart.json));
+  if (mainDataSource.value.flowchart.json) {
+    graph.value.fromJSON(JSON.parse(mainDataSource.value.flowchart.json));
   }
 
-  paper.value.options.linkConnectorConfig = JSON.parse(data.value.flowchart.connectorDefault);
-  paper.value.options.linkRouterConfig = JSON.parse(data.value.flowchart.routerDefault);
+  paper.value.options.linkConnectorConfig = JSON.parse(
+    mainDataSource.value.flowchart.connectorDefault
+  );
+  paper.value.options.linkRouterConfig = JSON.parse(mainDataSource.value.flowchart.routerDefault);
 
   paper.value.unfreeze();
 
@@ -65,7 +67,10 @@ onMounted(() => {
     "blank:mousewheel": evt => ListenerService.onMousewheelBlank(evt, paper.value)
   });
 
-  BlueprintApi.upgrade({ views: data.value.views + 1, id: data.value.id }, { nomessage: true });
+  BlueprintApi.upgrade(
+    { views: mainDataSource.value.views + 1, id: mainDataSource.value.id },
+    { nomessage: true }
+  );
 });
 </script>
 
@@ -77,26 +82,26 @@ onMounted(() => {
         <div class="bg-bg-overlay p-5">
           <div class="f-c-b">
             <div>
-              <div class="font-bold text-1.2rem">{{ data.flowchart.fileName }}</div>
+              <div class="font-bold text-1.2rem">{{ mainDataSource.flowchart.fileName }}</div>
               <div class="mt-2 text-text-secondary">
-                修改:{{ DateUtil.formatted(data.flowchart.modifyDate) }}
+                修改:{{ DateUtil.formatted(mainDataSource.flowchart.modifyDate) }}
               </div>
             </div>
             <div class="f-c-s">
               <div class="f-c-s mr-4">
                 <div class="i-tabler-eye mr-2"></div>
-                <span>{{ data.views }}</span>
+                <span>{{ mainDataSource.views }}</span>
               </div>
               <div class="mr-4">
-                <el-button @click="collectFlowchart">
-                  {{ data.stars }}
+                <el-button @click="collect">
+                  {{ mainDataSource.stars }}
                   <template #icon>
                     <div class="i-tabler-star"></div>
                   </template>
                 </el-button>
               </div>
               <div>
-                <el-button type="primary" @click="replicateFlowchart">
+                <el-button type="primary" @click="replicate">
                   导入模板
                   <template #icon>
                     <div class="i-tabler-file-import"></div>
@@ -110,14 +115,14 @@ onMounted(() => {
           </div>
         </div>
         <div class="information mt-5 p-5 bg-bg-overlay">
-          <div class="font-500 text-1.2rem">描述：{{ data.description }}</div>
+          <div class="font-500 text-1.2rem">描述：{{ mainDataSource.description }}</div>
           <div class="mt-5">
-            <el-tag v-for="item in JSON.parse(data.tags)" class="mr-5">{{ item }}</el-tag>
+            <el-tag v-for="item in JSON.parse(mainDataSource.tags)" class="mr-5">{{ item }}</el-tag>
           </div>
-          <router-link :to="'/u/profile/' + data.flowchart.consumer.id">
+          <router-link :to="'/u/profile/' + mainDataSource.flowchart.consumer.id">
             <div class="cursor-pointer f-c-e mt-5">
-              <img :src="data.flowchart.consumer.avatar" class="mr-4 w-10 h-10 rd-50%" />
-              作者：{{ data.flowchart.consumer.username }}
+              <img :src="mainDataSource.flowchart.consumer.avatar" class="mr-4 w-10 h-10 rd-50%" />
+              作者：{{ mainDataSource.flowchart.consumer.username }}
             </div>
           </router-link>
         </div>

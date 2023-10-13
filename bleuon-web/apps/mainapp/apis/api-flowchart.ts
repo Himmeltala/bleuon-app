@@ -12,8 +12,12 @@ import request from "./use-axios";
  * @param body
  * @param success
  */
-export function upgrade(body: FlowchartModel, success?: (data: R) => void) {
-  request.put<R>("/flowchart/upgrade", body).then(({ data }) => {
+export function upgrade(
+  body: FlowchartModel,
+  config?: { nomessage: boolean },
+  success?: (data: R) => void
+) {
+  request.put<R>("/flowchart/upgrade", body, config).then(({ data }) => {
     success && success(data);
   });
 }
@@ -128,7 +132,10 @@ export async function findAllCollectByCriteria(params: { fileName?: string }) {
  * @param body
  * @param success
  */
-export async function addCollect(body: { flowchartId: string }, success?: Function) {
+export async function addCollect(
+  body: { flowchartId: string; collectingCid: string },
+  success?: Function
+) {
   request.post("/flowchart/add/collect", body).then(() => {
     success && success();
   });

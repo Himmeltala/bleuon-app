@@ -32,6 +32,11 @@ public class CollectingFlowchartService implements ICollectingFlowchartService {
     }
 
     @Override
+    public Flowchart find(CollectingFlowchart body) {
+        return mapper.find(body);
+    }
+
+    @Override
     public boolean delete(CollectingFlowchart body) {
         Integer row = mapper.delete(body);
         return row > 0;
@@ -39,14 +44,10 @@ public class CollectingFlowchartService implements ICollectingFlowchartService {
 
     @Override
     @Transactional
-    public R<Object> add(CollectingFlowchart body) {
+    public boolean add(CollectingFlowchart body) {
         try {
-            Flowchart exists = mapper.find(body);
-            if (!Objects.isNull(exists)) return R.failed("您已经收藏过了！");
-
             Integer row = mapper.add(body);
-            if (row > 0) return R.success("收藏成功！");
-            return R.error("收藏失败！");
+            return row > 0;
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());
         }
