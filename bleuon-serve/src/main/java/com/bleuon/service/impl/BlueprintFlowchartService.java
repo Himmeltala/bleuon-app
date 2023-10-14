@@ -29,14 +29,14 @@ public class BlueprintFlowchartService implements IBlueprintFlowchartService {
     @Override
     public R<List<BlueprintFlowchartModel>> findAll(BlueprintFlowchartModel model) {
         List<BlueprintFlowchartModel> list = mapper.findAll(model);
-        if (Objects.isNull(list)) return R.failed("没有查询到流程图！", null);
+        if (Objects.isNull(list)) return R.failed("没有查询到流程图！");
         return R.success(list);
     }
 
     @Override
     public R<BlueprintFlowchartModel> findById(BlueprintFlowchartModel model) {
         BlueprintFlowchartModel flowchart = mapper.find(model);
-        if (Objects.isNull(flowchart)) return R.failed("没有查询到流程图！", null);
+        if (Objects.isNull(flowchart)) return R.failed("没有查询到流程图！");
         return R.success(flowchart);
     }
 

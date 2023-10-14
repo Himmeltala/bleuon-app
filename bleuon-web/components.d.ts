@@ -10,6 +10,8 @@ declare module 'vue' {
     AvatarUpload: typeof import('./common/components/AvatarUpload.vue')['default']
     EditInput: typeof import('./common/components/EditInput.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
+    ElCarousel: typeof import('element-plus/es')['ElCarousel']
+    ElCarouselItem: typeof import('element-plus/es')['ElCarouselItem']
     ElColorPicker: typeof import('element-plus/es')['ElColorPicker']
     ElDatePicker: typeof import('element-plus/es')['ElDatePicker']
     ElDialog: typeof import('element-plus/es')['ElDialog']

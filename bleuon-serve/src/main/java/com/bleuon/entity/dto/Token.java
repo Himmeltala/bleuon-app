@@ -1,20 +1,24 @@
 package com.bleuon.entity.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.io.Serializable;
 
-/**
- * 与前端交互的实体类，封装 jwt，包括过期时间、用户名、角色、权限等信息。
- *
- * @author zheng
- */
+@Schema(description = "jwt")
 @Data
 public class Token implements Serializable {
 
+    @Schema(description = "过期时间")
     private Long expire;
+
+    @Schema(description = "jwt 值")
     private String value;
+
+    @Schema(description = "用户名")
     private String username;
+
+    @Schema(description = "用户 UUID")
     private String id;
 
     public Token() {

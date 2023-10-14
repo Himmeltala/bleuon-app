@@ -40,7 +40,7 @@ await fetchData(route.params.id);
 <template>
   <div class="profile slim-slider h-100vh flow-auto bg-bg-page">
     <CommonHeader active-name="personal"></CommonHeader>
-    <div class="f-s-b py-20 px-20 mx-50 mt-2 rd-2 bg-bg-overlay">
+    <div class="f-s-b py-20 px-20 mx-50 mt-5 rd-2 bg-bg-overlay">
       <div class="f-c-c">
         <router-link to="/u/setting">
           <img :src="formData.avatar" class="cursor-pointer rd-50% h-30 w-30" />

@@ -15,23 +15,24 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
- * @author zheng
+ * @description:
+ * @package: com.bleuon.entity
+ * @author: zheng
+ * @date: 2023/8/22
  */
-@Data
 @TableName("t_consumers")
+@Schema(description = "用户模型")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "用户实体类")
 public class ConsumerModel implements Serializable {
 
-    @Schema(
-            description = "UUID",
-            example = "ea209fbb-8f0e-483e-be86-c3629ecbe6d1"
-    )
+    @Schema(description = "UUID", example = "ea209fbb-8f0e-483e-be86-c3629ecbe6d1")
     @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
     @TableId
     private String id;
 
+    @Schema(description = "用户名")
     @Pattern(regexp = ValidPattern.USERNAME, message = "字母、中文、-、_，不能以数字开头、-、_开头，长度在4~16")
     @TableField
     private String username;
@@ -48,24 +49,31 @@ public class ConsumerModel implements Serializable {
     @TableField
     private String email;
 
+    @Schema(description = "职业")
     @TableField
     private String profession;
 
+    @Schema(description = "公司")
     @TableField
     private String company;
 
+    @Schema(description = "行业")
     @TableField
     private String position;
 
+    @Schema(description = "学历")
     @TableField
     private String degree;
 
+    @Schema(description = "头像地址")
     @TableField
     private String avatar;
 
+    @Schema(description = "个性签名")
     @TableField
     private String signature;
 
+    @Schema(description = "性别")
     @Pattern(regexp = "(男|女|保密)", message = "性别男、女或保密")
     @TableField
     private String sex;

@@ -41,9 +41,6 @@ const searchVal = ref("");
 
 function onEnter() {
   fetchData({
-    scene: scene.value,
-    price: price.value,
-    ranking: ranking.value,
     fileName: searchVal.value
   });
 }

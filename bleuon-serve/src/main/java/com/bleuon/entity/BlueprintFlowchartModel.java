@@ -19,13 +19,11 @@ import java.sql.Timestamp;
  * @author: zheng
  * @date: 2023/10/5
  */
+@Schema(description = "流程图模板模型")
+@TableName("t_blueprint_flowcharts")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("t_blueprint_flowcharts")
-@Schema(
-        description = "流程图模板"
-)
 public class BlueprintFlowchartModel implements Serializable {
 
     @Schema(description = "UUID")
@@ -67,11 +65,11 @@ public class BlueprintFlowchartModel implements Serializable {
     @TableField("flowchart_id")
     private String flowchartId;
 
-    @Schema(description = "与流程图一对一关系")
+    @Schema(description = "流程图模型")
     @TableField(exist = false)
     private FlowchartModel flowchart;
 
-    @Schema(description = "非表字段，用于查询时条件查询")
+    @Schema(description = "条件查询时查询所需属性")
     @TableField(exist = false)
     private String fileName;
 

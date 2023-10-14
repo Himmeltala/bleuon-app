@@ -5,6 +5,8 @@ import com.bleuon.entity.vo.FileParamsVO;
 import com.bleuon.service.FileService;
 import com.bleuon.utils.http.R;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
@@ -42,9 +44,11 @@ public class FileController {
         }
     }
 
-    @Operation(summary = "校验注册验证码")
+    @Operation(summary = "上传图片", parameters = {
+            @Parameter(name = "path", description = "图片路径，上传到 classes/target 目录下", example = "/static/images/avatar", in = ParameterIn.HEADER)
+    })
     @PostMapping("/upload/image")
-    public R<Object> uploadCkeditorImage(MultipartFile file, String path) {
+    public R<Object> uploadImageFile(MultipartFile file, String path) {
         if (file.isEmpty()) {
             return R.error("请选择一个图片！");
         }

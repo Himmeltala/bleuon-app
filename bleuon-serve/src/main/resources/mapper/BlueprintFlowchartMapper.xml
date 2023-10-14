@@ -51,7 +51,7 @@
                     AND tf.ranking = #{ranking}
                 </if>
                 <if test="fileName != null and fileName != ''">
-                    AND f.file_name like #{fileName}
+                    AND f.file_name LIKE CONCAT('%', #{fileName}, '%');
                 </if>
             </trim>
         </where>

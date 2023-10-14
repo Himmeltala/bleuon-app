@@ -2,35 +2,43 @@ package com.bleuon.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.bleuon.constant.ValidPattern;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.bleuon.entity.dto.ConsumerDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
  * @description:
- * @package: com.bleuon.entity.vo
+ * @package: com.bleuon.entity
  * @author: zheng
- * @date: 2023/10/13
+ * @date: 2023/10/14
  */
-@Schema(description = "用户关注模型")
+@Schema(description = "社区帖子评论模型")
+@TableName("t_post_comments")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CollectingConsumerModel implements Serializable {
+public class PostCommentModel {
 
-    @Schema(description = "用户关注 UUID")
+    @Schema(description = "UUID")
+    @NotEmpty
     @TableId
     private String id;
 
-    @Schema(description = "备注")
-    private String remark;
+    @Schema(description = "评论内容")
+    @NotEmpty
+    private String content;
+
+    @Schema(description = "赞成数")
+    private Integer digg;
+
+    @Schema(description = "反对数")
+    private Integer bury;
 
     @Schema(description = "创建日期")
     @TableField("create_date")
@@ -40,15 +48,12 @@ public class CollectingConsumerModel implements Serializable {
     @TableField("modify_date")
     private Timestamp modifyDate;
 
-    @Schema(description = "关注的用户实体类")
-    @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
+    @Schema(description = "评论所属用户 ID")
+    @NotEmpty
+    @TableField("consumer_id")
     private String consumerId;
 
-    @Schema(description = "关注者的 ID")
-    @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
-    private String collectingCid;
-
-    @Schema(description = "用户模型")
+    @Schema(description = "评论所属用户模型")
     @TableField(exist = false)
     private ConsumerDTO consumer;
 

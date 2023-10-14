@@ -63,10 +63,9 @@ public class ConsumerController {
 
     @Operation(summary = "更新用户数据")
     @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:consumer:upgrade')")
-    @PutMapping("/upgrade/{id}")
+    @PutMapping("/upgrade")
     public R<Object> upgrade(@Validated @RequestBody ConsumerModel model) {
         boolean status = consumerService.upgrade(model);
-
         return status ? R.success("更新资料成功！") : R.error("更新资料失败！");
     }
 

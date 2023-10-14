@@ -1,5 +1,6 @@
 package com.bleuon.entity.vo;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,19 +13,16 @@ import java.io.Serializable;
  * @author: zheng
  * @date: 2023/10/12
  */
+@Schema(description = "排序条件模型")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Sequence implements Serializable {
 
-    /**
-     * 是否升序
-     */
+    @Schema(description = "是否升序")
     private Boolean isAsc;
 
-    /**
-     * 字段名称
-     */
+    @Schema(description = "升序字段名称")
     private String col;
 
 }
