@@ -7,7 +7,13 @@
 
 export function formatted(
   timestamp?: string,
-  format?: "yyyy-MM-dd HH:mm:ss" | "HH:mm:ss" | "yyyy-MM-dd" | "MM-dd HH:mm:ss"
+  format?:
+    | "yyyy-MM-dd HH:mm:ss"
+    | "HH:mm:ss"
+    | "yyyy-MM-dd"
+    | "MM-dd HH:mm:ss"
+    | "MM-dd"
+    | "MM-dd HH:mm"
 ): string {
   let date = new Date(),
     pattern = `${format || "yyyy-MM-dd HH:mm:ss"}`;

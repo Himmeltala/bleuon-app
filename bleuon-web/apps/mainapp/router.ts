@@ -77,6 +77,12 @@ const router = createRouter({
           name: "auth-discussion-community",
           meta: { title: "讨论社区" },
           component: () => import("@mainapp/views/community/DiscussionCommunity.vue")
+        },
+        {
+          path: "article/:id",
+          name: "auth-article-detail-community",
+          meta: { title: "帖子详情" },
+          component: () => import("@mainapp/views/community/ArticleDetail.vue")
         }
       ]
     },
