@@ -10,10 +10,10 @@ import request from "./use-axios";
 /**
  * 通过条件查询图形列表
  *
- * @param params
+ * @param model
  * @returns
  */
-export async function findAllByCriteria(params: { type: "basic" | "flowchart" }) {
-  const { data } = await request.get<R>("/cell/find/all/by/criteria", { params });
+export async function findAllByCriteria(model: { type: "basic" | "flowchart" }) {
+  const { data } = await request.get<R>("/cell/find/all/by/criteria", { params: model });
   return data.data;
 }

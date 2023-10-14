@@ -35,7 +35,7 @@ function replicate() {
 }
 
 function collect() {
-  BlueprintApi.addCollect(mainDataSource.value);
+  BlueprintApi.addCollecting(mainDataSource.value, token.id);
 }
 
 await fetchData({ id: route.params.id.toString() });

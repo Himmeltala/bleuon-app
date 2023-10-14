@@ -1,16 +1,13 @@
 package com.bleuon.controller;
 
 import com.bleuon.annotaion.RequestMappingPrefix;
-import com.bleuon.constant.KeyVals;
 import com.bleuon.entity.BlueprintFlowchartModel;
 import com.bleuon.entity.CollectingFlowchartModel;
 import com.bleuon.entity.FlowchartModel;
 import com.bleuon.service.impl.BlueprintFlowchartService;
 import com.bleuon.service.impl.CollectingFlowchartService;
 import com.bleuon.service.impl.FlowchartService;
-import com.bleuon.utils.JwtUtil;
 import com.bleuon.utils.http.R;
-import io.jsonwebtoken.Claims;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -77,11 +74,10 @@ public class BlueprintController {
 
     @Operation(summary = "收藏流程图模板")
     @PreAuthorize("hasAnyAuthority('sys:add', 'sys:consumer:add')")
-    @PostMapping("/add/collecting")
-    public R<Object> addCollecting(@RequestHeader(KeyVals.Token) String token,
+    @PostMapping("/add/collecting/{consumerId}")
+    public R<Object> addCollecting(@PathVariable String consumerId,
                                    @RequestBody @Validated BlueprintFlowchartModel model) {
-        Claims claims = JwtUtil.parseJwt(token);
-        CollectingFlowchartModel collectingFlowchart = new CollectingFlowchartModel((String) claims.get("id"), model.getFlowchartId());
+        CollectingFlowchartModel collectingFlowchart = new CollectingFlowchartModel(consumerId, model.getFlowchartId());
         FlowchartModel exists = collectFlowchartService.find(collectingFlowchart);
         if (!Objects.isNull(exists)) return R.failed("您已经收藏过了！");
 

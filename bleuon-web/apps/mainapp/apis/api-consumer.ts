@@ -10,16 +10,16 @@ import request from "./use-axios";
 /**
  * 获取验证码
  *
- * @param params
+ * @param model
  * @param success
  */
 export function askMailCaptcha(
-  params: {
+  model: {
     email: string;
   },
   success?: Function
 ) {
-  request.get<R>("/public/entrance/aks/email-captcha", { params }).then(({ data }) => {
+  request.get<R>("/public/entrance/aks/email-captcha", { params: model }).then(({ data }) => {
     success && success(data);
   });
 }
@@ -27,16 +27,16 @@ export function askMailCaptcha(
 /**
  * 获取邮箱登录验证码
  *
- * @param params
+ * @param model
  * @param success
  */
 export function askLoginEmailCaptcha(
-  params: {
+  model: {
     email: string;
   },
   success?: Function
 ) {
-  request.get<R>("/public/entrance/ask/login-email-captcha", { params }).then(({ data }) => {
+  request.get<R>("/public/entrance/ask/login-email-captcha", { params: model }).then(({ data }) => {
     success && success(data);
   });
 }
@@ -44,33 +44,35 @@ export function askLoginEmailCaptcha(
 /**
  * 获取邮箱注册验证码
  *
- * @param params
+ * @param model
  * @param success
  */
 export function askRegisterEmailCaptcha(
-  params: {
+  model: {
     email: string;
   },
   success?: Function
 ) {
-  request.get<R>("/public/entrance/ask/register-email-captcha", { params }).then(({ data }) => {
-    success && success(data);
-  });
+  request
+    .get<R>("/public/entrance/ask/register-email-captcha", { params: model })
+    .then(({ data }) => {
+      success && success(data);
+    });
 }
 
 /**
  * 获取密码重置的邮箱验证码
  *
- * @param params
+ * @param model
  * @param success
  */
 export function askResetEmailCaptcha(
-  params: {
+  model: {
     email: string;
   },
   success?: Function
 ) {
-  request.get<R>("/public/entrance/ask/reset-email-captcha", { params }).then(({ data }) => {
+  request.get<R>("/public/entrance/ask/reset-email-captcha", { params: model }).then(({ data }) => {
     success && success(data);
   });
 }
@@ -78,17 +80,17 @@ export function askResetEmailCaptcha(
 /**
  * 校验邮箱验证码
  *
- * @param body
+ * @param model
  * @param success
  */
 export function verifyEmailCaptcha(
-  body: {
+  model: {
     email: string;
     captcha: string;
   },
   success: (res: Token) => void
 ) {
-  request.post<R<Token>>("/public/entrance/verify/email-captcha", body).then(({ data }) => {
+  request.post<R<Token>>("/public/entrance/verify/email-captcha", model).then(({ data }) => {
     success(data.data);
   });
 }
@@ -96,17 +98,17 @@ export function verifyEmailCaptcha(
 /**
  * 校验邮箱验证码注册
  *
- * @param body
+ * @param model
  * @param params
  * @param success
  */
 export function verifyRegisterEmailCaptcha(
-  body: ConsumerModel,
+  model: ConsumerModel,
   params: { email: string; captcha: string },
   success?: Function
 ) {
   request
-    .post<R>("/public/entrance/verify/register-email-captcha", body, { params })
+    .post<R>("/public/entrance/verify/register-email-captcha", model, { params })
     .then(({ data }) => {
       success && success(data);
     });
@@ -115,17 +117,17 @@ export function verifyRegisterEmailCaptcha(
 /**
  * 校验邮箱验证码登录
  *
- * @param body
+ * @param model
  * @param success
  */
 export function verifyLoginEmailCaptcha(
-  body: {
+  model: {
     email: string;
     captcha: string;
   },
   success: (res: Token) => void
 ) {
-  request.post<R<Token>>("/public/entrance/verify/login-email-captcha", body).then(({ data }) => {
+  request.post<R<Token>>("/public/entrance/verify/login-email-captcha", model).then(({ data }) => {
     success(data.data);
   });
 }
@@ -133,11 +135,11 @@ export function verifyLoginEmailCaptcha(
 /**
  * 邮箱、用户名或手机号注册
  *
- * @param body
+ * @param model
  * @param success
  */
-export function accountRegister(body: ConsumerModel, success?: Function) {
-  request.post<R>("/public/entrance/account-register", body).then(({ data }) => {
+export function accountRegister(model: ConsumerModel, success?: Function) {
+  request.post<R>("/public/entrance/account-register", model).then(({ data }) => {
     success && success(data);
   });
 }
@@ -145,15 +147,15 @@ export function accountRegister(body: ConsumerModel, success?: Function) {
 /**
  * 邮箱、用户名或手机号登录
  *
- * @param body
+ * @param model
  * @param success
  */
-export function authLogin(body: ConsumerModel, success: (res: Token) => void) {
+export function authLogin(model: ConsumerModel, success: (res: Token) => void) {
   const headers = {
     "Content-Type": "application/x-www-form-urlencoded"
   };
 
-  request.post<R<Token>>("/auth/login", body, { headers }).then(({ data }) => {
+  request.post<R<Token>>("/auth/login", model, { headers }).then(({ data }) => {
     success(data.data);
   });
 }
@@ -177,11 +179,11 @@ export function authLogout(success?: Function, error?: Function) {
 /**
  * 重置密码
  *
- * @param body 用户实体类
+ * @param model 用户实体类
  * @param success
  */
-export function resetPassword(body: ConsumerModel, success: Function) {
-  request.post<R>("/public/entrance/reset-password", body).then(({ data }) => {
+export function resetPassword(model: ConsumerModel, success: Function) {
+  request.post<R>("/public/entrance/reset-password", model).then(({ data }) => {
     success(data);
   });
 }
@@ -200,11 +202,11 @@ export async function findById(id: string) {
 /**
  * 更新用户资料
  *
- * @param body
+ * @param model
  * @param success
  */
-export async function upgrade(body: ConsumerModel, success?: Function) {
-  request.put<R>(`/consumer/upgrade`, body).then(({ data }) => {
+export async function upgrade(model: ConsumerModel, success?: Function) {
+  request.put<R>(`/consumer/upgrade`, model).then(({ data }) => {
     success && success(data);
   });
 }
@@ -240,12 +242,12 @@ export async function findAllDynamicByCriteria(criteria: {
 /**
  * 更新动态
  *
- * @param data id
+ * @param model id
  * @param success
  */
-export function upgradeDynamic(data: DynamicModel, success?: Function) {
+export function upgradeDynamic(model: DynamicModel, success?: Function) {
   request
-    .put<R>("/consumer/upgrade/dynamic", data, {
+    .put<R>("/consumer/upgrade/dynamic", model, {
       nomessage: true
     })
     .then(() => {
@@ -256,11 +258,11 @@ export function upgradeDynamic(data: DynamicModel, success?: Function) {
 /**
  * 删除动态
  *
- * @param params id
+ * @param model
  * @param success
  */
-export function deleteDynamic(params: DynamicModel, success?: Function) {
-  request.delete<R>("/consumer/delete/dynamic", { params }).then(() => {
+export function deleteDynamic(model: DynamicModel, success?: Function) {
+  request.delete<R>("/consumer/delete/dynamic", { params: model }).then(() => {
     success && success();
   });
 }
@@ -268,11 +270,11 @@ export function deleteDynamic(params: DynamicModel, success?: Function) {
 /**
  * 新增动态
  *
- * @param body
+ * @param model
  * @param success
  */
-export function addDynamic(body: DynamicModel, success?: Function) {
-  request.post<R>("/consumer/add/dynamic", body).then(() => {
+export function addDynamic(model: DynamicModel, success?: Function) {
+  request.post<R>("/consumer/add/dynamic", model).then(() => {
     success && success();
   });
 }
@@ -280,16 +282,16 @@ export function addDynamic(body: DynamicModel, success?: Function) {
 /**
  * 查询公开、分享的流程图
  *
- * @param params
+ * @param model
  * @returns
  */
-export async function findAllFlowchart(params: {
+export async function findAllFlowchart(model: {
   collectingCid: string;
   isPublic?: 1 | 0;
   isShare?: 1 | 0;
 }) {
   const { data } = await request.get<R<FlowchartModel[]>>("/consumer/find/all/flowchart", {
-    params
+    params: model
   });
   return data.data;
 }
@@ -297,17 +299,17 @@ export async function findAllFlowchart(params: {
 /**
  * 查询关注的用户列表
  *
- * @param params
+ * @param model
  * @returns
  */
-export async function findAllCollectingConsumerByCriteria(params: {
+export async function findAllCollectingConsumerByCriteria(model: {
   collectingCid: string;
   remark?: string;
   sequences?: { isAsc: boolean; col: string }[];
 }) {
   const { data } = await request.get<R<CollectingConsumerModel[]>>(
     "/consumer/find/all/collecting/criteria",
-    { params }
+    { params: model }
   );
   return data.data;
 }
@@ -315,11 +317,11 @@ export async function findAllCollectingConsumerByCriteria(params: {
 /**
  * 新增一个关注用户
  *
- * @param body
+ * @param model
  * @param success
  */
-export function addCollecting(body: CollectingConsumerModel, success?: Function) {
-  request.post<R>("/consumer/add/collecting", body).then(() => {
+export function addCollecting(model: CollectingConsumerModel, success?: Function) {
+  request.post<R>("/consumer/add/collecting", model).then(() => {
     success && success();
   });
 }
@@ -327,11 +329,11 @@ export function addCollecting(body: CollectingConsumerModel, success?: Function)
 /**
  * 删除一个关注用户
  *
- * @param params
+ * @param model
  * @param success
  */
-export function deleteCollecting(params: CollectingConsumerModel, success?: Function) {
-  request.delete<R>("/consumer/delete/collecting", { params }).then(() => {
+export function deleteCollecting(model: CollectingConsumerModel, success?: Function) {
+  request.delete<R>("/consumer/delete/collecting", { params: model }).then(() => {
     success && success();
   });
 }

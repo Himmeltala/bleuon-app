@@ -10,12 +10,12 @@ import request from "./use-axios";
 /**
  * 获取所有流程图模板
  *
- * @param params
+ * @param model
  * @returns
  */
-export async function findAll(params?: BlueprintFlowchartModel) {
+export async function findAll(model?: BlueprintFlowchartModel) {
   const { data } = await request.get<R<BlueprintFlowchartModel[]>>("/blueprint/find/all", {
-    params
+    params: model
   });
   return data.data;
 }
@@ -23,12 +23,12 @@ export async function findAll(params?: BlueprintFlowchartModel) {
 /**
  * 获取流程图模板
  *
- * @param params
+ * @param model
  * @returns
  */
-export async function findById(params: BlueprintFlowchartModel) {
+export async function findById(model: BlueprintFlowchartModel) {
   const { data } = await request.get<R<BlueprintFlowchartModel>>("/blueprint/find/by/id", {
-    params
+    params: model
   });
   return data.data;
 }
@@ -52,16 +52,16 @@ export async function replicate(
 /**
  * 更新模板
  *
- * @param body
+ * @param model
  * @param config
  * @param success
  */
 export async function upgrade(
-  body: BlueprintFlowchartModel,
+  model: BlueprintFlowchartModel,
   config?: { nomessage: boolean },
   success?: (res: R) => void
 ) {
-  request.put("/blueprint/upgrade", body, config).then(({ data }) => {
+  request.put("/blueprint/upgrade", model, config).then(({ data }) => {
     success && success(data);
   });
 }
@@ -69,9 +69,15 @@ export async function upgrade(
 /**
  * 收藏该流程图
  *
- * @param body
+ * @param model
  * @param success
  */
-export function addCollect(body: BlueprintFlowchartModel, success?: (res: R) => void) {
-  request.post<R>("/blueprint/add/collecting", body).then(({ data }) => success && success(data));
+export function addCollecting(
+  model: BlueprintFlowchartModel,
+  consumerId: string,
+  success?: (res: R) => void
+) {
+  request
+    .post<R>(`/blueprint/add/collecting/${consumerId}`, model)
+    .then(({ data }) => success && success(data));
 }
