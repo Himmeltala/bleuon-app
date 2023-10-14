@@ -22,10 +22,10 @@ await fetchData();
 </script>
 
 <template>
-  <div class="discussion-community slim-slider min-h-100vh bg-bg-page">
+  <div class="discussion-community bg-bg-page">
     <CommonHeader active-name="discussion"></CommonHeader>
-    <div class="content f-c-c">
-      <div class="wrapper w-60vw mt-5 f-s-b">
+    <div class="content max-h-100vh pt-40 pb-5 slim-slider flow-auto f-c-c">
+      <div class="wrapper w-60vw f-s-b">
         <div class="posts w-70%">
           <el-carousel :interval="4000" type="card" height="12rem">
             <el-carousel-item class="rd-2">
@@ -46,7 +46,7 @@ await fetchData();
           </el-carousel>
           <div class="mt-4">
             <div
-              class="post-item cursor-pointer rd-2 bg-bg-overlay p-5 mb-2"
+              class="post-item cursor-pointer rd-2 bg-bg-overlay p-5 mt-2"
               v-for="item in mainDataSource">
               <div class="poster f-c-s">
                 <div class="f-c-s mr-4">
@@ -103,13 +103,31 @@ await fetchData();
             </div>
           </div>
         </div>
-        <div class="tools w-25%"></div>
+        <div class="tools w-28%">
+          <div class="bg-bg-overlay rd-2 py-5 px-10">
+            <div>
+              <el-button type="primary" class="w-100%">
+                发表帖子
+                <template #icon>
+                  <div class="i-tabler-edit"></div>
+                </template>
+              </el-button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
+.discussion-community {
+  background-image: url(https://www.miyoushe.com/_nuxt/img/background.cd0a312.png);
+  background-position: 0 5rem;
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+
 .post-body:hover {
   .title {
     --uno: text-theme-primary;

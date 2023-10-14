@@ -52,7 +52,11 @@
         </where>
     </select>
 
-    <select id="findUserById">
+    <resultMap id="findUserByIdMap" type="com.bleuon.entity.dto.ConsumerDTO" autoMapping="true">
+        <id column="id" property="id"/>
+    </resultMap>
+
+    <select id="findUserById" resultMap="findUserByIdMap">
         SELECT avatar, username, id
         FROM t_consumers
         WHERE id = #{consumerId};
