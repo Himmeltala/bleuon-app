@@ -1,4 +1,4 @@
-package com.bleuon.entity.vo;
+package com.bleuon.entity.criterias;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

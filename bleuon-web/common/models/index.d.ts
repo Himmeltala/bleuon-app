@@ -75,3 +75,34 @@ declare type CollectingConsumerModel = Partial<{
   consumerId: string;
   consumer: ConsumerModel;
 }>;
+
+declare type PostCommentModel = Partial<{
+  id: string;
+  content: string;
+  digg: number;
+  bury: number;
+  createDate: string;
+  modifyDate: string;
+  consumerId: string;
+  consumer: ConsumerModel;
+}>;
+
+declare type PostModel = Partial<{
+  id: string;
+  title: string;
+  titleTag: string;
+  digg: number;
+  bury: number;
+  views: number;
+  desc: string;
+  descTag: string;
+  descImgs: string;
+  type: string;
+  rankingType: string;
+  content: string;
+  consumerId: string;
+  createDate: string;
+  modifyDate: string;
+  consumer: ConsumerModel;
+  comments: PostCommentModel[];
+}>;

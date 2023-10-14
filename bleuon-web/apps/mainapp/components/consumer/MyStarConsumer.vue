@@ -6,7 +6,7 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import { ConsumerApi } from "@mainapp/apis";
+import { ConsumerAPI } from "@mainapp/apis";
 
 const props = defineProps({
   consumer: {
@@ -15,12 +15,12 @@ const props = defineProps({
 });
 
 const starList = ref(
-  await ConsumerApi.findAllCollectingConsumerByCriteria({ collectingCid: props.consumer.id })
+  await ConsumerAPI.findAllCollectingConsumerByCriteria({ collectingCid: props.consumer.id })
 );
 
-function cancelStar(item: CollectingConsumerModel, index:number) {
-  ConsumerApi.deleteCollecting({ id: item.id }, () => {
-    starList.value.splice(index, 1)
+function cancelStar(item: CollectingConsumerModel, index: number) {
+  ConsumerAPI.deleteCollecting({ id: item.id }, () => {
+    starList.value.splice(index, 1);
   });
 }
 </script>
@@ -44,7 +44,9 @@ function cancelStar(item: CollectingConsumerModel, index:number) {
       </div>
       <div class="options">
         <div>
-          <el-button type="danger" size="small" @click="cancelStar(item, index)">取消关注</el-button>
+          <el-button type="danger" size="small" @click="cancelStar(item, index)"
+            >取消关注</el-button
+          >
         </div>
       </div>
     </div>

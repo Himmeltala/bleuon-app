@@ -1,7 +1,7 @@
 package com.bleuon.service;
 
 import com.bleuon.entity.CollectingConsumerModel;
-import com.bleuon.entity.vo.ConsumerCriteria;
+import com.bleuon.entity.criterias.ConsumerCriteria;
 
 import java.util.List;
 

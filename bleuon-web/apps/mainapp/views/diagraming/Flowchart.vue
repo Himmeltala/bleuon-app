@@ -10,7 +10,7 @@
 import "jointjs/css/layout.css";
 import "jointjs/css/themes/default.css";
 
-import { FlowchartApi } from "@mainapp/apis";
+import { FlowchartAPI } from "@mainapp/apis";
 import * as Data from "@mainapp/data/diagraming/flowchart";
 import { dia, initJointJs } from "@mainapp/lib";
 import { getDataUri } from "@mainapp/lib/tools";
@@ -37,7 +37,7 @@ provide(KeyVals.BLEUON_FLOWCHART_GRAPH, graph);
 provide(KeyVals.BLEUON_FLOWCHART_DATA, mainDataSource);
 
 async function fetchData() {
-  mainDataSource.value = await FlowchartApi.findById({ id: route.params.id.toString() });
+  mainDataSource.value = await FlowchartAPI.findById({ id: route.params.id.toString() });
 }
 
 function upgradeMeta(config: { nomessage: boolean }, success?: (message: any) => void) {
@@ -49,7 +49,7 @@ function upgradeMeta(config: { nomessage: boolean }, success?: (message: any) =>
   mainDataSource.value.connectorDefault = JSON.stringify(Data.linkConnectorConfig.value);
   mainDataSource.value.routerDefault = JSON.stringify(Data.linkRouterConfig.value);
   mainDataSource.value.dataUri = getDataUri(paper.value);
-  FlowchartApi.upgrade(mainDataSource.value, config, success);
+  FlowchartAPI.upgrade(mainDataSource.value, config, success);
 }
 
 const upgradeThrottle = PreventUtil.throttle(() => upgradeMeta({ nomessage: true }), 300);
@@ -143,7 +143,7 @@ const shareFormRules = reactive<FormRules<any>>({
 function confirmShare() {
   FormValidatorsUtil.validate(shareFormRef.value, () => {
     mainDataSource.value.isShare = 1;
-    FlowchartApi.upgrade(mainDataSource.value, { nomessage: true }, message => {
+    FlowchartAPI.upgrade(mainDataSource.value, { nomessage: true }, message => {
       if (message.code === 200) {
         ElMessage.success("分享成功！");
       } else {
@@ -157,7 +157,7 @@ function confirmShare() {
 function cancelShare() {
   mainDataSource.value.isShare = 0;
   mainDataSource.value.deadShareDate = null;
-  FlowchartApi.upgrade(mainDataSource.value, { nomessage: true }, message => {
+  FlowchartAPI.upgrade(mainDataSource.value, { nomessage: true }, message => {
     if (message.code === 200) {
       ElMessage.success("取消分享成功！");
     } else {
@@ -231,7 +231,7 @@ function closeReleaseTag(index: number) {
 function confirmRelease() {
   FormValidatorsUtil.validate(releaseFormRef.value, () => {
     releaseFormData.tags = JSON.stringify(releaseTagList.value);
-    FlowchartApi.release(
+    FlowchartAPI.release(
       { ...{ flowchartId: mainDataSource.value.id }, ...releaseFormData },
       () => {
         mainDataSource.value.isPublic = 1;
@@ -241,7 +241,7 @@ function confirmRelease() {
 }
 
 function cancelRelease() {
-  FlowchartApi.cancelRelease({ flowchartId: mainDataSource.value.id }, () => {
+  FlowchartAPI.cancelRelease({ flowchartId: mainDataSource.value.id }, () => {
     mainDataSource.value.isPublic = 0;
   });
 }

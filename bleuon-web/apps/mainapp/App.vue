@@ -6,7 +6,7 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import { ConsumerApi } from "@mainapp/apis";
+import { ConsumerAPI } from "@mainapp/apis";
 
 const html = document.querySelector("html");
 const themeMode = useStorage(KeyVals.MAINAPP_THEME_MODE, "");

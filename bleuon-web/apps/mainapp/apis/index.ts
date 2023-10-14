@@ -1,5 +1,6 @@
-export * as FlowchartApi from "./api-flowchart";
-export * as CellsApi from "./api-cells";
-export * as BlueprintApi from "./api-blueprint";
-export * as ConsumerApi from "./api-consumer";
-export * as FileApi from "./api-file";
+export * as FlowchartAPI from "./api-flowchart";
+export * as CellsAPI from "./api-cells";
+export * as BlueprintAPI from "./api-blueprint";
+export * as ConsumerAPI from "./api-consumer";
+export * as FileAPI from "./api-file";
+export * as DiscussionAPI from "./api-discussion";

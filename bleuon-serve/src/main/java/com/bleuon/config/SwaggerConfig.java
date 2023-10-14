@@ -17,6 +17,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SwaggerConfig {
 
+    private static final String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImVhMjA5ZmJiLThmMGUtNDgzZS1iZTg2LWMzNjI5ZWNiZTZkMSIsInVzZXJuYW1lIjoiSGltbWVsYmxldSIsInN1YiI6ImJsZXVvbiIsImV4cCI6MTY5Nzg3NzMyMywiaWF0IjoxNjk3MjcyNTIzLCJqdGkiOiJhYzIxYzI2Mi1kMDBiLTQ1NjEtYTMwYS1jNzA1NzUwYTJkOGMifQ.DwRS5xWP-0PS73TYxPzC3-pXYMIHLQ_KGYYtnrtzAQ8";
+
     @Bean
     public OpenAPI customize() {
         Components components = new Components();
@@ -25,8 +27,7 @@ public class SwaggerConfig {
                 .name("bearerAuth")
                 .type(SecurityScheme.Type.HTTP)
                 .scheme("bearer")
-                .bearerFormat("JWT")
-                .description("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImVhMjA5ZmJiLThmMGUtNDgzZS1iZTg2LWMzNjI5ZWNiZTZkMSIsInVzZXJuYW1lIjoiSGltbWVsYmxldSIsInN1YiI6ImJsZXVvbiIsImV4cCI6MTY5NzczNTk2NiwiaWF0IjoxNjk3MTMxMTY2LCJqdGkiOiJmNmI1MDQyOC1kNDNkLTQ2MzUtYjYzNy01MzY5YTAyNWRiMmIifQ.C8uCQ2lyys4zRcPFhSMTN4bkN7xvtIcLIy-U0tJbXho");
+                .bearerFormat("JWT").description(token);
 
         components.addSecuritySchemes("bearerAuth", scheme);
 

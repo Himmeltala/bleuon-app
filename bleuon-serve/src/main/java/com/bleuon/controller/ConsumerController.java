@@ -7,10 +7,10 @@ import com.bleuon.entity.ConsumerModel;
 import com.bleuon.entity.DynamicModel;
 import com.bleuon.entity.FlowchartModel;
 import com.bleuon.entity.dto.ConsumerDTO;
-import com.bleuon.entity.vo.ConsumerCriteria;
-import com.bleuon.entity.vo.DynamicCriteria;
-import com.bleuon.entity.vo.FlowchartCriteria;
-import com.bleuon.entity.vo.Sequence;
+import com.bleuon.entity.criterias.ConsumerCriteria;
+import com.bleuon.entity.criterias.DynamicCriteria;
+import com.bleuon.entity.criterias.FlowchartCriteria;
+import com.bleuon.entity.criterias.Sequence;
 import com.bleuon.service.impl.CollectingConsumerService;
 import com.bleuon.service.impl.ConsumerService;
 import com.bleuon.service.impl.DynamicService;
@@ -18,6 +18,7 @@ import com.bleuon.service.impl.FlowchartService;
 import com.bleuon.utils.http.R;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
@@ -47,21 +48,17 @@ public class ConsumerController {
     private final FlowchartService flowchartService;
     private final CollectingConsumerService collectingConsumerService;
 
-    @Operation(summary = "通过 id 查询用户数据")
+    @Operation(summary = "查询用户", parameters = {
+            @Parameter(name = "id", description = "用户 UUID", example = "ea209fbb-8f0e-483e-be86-c3629ecbe6d1", in = ParameterIn.PATH)
+    })
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:consumer:find')")
     @GetMapping("/find/{id}")
-    public R<ConsumerDTO> findById(
-            @Validated
-            @PathVariable
-            @Parameter(description = "用户 ID", example = "ea209fbb-8f0e-483e-be86-c3629ecbe6d1")
-            @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
-            String id
-    ) {
+    public R<ConsumerDTO> findById(@Validated @PathVariable @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！") String id) {
         ConsumerDTO exists = consumerService.findById(id);
         return !Objects.isNull(exists) ? R.success(exists) : R.failed("未查询到该用户！");
     }
 
-    @Operation(summary = "更新用户数据")
+    @Operation(summary = "更新用户")
     @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:consumer:upgrade')")
     @PutMapping("/upgrade")
     public R<Object> upgrade(@Validated @RequestBody ConsumerModel model) {
@@ -69,17 +66,13 @@ public class ConsumerController {
         return status ? R.success("更新资料成功！") : R.error("更新资料失败！");
     }
 
-    @Operation(summary = "更新用户头像")
+    @Operation(summary = "更新用户头像", parameters = {
+            @Parameter(name = "id", description = "用户 UUID", example = "ea209fbb-8f0e-483e-be86-c3629ecbe6d1", in = ParameterIn.PATH)
+    })
     @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:consumer:upgrade')")
     @PutMapping("/upgrade/avatar/{id}")
-    public R<String> upgradeAvatar(
-            @Validated
-            @PathVariable
-            @Parameter(description = "用户 ID", example = "ea209fbb-8f0e-483e-be86-c3629ecbe6d1")
-            @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
-            String id,
-            @RequestParam MultipartFile file
-    ) {
+    public R<String> upgradeAvatar(@Validated @PathVariable @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！") String id,
+                                   MultipartFile file) {
         if (file.isEmpty()) {
             return R.error("请选择一个图片！");
         }
@@ -93,7 +86,7 @@ public class ConsumerController {
         }
     }
 
-    @Operation(summary = "查询用户所有动态")
+    @Operation(summary = "条件查询用户动态列表")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:consumer:find')")
     @PostMapping("/find/all/dynamic/criteria")
     public R<List<DynamicModel>> findAllDynamic(@Validated @RequestBody DynamicCriteria criteria) {
@@ -101,7 +94,7 @@ public class ConsumerController {
         return R.success(list);
     }
 
-    @Operation(summary = "更新单个动态")
+    @Operation(summary = "更新动态")
     @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:consumer:upgrade')")
     @PutMapping("/upgrade/dynamic")
     public R<Object> upgradeDynamic(@Validated @RequestBody DynamicModel model) {

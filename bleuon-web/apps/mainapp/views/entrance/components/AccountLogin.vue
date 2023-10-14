@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ConsumerApi } from "@mainapp/apis";
+import { ConsumerAPI } from "@mainapp/apis";
 import { FormValidatorsUtil } from "@common/utils";
 
 const router = useRouter();
@@ -31,9 +31,9 @@ const formRules = reactive<FormRules>({
 
 function confirmLogin() {
   FormValidatorsUtil.validate(formRef.value, async () => {
-    ConsumerApi.authLogin(formData, token => {
+    ConsumerAPI.authLogin(formData, token => {
       localStorage.setToken(KeyVals.MAINAPP_TOKEN_KEY, token);
-      ConsumerApi.findById(token.id).then(data => {
+      ConsumerAPI.findById(token.id).then(data => {
         router.push("/workbench");
       });
     });

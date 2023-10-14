@@ -6,8 +6,18 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
+import { DiscussionAPI } from "@mainapp/apis";
+
 // components
 import CommonHeader from "@mainapp/components/CommonHeader.vue";
+
+const mainDataSource = ref<PostModel[]>([]);
+
+async function fetchData() {
+  mainDataSource.value = await DiscussionAPI.findAllByCriteriaNotComments({});
+}
+
+await fetchData();
 </script>
 
 <template>
@@ -33,6 +43,16 @@ import CommonHeader from "@mainapp/components/CommonHeader.vue";
                 src="https://bbs-static.miyoushe.com/static/2023/10/11/4f96f9a0afc8eb445baee629c4a30be2_2084764690953835457.png" />
             </el-carousel-item>
           </el-carousel>
+          <div>
+            <div v-for="item in mainDataSource">
+              <div class="poster">
+                <div class="f-c-s">
+                  <img :src="item.consumer.avatar" class="w-10 h-10 rd-50% mr-4" />
+                  <div class="text-text-regular">{{ item.consumer.username }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="tools w-25%"></div>
       </div>

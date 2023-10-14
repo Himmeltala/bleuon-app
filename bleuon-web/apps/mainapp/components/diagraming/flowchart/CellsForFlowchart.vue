@@ -6,12 +6,12 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import { CellsApi } from "@mainapp/apis";
+import { CellsAPI } from "@mainapp/apis";
 import SVG from "../SVG.vue";
 
 const mainDataSource = ref(null);
 
-mainDataSource.value = await CellsApi.findAllByCriteria({ type: "flowchart" });
+mainDataSource.value = await CellsAPI.findAllByCriteria({ type: "flowchart" });
 </script>
 
 <template>

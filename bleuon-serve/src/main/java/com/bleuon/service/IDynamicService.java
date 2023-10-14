@@ -1,7 +1,7 @@
 package com.bleuon.service;
 
 import com.bleuon.entity.DynamicModel;
-import com.bleuon.entity.vo.DynamicCriteria;
+import com.bleuon.entity.criterias.DynamicCriteria;
 
 import java.util.List;
 

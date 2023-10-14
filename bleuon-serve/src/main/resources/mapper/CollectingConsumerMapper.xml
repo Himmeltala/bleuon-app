@@ -11,7 +11,7 @@
             <result column="signature" property="signature"/>
         </association>
     </resultMap>
-    <select id="findAllByCriteria" resultMap="findMap" parameterType="com.bleuon.entity.vo.ConsumerCriteria">
+    <select id="findAllByCriteria" resultMap="findMap" parameterType="com.bleuon.entity.criterias.ConsumerCriteria">
         SELECT cc.*,
                c.id        c_id,
                c.username  c_username,
@@ -23,7 +23,7 @@
     </select>
 
     <select id="findByCriteria" resultType="com.bleuon.entity.CollectingConsumerModel"
-            parameterType="com.bleuon.entity.vo.ConsumerCriteria">
+            parameterType="com.bleuon.entity.criterias.ConsumerCriteria">
         SELECT cc.*
         FROM co_conllecting_consumer cc
         WHERE cc.collecting_cid = #{collectingCid}

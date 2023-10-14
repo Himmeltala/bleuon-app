@@ -11,7 +11,7 @@ import "jointjs/css/layout.css";
 import "jointjs/css/themes/default.css";
 
 import { dia, initJointJs } from "@mainapp/lib";
-import { FlowchartApi } from "@mainapp/apis";
+import { FlowchartAPI } from "@mainapp/apis";
 import { ListenerService } from "@mainapp/service/diagraming/flowchart";
 import * as Data from "@mainapp/data/diagraming/flowchart";
 import { DateUtil } from "@common/utils";
@@ -35,7 +35,7 @@ provide(KeyVals.BLEUON_FLOWCHART_DATA, mainDataSource);
 const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
 
 async function fetchData() {
-  const data = await FlowchartApi.findIsShare({ id: route.params.id.toString() }, () => {
+  const data = await FlowchartAPI.findIsShare({ id: route.params.id.toString() }, () => {
     router.back();
   });
   mainDataSource.value = data;
@@ -95,7 +95,7 @@ const dialogVisible = ref(false);
 
 function replicate() {
   mainDataSource.value.fileName = mainDataSource.value.fileName;
-  FlowchartApi.replicate({ ...mainDataSource.value, consumerId: token.id }, res =>
+  FlowchartAPI.replicate({ ...mainDataSource.value, consumerId: token.id }, res =>
     ElMessage.success(res.message)
   );
 }

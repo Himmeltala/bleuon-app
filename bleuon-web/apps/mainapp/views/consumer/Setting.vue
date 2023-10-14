@@ -6,7 +6,7 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import { ConsumerApi } from "@mainapp/apis";
+import { ConsumerAPI } from "@mainapp/apis";
 import { ElSelectData } from "@common/data";
 import { FormValidatorsUtil, DateUtil } from "@common/utils";
 
@@ -14,10 +14,10 @@ import { FormValidatorsUtil, DateUtil } from "@common/utils";
 import CommonHeader from "@mainapp/components/CommonHeader.vue";
 
 const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
-const formData = ref(await ConsumerApi.findById(token.id));
+const formData = ref(await ConsumerAPI.findById(token.id));
 
 function upgradeBasicData() {
-  ConsumerApi.upgrade({
+  ConsumerAPI.upgrade({
     id: token.id,
     username: formData.value.username,
     profession: formData.value.profession,
@@ -81,22 +81,22 @@ const resetPwdFormRules = reactive<FormRules>({
 
 function getResetPwdCode() {
   FormValidatorsUtil.getVerifyCode(interval, resetButtonCount, resetButtonDisabled, callback => {
-    ConsumerApi.askResetEmailCaptcha({ email: formData.value.email }, () => callback());
+    ConsumerAPI.askResetEmailCaptcha({ email: formData.value.email }, () => callback());
   });
 }
 
 function confirmResetPwd() {
   FormValidatorsUtil.validate(resetPwdFormRef.value, () => {
-    ConsumerApi.verifyEmailCaptcha(
+    ConsumerAPI.verifyEmailCaptcha(
       { captcha: resetPwdFormData.captcha, email: formData.value.email },
       () => {
-        ConsumerApi.upgrade(
+        ConsumerAPI.upgrade(
           {
             id: token.id,
             password: resetPwdFormData.password
           },
           () => {
-            ConsumerApi.authLogout();
+            ConsumerAPI.authLogout();
           }
         );
       }
@@ -172,7 +172,7 @@ function confirmResetPwd() {
             <div class="w-30% f-c-e cursor-pointer">
               <AvatarUpload
                 v-model:img-url="formData.avatar"
-                :start-upload="formData => ConsumerApi.upgradeAvatar(formData, token.id)" />
+                :start-upload="formData => ConsumerAPI.upgradeAvatar(formData, token.id)" />
             </div>
           </div>
           <div class="mt-5 f-c-e text-0.8rem text-text-secondary">

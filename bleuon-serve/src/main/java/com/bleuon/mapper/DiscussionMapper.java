@@ -1,6 +1,10 @@
 package com.bleuon.mapper;
 
+import com.bleuon.entity.PostModel;
+import com.bleuon.entity.criterias.DiscussionCriteria;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * @description:
@@ -10,4 +14,9 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface DiscussionMapper {
+
+    List<PostModel> findAllByCriteria(DiscussionCriteria criteria);
+
+    List<PostModel> findAllByCriteriaNotComments(DiscussionCriteria criteria);
+
 }

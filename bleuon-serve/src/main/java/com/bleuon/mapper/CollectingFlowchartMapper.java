@@ -2,7 +2,7 @@ package com.bleuon.mapper;
 
 import com.bleuon.entity.CollectingFlowchartModel;
 import com.bleuon.entity.FlowchartModel;
-import com.bleuon.entity.vo.FlowchartCriteria;
+import com.bleuon.entity.criterias.FlowchartCriteria;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

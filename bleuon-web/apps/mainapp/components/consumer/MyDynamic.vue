@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ConsumerApi, FileApi } from "@mainapp/apis";
+import { ConsumerAPI, FileAPI } from "@mainapp/apis";
 import { DateUtil } from "@common/utils";
 
 import ClassicCkEditor from "@mainapp/components/ClassicCkEditor.vue";
@@ -15,7 +15,7 @@ const ckeditorValue = ref("");
 const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
 
 async function fetchList() {
-  list.value = await ConsumerApi.findAllDynamicByCriteria({
+  list.value = await ConsumerAPI.findAllDynamicByCriteria({
     sequences: [{ isAsc: false, col: "create_date" }],
     consumerId: `${props.consumer.id}`
   });
@@ -23,31 +23,31 @@ async function fetchList() {
 
 function uploadImage(formData: FormData) {
   formData.append("path", "/dynamic");
-  return FileApi.uploadCkEditorImage(formData);
+  return FileAPI.uploadCkEditorImage(formData);
 }
 
 function commit() {
-  ConsumerApi.addDynamic({ content: ckeditorValue.value, consumerId: token.id }, async () => {
+  ConsumerAPI.addDynamic({ content: ckeditorValue.value, consumerId: token.id }, async () => {
     await fetchList();
   });
 }
 
 function digg(item: DynamicModel) {
   item.digg += 1;
-  ConsumerApi.upgradeDynamic({ digg: item.digg, id: item.id }, () => {
+  ConsumerAPI.upgradeDynamic({ digg: item.digg, id: item.id }, () => {
     ElMessage.success("支持成功！");
   });
 }
 
 function bury(item: DynamicModel) {
   item.bury += 1;
-  ConsumerApi.upgradeDynamic({ bury: item.bury, id: item.id }, () => {
+  ConsumerAPI.upgradeDynamic({ bury: item.bury, id: item.id }, () => {
     ElMessage.success("反对成功！");
   });
 }
 
 function remove(item: DynamicModel, index: number) {
-  ConsumerApi.deleteDynamic({ id: item.id }, () => {
+  ConsumerAPI.deleteDynamic({ id: item.id }, () => {
     list.value.splice(index, 1);
   });
 }

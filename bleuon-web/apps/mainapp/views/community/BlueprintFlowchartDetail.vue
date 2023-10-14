@@ -10,7 +10,7 @@ import "jointjs/css/layout.css";
 import "jointjs/css/themes/default.css";
 
 import { DateUtil } from "@common/utils";
-import { BlueprintApi } from "@mainapp/apis";
+import { BlueprintAPI } from "@mainapp/apis";
 import { dia, initJointJs } from "@mainapp/lib";
 import { ListenerService } from "@mainapp/service/diagraming/flowchart";
 
@@ -25,17 +25,17 @@ const mainDataSource = ref<BlueprintFlowchartModel>();
 const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
 
 async function fetchData(params: BlueprintFlowchartModel) {
-  mainDataSource.value = await BlueprintApi.findById(params);
+  mainDataSource.value = await BlueprintAPI.findById(params);
 }
 
 function replicate() {
-  BlueprintApi.replicate(mainDataSource.value, token.id, message =>
+  BlueprintAPI.replicate(mainDataSource.value, token.id, message =>
     ElMessage.success(message.message)
   );
 }
 
 function collect() {
-  BlueprintApi.addCollecting(mainDataSource.value, token.id);
+  BlueprintAPI.addCollecting(mainDataSource.value, token.id);
 }
 
 await fetchData({ id: route.params.id.toString() });
@@ -70,7 +70,7 @@ onMounted(() => {
     "blank:mousewheel": evt => ListenerService.onMousewheelBlank(evt, paper.value)
   });
 
-  BlueprintApi.upgrade(
+  BlueprintAPI.upgrade(
     { views: mainDataSource.value.views + 1, id: mainDataSource.value.id },
     { nomessage: true }
   );

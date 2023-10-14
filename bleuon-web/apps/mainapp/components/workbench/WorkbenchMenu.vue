@@ -7,7 +7,7 @@
  */
 
 import type { ActiveItem } from "@mainapp/typings/workbench";
-import { FlowchartApi } from "@mainapp/apis";
+import { FlowchartAPI } from "@mainapp/apis";
 
 defineProps({
   activeItem: {
@@ -32,7 +32,7 @@ onBeforeMount(() => {
 });
 
 function createFlowchart() {
-  FlowchartApi.add({ consumerId: token.id }, res => {
+  FlowchartAPI.add({ consumerId: token.id }, res => {
     router.push(`/flowchart/${res.data.id}`);
   });
 }

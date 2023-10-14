@@ -5,7 +5,7 @@ import com.bleuon.constant.ValidPattern;
 import com.bleuon.entity.BlueprintFlowchartModel;
 import com.bleuon.entity.CollectingFlowchartModel;
 import com.bleuon.entity.FlowchartModel;
-import com.bleuon.entity.vo.FlowchartCriteria;
+import com.bleuon.entity.criterias.FlowchartCriteria;
 import com.bleuon.service.impl.CollectingFlowchartService;
 import com.bleuon.service.impl.FlowchartService;
 import com.bleuon.utils.http.R;

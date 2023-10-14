@@ -2,7 +2,7 @@ package com.bleuon.service.impl;
 
 import com.bleuon.entity.CollectingFlowchartModel;
 import com.bleuon.entity.FlowchartModel;
-import com.bleuon.entity.vo.FlowchartCriteria;
+import com.bleuon.entity.criterias.FlowchartCriteria;
 import com.bleuon.exception.JdbcErrorException;
 import com.bleuon.mapper.CollectingFlowchartMapper;
 import com.bleuon.service.ICollectingFlowchartService;

@@ -1,7 +1,7 @@
 package com.bleuon.service.impl;
 
 import com.bleuon.entity.CollectingConsumerModel;
-import com.bleuon.entity.vo.ConsumerCriteria;
+import com.bleuon.entity.criterias.ConsumerCriteria;
 import com.bleuon.exception.JdbcErrorException;
 import com.bleuon.mapper.CollectingConsumerMapper;
 import com.bleuon.service.ICollectingConsumerService;

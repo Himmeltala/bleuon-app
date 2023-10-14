@@ -7,7 +7,7 @@
  */
 
 import { DateUtil, FormValidatorsUtil } from "@common/utils";
-import { FlowchartApi } from "@mainapp/apis";
+import { FlowchartAPI } from "@mainapp/apis";
 import { downloadWithDataUri } from "@mainapp/lib/tools";
 
 // components
@@ -29,14 +29,14 @@ const fileNameRules = reactive({
 const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
 
 async function fetchData(params: any) {
-  mainDataSource.value = await FlowchartApi.findAllByCriteria({
+  mainDataSource.value = await FlowchartAPI.findAllByCriteria({
     ...params,
     collectingCid: token.id
   });
 }
 
 function upgrade() {
-  FlowchartApi.upgrade(mainDataSource.value[clickedIndex.value], { nomessage: false }, () => {
+  FlowchartAPI.upgrade(mainDataSource.value[clickedIndex.value], { nomessage: false }, () => {
     dialogVisible.value = !dialogVisible.value;
   });
 }
@@ -51,13 +51,13 @@ function download(data: FlowchartModel) {
 }
 
 function replicate(data: FlowchartModel) {
-  FlowchartApi.replicate({ ...data, consumerId: token.id }, async () => {
+  FlowchartAPI.replicate({ ...data, consumerId: token.id }, async () => {
     await fetchData({});
   });
 }
 
 function remove(id: string, index: number) {
-  FlowchartApi.deleteById({ id }, async () => {
+  FlowchartAPI.deleteById({ id }, async () => {
     mainDataSource.value.splice(index, 1);
   });
 }

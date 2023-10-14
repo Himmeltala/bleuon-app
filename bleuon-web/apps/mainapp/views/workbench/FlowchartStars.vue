@@ -6,7 +6,7 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import { FlowchartApi } from "@mainapp/apis";
+import { FlowchartAPI } from "@mainapp/apis";
 import { DateUtil } from "@common/utils";
 import { downloadWithDataUri } from "@mainapp/lib/tools";
 
@@ -19,7 +19,7 @@ const mainDataSource = ref<FlowchartModel[]>([]);
 const searchVal = ref("");
 
 async function fetchData(params?: any) {
-  mainDataSource.value = await FlowchartApi.findAllCollectByCriteria({
+  mainDataSource.value = await FlowchartAPI.findAllCollectByCriteria({
     ...params,
     collectingCid: token.id
   });
@@ -34,11 +34,11 @@ function download(data: any) {
 }
 
 function replicate(data: FlowchartModel) {
-  FlowchartApi.replicate({ ...data, consumerId: token.id }, res => ElMessage.success(res.message));
+  FlowchartAPI.replicate({ ...data, consumerId: token.id }, res => ElMessage.success(res.message));
 }
 
 function remove(flowchartId: string, index: number) {
-  FlowchartApi.deleteCollecting({ flowchartId, collectingCid: token.id }, () => {
+  FlowchartAPI.deleteCollecting({ flowchartId, collectingCid: token.id }, () => {
     mainDataSource.value.splice(index, 1);
   });
 }

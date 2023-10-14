@@ -2,7 +2,7 @@ package com.bleuon.service;
 
 import com.bleuon.entity.BlueprintFlowchartModel;
 import com.bleuon.entity.FlowchartModel;
-import com.bleuon.entity.vo.FlowchartCriteria;
+import com.bleuon.entity.criterias.FlowchartCriteria;
 import com.bleuon.utils.http.R;
 
 import java.util.List;

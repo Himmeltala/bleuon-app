@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ConsumerApi } from "@mainapp/apis";
+import { ConsumerAPI } from "@mainapp/apis";
 import { FormValidatorsUtil } from "@common/utils";
 
 defineProps({
@@ -48,7 +48,7 @@ function confirmGetVerifyCode() {
     coudButtonCount,
     codeButtonDisabled,
     (callback: any) => {
-      ConsumerApi.askResetEmailCaptcha({ email: formData.email }, () => callback());
+      ConsumerAPI.askResetEmailCaptcha({ email: formData.email }, () => callback());
     }
   );
 }
@@ -57,7 +57,7 @@ const isVerifySuccess = ref(false);
 
 function confirmSubmitForm() {
   FormValidatorsUtil.validate(formRef.value, () => {
-    ConsumerApi.verifyEmailCaptcha(formData, () => {
+    ConsumerAPI.verifyEmailCaptcha(formData, () => {
       isVerifySuccess.value = true;
       emits("update:email", formData.email);
     });

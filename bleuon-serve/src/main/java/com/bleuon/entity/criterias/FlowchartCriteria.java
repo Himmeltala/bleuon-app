@@ -1,14 +1,14 @@
-package com.bleuon.entity.vo;
+package com.bleuon.entity.criterias;
 
 import com.bleuon.constant.ValidPattern;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * @description:
@@ -20,7 +20,8 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FlowchartCriteria implements Serializable {
+@EqualsAndHashCode(callSuper = true)
+public class FlowchartCriteria extends CommonCriteria implements Serializable {
 
     @Schema(description = "收藏者 UUID")
     @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
@@ -46,8 +47,5 @@ public class FlowchartCriteria implements Serializable {
 
     @Schema(description = "排序类型，比如热门、推荐")
     private String ranking;
-
-    @Schema(description = "排序条件")
-    private List<Sequence> sequences;
 
 }

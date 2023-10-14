@@ -9,7 +9,7 @@
 import { dia } from "@mainapp/lib";
 import { downloadWithXml } from "@mainapp/lib/tools";
 import { DateUtil } from "@common/utils";
-import { FlowchartApi } from "@mainapp/apis";
+import { FlowchartAPI } from "@mainapp/apis";
 
 // components
 import MenuAvatar from "@mainapp/components/MenuAvatar.vue";
@@ -40,7 +40,7 @@ const calcFileName = computed({
 });
 
 function collect() {
-  FlowchartApi.addCollecting({ flowchartId: mainDataSource.value.id, collectingCid: token.id });
+  FlowchartAPI.addCollecting({ flowchartId: mainDataSource.value.id, collectingCid: token.id });
 }
 </script>
 

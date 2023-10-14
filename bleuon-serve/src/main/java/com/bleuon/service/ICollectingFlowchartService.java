@@ -2,7 +2,7 @@ package com.bleuon.service;
 
 import com.bleuon.entity.CollectingFlowchartModel;
 import com.bleuon.entity.FlowchartModel;
-import com.bleuon.entity.vo.FlowchartCriteria;
+import com.bleuon.entity.criterias.FlowchartCriteria;
 
 import java.util.List;
 

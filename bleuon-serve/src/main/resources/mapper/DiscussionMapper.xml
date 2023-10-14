@@ -2,5 +2,90 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bleuon.mapper.DiscussionMapper">
 
+    <resultMap id="findAllByCriteriaMap" type="com.bleuon.entity.PostModel" autoMapping="true">
+        <id column="id" property="id"/>
+        <association javaType="com.bleuon.entity.dto.ConsumerDTO" property="consumer" column="{consumerId=consumer_id}"
+                     select="findConsumerById">
+        </association>
+        <collection ofType="com.bleuon.entity.PostCommentModel" property="comments" column="{postId=id}"
+                    select="findCommentsByPostId">
+        </collection>
+    </resultMap>
+
+    <!-- findAllByCriteria -->
+
+    <select id="findAllByCriteria" resultMap="findAllByCriteriaMap">
+        SELECT *
+        FROM t_posts
+        <where>
+            <trim prefix="AND" prefixOverrides="AND">
+                <if test="postId != null and postId != ''">
+                    AND id = #{postId}
+                </if>
+                <if test="consumerId != null and consumerId != ''">
+                    AND consumer_id = #{consumerId}
+                </if>
+                <if test="title != null and title != ''">
+                    AND title = LIKE CONCAT('%', #{title}, '%')
+                </if>
+            </trim>
+        </where>
+    </select>
+
+    <resultMap id="findConsumerByIdMap" type="com.bleuon.entity.dto.ConsumerDTO" autoMapping="true">
+        <id column="id" property="id"/>
+    </resultMap>
+
+    <select id="findConsumerById" resultMap="findConsumerByIdMap">
+        SELECT id,
+               username,
+               avatar,
+               signature,
+               company,
+               position,
+               profession
+        FROM t_consumers
+        WHERE id = #{consumerId};
+    </select>
+
+    <resultMap id="findCommentsByPostIdMap" type="com.bleuon.entity.PostCommentModel" autoMapping="true">
+        <id column="id" property="id"/>
+        <association javaType="com.bleuon.entity.dto.ConsumerDTO" property="consumer"
+                     column="{consumerId=consumer_id}" select="findConsumerById"/>
+    </resultMap>
+
+    <select id="findCommentsByPostId" resultMap="findCommentsByPostIdMap">
+        SELECT *
+        FROM t_post_comments
+        WHERE post_id = #{postId};
+    </select>
+
+
+    <!-- findAllByCriteriaNotComments -->
+
+    <resultMap id="findAllByCriteriaNotCommentsMap" type="com.bleuon.entity.PostModel" autoMapping="true">
+        <id column="id" property="id"/>
+        <association javaType="com.bleuon.entity.dto.ConsumerDTO" property="consumer" column="{consumerId=consumer_id}"
+                     select="findConsumerById">
+        </association>
+    </resultMap>
+
+    <select id="findAllByCriteriaNotComments" resultMap="findAllByCriteriaNotCommentsMap">
+        SELECT *
+        FROM t_posts
+        <where>
+            <trim prefix="AND" prefixOverrides="AND">
+                <if test="postId != null and postId != ''">
+                    AND id = #{postId}
+                </if>
+                <if test="consumerId != null and consumerId != ''">
+                    AND consumer_id = #{consumerId}
+                </if>
+                <if test="title != null and title != ''">
+                    AND title = LIKE CONCAT('%', #{title}, '%')
+                </if>
+            </trim>
+        </where>
+    </select>
 
 </mapper>

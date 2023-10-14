@@ -1,7 +1,7 @@
 package com.bleuon.mapper;
 
 import com.bleuon.entity.CollectingConsumerModel;
-import com.bleuon.entity.vo.ConsumerCriteria;
+import com.bleuon.entity.criterias.ConsumerCriteria;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

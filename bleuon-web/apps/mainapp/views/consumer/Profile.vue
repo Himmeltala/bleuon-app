@@ -6,7 +6,7 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import { ConsumerApi } from "@mainapp/apis";
+import { ConsumerAPI } from "@mainapp/apis";
 
 // components
 import CommonHeader from "@mainapp/components/CommonHeader.vue";
@@ -23,11 +23,11 @@ const tabs = [MyDynamic, MyPublicFlowchart, MyShareFlowchart, MyStarConsumer];
 const tabIndex = ref(0);
 
 async function fetchData(id: string | string[]) {
-  formData.value = await ConsumerApi.findById(id.toString());
+  formData.value = await ConsumerAPI.findById(id.toString());
 }
 
 function collectConsumer() {
-  ConsumerApi.addCollecting({ collectingCid: token.id, consumerId: formData.value.id });
+  ConsumerAPI.addCollecting({ collectingCid: token.id, consumerId: formData.value.id });
 }
 
 onBeforeRouteUpdate(async updateGuard => {
