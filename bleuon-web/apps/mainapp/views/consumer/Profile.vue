@@ -86,8 +86,11 @@ await fetchData(route.params.id);
             <TabPageItem class="mr-5" :index="0" v-model="tabIndex">动态列表</TabPageItem>
             <TabPageItem class="mr-5" :index="1" v-model="tabIndex">公开的流程图</TabPageItem>
             <TabPageItem class="mr-5" :index="2" v-model="tabIndex">分享的流程图</TabPageItem>
-            <TabPageItem :index="3" v-if="token.id === formData.id" v-model="tabIndex">
+            <TabPageItem class="mr-5" :index="3" v-if="token.id === formData.id" v-model="tabIndex">
               关注的用户
+            </TabPageItem>
+            <TabPageItem :index="4" v-if="token.id === formData.id" v-model="tabIndex">
+              发表的帖子
             </TabPageItem>
           </div>
         </template>

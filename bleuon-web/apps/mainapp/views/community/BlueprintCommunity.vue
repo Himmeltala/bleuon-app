@@ -66,11 +66,10 @@ await fetchData();
               </div>
             </div>
           </div>
-          <div class="mt-5 mb-5 font-500 text-1.2rem">全部模板</div>
-          <div class="file-type f-c-b mt-2">
+          <div class="file-type f-c-b mt-10">
             <div class="w-8% f-c-s">
               <div class="i-tabler-chart-bubble mr-2"></div>
-              场景：
+              场景
             </div>
             <el-radio-group v-model="scene" class="w-92%" @change="onSceneChange">
               <el-radio v-for="item in ElSelectData.sceneList" :label="item.label">
@@ -80,8 +79,8 @@ await fetchData();
           </div>
           <div class="file-price f-c-b mt-2">
             <div class="w-8% f-c-s">
-              <div class="i-tabler-chart-bubble mr-2"></div>
-              价格：
+              <div class="i-tabler-wallet mr-2"></div>
+              价格
             </div>
             <el-radio-group v-model="price" class="w-92%" @change="onPriceChange">
               <el-radio label="">全部</el-radio>
@@ -92,8 +91,8 @@ await fetchData();
           </div>
           <div class="file-other f-c-b mt-2">
             <div class="w-8% f-c-s">
-              <div class="i-tabler-chart-bubble mr-2"></div>
-              其他：
+              <div class="i-tabler-arrows-transfer-up mr-2"></div>
+              其他
             </div>
             <el-radio-group v-model="ranking" class="w-92%" @change="onOtherChange">
               <el-radio label="">全部</el-radio>

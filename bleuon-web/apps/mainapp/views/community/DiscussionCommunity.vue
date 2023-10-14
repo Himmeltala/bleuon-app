@@ -8,6 +8,7 @@
 
 import { DateUtil } from "@common/utils";
 import { DiscussionAPI } from "@mainapp/apis";
+import { ElSelectData } from "@common/data";
 
 // components
 import CommonHeader from "@mainapp/components/CommonHeader.vue";
@@ -18,13 +19,25 @@ async function fetchData() {
   mainDataSource.value = await DiscussionAPI.findAllByCriteriaNotComments({});
 }
 
+const type = ref("");
+const rankingType = ref("");
+const dateSequence = ref("降序");
+
+function onTypeChange() {}
+
+function onRankingTypeChange() {}
+
+function onDateSequenceChange() {}
+
+function search() {}
+
 await fetchData();
 </script>
 
 <template>
-  <div class="discussion-community bg-bg-page">
+  <div class="discussion-community h-100vh flow-hidden bg-bg-page">
     <CommonHeader active-name="discussion"></CommonHeader>
-    <div class="content max-h-100vh pt-40 pb-5 slim-slider flow-auto f-c-c">
+    <div class="content py-5 slim-slider flow-auto f-s-c">
       <div class="wrapper w-60vw f-s-b">
         <div class="posts w-70%">
           <el-carousel :interval="4000" type="card" height="12rem">
@@ -102,6 +115,9 @@ await fetchData();
               </div>
             </div>
           </div>
+          <div class="pager mt-2 f-c-e bg-bg-overlay p-2 rd-2">
+            <el-pagination background layout="prev, pager, next" :total="1000" />
+          </div>
         </div>
         <div class="tools w-28%">
           <div class="bg-bg-overlay rd-2 py-5 px-10">
@@ -112,6 +128,56 @@ await fetchData();
                   <div class="i-tabler-edit"></div>
                 </template>
               </el-button>
+            </div>
+          </div>
+          <div class="bg-bg-overlay mt-4 rd-2 p-5">
+            <div class="font-bold text-0.9rem mb-5 f-c-s">
+              <div class="i-tabler-category-2 mr-2"></div>
+              筛选查询
+            </div>
+            <div>
+              <el-input @keyup.enter="search" placeholder="输入关键字查询">
+                <template #suffix>
+                  <div class="i-tabler-search"></div>
+                </template>
+              </el-input>
+            </div>
+            <div class="mt-4 font-bold text-0.8rem text-text-secondary">
+              注：以下可附加更多查询条件
+            </div>
+            <div class="date-sequence mt-4">
+              <div class="mb-2 f-c-s">
+                <div class="i-tabler-clock mr-2"></div>
+                排序
+              </div>
+              <el-radio-group v-model="dateSequence" @change="onDateSequenceChange">
+                <el-radio label="降序" value="降序">降序</el-radio>
+                <el-radio label="升序" value="升序">升序</el-radio>
+              </el-radio-group>
+            </div>
+            <div class="post-type mt-4">
+              <div class="mb-2 f-c-s">
+                <div class="i-tabler-bookmark mr-2"></div>
+                类型
+              </div>
+              <el-radio-group v-model="type" @change="onTypeChange">
+                <el-radio label="">全部</el-radio>
+                <el-radio v-for="item in ElSelectData.postTypeList" :label="item.label">
+                  {{ item.label }}
+                </el-radio>
+              </el-radio-group>
+            </div>
+            <div class="post-ranking-type mt-4">
+              <div class="mb-2 f-c-s">
+                <div class="i-tabler-arrows-transfer-up mr-2"></div>
+                其他
+              </div>
+              <el-radio-group v-model="rankingType" @change="onRankingTypeChange">
+                <el-radio label="">全部</el-radio>
+                <el-radio v-for="item in ElSelectData.postRankingTypeList" :label="item.label">
+                  {{ item.label }}
+                </el-radio>
+              </el-radio-group>
             </div>
           </div>
         </div>
@@ -126,6 +192,10 @@ await fetchData();
   background-position: 0 5rem;
   background-repeat: no-repeat;
   background-size: 100%;
+}
+
+.content {
+  height: calc(100vh - 5rem);
 }
 
 .post-body:hover {

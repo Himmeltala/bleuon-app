@@ -222,3 +222,33 @@ export const professionList = [
     label: "Android"
   }
 ];
+
+export const postTypeList = [
+  {
+    value: "图文",
+    label: "图文"
+  },
+  {
+    value: "教程",
+    label: "教程"
+  },
+  {
+    value: "活动",
+    label: "活动"
+  },
+  {
+    value: "视频",
+    label: "视频"
+  }
+];
+
+export const postRankingTypeList = [
+  {
+    value: "热门",
+    label: "热门"
+  },
+  {
+    value: "推荐",
+    label: "推荐"
+  }
+];
