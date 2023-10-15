@@ -6,12 +6,10 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import type { ActiveItem } from "@mainapp/typings/workbench";
-
 // components
 import WorkbenchMenu from "@mainapp/components/workbench/WorkbenchMenu.vue";
 
-const activeItem = ref<ActiveItem>("auth-flowchart-list");
+const activeItem = ref("auth-flowchart-list");
 </script>
 
 <template>

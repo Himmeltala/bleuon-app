@@ -6,12 +6,11 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import type { ActiveItem } from "@mainapp/typings/workbench";
 import { FlowchartAPI } from "@mainapp/apis";
 
 defineProps({
   activeItem: {
-    type: String as PropType<ActiveItem>,
+    type: String,
     required: true
   }
 });
@@ -20,15 +19,15 @@ const emits = defineEmits(["update:activeItem"]);
 const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
 const router = useRouter();
 
-function navigateTo(routerName: ActiveItem) {
-  emits("update:activeItem", routerName);
-  const rsv = router.resolve({ name: routerName });
+function navigateTo(name: string) {
+  emits("update:activeItem", name);
+  const rsv = router.resolve({ name: name });
   router.push({ name: rsv.name, path: rsv.path });
 }
 
 onBeforeMount(() => {
-  const currRouterName = router.currentRoute.value.name as ActiveItem;
-  emits("update:activeItem", currRouterName);
+  const name = router.currentRoute.value.name;
+  emits("update:activeItem", name);
 });
 
 function createFlowchart() {
@@ -92,16 +91,16 @@ function createFlowchart() {
     </div>
     <div class="mt-5 pb-5 b-b-1 b-b-solid b-border-primary">
       <div
-        :class="{ active: activeItem == 'auth-blueprint-community' }"
+        :class="{ active: activeItem == 'auth-blueprint-square' }"
         class="menu-item f-c-s"
-        @click="navigateTo('auth-blueprint-community')">
+        @click="navigateTo('auth-blueprint-square')">
         <div class="mr-2 i-tabler-template"></div>
         模板社区
       </div>
       <div
-        :class="{ active: activeItem == 'auth-discussion-community' }"
+        :class="{ active: activeItem == 'auth-discussion-square' }"
         class="menu-item f-c-s"
-        @click="navigateTo('auth-discussion-community')">
+        @click="navigateTo('auth-discussion-square')">
         <div class="mr-2 i-tabler-friends"></div>
         讨论社区
       </div>

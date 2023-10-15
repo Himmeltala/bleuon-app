@@ -68,19 +68,19 @@ const router = createRouter({
       children: [
         {
           path: "blueprint",
-          name: "auth-blueprint-community",
-          meta: { title: "模板社区" },
-          component: () => import("@mainapp/views/community/BlueprintCommunity.vue")
+          name: "auth-blueprint-square",
+          meta: { title: "模板广场" },
+          component: () => import("@mainapp/views/community/BlueprintSquare.vue")
         },
         {
           path: "discussion",
-          name: "auth-discussion-community",
-          meta: { title: "讨论社区" },
-          component: () => import("@mainapp/views/community/DiscussionCommunity.vue")
+          name: "auth-discussion-square",
+          meta: { title: "讨论广场" },
+          component: () => import("@mainapp/views/community/DiscussionSquare.vue")
         },
         {
           path: "article/:id",
-          name: "auth-article-detail-community",
+          name: "auth-article-detail",
           meta: { title: "帖子详情" },
           component: () => import("@mainapp/views/community/ArticleDetail.vue")
         }

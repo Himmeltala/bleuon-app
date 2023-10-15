@@ -49,7 +49,7 @@ await fetchData();
 </script>
 
 <template>
-  <div class="template-community slim-slider h-100vh flow-auto bg-bg-page">
+  <div class="blueprint-square slim-slider h-100vh flow-auto bg-bg-page">
     <CommonHeader active-name="template"></CommonHeader>
     <div class="content f-c-c">
       <div class="wrapper w-75vw mt-5">
