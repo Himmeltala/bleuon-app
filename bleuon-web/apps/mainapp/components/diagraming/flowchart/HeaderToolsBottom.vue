@@ -6,7 +6,7 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import { dia } from "@mainapp/lib";
+import { dia } from "jointjs";
 import * as Data from "@mainapp/data/diagraming/flowchart";
 import { CellService } from "@mainapp/service/diagraming/flowchart";
 
@@ -23,9 +23,15 @@ defineProps({
   }
 });
 
-const textColorPickerRef = ref();
-const linkColorPickerRef = ref();
-const shapeBgColorPickerRef = ref();
+const connectorConfig = ref({
+  name: "normal"
+});
+const routerConfig = ref({
+  name: "normal"
+});
+const textColorPicker = ref();
+const linkColorPicker = ref();
+const shapeBgColorPicker = ref();
 </script>
 
 <template>
@@ -97,7 +103,7 @@ const shapeBgColorPickerRef = ref();
               :disabled="!isClickedElement && !isClickedLink"
               bg
               text
-              @click="CellService.openColorPicker(textColorPickerRef)">
+              @click="CellService.openColorPicker(textColorPicker)">
               <template #icon>
                 <div class="i-tabler-text-color"></div>
               </template>
@@ -105,7 +111,7 @@ const shapeBgColorPickerRef = ref();
           </el-tooltip>
           <div class="hidden">
             <el-color-picker
-              ref="textColorPickerRef"
+              ref="textColorPicker"
               v-model="Data.textColor.value"
               @change="value => CellService.changeTextColor(Data.clickedCurrView.value, value)" />
           </div>
@@ -184,7 +190,7 @@ const shapeBgColorPickerRef = ref();
               :disabled="!isClickedElement"
               bg
               text
-              @click="CellService.openColorPicker(shapeBgColorPickerRef)">
+              @click="CellService.openColorPicker(shapeBgColorPicker)">
               <template #icon>
                 <div class="i-tabler-paint"></div>
               </template>
@@ -192,7 +198,7 @@ const shapeBgColorPickerRef = ref();
           </el-tooltip>
           <div class="hidden">
             <el-color-picker
-              ref="shapeBgColorPickerRef"
+              ref="shapeBgColorPicker"
               v-model="Data.shapeBackground.value"
               @change="value => CellService.changeBackground(Data.clickedCurrView.value, value)" />
           </div>
@@ -203,7 +209,7 @@ const shapeBgColorPickerRef = ref();
               :disabled="!isClickedElement && !isClickedLink"
               bg
               text
-              @click="CellService.openColorPicker(linkColorPickerRef)">
+              @click="CellService.openColorPicker(linkColorPicker)">
               <template #icon>
                 <div class="i-tabler-pencil-minus"></div>
               </template>
@@ -211,7 +217,7 @@ const shapeBgColorPickerRef = ref();
           </el-tooltip>
           <div class="hidden">
             <el-color-picker
-              ref="linkColorPickerRef"
+              ref="linkColorPicker"
               v-model="Data.textColor.value"
               @change="value => CellService.changeLinkColor(Data.clickedCurrView.value, value)" />
           </div>
@@ -228,10 +234,10 @@ const shapeBgColorPickerRef = ref();
         <div class="router-config-tool">
           <el-tooltip content="路由模式" placement="bottom">
             <el-select
-              v-model="Data.linkRouterConfig.value.name"
+              v-model="routerConfig.name"
               placeholder="请选择路由模式"
               style="width: 90px"
-              @change="CellService.changeRouterConfig(Data.linkRouterConfig, paper)">
+              @change="CellService.changeRouterConfig(routerConfig, paper)">
               <el-option
                 v-for="item in Data.linkRouterOptions"
                 :key="item.value"
@@ -243,10 +249,10 @@ const shapeBgColorPickerRef = ref();
         <div class="link-config-tool ml-2">
           <el-tooltip content="连接端样式" placement="bottom">
             <el-select
-              v-model="Data.linkConnectorConfig.value.name"
+              v-model="connectorConfig.name"
               placeholder="请选择连接端样式"
               style="width: 90px"
-              @change="CellService.changeConnectorConfig(Data.linkConnectorConfig, paper)">
+              @change="CellService.changeConnectorConfig(connectorConfig, paper)">
               <el-option
                 v-for="item in Data.linkConnectorOptions"
                 :key="item.value"

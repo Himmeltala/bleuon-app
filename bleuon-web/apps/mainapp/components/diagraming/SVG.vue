@@ -6,7 +6,8 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import { dia, Path } from "@mainapp/lib";
+import { dia } from "jointjs";
+import { createPath } from "@mainapp/lib/jointjs/creators";
 
 defineProps({
   viewBox: {
@@ -45,7 +46,7 @@ const graph = inject<dia.Graph>(KeyVals.BLEUON_FLOWCHART_GRAPH);
       :viewBox="viewBox"
       xmlns="http://www.w3.org/2000/svg"
       @click="
-        Path.create(graph, {
+        createPath(graph, {
           width,
           height,
           attrs

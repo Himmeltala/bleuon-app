@@ -1,9 +1,3 @@
-/**
- * @description 定义路径
- * @author zheng
- * @since 2023/9/24
- * @link https://github.com/himmelbleu/bleuon-app
- */
 import { dia, shapes } from "jointjs";
 import { getPorts } from "../tools";
 
@@ -13,7 +7,7 @@ import { getPorts } from "../tools";
  * @param graph
  * @param config
  */
-export function create(
+export function createPath(
   graph: dia.Graph,
   config: {
     x?: number;

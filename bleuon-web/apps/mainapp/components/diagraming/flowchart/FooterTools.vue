@@ -6,8 +6,8 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
+import { dia } from "jointjs";
 import * as Data from "@mainapp/data/diagraming/flowchart";
-import { dia } from "@mainapp/lib";
 
 const paper = inject<Ref<dia.Paper>>(KeyVals.BLEUON_FLOWCHART_PAPER);
 

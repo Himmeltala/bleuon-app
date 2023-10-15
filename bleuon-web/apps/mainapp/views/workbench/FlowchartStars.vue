@@ -6,9 +6,11 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
+// jointjs
+import { downloadWithDataUri } from "@mainapp/lib/jointjs/utils";
+
 import { FlowchartAPI } from "@mainapp/apis";
 import { DateUtil } from "@common/utils";
-import { downloadWithDataUri } from "@mainapp/lib/tools";
 
 // components
 import WorkbenchHeader from "@mainapp/components/workbench/WorkbenchHeader.vue";

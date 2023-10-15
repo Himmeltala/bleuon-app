@@ -9,21 +9,20 @@ import { dia, shapes } from "jointjs";
 import { defineNamespace } from "./namespace";
 
 /**
- * 初始化 jointjs
+ * 创建 jointjs 对象
  *
  * @param config 配置 jointjs
  * @returns paper, graph
  */
-export function initJointJs(config: {
+export function createJointjs(config: {
   el: string;
   bgColor: string;
   height: string;
   width: string;
   gridSize: number;
   drawGrid: boolean | dia.Paper.GridOptions | dia.Paper.GridOptions[];
-  isPreventLinkFromInputPorts?: boolean;
-  isPreventLinkFromOutputToInputWithinOneElement?: boolean;
-  isPreventLinkToOutputPorts?: boolean;
+  defaultRouter: any;
+  defaultConnector: any;
 }) {
   const namespace = defineNamespace();
   const graph = new dia.Graph({}, { cellNamespace: namespace });
@@ -52,18 +51,20 @@ export function initJointJs(config: {
     // @ts-ignore
     defaultLink: () => new shapes.bleuon.Link(),
     defaultConnectionPoint: { name: "boundary" },
+    defaultRouter: config.defaultRouter,
+    defaultConnector: config.defaultConnector,
     validateConnection: function (cellViewS, magnetS, cellViewT, magnetT, end, linkView) {
-      if (config.isPreventLinkFromInputPorts || false) {
-        if (magnetS && magnetS.getAttribute("port-group") === "in") return false;
-      }
+      // if (config.isPreventLinkFromInputPorts || false) {
+      //   if (magnetS && magnetS.getAttribute("port-group") === "in") return false;
+      // }
 
-      if (config.isPreventLinkFromOutputToInputWithinOneElement || false) {
-        if (cellViewS === cellViewT) return false;
-      }
+      // if (config.isPreventLinkFromOutputToInputWithinOneElement || false) {
+      //   if (cellViewS === cellViewT) return false;
+      // }
 
-      if (config.isPreventLinkToOutputPorts || false) {
-        return magnetT && magnetT.getAttribute("port-group") === "in";
-      }
+      // if (config.isPreventLinkToOutputPorts || false) {
+      //   return magnetT && magnetT.getAttribute("port-group") === "in";
+      // }
 
       return true;
     }

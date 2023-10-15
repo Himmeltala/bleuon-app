@@ -5,7 +5,7 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import { dia } from "@mainapp/lib";
+import { dia } from "jointjs";
 import { getLinkOrElementAttr } from "./utils";
 
 /**
@@ -14,9 +14,9 @@ import { getLinkOrElementAttr } from "./utils";
  * @param config
  * @param paper
  */
-export function changeRouterConfig(config: Ref<any>, paper: dia.Paper) {
+export function changeRouterConfig(config: any, paper: dia.Paper) {
   if (!paper?.options?.defaultRouter) return;
-  paper.options.defaultRouter = config.value;
+  paper.options.defaultRouter = config;
 }
 
 /**
@@ -25,9 +25,9 @@ export function changeRouterConfig(config: Ref<any>, paper: dia.Paper) {
  * @param config
  * @param paper
  */
-export function changeConnectorConfig(config: Ref<any>, paper: dia.Paper) {
+export function changeConnectorConfig(config: any, paper: dia.Paper) {
   if (!paper?.options?.defaultConnector) return;
-  paper.options.defaultConnector = config.value;
+  paper.options.defaultConnector = config;
 }
 
 /**

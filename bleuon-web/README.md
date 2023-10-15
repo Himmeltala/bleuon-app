@@ -26,3 +26,15 @@ bleuon-web
 ├─ vite.config.ts               // vite 配置文件
 └─ index.html                   // mainapp 页面入口
 ```
+
+# 技术介绍
+
+## JointJS
+
+## KonvaJS
+
+## Vue3
+
+## UnoCSS
+
+## TypeScript

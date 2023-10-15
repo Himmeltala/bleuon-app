@@ -8,10 +8,11 @@
 // jointjs css
 import "jointjs/css/layout.css";
 import "jointjs/css/themes/default.css";
+import { dia } from "jointjs";
+import { createJointjs } from "@mainapp/lib/jointjs";
 
 import { DateUtil } from "@common/utils";
 import { BlueprintAPI } from "@mainapp/apis";
-import { dia, initJointJs } from "@mainapp/lib";
 import { ListenerService } from "@mainapp/service/diagraming/flowchart";
 
 // components
@@ -41,7 +42,7 @@ function collect() {
 await fetchData({ id: route.params.id.toString() });
 
 onMounted(() => {
-  const jointjs = initJointJs({
+  const jointjs = createJointjs({
     el: "bleuon-flowchart-content",
     width: "80vw",
     height: "100vh",

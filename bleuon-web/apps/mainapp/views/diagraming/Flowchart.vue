@@ -6,102 +6,72 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-// jointjs css
+// jointjs
 import "jointjs/css/layout.css";
 import "jointjs/css/themes/default.css";
-
-import { FlowchartAPI } from "@mainapp/apis";
-import * as Data from "@mainapp/data/diagraming/flowchart";
-import { dia, initJointJs } from "@mainapp/lib";
-import { getDataUri } from "@mainapp/lib/tools";
-import { ListenerService } from "@mainapp/service/diagraming/flowchart";
-
+import { dia } from "jointjs";
+import { createJointjs } from "@mainapp/lib/jointjs";
+import { getDataUri } from "@mainapp/lib/jointjs/utils";
+// service
+import { JointJsEventService } from "@mainapp/service/diagraming/flowchart/listener-service";
+// common
 import { ElDatePickerData, ElSelectData } from "@common/data";
 import { FormValidatorsUtil, PreventUtil } from "@common/utils";
-
+// apis
+import { FlowchartAPI } from "@mainapp/apis";
 // components
 import FooterTools from "@mainapp/components/diagraming/flowchart/FooterTools.vue";
 import HeaderToolsBottom from "@mainapp/components/diagraming/flowchart/HeaderToolsBottom.vue";
 import HeaderToolsTop from "@mainapp/components/diagraming/flowchart/HeaderToolsTop.vue";
 import Sidebar from "@mainapp/components/diagraming/flowchart/Sidebar.vue";
 
+const route = useRoute();
 const paper = shallowRef<dia.Paper>();
 const graph = shallowRef<dia.Graph>();
-const route = useRoute();
-
-const mainDataSource = ref<FlowchartModel>({});
+const mainData = ref<FlowchartModel>({});
 const texteditor = shallowRef<HTMLInputElement>();
 
 provide(KeyVals.BLEUON_FLOWCHART_PAPER, paper);
 provide(KeyVals.BLEUON_FLOWCHART_GRAPH, graph);
-provide(KeyVals.BLEUON_FLOWCHART_DATA, mainDataSource);
+provide(KeyVals.BLEUON_FLOWCHART_DATA, mainData);
+
+const lastView = shallowRef({
+  view: null,
+  model: null
+});
+const currView = shallowRef(null);
+const activeLink = ref(false);
+const activeElem = ref(false);
+const scale = ref(1);
+const offsetX = ref(0);
+const offsetY = ref(0);
 
 async function fetchData() {
-  mainDataSource.value = await FlowchartAPI.findById({ id: route.params.id.toString() });
+  mainData.value = await FlowchartAPI.findById({ id: route.params.id.toString() });
 }
 
-function upgradeMeta(config: { nomessage: boolean }, success?: (message: any) => void) {
-  const { width, height } = paper.value.getArea();
-  mainDataSource.value.width = width;
-  mainDataSource.value.height = height;
-  mainDataSource.value.id = route.params.id.toString();
-  mainDataSource.value.json = JSON.stringify(graph.value.toJSON());
-  mainDataSource.value.connectorDefault = JSON.stringify(Data.linkConnectorConfig.value);
-  mainDataSource.value.routerDefault = JSON.stringify(Data.linkRouterConfig.value);
-  mainDataSource.value.dataUri = getDataUri(paper.value);
-  FlowchartAPI.upgrade(mainDataSource.value, config, success);
-}
-
-const upgradeThrottle = PreventUtil.throttle(() => upgradeMeta({ nomessage: true }), 300);
+await fetchData();
 
 function remodeling() {
   paper.value.freeze();
 
-  if (mainDataSource.value.json) {
-    graph.value.fromJSON(JSON.parse(mainDataSource.value.json));
+  if (mainData.value.json) {
+    graph.value.fromJSON(JSON.parse(mainData.value.json));
   }
 
-  Data.linkConnectorConfig.value = JSON.parse(mainDataSource.value.connectorDefault);
-  Data.linkRouterConfig.value = JSON.parse(mainDataSource.value.routerDefault);
-
-  paper.value.options.defaultConnector = Data.linkConnectorConfig.value;
-  paper.value.options.defaultRouter = Data.linkRouterConfig.value;
-
   paper.value.unfreeze();
-
-  paper.value.on({
-    "element:pointerclick": view => {
-      ListenerService.onPointerClickElement(view);
-    },
-    "element:pointerdblclick": view => {
-      ListenerService.onPointerDbclickElement(view, texteditor.value);
-    },
-    "link:pointerclick": view => {
-      ListenerService.onPointerClickLink(view);
-    },
-    "link:pointerdblclick": view => {
-      ListenerService.onPointerDbclickElement(view, texteditor.value);
-    },
-    "blank:pointerclick": () => {
-      ListenerService.onPointerClickBlank();
-    },
-    "blank:mousewheel": evt => {
-      ListenerService.onMousewheelBlank(evt, paper.value);
-    }
-  });
-
-  // @ts-ignore
-  graph.value.on("change", upgradeThrottle);
 }
 
 onMounted(() => {
-  const jointjs = initJointJs({
+  const jointjs = createJointjs({
     el: "bleuon__flowchart-content",
     width: "85vw",
     height: "75vh",
-    gridSize: mainDataSource.value.gridSize,
-    bgColor: mainDataSource.value.bgColor,
-    drawGrid: JSON.parse(mainDataSource.value.drawGrid)
+    gridSize: mainData.value.gridSize,
+    bgColor: mainData.value.bgColor,
+    drawGrid: JSON.parse(mainData.value.drawGrid),
+    defaultConnector: JSON.parse(mainData.value.connectorDefault),
+    defaultRouter: JSON.parse(mainData.value.routerDefault)
   });
 
   paper.value = jointjs.paper;
@@ -109,8 +79,42 @@ onMounted(() => {
 
   remodeling();
 
-  ListenerService.onKeydown({
-    ctrlS: () =>
+  const events = new JointJsEventService(
+    lastView,
+    currView,
+    activeLink,
+    activeElem,
+    scale,
+    offsetX,
+    offsetY
+  );
+
+  paper.value.on({
+    "element:pointerclick": view => {
+      events.onPointerClickElement(view);
+    },
+    "element:pointerdblclick": view => {
+      events.onPointerDoubleClickElement(view, texteditor.value);
+    },
+    "link:pointerclick": view => {
+      events.onPointerClickLink(view);
+    },
+    "link:pointerdblclick": view => {
+      events.onPointerDoubleClickElement(view, texteditor.value);
+    },
+    "blank:pointerclick": () => {
+      events.onPointerClickBlank();
+    },
+    "blank:mousewheel": evt => {
+      events.onMousewheelBlank(evt, paper.value);
+    }
+  });
+
+  // @ts-ignore
+  graph.value.on("change", upgradeThrottle);
+
+  events.onKeydownWithShortcutKey({
+    ctrlWithSKey: () =>
       upgradeMeta({ nomessage: true }, message => {
         if (message.code === 200) {
           ElMessage.success("保存成功！");
@@ -120,6 +124,24 @@ onMounted(() => {
       })
   });
 });
+
+function upgradeMeta(config: { nomessage: boolean }, success?: (message: any) => void) {
+  const { width, height } = paper.value.getArea();
+  const options = paper.value.options;
+
+  mainData.value.width = width;
+  mainData.value.height = height;
+  mainData.value.id = route.params.id.toString();
+  mainData.value.json = JSON.stringify(graph.value.toJSON());
+  mainData.value.connectorDefault = JSON.stringify(options.defaultConnector);
+  mainData.value.routerDefault = JSON.stringify(options.defaultRouter);
+  mainData.value.dataUri = getDataUri(paper.value);
+  FlowchartAPI.upgrade(mainData.value, config, success);
+}
+
+const upgradeThrottle = PreventUtil.throttle(() => upgradeMeta({ nomessage: true }), 300);
+
+// share
 
 const shareDialogVisible = ref(false);
 const shareFormRef = ref<FormInstance>();
@@ -142,12 +164,12 @@ const shareFormRules = reactive<FormRules<any>>({
 
 function confirmShare() {
   FormValidatorsUtil.validate(shareFormRef.value, () => {
-    mainDataSource.value.isShare = 1;
-    FlowchartAPI.upgrade(mainDataSource.value, { nomessage: true }, message => {
+    mainData.value.isShare = 1;
+    FlowchartAPI.upgrade(mainData.value, { nomessage: true }, message => {
       if (message.code === 200) {
         ElMessage.success("分享成功！");
       } else {
-        mainDataSource.value.isShare = 0;
+        mainData.value.isShare = 0;
         ElMessage.error("分享失败！");
       }
     });
@@ -155,17 +177,19 @@ function confirmShare() {
 }
 
 function cancelShare() {
-  mainDataSource.value.isShare = 0;
-  mainDataSource.value.deadShareDate = null;
-  FlowchartAPI.upgrade(mainDataSource.value, { nomessage: true }, message => {
+  mainData.value.isShare = 0;
+  mainData.value.deadShareDate = null;
+  FlowchartAPI.upgrade(mainData.value, { nomessage: true }, message => {
     if (message.code === 200) {
       ElMessage.success("取消分享成功！");
     } else {
-      mainDataSource.value.isShare = 1;
+      mainData.value.isShare = 1;
       ElMessage.error("取消分享失败！");
     }
   });
 }
+
+// release
 
 const releaseDialogVisible = ref(false);
 const releaseFormRef = ref<FormInstance>();
@@ -231,29 +255,24 @@ function closeReleaseTag(index: number) {
 function confirmRelease() {
   FormValidatorsUtil.validate(releaseFormRef.value, () => {
     releaseFormData.tags = JSON.stringify(releaseTagList.value);
-    FlowchartAPI.release(
-      { ...{ flowchartId: mainDataSource.value.id }, ...releaseFormData },
-      () => {
-        mainDataSource.value.isPublic = 1;
-      }
-    );
+    FlowchartAPI.release({ ...{ flowchartId: mainData.value.id }, ...releaseFormData }, () => {
+      mainData.value.isPublic = 1;
+    });
   });
 }
 
 function cancelRelease() {
-  FlowchartAPI.cancelRelease({ flowchartId: mainDataSource.value.id }, () => {
-    mainDataSource.value.isPublic = 0;
+  FlowchartAPI.cancelRelease({ flowchartId: mainData.value.id }, () => {
+    mainData.value.isPublic = 0;
   });
 }
-
-await fetchData();
 </script>
 
 <template>
   <div class="bleuon__flowchart-container h-100vh">
     <div
       class="bleuon__flowchart-header h-22vh border-border-primary border-b-1 border-b-solid bg-bg-primary px-4 py-4">
-      <HeaderToolsTop :data="mainDataSource" class="mb-4" @change="upgradeMeta">
+      <HeaderToolsTop :data="mainData" class="mb-4" @change="upgradeMeta">
         <template #tools>
           <el-tooltip content="分享">
             <div
@@ -267,9 +286,7 @@ await fetchData();
           </el-tooltip>
         </template>
       </HeaderToolsTop>
-      <HeaderToolsBottom
-        :is-clicked-element="Data.isClickedElement.value"
-        :is-clicked-link="Data.isClickedLink.value" />
+      <HeaderToolsBottom :is-clicked-element="activeElem" :is-clicked-link="activeLink" />
     </div>
     <div class="bleuon__flowchart-box f-c-b">
       <Sidebar class="h-78vh" />
@@ -286,37 +303,37 @@ await fetchData();
     <el-dialog v-model="shareDialogVisible" title="分享流程图" width="40%">
       <el-form
         ref="shareFormRef"
-        :model="mainDataSource"
+        :model="mainData"
         :rules="shareFormRules"
         label-position="right"
         label-width="100px">
         <el-form-item label="状态">
-          <div v-if="!mainDataSource.isShare">流程图没有分享，请创建分享链接</div>
+          <div v-if="!mainData.isShare">流程图没有分享，请创建分享链接</div>
           <div v-else>流程图已经分享，点击链接浏览</div>
         </el-form-item>
-        <el-form-item v-if="mainDataSource.isShare" label="链接地址">
-          <router-link :to="'/share/flowchart/' + mainDataSource.id">
+        <el-form-item v-if="mainData.isShare" label="链接地址">
+          <router-link :to="'/share/flowchart/' + mainData.id">
             <el-link type="primary">
-              http://localhost:5173/#/share/flowchart/{{ mainDataSource.id }}
+              http://localhost:5173/#/share/flowchart/{{ mainData.id }}
             </el-link>
           </router-link>
         </el-form-item>
         <el-form-item label="截止日期" prop="deadShareDate">
           <el-date-picker
-            v-model="mainDataSource.deadShareDate"
+            v-model="mainData.deadShareDate"
             :shortcuts="ElDatePickerData.futureShortcuts"
             type="datetime" />
         </el-form-item>
       </el-form>
       <template #footer>
         <span>
-          <el-button :disabled="!!mainDataSource.isShare" type="primary" @click="confirmShare">
+          <el-button :disabled="!!mainData.isShare" type="primary" @click="confirmShare">
             <template #icon>
               <div class="i-tabler-check"></div>
             </template>
             确定公开
           </el-button>
-          <el-button :disabled="!mainDataSource.isShare" @click="cancelShare">
+          <el-button :disabled="!mainData.isShare" @click="cancelShare">
             <template #icon>
               <div class="i-tabler-x"></div>
             </template>
@@ -327,7 +344,7 @@ await fetchData();
     </el-dialog>
     <el-dialog v-model="releaseDialogVisible" title="发布和公开流程图" width="40%">
       <el-form
-        v-if="!mainDataSource.isPublic"
+        v-if="!mainData.isPublic"
         ref="releaseFormRef"
         :model="releaseFormData"
         :rules="releaseFormRules"
@@ -377,7 +394,7 @@ await fetchData();
       <template #footer>
         <span>
           <el-button
-            v-if="!mainDataSource.isPublic"
+            v-if="!mainData.isPublic"
             @click="releaseDialogVisible = !releaseDialogVisible">
             <template #icon>
               <div class="i-tabler-x"></div>
@@ -390,11 +407,11 @@ await fetchData();
             </template>
             取消发布
           </el-button>
-          <el-button :disabled="!!mainDataSource.isPublic" type="primary" @click="confirmRelease">
+          <el-button :disabled="!!mainData.isPublic" type="primary" @click="confirmRelease">
             <template #icon>
               <div class="i-tabler-check"></div>
             </template>
-            <span v-if="!mainDataSource.isPublic">确定发布</span>
+            <span v-if="!mainData.isPublic">确定发布</span>
             <span v-else>已经发布</span>
           </el-button>
         </span>

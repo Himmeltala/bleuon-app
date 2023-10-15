@@ -9,8 +9,9 @@
 // jointjs css
 import "jointjs/css/layout.css";
 import "jointjs/css/themes/default.css";
+import { dia } from "jointjs";
+import { createJointjs } from "@mainapp/lib/jointjs";
 
-import { dia, initJointJs } from "@mainapp/lib";
 import { FlowchartAPI } from "@mainapp/apis";
 import { ListenerService } from "@mainapp/service/diagraming/flowchart";
 import * as Data from "@mainapp/data/diagraming/flowchart";
@@ -58,13 +59,13 @@ function remodeling() {
       ListenerService.onPointerClickElement(view);
     },
     "element:pointerdblclick": view => {
-      ListenerService.onPointerDbclickElement(view, texteditor.value);
+      ListenerService.onPointerDoubleClickElement(view, texteditor.value);
     },
     "link:pointerclick": view => {
       ListenerService.onPointerClickLink(view);
     },
     "link:pointerdblclick": view => {
-      ListenerService.onPointerDbclickElement(view, texteditor.value);
+      ListenerService.onPointerDoubleClickElement(view, texteditor.value);
     },
     "blank:pointerclick": () => {
       ListenerService.onPointerClickBlank();
@@ -76,7 +77,7 @@ function remodeling() {
 }
 
 onMounted(() => {
-  const jointjs = initJointJs({
+  const jointjs = createJointjs({
     el: "bleuon__flowchart-content",
     width: "100vw",
     height: "75vh",

@@ -5,214 +5,271 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import * as Data from "@mainapp/data/diagraming/flowchart";
-import { dia } from "@mainapp/lib";
+import { dia } from "jointjs";
+
+type LastView = Ref<{ model: any; view: dia.LinkView | dia.ElementView }>;
+type CurrView = Ref<dia.ElementView | dia.LinkView>;
 
 /**
- * 安装 Link 工具
- *
- * @param currView 当前点击的 Link
+ * jointjs 事件业务
  */
-export function mountToolsLink(
-  currView: dia.LinkView,
-  clickedLastView: Ref<{ model: any; view: dia.LinkView }>
-) {
-  clickedLastView.value.model?.removeClickedTools(clickedLastView.value.view);
+export class JointJsEventService {
+  private _lastView: LastView;
+  private _currView: CurrView;
+  private _clickedLinkView: Ref<boolean>;
+  private _clickedElemView: Ref<boolean>;
+  private _scrollFactor: number;
+  private _scaleFactor: number;
+  private _scale: Ref<number>;
+  private _offsetX: Ref<number>;
+  private _offsetY: Ref<number>;
 
-  // @ts-ignore
-  currView.model.addClickedTools(currView);
+  set lastView(view: { model: any; view: dia.LinkView | dia.ElementView }) {
+    this._lastView.value = view;
+  }
 
-  clickedLastView.value = {
+  get lastView() {
+    return this._lastView.value;
+  }
+
+  set currView(view: dia.ElementView | dia.LinkView) {
+    this._currView.value = view;
+  }
+
+  get currView() {
+    return this._currView.value;
+  }
+
+  set clickedLinkView(value: boolean) {
+    this._clickedLinkView.value = value;
+  }
+
+  get clickedLinkView() {
+    return this._clickedLinkView.value;
+  }
+
+  set clickedElemView(value: boolean) {
+    this._clickedElemView.value = value;
+  }
+
+  get clickedElemView() {
+    return this._clickedElemView.value;
+  }
+
+  set scrollFactor(value: number) {
+    this._scrollFactor = value;
+  }
+
+  get scrollFactor() {
+    return this._scrollFactor || 30;
+  }
+
+  set scaleFactor(value: number) {
+    this._scaleFactor = value;
+  }
+
+  get scaleFactor() {
+    return this._scaleFactor || 0.1;
+  }
+
+  set scale(value: number) {
+    this._scale.value = value;
+  }
+
+  get scale() {
+    return this._scale.value;
+  }
+
+  set offsetX(value: number) {
+    this._offsetX.value = value;
+  }
+
+  get offsetX() {
+    return this._offsetX.value;
+  }
+
+  set offsetY(value: number) {
+    this._offsetY.value = value;
+  }
+
+  get offsetY() {
+    return this._offsetY.value;
+  }
+
+  constructor(
+    lastView: LastView,
+    currView: CurrView,
+    clickedLinkView: Ref<boolean>,
+    clickedElemView: Ref<boolean>,
+    scale: Ref<number>,
+    offsetX: Ref<number>,
+    offsetY: Ref<number>
+  ) {
+    this._lastView = lastView;
+    this._currView = currView;
+    this._clickedLinkView = clickedLinkView;
+    this._clickedElemView = clickedElemView;
+    this._scale = scale;
+    this._offsetX = offsetX;
+    this._offsetY = offsetY;
+  }
+
+  private loadLinkTools() {
+    this.lastView.model?.removeClickedTools(this.lastView.view);
     // @ts-ignore
-    model: currView.model,
-    view: currView
-  };
-}
+    this.currView.model.addClickedTools(this.currView);
+    this.lastView = {
+      // @ts-ignore
+      model: this.currView.model,
+      view: this.currView as dia.LinkView
+    };
+  }
 
-/**
- * 卸载 Link 工具
- *
- * @param clickedLastView 上一次点击的 Link
- */
-export function unmountToolsLink(clickedLastView: Ref<{ model: any; view: dia.ElementView }>) {
-  clickedLastView.value.model?.removeClickedTools(clickedLastView.value.view);
+  private unloadLinkTools() {
+    this.lastView.model?.removeClickedTools(this.lastView.view);
+    this.lastView = {
+      model: null,
+      view: null
+    };
+  }
 
-  clickedLastView.value = {
-    model: null,
-    view: null
-  };
-}
-
-/**
- * 安装元素工具
- *
- * @param currView 当前点击的图形
- * @param clickedLastView 保存当前点击的图形作为上一次点击的图形
- */
-export function mountToolsElement(
-  currView: dia.ElementView,
-  clickedLastView: Ref<{ model: any; view: dia.ElementView }>
-) {
-  clickedLastView.value.model?.removeClickedTools(clickedLastView.value.view);
-
-  // @ts-ignore
-  currView.model.addClickedTools(currView);
-
-  clickedLastView.value = {
+  private loadElementTools() {
+    this.lastView.model?.removeClickedTools(this.lastView.view);
     // @ts-ignore
-    model: currView.model,
-    view: currView
-  };
-}
+    this.currView.model.addClickedTools(this.currView);
+    this.lastView = {
+      // @ts-ignore
+      model: this.currView.model,
+      view: this.currView as dia.ElementView
+    };
+  }
 
-/**
- * 卸载元素工具
- *
- * @param clickedLastView 上一次点击的图形
- */
-export function unmountToolsElement(clickedLastView: Ref<{ model: any; view: dia.ElementView }>) {
-  clickedLastView.value.model?.removeClickedTools(clickedLastView.value.view);
+  private unloadElementTools() {
+    this.lastView.model?.removeClickedTools(this.lastView.view);
+    this.lastView = {
+      model: null,
+      view: null
+    };
+  }
 
-  clickedLastView.value = {
-    model: null,
-    view: null
-  };
-}
+  /**
+   * 当鼠标点击 Link 时
+   *
+   * @param view
+   */
+  public onPointerClickLink(view: dia.LinkView) {
+    this.currView = view;
+    this.clickedLinkView = true;
+    this.clickedElemView = false;
+    this.loadLinkTools();
+  }
 
-/**
- * 当鼠标点击了 paper 时，卸载元素和 Link 上的工具
- */
-export function onPointerClickBlank() {
-  // 改变布尔变量，让头部工具根据这些变量设置 disabled
-  Data.isClickedElement.value = false;
-  Data.isClickedLink.value = false;
+  /**
+   * 当鼠标点击元素时
+   *
+   * @param view
+   */
+  public onPointerClickElement(view: dia.ElementView) {
+    this.currView = view;
+    this.clickedLinkView = false;
+    this.clickedElemView = true;
+    this.loadElementTools();
+  }
 
-  unmountToolsLink(Data.clickedLastView);
-  unmountToolsElement(Data.clickedLastView);
-}
+  /**
+   * 点击空白页时
+   */
+  public onPointerClickBlank() {
+    this.clickedElemView = false;
+    this.clickedLinkView = false;
+    this.unloadLinkTools();
+    this.unloadElementTools();
+  }
 
-/**
- * 当鼠标点击了元素时，不是 Link 元素
- *
- * @param view
- */
-export function onPointerClickElement(view: dia.ElementView) {
-  // 改变布尔变量，让头部工具根据这些变量设置 disabled
-  Data.isClickedElement.value = true;
-  Data.isClickedLink.value = false;
+  /**
+   * 当鼠标轮滚时
+   *
+   * @param event
+   * @param paper
+   */
+  public onMousewheelBlank(event: any, paper: dia.Paper) {
+    event.preventDefault(); // 防止浏览器默认滚动行为
+    const delta = event.originalEvent.deltaY;
 
-  // 存储当前点击的元素对象
-  Data.clickedCurrView.value = view;
+    if (event.ctrlKey) {
+      if (delta > 0) {
+        // 向下滚动，缩小画布
+        this.scale -= this.scaleFactor;
+        if (this.scale < 0.2) {
+          this.scale = 0.2;
+        }
+      } else {
+        this.scale += this.scaleFactor;
+        if (this.scale > 2) {
+          this.scale = 2;
+        }
+      }
 
-  // 安装元素定义的工具
-  mountToolsElement(view, Data.clickedLastView);
-}
-
-/**
- * 当鼠标点击了 Link 时
- *
- * @param view
- */
-export function onPointerClickLink(view: dia.LinkView) {
-  // 改变布尔变量，让头部工具根据这些变量设置 disabled
-  Data.isClickedLink.value = true;
-  Data.isClickedElement.value = false;
-
-  // 存储当前点击的元素对象
-  Data.clickedCurrView.value = view;
-  // 安装 link 定义的工具
-  mountToolsLink(view, Data.clickedLastView);
-}
-
-/**
- * 当鼠标在 paper 上滚动鼠标滚轮时
- *
- * @param evt
- * @param paper
- */
-export function onMousewheelBlank(evt: any, paper: dia.Paper) {
-  evt.preventDefault(); // 防止浏览器默认滚动行为
-  const delta = evt.originalEvent.deltaY; // 获取滚动方向
-  const scrollFactor = 30; // 滚动因子
-  const scaleFactor = 0.1; // 缩放因子
-
-  if (evt.ctrlKey) {
-    if (delta > 0) {
-      // 向下滚动，缩小画布
-      Data.currentScale.value -= scaleFactor;
-      if (Data.currentScale.value < 0.2) {
-        Data.currentScale.value = 0.2;
+      paper.scale(this.scale, this.scale);
+    } else if (event.shiftKey) {
+      if (delta > 0) {
+        // 向下滚动，向右移动画布
+        this.offsetX += this.scrollFactor;
+      } else {
+        this.offsetX -= this.scrollFactor;
       }
     } else {
-      // 向上滚动，放大画布
-      Data.currentScale.value += scaleFactor;
-      if (Data.currentScale.value > 2) {
-        Data.currentScale.value = 2;
+      if (delta > 0) {
+        // 向上滚动，向上移动画布
+        this.offsetY -= this.scrollFactor;
+      } else {
+        this.offsetY += this.scrollFactor;
       }
     }
 
-    paper.scale(Data.currentScale.value, Data.currentScale.value);
-  } else if (evt.shiftKey) {
-    if (delta > 0) {
-      // 向下滚动，向右移动画布
-      Data.currentOffsetX.value += scrollFactor;
-    } else {
-      // 向上滚动，向左移动画布
-      Data.currentOffsetX.value -= scrollFactor;
-    }
-  } else {
-    if (delta > 0) {
-      // 向上滚动，向上移动画布
-      Data.currentOffsetY.value -= scrollFactor;
-    } else {
-      // 向下滚动，向下移动画布
-      Data.currentOffsetY.value += scrollFactor;
+    paper.setOrigin(this.offsetX, this.offsetY); // 重置画布的原点
+  }
+
+  /**
+   * 双击时元素时
+   *
+   * @param view
+   * @param input
+   */
+  public onPointerDoubleClickElement(
+    view: dia.LinkView | dia.ElementView,
+    input: HTMLInputElement
+  ) {
+    // @ts-ignore
+    const { model } = view;
+    if (model?.upgradeLabelText) {
+      model.upgradeLabelText(view, input);
     }
   }
 
-  paper.setOrigin(Data.currentOffsetX.value, Data.currentOffsetY.value); // 重置画布的原点
-}
-
-/**
- * 监听键盘按下的事件监听。
- *
- * 一：当按下键盘 delete 或回退键时删除选中的元素
- * 二：当按下 Ctrl+S 保存数据到数据库中
- */
-export function onKeydown(shortcutKey: { ctrlS: Function }) {
-  document.addEventListener("keydown", event => {
-    if (event.ctrlKey) {
-      if (event.key === "s") {
-        event.preventDefault();
-        shortcutKey.ctrlS();
+  /**
+   * 快捷键组合事件
+   *
+   * @param shortcuts
+   */
+  public onKeydownWithShortcutKey(shortcuts: { ctrlWithSKey: Function }) {
+    document.addEventListener("keydown", event => {
+      if (event.ctrlKey) {
+        if (event.key === "s") {
+          event.preventDefault();
+          shortcuts.ctrlWithSKey();
+        }
       }
-    }
 
-    if (event.key === "Backspace" || event.key === "Delete") {
-      if (Data.clickedCurrView.value?.model) {
-        Data.isClickedElement.value = false;
-        Data.isClickedLink.value = false;
-        Data.clickedCurrView.value.model.remove();
+      if (event.key === "Backspace" || event.key === "Delete") {
+        // @ts-ignore
+        if (this._currView.value?.model) {
+          this._clickedElemView.value = false;
+          this._clickedLinkView.value = false;
+          // @ts-ignore
+          this._currView.value.model.remove();
+        }
       }
-    }
-  });
-}
-
-/**
- * 双击时
- *
- * @param currView
- * @param input
- */
-export function onPointerDbclickElement(
-  currView: dia.ElementView | dia.LinkView,
-  input: HTMLInputElement
-) {
-  Data.clickedCurrView.value = null;
-
-  // @ts-ignore
-  const { model } = currView;
-  if (model?.updateLabelText) {
-    model.updateLabelText(currView, input);
+    });
   }
 }

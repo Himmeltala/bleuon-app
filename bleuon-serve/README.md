@@ -26,12 +26,14 @@ src
 5. application.yml：应用的配置文件，包含应用的属性设置。
 6. mappers：存放 MyBatis 的 Mapper 接口，用于定义 SQL 映射操作。
 
-# 约束
+# 技术介绍
 
-add：insert
+## SpringSecurity
 
-erase：delete
+## SpringDoc OpenAPI
 
-renewal：update
+## Redis
 
-find：select
+## MySQL
+
+## Mybatis+MybatisPlus

@@ -6,8 +6,8 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import { dia } from "@mainapp/lib";
-import { downloadWithXml } from "@mainapp/lib/tools";
+import { dia } from "jointjs";
+import { downloadWithXml } from "@mainapp/lib/jointjs/utils";
 import { DateUtil } from "@common/utils";
 import { FlowchartAPI } from "@mainapp/apis";
 
