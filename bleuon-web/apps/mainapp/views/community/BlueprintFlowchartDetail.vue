@@ -5,16 +5,17 @@
  * @since 2023/10/5
  * @link https://github.com/himmelbleu/bleuon-app
  */
-// jointjs css
+// jointjs
 import "jointjs/css/layout.css";
 import "jointjs/css/themes/default.css";
 import { dia } from "jointjs";
 import { createJointjs } from "@mainapp/lib/jointjs";
-
+// service
+import { JointJsEventService } from "@mainapp/service/diagraming/flowchart/listener-service";
+// common
 import { DateUtil } from "@common/utils";
+// apips
 import { BlueprintAPI } from "@mainapp/apis";
-import { ListenerService } from "@mainapp/service/diagraming/flowchart";
-
 // components
 import CommonHeader from "@mainapp/components/CommonHeader.vue";
 
@@ -22,33 +23,44 @@ const paper = shallowRef<dia.Paper>();
 const graph = shallowRef<dia.Graph>();
 
 const route = useRoute();
-const mainDataSource = ref<BlueprintFlowchartModel>();
+const mainData = ref<BlueprintFlowchartModel>();
 const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
 
 async function fetchData(params: BlueprintFlowchartModel) {
-  mainDataSource.value = await BlueprintAPI.findById(params);
+  mainData.value = await BlueprintAPI.findById(params);
 }
 
 function replicate() {
-  BlueprintAPI.replicate(mainDataSource.value, token.id, message =>
-    ElMessage.success(message.message)
-  );
+  BlueprintAPI.replicate(mainData.value, token.id, message => ElMessage.success(message.message));
 }
 
 function collect() {
-  BlueprintAPI.addCollecting(mainDataSource.value, token.id);
+  BlueprintAPI.addCollecting(mainData.value, token.id);
 }
 
 await fetchData({ id: route.params.id.toString() });
 
+const lastView = shallowRef({
+  view: null,
+  model: null
+});
+const currView = shallowRef(null);
+const activeLink = ref(false);
+const activeElem = ref(false);
+const scale = ref(1);
+const offsetX = ref(0);
+const offsetY = ref(0);
+
 onMounted(() => {
   const jointjs = createJointjs({
-    el: "bleuon-flowchart-content",
-    width: "80vw",
-    height: "100vh",
-    gridSize: mainDataSource.value.flowchart.gridSize,
-    bgColor: mainDataSource.value.flowchart.bgColor,
-    drawGrid: JSON.parse(mainDataSource.value.flowchart.drawGrid)
+    el: "jointjs-content",
+    width: "85vw",
+    height: "75vh",
+    gridSize: mainData.value.flowchart.gridSize,
+    bgColor: mainData.value.flowchart.bgColor,
+    drawGrid: JSON.parse(mainData.value.flowchart.drawGrid),
+    defaultConnector: JSON.parse(mainData.value.flowchart.connectorDefault),
+    defaultRouter: JSON.parse(mainData.value.flowchart.routerDefault)
   });
 
   paper.value = jointjs.paper;
@@ -56,23 +68,28 @@ onMounted(() => {
 
   paper.value.freeze();
 
-  if (mainDataSource.value.flowchart.json) {
-    graph.value.fromJSON(JSON.parse(mainDataSource.value.flowchart.json));
+  if (mainData.value.flowchart.json) {
+    graph.value.fromJSON(JSON.parse(mainData.value.flowchart.json));
   }
-
-  paper.value.options.linkConnectorConfig = JSON.parse(
-    mainDataSource.value.flowchart.connectorDefault
-  );
-  paper.value.options.linkRouterConfig = JSON.parse(mainDataSource.value.flowchart.routerDefault);
 
   paper.value.unfreeze();
 
+  const events = new JointJsEventService(
+    lastView,
+    currView,
+    activeLink,
+    activeElem,
+    scale,
+    offsetX,
+    offsetY
+  );
+
   paper.value.on({
-    "blank:mousewheel": evt => ListenerService.onMousewheelBlank(evt, paper.value)
+    "blank:mousewheel": evt => events.onMousewheelBlank(evt, paper.value)
   });
 
   BlueprintAPI.upgrade(
-    { views: mainDataSource.value.views + 1, id: mainDataSource.value.id },
+    { views: mainData.value.views + 1, id: mainData.value.id },
     { nomessage: true }
   );
 });
@@ -86,19 +103,19 @@ onMounted(() => {
         <div class="bg-bg-overlay p-5">
           <div class="f-c-b">
             <div>
-              <div class="font-bold text-1.2rem">{{ mainDataSource.flowchart.fileName }}</div>
+              <div class="font-bold text-1.2rem">{{ mainData.flowchart.fileName }}</div>
               <div class="mt-2 text-text-secondary">
-                修改:{{ DateUtil.formatted(mainDataSource.flowchart.modifyDate) }}
+                修改:{{ DateUtil.formatted(mainData.flowchart.modifyDate) }}
               </div>
             </div>
             <div class="f-c-s">
               <div class="f-c-s mr-4">
                 <div class="i-tabler-eye mr-2"></div>
-                <span>{{ mainDataSource.views }}</span>
+                <span>{{ mainData.views }}</span>
               </div>
               <div class="mr-4">
                 <el-button @click="collect">
-                  {{ mainDataSource.stars }}
+                  {{ mainData.stars }}
                   <template #icon>
                     <div class="i-tabler-star"></div>
                   </template>
@@ -115,18 +132,18 @@ onMounted(() => {
             </div>
           </div>
           <div class="f-c-c">
-            <div id="bleuon-flowchart-content" class="mt-5"></div>
+            <div id="jointjs-content" class="mt-5"></div>
           </div>
         </div>
         <div class="information mt-5 p-5 bg-bg-overlay">
-          <div class="font-500 text-1.2rem">描述：{{ mainDataSource.description }}</div>
+          <div class="font-500 text-1.2rem">描述：{{ mainData.description }}</div>
           <div class="mt-5">
-            <el-tag v-for="item in JSON.parse(mainDataSource.tags)" class="mr-5">{{ item }}</el-tag>
+            <el-tag v-for="item in JSON.parse(mainData.tags)" class="mr-5">{{ item }}</el-tag>
           </div>
-          <router-link :to="'/u/profile/' + mainDataSource.flowchart.consumer.id">
+          <router-link :to="'/u/profile/' + mainData.flowchart.consumer.id">
             <div class="cursor-pointer f-c-e mt-5">
-              <img :src="mainDataSource.flowchart.consumer.avatar" class="mr-4 w-10 h-10 rd-50%" />
-              作者：{{ mainDataSource.flowchart.consumer.username }}
+              <img :src="mainData.flowchart.consumer.avatar" class="mr-4 w-10 h-10 rd-50%" />
+              作者：{{ mainData.flowchart.consumer.username }}
             </div>
           </router-link>
         </div>

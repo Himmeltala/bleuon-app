@@ -7,23 +7,48 @@
  */
 
 import { dia } from "jointjs";
-import * as Data from "@mainapp/data/diagraming/flowchart";
 
+const props = defineProps({
+  scale: {
+    type: Number,
+    required: true
+  }
+});
+const emits = defineEmits(["update:scale"]);
+
+const clearWatcher = watch(
+  () => props.scale,
+  newVal => {
+    scale.value = newVal;
+  }
+);
+
+onBeforeRouteLeave(() => {
+  clearWatcher();
+});
+
+const scale = ref(props.scale);
 const paper = inject<Ref<dia.Paper>>(KeyVals.BLEUON_FLOWCHART_PAPER);
 
-/**
- * 监听当 slider 组件变化时，重设置 paper 的 scale
- */
-function onSliderChange() {
-  paper.value.scale(Data.currentScale.value, Data.currentScale.value);
+const formateScale = computed({
+  get() {
+    return Number((scale.value * 100).toFixed(0));
+  },
+  set(value) {
+    scale.value = value / 100;
+    emits("update:scale", scale.value);
+  }
+});
+
+function onRangeChange() {
+  emits("update:scale", scale.value);
+  paper.value.scale(scale.value, scale.value);
 }
 
-/**
- * 重置 slider 以及 paper sacle 为初始状态
- */
-function resetSlider() {
-  Data.currentScale.value = 1;
-  paper.value.scale(Data.currentScale.value, Data.currentScale.value);
+function resetRange() {
+  scale.value = 1;
+  emits("update:scale", scale.value);
+  paper.value.scale(scale.value, scale.value);
 }
 </script>
 
@@ -33,15 +58,15 @@ function resetSlider() {
     <div class="scale-tool f-c-c">
       <div class="mr-4">
         <input
-          v-model="Data.calcCurrentScale.value"
+          v-model="formateScale"
           max="200"
           min="20"
           step="1"
           type="range"
-          @change="onSliderChange" />
+          @change="onRangeChange" />
       </div>
       <el-tooltip content="重置缩放" placement="top">
-        <div class="cursor-pointer" @click="resetSlider">{{ Data.calcCurrentScale.value }}%</div>
+        <div class="cursor-pointer" @click="resetRange">{{ formateScale }}%</div>
       </el-tooltip>
     </div>
   </div>

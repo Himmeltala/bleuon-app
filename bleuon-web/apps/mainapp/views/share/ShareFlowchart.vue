@@ -6,17 +6,17 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-// jointjs css
+// jointjs
 import "jointjs/css/layout.css";
 import "jointjs/css/themes/default.css";
 import { dia } from "jointjs";
 import { createJointjs } from "@mainapp/lib/jointjs";
-
+// service
+import { JointJsEventService } from "@mainapp/service/diagraming/flowchart/listener-service";
+// apis
 import { FlowchartAPI } from "@mainapp/apis";
-import { ListenerService } from "@mainapp/service/diagraming/flowchart";
-import * as Data from "@mainapp/data/diagraming/flowchart";
+// common
 import { DateUtil } from "@common/utils";
-
 // components
 import HeaderToolsBottom from "@mainapp/components/diagraming/flowchart/HeaderToolsBottom.vue";
 import HeaderToolsTop from "@mainapp/components/diagraming/flowchart/HeaderToolsTop.vue";
@@ -27,76 +27,96 @@ const router = useRouter();
 const paper = shallowRef<dia.Paper>();
 const graph = shallowRef<dia.Graph>();
 
-const mainDataSource = ref<FlowchartModel>({});
+const mainData = ref<FlowchartModel>({});
 const texteditor = shallowRef<HTMLInputElement>();
 
 provide(KeyVals.BLEUON_FLOWCHART_PAPER, paper);
 provide(KeyVals.BLEUON_FLOWCHART_GRAPH, graph);
-provide(KeyVals.BLEUON_FLOWCHART_DATA, mainDataSource);
+provide(KeyVals.BLEUON_FLOWCHART_DATA, mainData);
 const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
 
 async function fetchData() {
   const data = await FlowchartAPI.findIsShare({ id: route.params.id.toString() }, () => {
     router.back();
   });
-  mainDataSource.value = data;
+  mainData.value = data;
 }
 
 function remodeling() {
   paper.value.freeze();
 
-  if (mainDataSource.value.json) {
-    graph.value.fromJSON(JSON.parse(mainDataSource.value.json));
+  if (mainData.value.json) {
+    graph.value.fromJSON(JSON.parse(mainData.value.json));
   }
 
-  paper.value.options.defaultConnector = JSON.parse(mainDataSource.value.connectorDefault);
-  paper.value.options.defaultRouter = JSON.parse(mainDataSource.value.routerDefault);
-
   paper.value.unfreeze();
-
-  paper.value.on({
-    "element:pointerclick": view => {
-      ListenerService.onPointerClickElement(view);
-    },
-    "element:pointerdblclick": view => {
-      ListenerService.onPointerDoubleClickElement(view, texteditor.value);
-    },
-    "link:pointerclick": view => {
-      ListenerService.onPointerClickLink(view);
-    },
-    "link:pointerdblclick": view => {
-      ListenerService.onPointerDoubleClickElement(view, texteditor.value);
-    },
-    "blank:pointerclick": () => {
-      ListenerService.onPointerClickBlank();
-    },
-    "blank:mousewheel": evt => {
-      ListenerService.onMousewheelBlank(evt, paper.value);
-    }
-  });
 }
+
+const lastView = shallowRef({
+  view: null,
+  model: null
+});
+const currView = shallowRef(null);
+const activeLink = ref(false);
+const activeElem = ref(false);
+const scale = ref(1);
+const offsetX = ref(0);
+const offsetY = ref(0);
 
 onMounted(() => {
   const jointjs = createJointjs({
-    el: "bleuon__flowchart-content",
+    el: "jointjs-content",
     width: "100vw",
     height: "75vh",
-    gridSize: mainDataSource.value.gridSize,
-    bgColor: mainDataSource.value.bgColor,
-    drawGrid: JSON.parse(mainDataSource.value.drawGrid)
+    gridSize: mainData.value.gridSize,
+    bgColor: mainData.value.bgColor,
+    drawGrid: JSON.parse(mainData.value.drawGrid),
+    defaultConnector: JSON.parse(mainData.value.connectorDefault),
+    defaultRouter: JSON.parse(mainData.value.routerDefault)
   });
 
   paper.value = jointjs.paper;
   graph.value = jointjs.graph;
 
   remodeling();
+
+  const events = new JointJsEventService(
+    lastView,
+    currView,
+    activeLink,
+    activeElem,
+    scale,
+    offsetX,
+    offsetY
+  );
+
+  paper.value.on({
+    "element:pointerclick": view => {
+      events.onPointerClickElement(view);
+    },
+    "element:pointerdblclick": view => {
+      events.onPointerDoubleClickElement(view, texteditor.value);
+    },
+    "link:pointerclick": view => {
+      events.onPointerClickLink(view);
+    },
+    "link:pointerdblclick": view => {
+      events.onPointerDoubleClickElement(view, texteditor.value);
+    },
+    "blank:pointerclick": () => {
+      events.onPointerClickBlank();
+    },
+    "blank:mousewheel": evt => {
+      events.onMousewheelBlank(evt, paper.value);
+    }
+  });
 });
 
 const dialogVisible = ref(false);
 
 function replicate() {
-  mainDataSource.value.fileName = mainDataSource.value.fileName;
-  FlowchartAPI.replicate({ ...mainDataSource.value, consumerId: token.id }, res =>
+  mainData.value.fileName = mainData.value.fileName;
+  FlowchartAPI.replicate({ ...mainData.value, consumerId: token.id }, res =>
     ElMessage.success(res.message)
   );
 }
@@ -108,7 +128,7 @@ await fetchData();
   <div class="bleuon__flowchart-container h-100vh">
     <div
       class="bleuon__flowchart-header h-22vh border-border-primary border-b-1 border-b-solid bg-bg-primary px-4 py-4">
-      <HeaderToolsTop :data="mainDataSource" class="mb-4">
+      <HeaderToolsTop :data="mainData" class="mb-4">
         <template #tools>
           <el-tooltip content="分享">
             <div class="hover i-tabler-share mr-4" @click="dialogVisible = !dialogVisible"></div>
@@ -121,14 +141,16 @@ await fetchData();
         </template>
       </HeaderToolsTop>
       <HeaderToolsBottom
-        :is-clicked-element="Data.isClickedElement.value"
-        :is-clicked-link="Data.isClickedLink.value" />
+        :curr-view="currView"
+        :last-view="lastView"
+        :active-elem="activeElem"
+        :active-link="activeLink" />
     </div>
     <div class="bleuon__flowchart-wrapper f-c-b">
       <div class="left"></div>
       <div class="right">
-        <div id="bleuon__flowchart-content"></div>
-        <FooterTools class="h-3vh" />
+        <div id="jointjs-content"></div>
+        <FooterTools v-model:scale="scale" class="h-3vh" />
       </div>
       <div class="bleuon__flowchart-extra">
         <input ref="texteditor" class="bleuon__flowchart-input absolute hidden" type="text" />
@@ -138,14 +160,14 @@ await fetchData();
       <el-form ref="shareFormRef" label-position="right" label-width="100px">
         <el-form-item label="状态">流程图已经公开，点击链接浏览</el-form-item>
         <el-form-item label="链接地址">
-          <router-link :to="'/share/flowchart/' + mainDataSource.id">
+          <router-link :to="'/share/flowchart/' + mainData.id">
             <el-link type="primary">
-              http://localhost:5173/#/share/flowchart/{{ mainDataSource.id }}
+              http://localhost:5173/#/share/flowchart/{{ mainData.id }}
             </el-link>
           </router-link>
         </el-form-item>
         <el-form-item label="截止日期">
-          {{ DateUtil.formatted(mainDataSource.deadShareDate) }}
+          {{ DateUtil.formatted(mainData.deadShareDate) }}
         </el-form-item>
       </el-form>
     </el-dialog>

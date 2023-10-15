@@ -64,7 +64,7 @@ function remodeling() {
 
 onMounted(() => {
   const jointjs = createJointjs({
-    el: "bleuon__flowchart-content",
+    el: "jointjs-content",
     width: "85vw",
     height: "75vh",
     gridSize: mainData.value.gridSize,
@@ -136,6 +136,7 @@ function upgradeMeta(config: { nomessage: boolean }, success?: (message: any) =>
   mainData.value.connectorDefault = JSON.stringify(options.defaultConnector);
   mainData.value.routerDefault = JSON.stringify(options.defaultRouter);
   mainData.value.dataUri = getDataUri(paper.value);
+
   FlowchartAPI.upgrade(mainData.value, config, success);
 }
 
@@ -286,18 +287,22 @@ function cancelRelease() {
           </el-tooltip>
         </template>
       </HeaderToolsTop>
-      <HeaderToolsBottom :is-clicked-element="activeElem" :is-clicked-link="activeLink" />
+      <HeaderToolsBottom
+        :curr-view="currView"
+        :last-view="lastView"
+        :active-elem="activeElem"
+        :active-link="activeLink" />
     </div>
     <div class="bleuon__flowchart-box f-c-b">
       <Sidebar class="h-78vh" />
       <div class="content">
         <div class="wrapper relative">
-          <div id="bleuon__flowchart-content"></div>
+          <div id="jointjs-content"></div>
           <div class="extra-tools">
             <input ref="texteditor" class="bleuon__flowchart-input absolute hidden" type="text" />
           </div>
         </div>
-        <FooterTools class="h-3vh" />
+        <FooterTools v-model:scale="scale" class="h-3vh" />
       </div>
     </div>
     <el-dialog v-model="shareDialogVisible" title="分享流程图" width="40%">

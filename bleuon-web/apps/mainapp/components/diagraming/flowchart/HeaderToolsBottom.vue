@@ -7,19 +7,25 @@
  */
 
 import { dia } from "jointjs";
-import * as Data from "@mainapp/data/diagraming/flowchart";
+import { ElSelectData } from "@common/data";
 import { CellService } from "@mainapp/service/diagraming/flowchart";
 
 const paper = inject<dia.Paper>(KeyVals.BLEUON_FLOWCHART_PAPER);
 
 defineProps({
-  isClickedElement: {
+  activeElem: {
     type: Boolean,
     default: false
   },
-  isClickedLink: {
+  activeLink: {
     type: Boolean,
     default: false
+  },
+  currView: {
+    type: Object as PropType<any>
+  },
+  lastView: {
+    type: Object as PropType<any>
   }
 });
 
@@ -32,6 +38,12 @@ const routerConfig = ref({
 const textColorPicker = ref();
 const linkColorPicker = ref();
 const shapeBgColorPicker = ref();
+const fontFamily = ref("微软雅黑");
+const textColor = ref("");
+const textSize = ref(14);
+const shapeStrokeWidth = ref(1.5);
+const shapeBorderStyle = ref("solid");
+const shapeBackground = ref("white");
 </script>
 
 <template>
@@ -45,13 +57,13 @@ const shapeBgColorPicker = ref();
         <div class="font-tool">
           <el-tooltip content="字体" placement="bottom">
             <el-select
-              v-model="Data.fontFamily.value"
-              :disabled="!isClickedElement && !isClickedLink"
+              v-model="fontFamily"
+              :disabled="!activeElem && !activeLink"
               placeholder="请选择字体"
               style="width: 100px"
-              @change="value => CellService.changeTextFamily(Data.clickedCurrView.value, value)">
+              @change="value => CellService.changeTextFamily(currView, value)">
               <el-option
-                v-for="item in Data.fontFamilyOptions"
+                v-for="item in ElSelectData.fontFamilyOptions"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value" />
@@ -61,10 +73,10 @@ const shapeBgColorPicker = ref();
         <div class="bold-tool ml-2">
           <el-tooltip content="加粗" placement="bottom">
             <el-button
-              :disabled="!isClickedElement && !isClickedLink"
+              :disabled="!activeElem && !activeLink"
               bg
               text
-              @click="CellService.changeTextBold(Data.clickedCurrView.value)">
+              @click="CellService.changeTextBold(currView)">
               <template #icon>
                 <div class="i-tabler-bold"></div>
               </template>
@@ -74,10 +86,10 @@ const shapeBgColorPicker = ref();
         <div class="italic-tool ml-2">
           <el-tooltip content="斜体" placement="bottom">
             <el-button
-              :disabled="!isClickedElement && !isClickedLink"
+              :disabled="!activeElem && !activeLink"
               bg
               text
-              @click="CellService.changeTextItalic(Data.clickedCurrView.value)">
+              @click="CellService.changeTextItalic(currView)">
               <template #icon>
                 <div class="i-tabler-italic"></div>
               </template>
@@ -87,10 +99,10 @@ const shapeBgColorPicker = ref();
         <div class="underline-tool ml-2">
           <el-tooltip content="下划线" placement="bottom">
             <el-button
-              :disabled="!isClickedElement && !isClickedLink"
+              :disabled="!activeElem && !activeLink"
               bg
               text
-              @click="CellService.changeTextUnderline(Data.clickedCurrView.value)">
+              @click="CellService.changeTextUnderline(currView)">
               <template #icon>
                 <div class="i-tabler-underline"></div>
               </template>
@@ -100,7 +112,7 @@ const shapeBgColorPicker = ref();
         <div class="font-color-tool ml-2">
           <el-tooltip content="字体颜色" placement="bottom">
             <el-button
-              :disabled="!isClickedElement && !isClickedLink"
+              :disabled="!activeElem && !activeLink"
               bg
               text
               @click="CellService.openColorPicker(textColorPicker)">
@@ -112,20 +124,20 @@ const shapeBgColorPicker = ref();
           <div class="hidden">
             <el-color-picker
               ref="textColorPicker"
-              v-model="Data.textColor.value"
-              @change="value => CellService.changeTextColor(Data.clickedCurrView.value, value)" />
+              v-model="textColor"
+              @change="value => CellService.changeTextColor(currView, value)" />
           </div>
         </div>
         <div class="font-size-tool ml-2">
           <el-tooltip content="字号(px)" placement="bottom">
             <el-input-number
-              v-model="Data.textSize.value"
-              :disabled="!isClickedElement && !isClickedLink"
+              v-model="textSize"
+              :disabled="!activeElem && !activeLink"
               :max="30"
               :min="14"
               controls-position="right"
               style="width: 85px"
-              @change="value => CellService.changeTextSize(Data.clickedCurrView.value, value)" />
+              @change="value => CellService.changeTextSize(currView, value)" />
           </el-tooltip>
         </div>
       </div>
@@ -140,13 +152,13 @@ const shapeBgColorPicker = ref();
         <div class="border-bold-tool">
           <el-tooltip content="连线粗细" placement="bottom">
             <el-select
-              v-model="Data.shapeStrokeWidth.value"
-              :disabled="!isClickedElement && !isClickedLink"
+              v-model="shapeStrokeWidth"
+              :disabled="!activeElem && !activeLink"
               placeholder="请选择连线粗细"
               style="width: 85px"
-              @change="value => CellService.changeStrokeWidth(Data.clickedCurrView.value, value)">
+              @change="value => CellService.changeStrokeWidth(currView, value)">
               <el-option
-                v-for="item in Data.shapeStrokeWidthOptions"
+                v-for="item in ElSelectData.shapeStrokeWidthOptions"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value" />
@@ -156,11 +168,11 @@ const shapeBgColorPicker = ref();
         <div class="border-style-tool ml-2">
           <el-tooltip content="连线样式" placement="bottom">
             <el-select
-              v-model="Data.shapeBorderStyle.value"
-              :disabled="!isClickedElement && !isClickedLink"
+              v-model="shapeBorderStyle"
+              :disabled="!activeElem && !activeLink"
               placeholder="请选择连线样式"
               style="width: 130px"
-              @change="value => CellService.changeBorderStyle(Data.clickedCurrView.value, value)">
+              @change="value => CellService.changeBorderStyle(currView, value)">
               <el-option label="实线" value="solid">
                 <img
                   class="object-cover w-100% h-100%"
@@ -187,7 +199,7 @@ const shapeBgColorPicker = ref();
         <div class="shape-bg-tool ml-2">
           <el-tooltip content="图形背景色" placement="bottom">
             <el-button
-              :disabled="!isClickedElement"
+              :disabled="!activeElem"
               bg
               text
               @click="CellService.openColorPicker(shapeBgColorPicker)">
@@ -199,14 +211,14 @@ const shapeBgColorPicker = ref();
           <div class="hidden">
             <el-color-picker
               ref="shapeBgColorPicker"
-              v-model="Data.shapeBackground.value"
-              @change="value => CellService.changeBackground(Data.clickedCurrView.value, value)" />
+              v-model="shapeBackground"
+              @change="value => CellService.changeBackground(currView, value)" />
           </div>
         </div>
         <div class="link-color-tool ml-2">
           <el-tooltip content="连线颜色" placement="bottom">
             <el-button
-              :disabled="!isClickedElement && !isClickedLink"
+              :disabled="!activeElem && !activeLink"
               bg
               text
               @click="CellService.openColorPicker(linkColorPicker)">
@@ -218,8 +230,8 @@ const shapeBgColorPicker = ref();
           <div class="hidden">
             <el-color-picker
               ref="linkColorPicker"
-              v-model="Data.textColor.value"
-              @change="value => CellService.changeLinkColor(Data.clickedCurrView.value, value)" />
+              v-model="textColor"
+              @change="value => CellService.changeLinkColor(currView, value)" />
           </div>
         </div>
       </div>
@@ -239,7 +251,7 @@ const shapeBgColorPicker = ref();
               style="width: 90px"
               @change="CellService.changeRouterConfig(routerConfig, paper)">
               <el-option
-                v-for="item in Data.linkRouterOptions"
+                v-for="item in ElSelectData.linkRouterOptions"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value" />
@@ -254,7 +266,7 @@ const shapeBgColorPicker = ref();
               style="width: 90px"
               @change="CellService.changeConnectorConfig(connectorConfig, paper)">
               <el-option
-                v-for="item in Data.linkConnectorOptions"
+                v-for="item in ElSelectData.linkConnectorOptions"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value" />

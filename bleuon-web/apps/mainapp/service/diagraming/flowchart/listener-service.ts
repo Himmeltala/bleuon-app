@@ -16,8 +16,8 @@ type CurrView = Ref<dia.ElementView | dia.LinkView>;
 export class JointJsEventService {
   private _lastView: LastView;
   private _currView: CurrView;
-  private _clickedLinkView: Ref<boolean>;
-  private _clickedElemView: Ref<boolean>;
+  private _activeLink: Ref<boolean>;
+  private _activeElem: Ref<boolean>;
   private _scrollFactor: number;
   private _scaleFactor: number;
   private _scale: Ref<number>;
@@ -40,20 +40,20 @@ export class JointJsEventService {
     return this._currView.value;
   }
 
-  set clickedLinkView(value: boolean) {
-    this._clickedLinkView.value = value;
+  set activeLink(value: boolean) {
+    this._activeLink.value = value;
   }
 
-  get clickedLinkView() {
-    return this._clickedLinkView.value;
+  get activeLink() {
+    return this._activeLink.value;
   }
 
-  set clickedElemView(value: boolean) {
-    this._clickedElemView.value = value;
+  set activeElem(value: boolean) {
+    this._activeElem.value = value;
   }
 
-  get clickedElemView() {
-    return this._clickedElemView.value;
+  get activeElem() {
+    return this._activeElem.value;
   }
 
   set scrollFactor(value: number) {
@@ -99,16 +99,16 @@ export class JointJsEventService {
   constructor(
     lastView: LastView,
     currView: CurrView,
-    clickedLinkView: Ref<boolean>,
-    clickedElemView: Ref<boolean>,
+    activeLink: Ref<boolean>,
+    activeElem: Ref<boolean>,
     scale: Ref<number>,
     offsetX: Ref<number>,
     offsetY: Ref<number>
   ) {
     this._lastView = lastView;
     this._currView = currView;
-    this._clickedLinkView = clickedLinkView;
-    this._clickedElemView = clickedElemView;
+    this._activeLink = activeLink;
+    this._activeElem = activeElem;
     this._scale = scale;
     this._offsetX = offsetX;
     this._offsetY = offsetY;
@@ -159,8 +159,8 @@ export class JointJsEventService {
    */
   public onPointerClickLink(view: dia.LinkView) {
     this.currView = view;
-    this.clickedLinkView = true;
-    this.clickedElemView = false;
+    this.activeLink = true;
+    this.activeElem = false;
     this.loadLinkTools();
   }
 
@@ -171,8 +171,8 @@ export class JointJsEventService {
    */
   public onPointerClickElement(view: dia.ElementView) {
     this.currView = view;
-    this.clickedLinkView = false;
-    this.clickedElemView = true;
+    this.activeLink = false;
+    this.activeElem = true;
     this.loadElementTools();
   }
 
@@ -180,8 +180,8 @@ export class JointJsEventService {
    * 点击空白页时
    */
   public onPointerClickBlank() {
-    this.clickedElemView = false;
-    this.clickedLinkView = false;
+    this.activeElem = false;
+    this.activeLink = false;
     this.unloadLinkTools();
     this.unloadElementTools();
   }
@@ -264,8 +264,8 @@ export class JointJsEventService {
       if (event.key === "Backspace" || event.key === "Delete") {
         // @ts-ignore
         if (this._currView.value?.model) {
-          this._clickedElemView.value = false;
-          this._clickedLinkView.value = false;
+          this._activeElem.value = false;
+          this._activeLink.value = false;
           // @ts-ignore
           this._currView.value.model.remove();
         }
