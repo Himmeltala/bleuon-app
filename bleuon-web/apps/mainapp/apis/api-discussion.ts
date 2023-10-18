@@ -34,9 +34,11 @@ export async function findAllByCriteriaNotComments(model: {
   title?: string;
   rankingType?: string;
   type?: string;
+  pageSize?: number;
+  currPage?: number;
   sequences: { isAsc: boolean; col: string }[];
 }) {
-  const { data } = await request.post<R<PostModel[]>>(
+  const { data } = await request.post<R<{ list: PostModel[]; total: number }>>(
     "/discussion/find/all/by/criteria/not-comments",
     model
   );

@@ -2,8 +2,11 @@ package com.bleuon.service.impl;
 
 import com.bleuon.entity.PostModel;
 import com.bleuon.entity.criterias.DiscussionCriteria;
+import com.bleuon.exception.JdbcFailedException;
 import com.bleuon.mapper.DiscussionMapper;
 import com.bleuon.service.IDiscussionService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +30,25 @@ public class DiscussionService implements IDiscussionService {
     }
 
     @Override
-    public List<PostModel> findAllByCriteriaNotComments(DiscussionCriteria criteria) {
-        return discussionMapper.findAllByCriteriaNotComments(criteria);
+    public PageInfo<PostModel> findAllByCriteriaNotComments(DiscussionCriteria criteria) {
+        try {
+
+            if (criteria.getPageSize() == null) {
+                criteria.setPageSize(5);
+            }
+
+            if (criteria.getCurrPage() == null) {
+                criteria.setCurrPage(1);
+            }
+
+            PageHelper.startPage(criteria.getCurrPage(), criteria.getPageSize());
+            List<PostModel> result = discussionMapper.findAllByCriteriaNotComments(criteria);
+            return new PageInfo<>(result, criteria.getPageSize());
+        } catch (Exception e) {
+            throw new JdbcFailedException(e.getCause());
+        } finally {
+            PageHelper.clearPage();
+        }
     }
 
 }

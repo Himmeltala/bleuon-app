@@ -5,6 +5,7 @@ import com.bleuon.entity.PostModel;
 import com.bleuon.entity.criterias.DiscussionCriteria;
 import com.bleuon.service.impl.DiscussionService;
 import com.bleuon.utils.http.R;
+import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -38,9 +39,9 @@ public class DiscussionController {
     @Operation(summary = "根据条件查询所有帖子，但不查询所属评论列表")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:consumer:find')")
     @PostMapping("/find/all/by/criteria/not-comments")
-    public R<List<PostModel>> findAllByCriteriaNotComments(@RequestBody DiscussionCriteria criteria) {
-        List<PostModel> list = discussionService.findAllByCriteriaNotComments(criteria);
-        return R.success(list);
+    public R<PageInfo<PostModel>> findAllByCriteriaNotComments(@RequestBody DiscussionCriteria criteria) {
+        PageInfo<PostModel> pages = discussionService.findAllByCriteriaNotComments(criteria);
+        return R.success(pages);
     }
 
 }

@@ -45,7 +45,7 @@
                position,
                profession
         FROM t_consumers
-        WHERE id = #{consumerId};
+        WHERE id = #{consumerId}
     </select>
 
     <resultMap id="findCommentsByPostIdMap" type="com.bleuon.entity.PostCommentModel" autoMapping="true">
@@ -57,7 +57,7 @@
     <select id="findCommentsByPostId" resultMap="findCommentsByPostIdMap">
         SELECT *
         FROM t_post_comments
-        WHERE post_id = #{postId};
+        WHERE post_id = #{postId}
     </select>
 
 

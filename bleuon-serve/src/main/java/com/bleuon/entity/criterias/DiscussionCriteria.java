@@ -41,4 +41,10 @@ public class DiscussionCriteria extends CommonCriteria implements Serializable {
     @Schema(description = "帖子类型，如官方帖子、活动帖子")
     private String type;
 
+    @Schema(description = "当前页码")
+    private Integer currPage;
+
+    @Schema(description = "每页数量")
+    private Integer pageSize;
+
 }

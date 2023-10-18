@@ -13,16 +13,18 @@ import { ElSelectData } from "@common/data";
 // components
 import CommonHeader from "@mainapp/components/CommonHeader.vue";
 
-const mainDataSource = ref<PostModel[]>([]);
+const mainData = ref<{ list: PostModel[]; total: number }>();
 
 async function fetchData(pamras: any) {
-  mainDataSource.value = await DiscussionAPI.findAllByCriteriaNotComments(pamras);
+  mainData.value = await DiscussionAPI.findAllByCriteriaNotComments(pamras);
 }
 
 const searchVal = ref("");
 const type = ref("");
 const rankingType = ref("");
 const dateSequence = ref("降序");
+const currPage = ref(1);
+const pageSize = ref(5);
 
 async function onTypeChange(value: any) {
   await fetchData({ type: value });
@@ -37,12 +39,30 @@ async function onDateSequenceChange(value: any) {
 }
 
 async function search() {
-  if (!searchVal.value) {
-    ElMessage.warning({ message: "请输入关键字查询！", grouping: true });
-    return;
-  }
   await fetchData({
     title: searchVal.value,
+    sequences: [{ isAsc: dateSequence.value === "升序" ? true : false, col: "create_date" }]
+  });
+}
+
+async function handleSizeChange() {
+  await fetchData({
+    type: type.value,
+    rankingType: rankingType.value,
+    title: searchVal.value,
+    currPage: currPage.value,
+    pageSize: pageSize.value,
+    sequences: [{ isAsc: dateSequence.value === "升序" ? true : false, col: "create_date" }]
+  });
+}
+
+async function handleCurrentChange() {
+  await fetchData({
+    type: type.value,
+    rankingType: rankingType.value,
+    title: searchVal.value,
+    currPage: currPage.value,
+    pageSize: pageSize.value,
     sequences: [{ isAsc: dateSequence.value === "升序" ? true : false, col: "create_date" }]
   });
 }
@@ -76,7 +96,7 @@ await fetchData({ sequences: [{ isAsc: false, col: "create_date" }] });
           <div class="mt-4">
             <div
               class="post-item cursor-pointer rd-2 bg-bg-overlay p-5 mt-2"
-              v-for="item in mainDataSource">
+              v-for="item in mainData.list">
               <div class="poster f-c-s">
                 <div class="f-c-s mr-4">
                   <img :src="item.consumer.avatar" class="w-10 h-10 rd-50% mr-4" />
@@ -132,7 +152,15 @@ await fetchData({ sequences: [{ isAsc: false, col: "create_date" }] });
             </div>
           </div>
           <div class="pager mt-2 f-c-e bg-bg-overlay p-2 rd-2">
-            <el-pagination background layout="prev, pager, next" :total="1000" />
+            <el-pagination
+              background
+              v-model:current-page="currPage"
+              v-model:page-size="pageSize"
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              layout="sizes, prev, pager, next, jumper"
+              :page-sizes="[5, 10, 15, 20]"
+              :total="mainData.total" />
           </div>
         </div>
         <div class="tools w-28%">

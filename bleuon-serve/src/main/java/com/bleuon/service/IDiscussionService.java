@@ -2,6 +2,7 @@ package com.bleuon.service;
 
 import com.bleuon.entity.PostModel;
 import com.bleuon.entity.criterias.DiscussionCriteria;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -15,6 +16,6 @@ public interface IDiscussionService {
 
     List<PostModel> findAllByCriteria(DiscussionCriteria criteria);
 
-    List<PostModel> findAllByCriteriaNotComments(DiscussionCriteria criteria);
+    PageInfo<PostModel> findAllByCriteriaNotComments(DiscussionCriteria criteria);
 
 }
