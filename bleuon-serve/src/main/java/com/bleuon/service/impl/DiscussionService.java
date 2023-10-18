@@ -2,7 +2,6 @@ package com.bleuon.service.impl;
 
 import com.bleuon.entity.PostModel;
 import com.bleuon.entity.criterias.DiscussionCriteria;
-import com.bleuon.exception.JdbcFailedException;
 import com.bleuon.mapper.DiscussionMapper;
 import com.bleuon.service.IDiscussionService;
 import com.github.pagehelper.PageHelper;
@@ -11,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @description:
@@ -31,24 +31,11 @@ public class DiscussionService implements IDiscussionService {
 
     @Override
     public PageInfo<PostModel> findAllByCriteriaNotComments(DiscussionCriteria criteria) {
-        try {
+        // 如果 page size 为空，返回 5 默认值
+        int pageSize = Optional.ofNullable(criteria.getPageSize()).orElse(5);
+        int currPage = Optional.ofNullable(criteria.getCurrPage()).orElse(1);
 
-            if (criteria.getPageSize() == null) {
-                criteria.setPageSize(5);
-            }
-
-            if (criteria.getCurrPage() == null) {
-                criteria.setCurrPage(1);
-            }
-
-            PageHelper.startPage(criteria.getCurrPage(), criteria.getPageSize());
-            List<PostModel> result = discussionMapper.findAllByCriteriaNotComments(criteria);
-            return new PageInfo<>(result, criteria.getPageSize());
-        } catch (Exception e) {
-            throw new JdbcFailedException(e.getCause());
-        } finally {
-            PageHelper.clearPage();
-        }
+        return PageHelper.startPage(currPage, pageSize).doSelectPageInfo(() -> discussionMapper.findAllByCriteriaNotComments(criteria));
     }
 
 }

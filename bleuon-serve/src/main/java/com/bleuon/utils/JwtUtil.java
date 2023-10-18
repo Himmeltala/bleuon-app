@@ -4,24 +4,31 @@ import com.bleuon.entity.CustomUserDetails;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.Data;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
 
+@Data
+@Component
 public class JwtUtil {
 
-    private static final long EXPIRE_SECONDS = 86400000 * 7; // 24 小时，单位毫秒
-    private static final String KEY = "cereshuzhitingnizhenbangcereshuzhitingnizhenbang";
+    @Value("${spring.security.token-expire}")
+    private Long expire; // 24 小时，单位毫秒
+    @Value("${spring.security.token-key}")
+    private String key;
 
-    public static Long getExpire() {
-        return new Date(System.currentTimeMillis() + EXPIRE_SECONDS).getTime();
+    public Long getExpire() {
+        return new Date(System.currentTimeMillis() + expire).getTime();
     }
 
-    private static SecretKey generateKey() {
-        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(KEY));
+    private SecretKey generateKey() {
+        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(key));
     }
 
-    public static String createJwt(CustomUserDetails details, String jwtUuid, Long expire) {
+    public String createJwt(CustomUserDetails details, String jwtUuid, Long expire) {
         JwtBuilder builder = Jwts.builder();
         return builder
                 .setHeaderParam("typ", "JWT")
@@ -36,7 +43,7 @@ public class JwtUtil {
                 .compact();
     }
 
-    public static Claims parseJwt(String header) {
+    public Claims parseJwt(String header) {
         if (header == null || !header.startsWith("Bearer ")) return null;
         String token = header.substring(7);
         try {

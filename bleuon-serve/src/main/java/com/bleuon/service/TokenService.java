@@ -1,7 +1,7 @@
 package com.bleuon.service;
 
 import com.bleuon.entity.CustomUserDetails;
-import com.bleuon.entity.dto.Token;
+import com.bleuon.entity.dto.TokenDTO;
 import com.bleuon.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -20,14 +20,15 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class TokenService {
 
+    private final JwtUtil jwtUtil;
     private final RedisTemplate<String, String> redisTemplate;
 
-    public Token grant(CustomUserDetails details) {
+    public TokenDTO grant(CustomUserDetails details) {
         String jwtUuid = UUID.randomUUID().toString();
-        Long expire = JwtUtil.getExpire();
-        String value = JwtUtil.createJwt(details, jwtUuid, expire);
+        Long expire = jwtUtil.getExpire();
+        String value = jwtUtil.createJwt(details, jwtUuid, expire);
         redisTemplate.opsForValue().set(jwtUuid, value, expire, TimeUnit.SECONDS);
-        return new Token(JwtUtil.getExpire(), value, details.getUsername(), details.getId());
+        return new TokenDTO(expire, value, details.getUsername(), details.getId());
     }
 
 }

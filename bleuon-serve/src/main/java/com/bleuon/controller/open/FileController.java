@@ -1,4 +1,4 @@
-package com.bleuon.controller.expose;
+package com.bleuon.controller.open;
 
 import com.bleuon.annotaion.RequestMappingPrefix;
 import com.bleuon.entity.vo.FileParamsVO;
@@ -29,13 +29,13 @@ import java.io.IOException;
 @Tag(name = "文件")
 public class FileController {
 
-    private final FileService service;
+    private final FileService fileService;
 
     @Operation(summary = "获取图片二进制")
     @GetMapping(value = "/preview/image")
     public void previewImageFile(FileParamsVO vo, HttpServletResponse response) {
         try {
-            byte[] bytes = service.load(vo.getFilename(), vo.getFilepath(), response);
+            byte[] bytes = fileService.load(vo.getFilename(), vo.getFilepath(), response);
             try (ServletOutputStream output = response.getOutputStream()) {
                 output.write(bytes);
             }
@@ -53,7 +53,7 @@ public class FileController {
             return R.error("请选择一个图片！");
         }
 
-        String imgUrl = service.upload("/static/images/" + path, null, file);
+        String imgUrl = fileService.upload("/static/images/" + path, null, file);
         if (StringUtils.hasText(imgUrl)) {
             return R.success("上传成功！", imgUrl);
         } else {

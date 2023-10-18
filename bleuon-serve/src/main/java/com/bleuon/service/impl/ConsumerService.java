@@ -29,8 +29,8 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class ConsumerService extends ServiceImpl<ConsumerMapper, ConsumerModel> implements IConsumerService {
 
-    private final ConsumerMapper mapper;
     private final FileService fileService;
+    private final ConsumerMapper consumerMapper;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
@@ -56,12 +56,12 @@ public class ConsumerService extends ServiceImpl<ConsumerMapper, ConsumerModel> 
     @Override
     public boolean upgrade(ConsumerModel model) {
         try {
-            if (model.getPassword() != null) {
+            if (!Objects.isNull(model.getPassword())) {
                 model.setPassword(passwordEncoder.encode(model.getPassword()));
             }
 
             model.setModifyDate(new Timestamp(new Date().getTime()));
-            Integer status = mapper.upgrade(model);
+            Integer status = consumerMapper.upgrade(model);
             return status > 0;
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());

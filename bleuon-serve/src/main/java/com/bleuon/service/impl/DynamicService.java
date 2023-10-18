@@ -27,7 +27,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class DynamicService extends ServiceImpl<DynamicMapper, DynamicModel> implements IDynamicService {
 
-    private final DynamicMapper mapper;
+    private final DynamicMapper dynamicMapper;
 
     @Override
     public List<DynamicModel> findAllByCriteria(DynamicCriteria criteria) {
@@ -47,7 +47,7 @@ public class DynamicService extends ServiceImpl<DynamicMapper, DynamicModel> imp
     public boolean upgrade(DynamicModel model) {
         try {
             model.setModifyDate(new Timestamp(new Date().getTime()));
-            Integer status = mapper.upgrade(model);
+            Integer status = dynamicMapper.upgrade(model);
             return status > 0;
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());

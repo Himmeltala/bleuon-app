@@ -34,14 +34,14 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class VerifyJwtFilter extends OncePerRequestFilter {
 
+    private final JwtUtil jwtUtil;
     private final AuthorityMapper mapper;
-
     private final RedisTemplate<String, String> redisTemplate;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
         String authorization = request.getHeader(KeyVals.Token);
-        Claims claims = JwtUtil.parseJwt(authorization);
+        Claims claims = jwtUtil.parseJwt(authorization);
 
         if (claims != null) {
             String jwtId = claims.getId();

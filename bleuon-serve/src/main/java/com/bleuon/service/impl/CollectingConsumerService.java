@@ -22,16 +22,16 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CollectingConsumerService implements ICollectingConsumerService {
 
-    private final CollectingConsumerMapper mapper;
+    private final CollectingConsumerMapper collectingConsumerMapper;
 
     @Override
     public CollectingConsumerModel findByCriteria(ConsumerCriteria criteria) {
-        return mapper.findByCriteria(criteria);
+        return collectingConsumerMapper.findByCriteria(criteria);
     }
 
     @Override
     public List<CollectingConsumerModel> findAllByCriteria(ConsumerCriteria criteria) {
-        return mapper.findAllByCriteria(criteria);
+        return collectingConsumerMapper.findAllByCriteria(criteria);
     }
 
 
@@ -41,7 +41,7 @@ public class CollectingConsumerService implements ICollectingConsumerService {
         try {
             String uuid = UUID.randomUUID().toString();
             model.setId(uuid);
-            Integer added = mapper.add(model);
+            Integer added = collectingConsumerMapper.add(model);
             return added > 0;
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());
@@ -51,7 +51,7 @@ public class CollectingConsumerService implements ICollectingConsumerService {
     @Override
     public boolean delete(CollectingConsumerModel model) {
         try {
-            Integer deled = mapper.delete(model);
+            Integer deled = collectingConsumerMapper.delete(model);
             return deled > 0;
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());

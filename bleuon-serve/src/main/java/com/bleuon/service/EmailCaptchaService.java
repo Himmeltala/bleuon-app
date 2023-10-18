@@ -1,9 +1,8 @@
 package com.bleuon.service;
 
 import com.bleuon.utils.NumbersUtil;
-import lombok.Getter;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.mail.MailException;
@@ -20,20 +19,20 @@ import java.util.concurrent.TimeUnit;
  * @author: zheng
  * @date: 2023/10/8
  */
+@Data
 @Service
 @RequiredArgsConstructor
 public class EmailCaptchaService {
 
-    private final JavaMailSender sender;
+    private final JavaMailSender mailSender;
     private final RedisTemplate<String, String> redisTemplate;
+
     @Value("${spring.mail.username}")
     private String address;
     @Value("${spring.mail.timeout}")
     private Integer timeout;
     @Value("${spring.mail.expire}")
     private Integer expire;
-    @Getter
-    @Setter
     private String principal;
 
     /**
@@ -51,7 +50,7 @@ public class EmailCaptchaService {
             message.setTo(email);
             message.setSubject(subject);
             message.setText(text);
-            sender.send(message);
+            mailSender.send(message);
             return true;
         } catch (MailException e) {
             return false;

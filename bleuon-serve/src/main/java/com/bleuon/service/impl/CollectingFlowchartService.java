@@ -22,21 +22,21 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CollectingFlowchartService implements ICollectingFlowchartService {
 
-    private final CollectingFlowchartMapper mapper;
+    private final CollectingFlowchartMapper collectingFlowchartMapper;
 
     @Override
     public List<FlowchartModel> findAllByCriteria(FlowchartCriteria criteria) {
-        return mapper.findAllByCriteria(criteria);
+        return collectingFlowchartMapper.findAllByCriteria(criteria);
     }
 
     @Override
     public FlowchartModel find(CollectingFlowchartModel model) {
-        return mapper.find(model);
+        return collectingFlowchartMapper.find(model);
     }
 
     @Override
     public boolean delete(CollectingFlowchartModel model) {
-        Integer row = mapper.delete(model);
+        Integer row = collectingFlowchartMapper.delete(model);
         return row > 0;
     }
 
@@ -44,7 +44,7 @@ public class CollectingFlowchartService implements ICollectingFlowchartService {
     @Transactional
     public boolean add(CollectingFlowchartModel model) {
         try {
-            Integer row = mapper.add(model);
+            Integer row = collectingFlowchartMapper.add(model);
             return row > 0;
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());

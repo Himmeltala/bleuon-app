@@ -22,6 +22,9 @@ spring:
     port: 587
     timeout: 1
     expire: 3
+  security:
+    token-expire: 604800000
+    token-key: cereshuzhitingnizhenbangcereshuzhitingnizhenbang
 
 mybatis-plus:
   configuration:

@@ -24,18 +24,18 @@ import java.util.Objects;
 @Service
 public class BlueprintFlowchartService implements IBlueprintFlowchartService {
 
-    private final BlueprintFlowchartMapper mapper;
+    private final BlueprintFlowchartMapper blueprintFlowchartMapper;
 
     @Override
     public R<List<BlueprintFlowchartModel>> findAll(BlueprintFlowchartModel model) {
-        List<BlueprintFlowchartModel> list = mapper.findAll(model);
+        List<BlueprintFlowchartModel> list = blueprintFlowchartMapper.findAll(model);
         if (Objects.isNull(list)) return R.failed("没有查询到流程图！");
         return R.success(list);
     }
 
     @Override
     public R<BlueprintFlowchartModel> findById(BlueprintFlowchartModel model) {
-        BlueprintFlowchartModel flowchart = mapper.find(model);
+        BlueprintFlowchartModel flowchart = blueprintFlowchartMapper.find(model);
         if (Objects.isNull(flowchart)) return R.failed("没有查询到流程图！");
         return R.success(flowchart);
     }
@@ -45,7 +45,7 @@ public class BlueprintFlowchartService implements IBlueprintFlowchartService {
     public boolean upgrade(BlueprintFlowchartModel model) {
         try {
             model.setModifyDate(new Timestamp(new Date().getTime()));
-            Integer status = mapper.upgrade(model);
+            Integer status = blueprintFlowchartMapper.upgrade(model);
             return status > 0;
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());
@@ -56,7 +56,7 @@ public class BlueprintFlowchartService implements IBlueprintFlowchartService {
     @Transactional
     public boolean add(BlueprintFlowchartModel model) {
         try {
-            Integer status = mapper.add(model);
+            Integer status = blueprintFlowchartMapper.add(model);
             return status > 0;
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());
@@ -67,7 +67,7 @@ public class BlueprintFlowchartService implements IBlueprintFlowchartService {
     @Transactional
     public boolean delete(BlueprintFlowchartModel model) {
         try {
-            Integer status = mapper.delete(model);
+            Integer status = blueprintFlowchartMapper.delete(model);
             return status > 0;
         } catch (Exception e) {
             throw new JdbcErrorException(e.getCause());

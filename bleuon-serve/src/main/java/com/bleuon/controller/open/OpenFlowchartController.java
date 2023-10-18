@@ -1,4 +1,4 @@
-package com.bleuon.controller.expose;
+package com.bleuon.controller.open;
 
 import com.bleuon.annotaion.RequestMappingPrefix;
 import com.bleuon.entity.FlowchartModel;
@@ -21,12 +21,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Tag(name = "公开的流程图")
 public class OpenFlowchartController {
 
-    private final FlowchartService service;
+    private final FlowchartService flowchartService;
 
     @Operation(summary = "查找分享的流程图")
     @GetMapping("/find/share")
     public R<FlowchartModel> findIsShare(@RequestParam String id) {
-        return service.findIsShare(id);
+        return flowchartService.findIsShare(id);
     }
 
 }

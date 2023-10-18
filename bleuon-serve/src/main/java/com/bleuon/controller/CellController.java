@@ -24,13 +24,13 @@ import java.util.List;
 @Tag(name = "流程图图形")
 public class CellController {
 
-    private final CellService service;
+    private final CellService cellService;
 
     @Operation(summary = "根据条件查询所有的流程图图形")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:consumer:find')")
     @GetMapping("/find/all/by/criteria")
     public R<List<CellModel>> findAllByCriteria(@Validated CellModel model) {
-        return service.findAllByCriteria(model);
+        return cellService.findAllByCriteria(model);
     }
 
 }

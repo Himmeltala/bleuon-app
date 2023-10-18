@@ -63,48 +63,48 @@
 
     <!-- findAllByCriteriaNotComments -->
 
-    <resultMap id="findAllByCriteriaNotCommentsMap" type="com.bleuon.entity.PostModel" autoMapping="true">
-        <id column="id" property="id"/>
-        <association javaType="com.bleuon.entity.dto.ConsumerDTO" property="consumer" column="{consumerId=consumer_id}"
-                     select="findConsumerById">
-        </association>
-    </resultMap>
+<resultMap id="findAllByCriteriaNotCommentsMap" type="com.bleuon.entity.PostModel" autoMapping="true">
+    <id column="id" property="id"/>
+    <association javaType="com.bleuon.entity.dto.ConsumerDTO" property="consumer" column="{consumerId=consumer_id}"
+                 select="findConsumerById">
+    </association>
+</resultMap>
 
-    <select id="findAllByCriteriaNotComments" resultMap="findAllByCriteriaNotCommentsMap">
-        SELECT *
-        FROM t_posts
-        <where>
-            <trim prefix="AND" prefixOverrides="AND">
-                <if test="postId != null and postId != ''">
-                    AND id = #{postId}
-                </if>
-                <if test="consumerId != null and consumerId != ''">
-                    AND consumer_id = #{consumerId}
-                </if>
-                <if test="title != null and title != ''">
-                    AND title LIKE CONCAT('%', #{title}, '%')
-                </if>
-                <if test="rankingType != null and rankingType != ''">
-                    AND ranking_type = #{rankingType}
-                </if>
-                <if test="type != null and type != ''">
-                    AND type = #{type}
-                </if>
-            </trim>
-        </where>
-        <if test="sequences != null">
-            ORDER BY
-            <foreach collection="sequences" item="sequence" separator=", ">
-                <choose>
-                    <when test="sequence.isAsc == true">
-                        ${sequence.col} ASC
-                    </when>
-                    <otherwise>
-                        ${sequence.col} DESC
-                    </otherwise>
-                </choose>
-            </foreach>
-        </if>
-    </select>
+<select id="findAllByCriteriaNotComments" resultMap="findAllByCriteriaNotCommentsMap">
+    SELECT *
+    FROM t_posts
+    <where>
+        <trim prefix="AND" prefixOverrides="AND">
+            <if test="postId != null and postId != ''">
+                AND id = #{postId}
+            </if>
+            <if test="consumerId != null and consumerId != ''">
+                AND consumer_id = #{consumerId}
+            </if>
+            <if test="title != null and title != ''">
+                AND title LIKE CONCAT('%', #{title}, '%')
+            </if>
+            <if test="rankingType != null and rankingType != ''">
+                AND ranking_type = #{rankingType}
+            </if>
+            <if test="type != null and type != ''">
+                AND type = #{type}
+            </if>
+        </trim>
+    </where>
+    <if test="sequences != null">
+        ORDER BY
+        <foreach collection="sequences" item="sequence" separator=", ">
+            <choose>
+                <when test="sequence.isAsc == true">
+                    ${sequence.col} ASC
+                </when>
+                <otherwise>
+                    ${sequence.col} DESC
+                </otherwise>
+            </choose>
+        </foreach>
+    </if>
+</select>
 
 </mapper>

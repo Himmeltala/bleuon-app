@@ -24,13 +24,14 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class LogoutSuccessHandler implements org.springframework.security.web.authentication.logout.LogoutSuccessHandler {
 
+    private final JwtUtil jwtUtil;
     private final RedisTemplate<String, String> redisTemplate;
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         response.setContentType("application/json;charset=utf-8");
         String authToken = request.getHeader(KeyVals.Token);
-        Claims claims = JwtUtil.parseJwt(authToken);
+        Claims claims = jwtUtil.parseJwt(authToken);
 
         R<Object> success = R.success("退出成功！");
 

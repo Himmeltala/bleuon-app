@@ -1,10 +1,10 @@
-package com.bleuon.controller.expose;
+package com.bleuon.controller.open;
 
 import com.bleuon.annotaion.RequestMappingPrefix;
 import com.bleuon.entity.ConsumerModel;
 import com.bleuon.entity.CustomUserDetails;
 import com.bleuon.entity.dto.ConsumerDTO;
-import com.bleuon.entity.dto.Token;
+import com.bleuon.entity.dto.TokenDTO;
 import com.bleuon.entity.vo.EmailCaptchaVO;
 import com.bleuon.service.EmailCaptchaService;
 import com.bleuon.service.EntranceService;
@@ -105,7 +105,7 @@ public class EntranceController {
 
     @Operation(summary = "校验邮箱验证码，需判断是否过期或存在")
     @PostMapping("/verify/email-captcha")
-    public R<Token> verifyMailCode(@RequestBody @Validated EmailCaptchaVO vo) {
+    public R<TokenDTO> verifyMailCode(@RequestBody @Validated EmailCaptchaVO vo) {
         String key = vo.getEmail() + ":captcha";
         boolean expired = captchaService.hasCaptchaExpire(key);
         if (expired) return R.error("验证码过期或不存在！");
@@ -133,7 +133,7 @@ public class EntranceController {
 
     @Operation(summary = "校验登录验证码")
     @PostMapping("/verify/login-email-captcha")
-    public R<Token> verifyLoginMailCaptcha(@RequestBody @Validated EmailCaptchaVO vo) {
+    public R<TokenDTO> verifyLoginMailCaptcha(@RequestBody @Validated EmailCaptchaVO vo) {
         String key = vo.getEmail() + ":captcha";
         boolean expired = captchaService.hasCaptchaExpire(key);
         if (expired) return R.error("验证码过期或不存在！");
@@ -145,7 +145,7 @@ public class EntranceController {
             if (Objects.isNull(exists)) {
                 return R.error("该用户不存在！");
             } else {
-                Token token = tokenService.grant(new CustomUserDetails(exists.getId(),
+                TokenDTO token = tokenService.grant(new CustomUserDetails(exists.getId(),
                         exists.getUsername(),
                         "******", new ArrayList<>()));
                 return R.success("登录成功！", token);
