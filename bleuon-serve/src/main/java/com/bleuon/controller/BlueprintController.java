@@ -35,7 +35,7 @@ public class BlueprintController {
     private final BlueprintFlowchartService blueprintFlowchartService;
 
     @Operation(summary = "查询所有流程图模板")
-    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:consumer:find')")
+    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:blueprint-all')")
     @GetMapping("/find/all")
     public R<List<BlueprintFlowchartModel>> findAll(@Validated BlueprintFlowchartModel model) {
         String filename = model.getFileName();
@@ -46,14 +46,14 @@ public class BlueprintController {
     }
 
     @Operation(summary = "根据流程图模板 ID 查询单个流程图模板")
-    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:consumer:find')")
+    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:blueprint-detail')")
     @GetMapping("/find/by/id")
     public R<BlueprintFlowchartModel> findById(@Validated BlueprintFlowchartModel model) {
         return blueprintFlowchartService.findById(model);
     }
 
     @Operation(summary = "导入流程图模板为个人流程图", description = "consumerId 必须是导入人的 UID")
-    @PreAuthorize("hasAnyAuthority('sys:add', 'sys:consumer:add')")
+    @PreAuthorize("hasAnyAuthority('sys:add', 'sys:add:blueprint-import')")
     @PostMapping("/replicate/{consumerId}")
     public R<Object> replicate(@PathVariable String consumerId,
                                @RequestBody @Validated BlueprintFlowchartModel model) {
@@ -65,7 +65,7 @@ public class BlueprintController {
     }
 
     @Operation(summary = "更新流程图模板，如点赞")
-    @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:consumer:upgrade')")
+    @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:upgrade:blueprint')")
     @PutMapping("/upgrade")
     public R<Object> upgrade(@RequestBody @Validated BlueprintFlowchartModel model) {
         boolean status = blueprintFlowchartService.upgrade(model);
@@ -73,7 +73,7 @@ public class BlueprintController {
     }
 
     @Operation(summary = "收藏流程图模板")
-    @PreAuthorize("hasAnyAuthority('sys:add', 'sys:consumer:add')")
+    @PreAuthorize("hasAnyAuthority('sys:add', 'sys:add:blueprint-collect')")
     @PostMapping("/add/collecting/{consumerId}")
     public R<Object> addCollecting(@PathVariable String consumerId,
                                    @RequestBody @Validated BlueprintFlowchartModel model) {

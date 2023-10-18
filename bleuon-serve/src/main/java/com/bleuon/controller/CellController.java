@@ -27,7 +27,7 @@ public class CellController {
     private final CellService cellService;
 
     @Operation(summary = "根据条件查询所有的流程图图形")
-    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:consumer:find')")
+    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:consumer')")
     @GetMapping("/find/all/by/criteria")
     public R<List<CellModel>> findAllByCriteria(@Validated CellModel model) {
         return cellService.findAllByCriteria(model);

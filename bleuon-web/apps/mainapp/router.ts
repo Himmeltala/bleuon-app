@@ -151,7 +151,6 @@ router.beforeEach((to, from, next) => {
 
   if (name.startsWith("auth-") && !isAuth) {
     next("/entrance");
-    ElMessage.warning("没有登陆！");
   } else if (name.startsWith("enter-") && isAuth) {
     next("/workbench");
   } else {

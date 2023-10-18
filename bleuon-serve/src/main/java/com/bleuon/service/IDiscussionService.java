@@ -1,10 +1,10 @@
 package com.bleuon.service;
 
+import com.bleuon.entity.PostCommentModel;
 import com.bleuon.entity.PostModel;
 import com.bleuon.entity.criterias.DiscussionCriteria;
+import com.bleuon.entity.dto.PostDTO;
 import com.github.pagehelper.PageInfo;
-
-import java.util.List;
 
 /**
  * @description:
@@ -14,8 +14,10 @@ import java.util.List;
  */
 public interface IDiscussionService {
 
-    List<PostModel> findAllByCriteria(DiscussionCriteria criteria);
+    PageInfo<PostModel> findAllByCriteria(DiscussionCriteria criteria);
 
-    PageInfo<PostModel> findAllByCriteriaNotComments(DiscussionCriteria criteria);
+    PostDTO findDetailByCriteria(DiscussionCriteria criteria);
+
+    PageInfo<PostCommentModel> findCommentsByCriteria(DiscussionCriteria criteria);
 
 }

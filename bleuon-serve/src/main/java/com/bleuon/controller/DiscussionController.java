@@ -1,8 +1,10 @@
 package com.bleuon.controller;
 
 import com.bleuon.annotaion.RequestMappingPrefix;
+import com.bleuon.entity.PostCommentModel;
 import com.bleuon.entity.PostModel;
 import com.bleuon.entity.criterias.DiscussionCriteria;
+import com.bleuon.entity.dto.PostDTO;
 import com.bleuon.service.impl.DiscussionService;
 import com.bleuon.utils.http.R;
 import com.github.pagehelper.PageInfo;
@@ -12,8 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
-import java.util.List;
 
 /**
  * @description:
@@ -28,20 +28,26 @@ public class DiscussionController {
 
     private final DiscussionService discussionService;
 
-    @Operation(summary = "根据条件查询所有帖子")
-    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:consumer:find')")
+    @Operation(summary = "根据条件查询帖子列表")
+    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:post-all')")
     @PostMapping("/find/all/by/criteria")
-    public R<List<PostModel>> findAllByCriteria(@RequestBody DiscussionCriteria criteria) {
-        List<PostModel> list = discussionService.findAllByCriteria(criteria);
-        return R.success(list);
+    public R<PageInfo<PostModel>> findAllByCriteria(@RequestBody DiscussionCriteria criteria) {
+        PageInfo<PostModel> pages = discussionService.findAllByCriteria(criteria);
+        return R.success(pages);
     }
 
-    @Operation(summary = "根据条件查询所有帖子，但不查询所属评论列表")
-    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:consumer:find')")
-    @PostMapping("/find/all/by/criteria/not-comments")
-    public R<PageInfo<PostModel>> findAllByCriteriaNotComments(@RequestBody DiscussionCriteria criteria) {
-        PageInfo<PostModel> pages = discussionService.findAllByCriteriaNotComments(criteria);
-        return R.success(pages);
+    @Operation(summary = "根据条件查询帖子详情")
+    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:post-detail')")
+    @PostMapping("/find/detail/by/criteria")
+    public R<PostDTO> findDetailByCriteria(@RequestBody DiscussionCriteria criteria) {
+        return R.success(discussionService.findDetailByCriteria(criteria));
+    }
+
+    @Operation(summary = "根据条件查询帖子评论")
+    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:post-comments')")
+    @PostMapping("find/comments/by/criteria")
+    public R<PageInfo<PostCommentModel>> findCommentsByCriteria(@RequestBody DiscussionCriteria criteria) {
+        return R.success(discussionService.findCommentsByCriteria(criteria));
     }
 
 }

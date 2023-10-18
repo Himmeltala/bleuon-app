@@ -13,10 +13,10 @@ import { ElSelectData } from "@common/data";
 // components
 import CommonHeader from "@mainapp/components/CommonHeader.vue";
 
-const mainData = ref<{ list: PostModel[]; total: number }>();
+const mainData = ref();
 
 async function fetchData(pamras: any) {
-  mainData.value = await DiscussionAPI.findAllByCriteriaNotComments(pamras);
+  mainData.value = await DiscussionAPI.findAllByCriteria(pamras);
 }
 
 const searchVal = ref("");
@@ -135,7 +135,7 @@ await fetchData({ sequences: [{ isAsc: false, col: "create_date" }] });
                   {{ descTagItem }}
                 </el-tag>
               </div>
-              <div class="options f-c-e text-text-secondary">
+              <div class="post-info f-c-e text-text-secondary">
                 <div class="f-c-s mr-10">
                   <div class="i-tabler-eye mr-1"></div>
                   <div>{{ item.views }}</div>

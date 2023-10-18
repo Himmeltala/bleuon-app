@@ -36,6 +36,7 @@ request.interceptors.response.use(
       data.message && ElMessage.error(data.message);
       return Promise.reject(config);
     } else if (data.code == 403) {
+      data.message && ElMessage.warning(data.message);
       location.reload();
       localStorage.removeItem(KeyVals.MAINAPP_TOKEN_KEY);
     } else if (data.code == 400) {

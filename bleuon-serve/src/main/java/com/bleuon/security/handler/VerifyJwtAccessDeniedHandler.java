@@ -14,8 +14,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 /**
- * 验证 Token 有效，但是权限不足。
- * <p>
+ * Token 有效，但是权限不足。
  * 用于处理在已经通过身份验证的用户尝试访问受限资源时出现的拒绝访问情况。
  *
  * @author zheng

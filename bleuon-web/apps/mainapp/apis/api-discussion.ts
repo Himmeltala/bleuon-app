@@ -17,21 +17,6 @@ export async function findAllByCriteria(model: {
   consumerId?: string;
   postId?: string;
   title?: string;
-}) {
-  const { data } = await request.post<R<PostModel[]>>("/discussion/find/all/by/criteria", model);
-  return data.data;
-}
-
-/**
- * 根据条件查询所有帖子，但是不查询所属评论列表
- *
- * @param model
- * @returns
- */
-export async function findAllByCriteriaNotComments(model: {
-  consumerId?: string;
-  postId?: string;
-  title?: string;
   rankingType?: string;
   type?: string;
   pageSize?: number;
@@ -39,8 +24,35 @@ export async function findAllByCriteriaNotComments(model: {
   sequences: { isAsc: boolean; col: string }[];
 }) {
   const { data } = await request.post<R<{ list: PostModel[]; total: number }>>(
-    "/discussion/find/all/by/criteria/not-comments",
+    "/discussion/find/all/by/criteria",
     model
   );
+  return data.data;
+}
+
+/**
+ * 根据条件查询帖子详细
+ *
+ * @param model
+ */
+export async function findDetailByCriteria(model: {
+  postId: string;
+  consumerId?: string;
+  title?: string;
+  rankingType?: string;
+  type?: string;
+  pageSize?: number;
+  currPage?: number;
+  sequences: { isAsc: boolean; col: string }[];
+}) {
+  const { data } = await request.post<
+    R<{
+      post: PostModel;
+      comments: {
+        list: PostCommentModel[];
+        total: number;
+      };
+    }>
+  >("/discussion/find/detail/by/criteria", model);
   return data.data;
 }

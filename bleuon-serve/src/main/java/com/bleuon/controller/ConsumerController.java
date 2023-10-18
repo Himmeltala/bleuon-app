@@ -51,7 +51,7 @@ public class ConsumerController {
     @Operation(summary = "查询用户", parameters = {
             @Parameter(name = "id", description = "用户 UUID", example = "ea209fbb-8f0e-483e-be86-c3629ecbe6d1", in = ParameterIn.PATH)
     })
-    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:consumer:find')")
+    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:consumer')")
     @GetMapping("/find/{id}")
     public R<ConsumerDTO> findById(@Validated @PathVariable @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！") String id) {
         ConsumerDTO exists = consumerService.findById(id);
@@ -59,7 +59,7 @@ public class ConsumerController {
     }
 
     @Operation(summary = "更新用户")
-    @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:consumer:upgrade')")
+    @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:upgrade:consumer')")
     @PutMapping("/upgrade")
     public R<Object> upgrade(@Validated @RequestBody ConsumerModel model) {
         boolean status = consumerService.upgrade(model);
@@ -69,7 +69,7 @@ public class ConsumerController {
     @Operation(summary = "更新用户头像", parameters = {
             @Parameter(name = "id", description = "用户 UUID", example = "ea209fbb-8f0e-483e-be86-c3629ecbe6d1", in = ParameterIn.PATH)
     })
-    @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:consumer:upgrade')")
+    @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:upgrade:consumer')")
     @PutMapping("/upgrade/avatar/{id}")
     public R<String> upgradeAvatar(@Validated @PathVariable @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！") String id,
                                    MultipartFile file) {
@@ -87,7 +87,7 @@ public class ConsumerController {
     }
 
     @Operation(summary = "条件查询用户动态列表")
-    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:consumer:find')")
+    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:consumer')")
     @PostMapping("/find/all/dynamic/criteria")
     public R<List<DynamicModel>> findAllDynamic(@Validated @RequestBody DynamicCriteria criteria) {
         List<DynamicModel> list = dynamicService.findAllByCriteria(criteria);
@@ -95,7 +95,7 @@ public class ConsumerController {
     }
 
     @Operation(summary = "更新动态")
-    @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:consumer:upgrade')")
+    @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:upgrade:consumer')")
     @PutMapping("/upgrade/dynamic")
     public R<Object> upgradeDynamic(@Validated @RequestBody DynamicModel model) {
         boolean status = dynamicService.upgrade(model);
@@ -103,7 +103,7 @@ public class ConsumerController {
     }
 
     @Operation(summary = "通过 id 删除动态")
-    @PreAuthorize("hasAnyAuthority('sys:delete', 'sys:consumer:delete')")
+    @PreAuthorize("hasAnyAuthority('sys:delete', 'sys:delete:consumer')")
     @DeleteMapping("/delete/dynamic")
     public R<Object> deleteDynamicById(DynamicModel model) {
         boolean status = dynamicService.deleteById(model);
@@ -111,7 +111,7 @@ public class ConsumerController {
     }
 
     @Operation(summary = "新增单个动态")
-    @PreAuthorize("hasAnyAuthority('sys:add', 'sys:consumer:add')")
+    @PreAuthorize("hasAnyAuthority('sys:add', 'sys:add:consumer')")
     @PostMapping("/add/dynamic")
     public R<Object> addDynamic(@Validated @RequestBody DynamicModel model) {
         boolean status = dynamicService.add(model);
@@ -119,7 +119,7 @@ public class ConsumerController {
     }
 
     @Operation(summary = "查询用户所有的流程图")
-    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:consumer:find')")
+    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:consumer')")
     @GetMapping("/find/all/flowchart")
     public R<List<FlowchartModel>> findAllFlowchart(@Validated FlowchartCriteria criteria) {
         ArrayList<Sequence> sequences = new ArrayList<>();
@@ -130,7 +130,7 @@ public class ConsumerController {
     }
 
     @Operation(summary = "根据条件查询用户的关注列表")
-    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:consumer:find')")
+    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:consumer')")
     @GetMapping("/find/all/collecting/criteria")
     public R<List<CollectingConsumerModel>> findAllCollectingConsumerByCriteria(@Validated ConsumerCriteria criteria) {
         List<CollectingConsumerModel> list = collectingConsumerService.findAllByCriteria(criteria);
@@ -138,7 +138,7 @@ public class ConsumerController {
     }
 
     @Operation(summary = "新增单个关注用户", description = "需要传递 collectingCid、consumerId。")
-    @PreAuthorize("hasAnyAuthority('sys:add', 'sys:consumer:add')")
+    @PreAuthorize("hasAnyAuthority('sys:add', 'sys:add:consumer')")
     @PostMapping("/add/collecting")
     public R<Object> addCollecting(@Validated @RequestBody CollectingConsumerModel model) {
         ConsumerCriteria criteria = new ConsumerCriteria();
@@ -155,7 +155,7 @@ public class ConsumerController {
     }
 
     @Operation(summary = "删除单个关注用户", description = "传递一个 ID 即可")
-    @PreAuthorize("hasAnyAuthority('sys:delete', 'sys:consumer:delete')")
+    @PreAuthorize("hasAnyAuthority('sys:delete', 'sys:delete:consumer')")
     @DeleteMapping("/delete/collecting")
     public R<Object> deleteCollecting(@Validated CollectingConsumerModel model) {
         boolean status = collectingConsumerService.delete(model);
