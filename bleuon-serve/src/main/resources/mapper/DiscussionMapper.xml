@@ -26,7 +26,7 @@
                     AND consumer_id = #{consumerId}
                 </if>
                 <if test="title != null and title != ''">
-                    AND title = LIKE CONCAT('%', #{title}, '%')
+                    AND title LIKE CONCAT('%', #{title}, '%')
                 </if>
             </trim>
         </where>
@@ -82,10 +82,29 @@
                     AND consumer_id = #{consumerId}
                 </if>
                 <if test="title != null and title != ''">
-                    AND title = LIKE CONCAT('%', #{title}, '%')
+                    AND title LIKE CONCAT('%', #{title}, '%')
+                </if>
+                <if test="rankingType != null and rankingType != ''">
+                    AND ranking_type = #{rankingType}
+                </if>
+                <if test="type != null and type != ''">
+                    AND type = #{type}
                 </if>
             </trim>
         </where>
+        <if test="sequences != null">
+            ORDER BY
+            <foreach collection="sequences" item="sequence" separator=", ">
+                <choose>
+                    <when test="sequence.isAsc == true">
+                        ${sequence.col} ASC
+                    </when>
+                    <otherwise>
+                        ${sequence.col} DESC
+                    </otherwise>
+                </choose>
+            </foreach>
+        </if>
     </select>
 
 </mapper>

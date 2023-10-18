@@ -15,23 +15,39 @@ import CommonHeader from "@mainapp/components/CommonHeader.vue";
 
 const mainDataSource = ref<PostModel[]>([]);
 
-async function fetchData() {
-  mainDataSource.value = await DiscussionAPI.findAllByCriteriaNotComments({});
+async function fetchData(pamras: any) {
+  mainDataSource.value = await DiscussionAPI.findAllByCriteriaNotComments(pamras);
 }
 
+const searchVal = ref("");
 const type = ref("");
 const rankingType = ref("");
 const dateSequence = ref("降序");
 
-function onTypeChange() {}
+async function onTypeChange(value: any) {
+  await fetchData({ type: value });
+}
 
-function onRankingTypeChange() {}
+async function onRankingTypeChange(value: any) {
+  await fetchData({ rankingType: value });
+}
 
-function onDateSequenceChange() {}
+async function onDateSequenceChange(value: any) {
+  await fetchData({ sequences: [{ isAsc: value === "升序" ? true : false, col: "create_date" }] });
+}
 
-function search() {}
+async function search() {
+  if (!searchVal.value) {
+    ElMessage.warning({ message: "请输入关键字查询！", grouping: true });
+    return;
+  }
+  await fetchData({
+    title: searchVal.value,
+    sequences: [{ isAsc: dateSequence.value === "升序" ? true : false, col: "create_date" }]
+  });
+}
 
-await fetchData();
+await fetchData({ sequences: [{ isAsc: false, col: "create_date" }] });
 </script>
 
 <template>
@@ -136,7 +152,7 @@ await fetchData();
               筛选查询
             </div>
             <div>
-              <el-input @keyup.enter="search" placeholder="输入关键字查询">
+              <el-input @keyup.enter="search" v-model="searchVal" placeholder="输入关键字查询">
                 <template #suffix>
                   <div class="i-tabler-search"></div>
                 </template>

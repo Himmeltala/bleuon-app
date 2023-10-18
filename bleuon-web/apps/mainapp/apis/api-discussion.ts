@@ -5,7 +5,7 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import request from "./use-axios";
+import request from "@common/apis/use-axios";
 
 /**
  * 根据条件查询所有帖子
@@ -32,6 +32,9 @@ export async function findAllByCriteriaNotComments(model: {
   consumerId?: string;
   postId?: string;
   title?: string;
+  rankingType?: string;
+  type?: string;
+  sequences: { isAsc: boolean; col: string }[];
 }) {
   const { data } = await request.post<R<PostModel[]>>(
     "/discussion/find/all/by/criteria/not-comments",

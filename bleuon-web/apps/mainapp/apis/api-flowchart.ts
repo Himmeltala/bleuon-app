@@ -4,7 +4,8 @@
  * @since 2023/9/28
  * @link https://github.com/himmelbleu/bleuon-app
  */
-import request from "./use-axios";
+
+import request from "@common/apis/use-axios";
 
 /**
  * 更新流程图

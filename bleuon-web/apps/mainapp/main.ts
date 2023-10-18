@@ -12,7 +12,7 @@ import { createPinia } from "pinia";
 import { createApp } from "vue";
 /* Import CSS */
 import "@mainapp/style.scss";
-import "@mainapp/utils/local-storage";
+import "@common/utils/local-storage";
 import "uno.css";
 
 const app = createApp(App);

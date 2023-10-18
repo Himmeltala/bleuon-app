@@ -29,4 +29,5 @@ public class TokenService {
         redisTemplate.opsForValue().set(jwtUuid, value, expire, TimeUnit.SECONDS);
         return new Token(JwtUtil.getExpire(), value, details.getUsername(), details.getId());
     }
+
 }

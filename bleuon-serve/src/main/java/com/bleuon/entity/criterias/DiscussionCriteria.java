@@ -35,4 +35,10 @@ public class DiscussionCriteria extends CommonCriteria implements Serializable {
     @Schema(description = "帖子标题")
     private String title;
 
+    @Schema(description = "热门、推荐等类型")
+    private String rankingType;
+
+    @Schema(description = "帖子类型，如官方帖子、活动帖子")
+    private String type;
+
 }

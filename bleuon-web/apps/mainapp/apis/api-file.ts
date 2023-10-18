@@ -5,7 +5,7 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import request from "./use-axios";
+import request from "@common/apis/use-axios";
 
 /**
  * 上传 ckeditor 图片
