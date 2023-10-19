@@ -31,7 +31,6 @@ public class PostModel implements Serializable {
     private String id;
 
     @Schema(description = "标题文本")
-    @NotEmpty
     private String title;
 
     @Schema(description = "标题 tag 集，JSON 字符串")
@@ -48,7 +47,6 @@ public class PostModel implements Serializable {
     private Integer views;
 
     @Schema(description = "描述文本")
-    @NotEmpty
     private String desc;
 
     @Schema(description = "描述 tag 集，JSON 字符串")
@@ -67,7 +65,6 @@ public class PostModel implements Serializable {
     private String rankingType;
 
     @Schema(description = "帖子内容")
-    @NotEmpty
     private String content;
 
     @Schema(description = "发表帖子者 ID")

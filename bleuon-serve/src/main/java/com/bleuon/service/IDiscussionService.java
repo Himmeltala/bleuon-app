@@ -25,4 +25,6 @@ public interface IDiscussionService {
 
     boolean upgradeComment(PostCommentModel model);
 
+    boolean upgradeDetail(PostModel model);
+
 }

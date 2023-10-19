@@ -47,6 +47,14 @@ public class DiscussionController implements Serializable {
         return R.success(discussionService.findDetailByCriteria(criteria));
     }
 
+    @Operation(summary = "更新帖子数据")
+    @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:upgrade:post-detail')")
+    @PutMapping("/upgrade/detail")
+    public R<Object> upgradeDetail(@RequestBody @Validated PostModel model) {
+        boolean upgraded = discussionService.upgradeDetail(model);
+        return upgraded ? R.success("更新成功！") : R.error("更新失败！");
+    }
+
     @Operation(summary = "根据条件查询帖子评论")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:post-comments')")
     @PostMapping("/find/comments/by/criteria")

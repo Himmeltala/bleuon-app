@@ -141,4 +141,24 @@
         WHERE id = #{id} AND post_id = #{postId}
     </update>
 
+    <update id="upgradeDetail">
+        UPDATE t_posts
+        <set>
+            <trim suffixOverrides=",">
+                <if test="digg != null">digg = #{digg},</if>
+                <if test="title != null">title = #{title},</if>
+                <if test="titleTag != null">title_tag = #{titleTag},</if>
+                <if test="bury != null">bury = #{bury},</if>
+                <if test="views != null">`views` = #{views},</if>
+                <if test="desc != null">`desc` = #{desc},</if>
+                <if test="descTag != null">desc_tag = #{descTag},</if>
+                <if test="descImgs != null">desc_imgs = #{descImgs},</if>
+                <if test="type != null">type = #{type},</if>
+                <if test="rankingType != null">ranking_type = #{rankingType},</if>
+                <if test="content != null">`content` = #{content},</if>
+            </trim>
+        </set>
+        WHERE id = #{id};
+    </update>
+
 </mapper>

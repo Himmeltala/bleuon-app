@@ -28,4 +28,6 @@ public interface DiscussionMapper {
 
     Integer upgradeComment(PostCommentModel model);
 
+    Integer upgradeDetail(PostModel model);
+
 }

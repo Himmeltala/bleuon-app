@@ -49,6 +49,23 @@ export async function findDetailByCriteria(model: {
   return data.data;
 }
 
+/**
+ * 更新帖子数据
+ *
+ * @param model
+ */
+export function upgradeDetail(model: PostModel, nomessage?: boolean, success?: Function) {
+  request.put<R>("/discussion/upgrade/detail", model, { nomessage }).then(() => {
+    success && success();
+  });
+}
+
+/**
+ * 条件查询评论
+ *
+ * @param model
+ * @returns
+ */
 export async function findCommentsByCriteria(model: {
   postId: string;
   pageSize?: number;

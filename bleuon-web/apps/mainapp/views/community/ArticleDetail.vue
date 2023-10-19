@@ -28,6 +28,28 @@ async function fetchCommentList(params: any) {
   commentList.value = await DiscussionAPI.findCommentsByCriteria({ ...params, ...{ postId: id } });
 }
 
+function diggArticle() {
+  DiscussionAPI.upgradeDetail(
+    { id: mainData.value.id, digg: mainData.value.digg + 1 },
+    true,
+    () => {
+      mainData.value.digg += 1;
+      ElMessage.success("感谢您的支持！");
+    }
+  );
+}
+
+function buryArticle() {
+  DiscussionAPI.upgradeDetail(
+    { id: mainData.value.id, bury: mainData.value.bury + 1 },
+    true,
+    () => {
+      mainData.value.bury += 1;
+      ElMessage.success("感谢您的建议！");
+    }
+  );
+}
+
 const commentContent = ref("");
 
 function uploadCommentImage(formData: FormData) {
@@ -56,12 +78,12 @@ function deleteComment(id: string) {
   DiscussionAPI.deleteComment({ id, postId: mainData.value.id, consumerId: token.id });
 }
 
-function digg(item: PostCommentModel) {
+function diggComment(item: PostCommentModel) {
   item.digg += 1;
   DiscussionAPI.upgradeComment({ id: item.id, postId: mainData.value.id, digg: item.digg });
 }
 
-function bury(item: PostCommentModel) {
+function buryComment(item: PostCommentModel) {
   item.bury += 1;
   DiscussionAPI.upgradeComment({ id: item.id, postId: mainData.value.id, bury: item.bury });
 }
@@ -73,8 +95,36 @@ async function changeCommentAsc() {
   await fetchCommentList({ sequences: [{ isAsc: isCommentDateAsc.value, col: "create_date" }] });
 }
 
+const currPage = ref(1);
+const pageSize = ref(10);
+
+async function handleSizeChange() {
+  await fetchCommentList({
+    currPage: currPage.value,
+    pageSize: pageSize.value,
+    sequences: [{ isAsc: true, col: "create_date" }]
+  });
+}
+
+async function handleCurrentChange() {
+  await fetchCommentList({
+    currPage: currPage.value,
+    pageSize: pageSize.value,
+    sequences: [{ isAsc: true, col: "create_date" }]
+  });
+}
+
+onMounted(() => {
+  mainData.value.views += 1;
+  DiscussionAPI.upgradeDetail({ id: mainData.value.id, views: mainData.value.views }, true);
+});
+
 await fetchData({});
-await fetchCommentList({ sequences: [{ isAsc: true, col: "create_date" }] });
+await fetchCommentList({
+  currPage: currPage.value,
+  pageSize: pageSize.value,
+  sequences: [{ isAsc: true, col: "create_date" }]
+});
 </script>
 
 <template>
@@ -108,10 +158,10 @@ await fetchCommentList({ sequences: [{ isAsc: true, col: "create_date" }] });
                 <div>{{ mainData.bury }}</div>
               </div>
             </div>
-            <div class="create-date text-center text-text-secondary mb-10">
+            <div class="create-date text-0.9rem text-center text-text-secondary mb-10">
               发表于:{{ DateUtil.formatted(mainData.createDate) }}
             </div>
-            <div class="text-1.1rem" v-html="mainData.content"></div>
+            <div class="article-detail-content text-1.1rem" v-html="mainData.content"></div>
             <div class="mt-10">
               <el-tag
                 size="small"
@@ -121,18 +171,26 @@ await fetchCommentList({ sequences: [{ isAsc: true, col: "create_date" }] });
                 {{ descTagItem }}
               </el-tag>
             </div>
-            <div class="mt-4 text-end text-text-secondary">
-              修改于:{{ DateUtil.formatted(mainData.modifyDate) }}
+            <div class="mt-10 f-c-e text-text-secondary">
+              <div class="hover f-c-s mr-5">
+                <el-button type="primary" plain @click="diggArticle">
+                  <template #icon>
+                    <div class="i-tabler-thumb-up"></div>
+                  </template>
+                  <div>点赞 {{ mainData.digg }}</div>
+                </el-button>
+              </div>
+              <div class="hover f-c-s">
+                <el-button type="danger" plain @click="buryArticle">
+                  <template #icon>
+                    <div class="i-tabler-thumb-down"></div>
+                  </template>
+                  <div>反对 {{ mainData.bury }}</div>
+                </el-button>
+              </div>
             </div>
-            <div class="mt-10 f-c-c">
-              <div class="hover f-c-s mr-10" @click="">
-                <div class="i-tabler-thumb-up mr-1"></div>
-                <div>{{ mainData.digg }}</div>
-              </div>
-              <div class="hover f-c-s" @click="">
-                <div class="i-tabler-thumb-down mr-1"></div>
-                <div>{{ mainData.bury }}</div>
-              </div>
+            <div class="mt-4 text-0.9rem text-end text-text-secondary">
+              修改于:{{ DateUtil.formatted(mainData.modifyDate) }}
             </div>
           </div>
           <div class="mt-5 rd-2 bg-bg-overlay p-5">
@@ -146,12 +204,10 @@ await fetchCommentList({ sequences: [{ isAsc: true, col: "create_date" }] });
             <div
               v-if="commentList.list?.length"
               v-for="(item, index) in commentList.list"
-              class="p-5"
-              :class="{
-                'b-b-1 b-b-solid b-border-dark': commentList.list.length - 1 !== index
-              }">
-              <div class="f-c-e mb-5 text-0.9rem text-text-secondary">
-                <div @click="changeCommentAsc" class="hover f-c-c">
+              class="p-5 b-b-1 b-b-solid b-border-dark">
+              <div class="f-c-b mb-10">
+                <div class="text-text-regular font-bold">评论列表</div>
+                <div @click="changeCommentAsc" class="hover text-0.9rem f-c-c text-text-secondary">
                   <div class="i-tabler-arrows-sort mr-1"></div>
                   <div v-if="isCommentDateAsc">日期升序</div>
                   <div v-else>日期降序</div>
@@ -171,11 +227,11 @@ await fetchCommentList({ sequences: [{ isAsc: true, col: "create_date" }] });
               <div>
                 <div class="mt-5 ml-12 article-detail-comment-content" v-html="item.content"></div>
                 <div class="mt-5 f-c-e text-text-secondary">
-                  <div class="hover f-c-s mr-10" @click="digg(item)">
+                  <div class="hover f-c-s mr-10" @click="diggComment(item)">
                     <div class="i-tabler-thumb-up mr-1"></div>
                     <div>{{ item.digg }}</div>
                   </div>
-                  <div class="hover f-c-s mr-10" @click="bury(item)">
+                  <div class="hover f-c-s mr-10" @click="buryComment(item)">
                     <div class="i-tabler-thumb-down mr-1"></div>
                     <div>{{ item.bury }}</div>
                   </div>
@@ -194,6 +250,17 @@ await fetchCommentList({ sequences: [{ isAsc: true, col: "create_date" }] });
                 <p>还没有评论哦~发一条吧！</p>
               </template>
             </el-result>
+            <div v-if="commentList.list?.length" class="pager pb-5 pr-2 mt-5 f-c-e">
+              <el-pagination
+                background
+                v-model:current-page="currPage"
+                v-model:page-size="pageSize"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                layout="sizes, prev, pager, next, jumper"
+                :page-sizes="[5, 10, 15, 20]"
+                :total="commentList.total" />
+            </div>
           </div>
         </div>
         <div class="side-tools w-28%">
@@ -235,11 +302,10 @@ await fetchCommentList({ sequences: [{ isAsc: true, col: "create_date" }] });
 </style>
 
 <style lang="scss">
-.article-detail-comment-content {
+.article-detail-comment-content,
+.article-detail-content {
   img {
-    object-fit: contain;
-    max-width: 100% !important;
-    height: auto !important;
+    --uno: object-cover max-w-100% h-auto rd-2 !important;
   }
 }
 </style>

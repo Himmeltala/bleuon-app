@@ -25,9 +25,15 @@ function confirmLogout() {
           </router-link>
         </div>
         <div class="flex-grow-2 f-c-b text-1.1rem">
-          <div class="hover">推荐</div>
-          <div class="hover">模板</div>
-          <div class="hover">专题</div>
+          <router-link to="/u/setting">
+            <div class="hover">个人资料</div>
+          </router-link>
+          <router-link to="/community/discussion">
+            <div class="hover">社区</div>
+          </router-link>
+          <router-link to="/community/blueprint">
+            <div class="hover">模板</div>
+          </router-link>
         </div>
         <div class="flex-grow-1 f-c-e">
           <template v-if="token">

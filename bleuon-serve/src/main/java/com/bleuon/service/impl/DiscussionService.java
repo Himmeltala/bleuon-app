@@ -85,4 +85,15 @@ public class DiscussionService implements IDiscussionService {
         }
     }
 
+    @Transactional
+    @Override
+    public boolean upgradeDetail(PostModel model) {
+        try {
+            Integer row = discussionMapper.upgradeDetail(model);
+            return row > 0;
+        } catch (Exception e) {
+            throw new JdbcErrorException(e);
+        }
+    }
+
 }

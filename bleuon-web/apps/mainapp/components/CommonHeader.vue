@@ -28,7 +28,7 @@ defineProps({
     </div>
     <div class="flex-grow-1 f-c-b text-1.1rem">
       <router-link :to="'/u/profile/' + token.id">
-        <div :class="{ active: activeName === 'personal' }" class="hover">个人</div>
+        <div :class="{ active: activeName === 'personal' }" class="hover">个人空间</div>
       </router-link>
       <router-link to="/community/discussion">
         <div :class="{ active: activeName === 'discussion' }" class="hover">社区</div>
