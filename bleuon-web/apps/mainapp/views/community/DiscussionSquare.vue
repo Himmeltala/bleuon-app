@@ -166,7 +166,10 @@ await fetchData({ sequences: [{ isAsc: false, col: "create_date" }] });
         <div class="tools w-28%">
           <div class="bg-bg-overlay rd-2 py-5 px-10">
             <div>
-              <el-button type="primary" class="w-100%">
+              <el-button
+                type="primary"
+                class="w-100%"
+                @click="$router.push('/community/create-post')">
                 发表帖子
                 <template #icon>
                   <div class="i-tabler-edit"></div>

@@ -83,6 +83,12 @@ const router = createRouter({
           name: "auth-article-detail",
           meta: { title: "帖子详情" },
           component: () => import("@mainapp/views/community/ArticleDetail.vue")
+        },
+        {
+          path: "create-post",
+          name: "auth-create-post",
+          meta: {title:'发表帖子'},
+          component: () => import("@mainapp/views/community/CreatePost.vue")
         }
       ]
     },

@@ -10,8 +10,10 @@
 
 * {
   color: inherit;
-  box-sizing: border-box;
   scroll-behavior: smooth;
+  line-break: anywhere;
+  word-break: break-all;
+  box-sizing: border-box;
 }
 
 html {

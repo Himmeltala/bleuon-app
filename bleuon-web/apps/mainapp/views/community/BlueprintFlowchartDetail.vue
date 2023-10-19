@@ -5,6 +5,7 @@
  * @since 2023/10/5
  * @link https://github.com/himmelbleu/bleuon-app
  */
+
 // jointjs
 import "jointjs/css/layout.css";
 import "jointjs/css/themes/default.css";

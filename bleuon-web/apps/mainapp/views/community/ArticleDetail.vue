@@ -102,7 +102,7 @@ async function handleSizeChange() {
   await fetchCommentList({
     currPage: currPage.value,
     pageSize: pageSize.value,
-    sequences: [{ isAsc: true, col: "create_date" }]
+    sequences: [{ isAsc: isCommentDateAsc.value, col: "create_date" }]
   });
 }
 
@@ -110,7 +110,7 @@ async function handleCurrentChange() {
   await fetchCommentList({
     currPage: currPage.value,
     pageSize: pageSize.value,
-    sequences: [{ isAsc: true, col: "create_date" }]
+    sequences: [{ isAsc: isCommentDateAsc.value, col: "create_date" }]
   });
 }
 
@@ -123,7 +123,7 @@ await fetchData({});
 await fetchCommentList({
   currPage: currPage.value,
   pageSize: pageSize.value,
-  sequences: [{ isAsc: true, col: "create_date" }]
+  sequences: [{ isAsc: isCommentDateAsc.value, col: "create_date" }]
 });
 </script>
 
@@ -201,46 +201,52 @@ await fetchCommentList({
             </div>
           </div>
           <div class="comment-list mt-5 bg-bg-overlay rd-2">
+            <div class="p-5 f-c-b mb-5">
+              <div class="text-text-regular font-bold">评论列表</div>
+              <div @click="changeCommentAsc" class="hover text-0.9rem f-c-c text-text-secondary">
+                <div class="i-tabler-arrows-sort mr-1"></div>
+                <div v-if="isCommentDateAsc">日期升序</div>
+                <div v-else>日期降序</div>
+              </div>
+            </div>
             <div
               v-if="commentList.list?.length"
               v-for="(item, index) in commentList.list"
-              class="p-5 b-b-1 b-b-solid b-border-dark">
-              <div class="f-c-b mb-10">
-                <div class="text-text-regular font-bold">评论列表</div>
-                <div @click="changeCommentAsc" class="hover text-0.9rem f-c-c text-text-secondary">
-                  <div class="i-tabler-arrows-sort mr-1"></div>
-                  <div v-if="isCommentDateAsc">日期升序</div>
-                  <div v-else>日期降序</div>
+              class="px-5 mb-10">
+              <div class="pb-5 b-b-1 b-b-solid b-border-primary">
+                <div class="consumer f-c-b">
+                  <router-link :to="'/u/profile/' + item.consumer.id">
+                    <div class="f-c-s">
+                      <img
+                        class="w-10 h-10 rd-50% mr-2 cursor-pointer"
+                        :src="item.consumer.avatar" />
+                      <div class="text-text-regular hover">{{ item.consumer.username }}</div>
+                    </div>
+                  </router-link>
+                  <div class="text-text-secondary text-0.8rem">
+                    {{ DateUtil.formatted(item.createDate) }}
+                  </div>
                 </div>
-              </div>
-              <div class="consumer f-c-b">
-                <router-link :to="'/u/profile/' + item.consumer.id">
-                  <div class="f-c-s">
-                    <img class="w-10 h-10 rd-50% mr-2 cursor-pointer" :src="item.consumer.avatar" />
-                    <div class="text-text-regular hover">{{ item.consumer.username }}</div>
-                  </div>
-                </router-link>
-                <div class="text-text-secondary text-0.8rem">
-                  {{ DateUtil.formatted(item.createDate) }}
-                </div>
-              </div>
-              <div>
-                <div class="mt-5 ml-12 article-detail-comment-content" v-html="item.content"></div>
-                <div class="mt-5 f-c-e text-text-secondary">
-                  <div class="hover f-c-s mr-10" @click="diggComment(item)">
-                    <div class="i-tabler-thumb-up mr-1"></div>
-                    <div>{{ item.digg }}</div>
-                  </div>
-                  <div class="hover f-c-s mr-10" @click="buryComment(item)">
-                    <div class="i-tabler-thumb-down mr-1"></div>
-                    <div>{{ item.bury }}</div>
-                  </div>
+                <div>
                   <div
-                    v-if="item.consumer.id === token.id"
-                    class="hover f-c-s"
-                    @click="deleteComment(item.id)">
-                    <div class="i-tabler-trash mr-1"></div>
-                    删除
+                    class="mt-5 ml-12 article-detail-comment-content"
+                    v-html="item.content"></div>
+                  <div class="mt-5 f-c-e text-text-secondary">
+                    <div class="hover f-c-s mr-10" @click="diggComment(item)">
+                      <div class="i-tabler-thumb-up mr-1"></div>
+                      <div>{{ item.digg }}</div>
+                    </div>
+                    <div class="hover f-c-s mr-10" @click="buryComment(item)">
+                      <div class="i-tabler-thumb-down mr-1"></div>
+                      <div>{{ item.bury }}</div>
+                    </div>
+                    <div
+                      v-if="item.consumer.id === token.id"
+                      class="hover f-c-s"
+                      @click="deleteComment(item.id)">
+                      <div class="i-tabler-trash mr-1"></div>
+                      删除
+                    </div>
                   </div>
                 </div>
               </div>
