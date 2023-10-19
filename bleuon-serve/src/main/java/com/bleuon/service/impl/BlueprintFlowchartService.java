@@ -48,7 +48,7 @@ public class BlueprintFlowchartService implements IBlueprintFlowchartService {
             Integer status = blueprintFlowchartMapper.upgrade(model);
             return status > 0;
         } catch (Exception e) {
-            throw new JdbcErrorException(e.getCause());
+            throw new JdbcErrorException(e);
         }
     }
 
@@ -59,7 +59,7 @@ public class BlueprintFlowchartService implements IBlueprintFlowchartService {
             Integer status = blueprintFlowchartMapper.add(model);
             return status > 0;
         } catch (Exception e) {
-            throw new JdbcErrorException(e.getCause());
+            throw new JdbcErrorException(e);
         }
     }
 
@@ -70,7 +70,7 @@ public class BlueprintFlowchartService implements IBlueprintFlowchartService {
             Integer status = blueprintFlowchartMapper.delete(model);
             return status > 0;
         } catch (Exception e) {
-            throw new JdbcErrorException(e.getCause());
+            throw new JdbcErrorException(e);
         }
     }
 

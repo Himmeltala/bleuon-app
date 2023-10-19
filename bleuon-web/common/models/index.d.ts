@@ -104,5 +104,8 @@ declare type PostModel = Partial<{
   createDate: string;
   modifyDate: string;
   consumer: ConsumerModel;
-  comments: PostCommentModel[];
+  comments: {
+    list: PostCommentModel[];
+    total: number;
+  };
 }>;

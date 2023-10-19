@@ -40,7 +40,7 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, FlowchartMode
             Integer status = flowchartMapper.upgrade(model);
             return status > 0;
         } catch (Exception e) {
-            throw new JdbcErrorException(e.getCause());
+            throw new JdbcErrorException(e);
         }
     }
 
@@ -117,7 +117,7 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, FlowchartMode
 
             return flowchart;
         } catch (Exception e) {
-            throw new JdbcErrorException(e.getCause());
+            throw new JdbcErrorException(e);
         }
     }
 
@@ -146,7 +146,7 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, FlowchartMode
 
             return rep;
         } catch (Exception e) {
-            throw new JdbcErrorException(e.getCause());
+            throw new JdbcErrorException(e);
         }
     }
 
@@ -156,7 +156,7 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, FlowchartMode
         try {
             return removeById(flowchartId);
         } catch (Exception e) {
-            throw new JdbcErrorException(e.getCause());
+            throw new JdbcErrorException(e);
         }
     }
 
@@ -187,7 +187,7 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, FlowchartMode
 
             return added ? R.success("公开成功！") : R.failed("公开失败!");
         } catch (Exception e) {
-            throw new JdbcErrorException(e.getCause());
+            throw new JdbcErrorException(e);
         }
     }
 
@@ -214,7 +214,7 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, FlowchartMode
 
             return R.success("取消发布成功!");
         } catch (Exception e) {
-            throw new JdbcErrorException(e.getCause());
+            throw new JdbcErrorException(e);
         }
     }
 }

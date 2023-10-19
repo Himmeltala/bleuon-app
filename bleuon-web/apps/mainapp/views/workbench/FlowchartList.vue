@@ -7,7 +7,7 @@
  */
 
 // jointjs
-import { downloadWithDataUri } from "@mainapp/lib/jointjs/utils";
+import { downloadWithDataUri } from "@common/lib/jointjs/utils";
 
 import { DateUtil, FormValidatorsUtil } from "@common/utils";
 import { FlowchartAPI } from "@mainapp/apis";

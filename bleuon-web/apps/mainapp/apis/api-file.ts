@@ -13,6 +13,6 @@ import request from "@common/apis/use-axios";
  * @param formData
  * @returns
  */
-export function uploadCkEditorImage(formData: FormData) {
+export function uploadImageFile(formData: FormData) {
   return request.post<R>("/public/file/upload/image", formData);
 }

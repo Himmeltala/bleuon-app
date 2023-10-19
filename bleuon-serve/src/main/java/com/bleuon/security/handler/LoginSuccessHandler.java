@@ -14,6 +14,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 /**
  * 用户名和密码登录成功处理器
@@ -22,7 +23,7 @@ import java.io.IOException;
  */
 @Component
 @RequiredArgsConstructor
-public class LoginSuccessHandler implements AuthenticationSuccessHandler {
+public class LoginSuccessHandler implements AuthenticationSuccessHandler, Serializable {
 
     private final TokenService tokenService;
 
@@ -31,8 +32,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         response.setContentType("application/json;charset=utf-8");
         CustomUserDetails details = (CustomUserDetails) authentication.getPrincipal();
         R<TokenDTO> success = R.success("登录成功！", tokenService.grant(details));
-        response.getWriter()
-                .write(JSON.toJSONString(success));
+        response.getWriter().write(JSON.toJSONString(success));
     }
 
 }

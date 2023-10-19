@@ -7,7 +7,7 @@
  */
 
 import { dia } from "jointjs";
-import { createPath } from "@mainapp/lib/jointjs/creators";
+import { createPath } from "@common/lib/jointjs/creators";
 
 defineProps({
   viewBox: {

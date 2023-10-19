@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -22,7 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMappingPrefix("/cell")
 @Tag(name = "流程图图形")
-public class CellController {
+public class CellController implements Serializable {
 
     private final CellService cellService;
 

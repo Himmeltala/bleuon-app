@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.Serializable;
+
 /**
  * @description:
  * @package: com.bleuon.controller.expose
@@ -19,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequiredArgsConstructor
 @RequestMappingPrefix("/public/flowchart")
 @Tag(name = "公开的流程图")
-public class OpenFlowchartController {
+public class OpenFlowchartController implements Serializable {
 
     private final FlowchartService flowchartService;
 

@@ -2,7 +2,6 @@ package com.bleuon.security.handler;
 
 import com.alibaba.fastjson2.JSON;
 import com.bleuon.utils.http.R;
-import com.bleuon.utils.http.Status;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,6 +11,7 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 /**
  * Token 有效，但是权限不足。
@@ -21,18 +21,12 @@ import java.io.IOException;
  */
 @Slf4j
 @Component
-public class VerifyJwtAccessDeniedHandler implements AccessDeniedHandler {
+public class VerifyJwtAccessDeniedHandler implements AccessDeniedHandler, Serializable {
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException e) throws IOException, ServletException {
         response.setContentType("application/json;charset=utf-8");
-
-        log.error(e.getMessage(), e.getCause());
-
-        R<Object> failed = R.build(Status.NO_AUTHORITY.getCode(), "权限不足！");
-
-        response.getWriter()
-                .write(JSON.toJSONString(failed));
+        response.getWriter().write(JSON.toJSONString(R.unpass("权限不足！")));
     }
 
 }

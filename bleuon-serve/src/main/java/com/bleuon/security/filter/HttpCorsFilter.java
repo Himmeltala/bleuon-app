@@ -10,10 +10,11 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 @Component
 @Order(-102)
-public class HttpCorsFilter extends HttpFilter {
+public class HttpCorsFilter extends HttpFilter implements Serializable {
 
     @Override
     protected void doFilter(HttpServletRequest request,

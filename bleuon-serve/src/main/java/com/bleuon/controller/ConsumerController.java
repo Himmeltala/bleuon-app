@@ -28,6 +28,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -41,7 +42,7 @@ import java.util.Objects;
 @Tag(name = "用户")
 @RequiredArgsConstructor
 @RequestMappingPrefix("/consumer")
-public class ConsumerController {
+public class ConsumerController implements Serializable {
 
     private final ConsumerService consumerService;
     private final DynamicService dynamicService;

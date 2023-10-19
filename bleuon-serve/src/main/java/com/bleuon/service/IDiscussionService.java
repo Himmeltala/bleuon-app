@@ -3,7 +3,6 @@ package com.bleuon.service;
 import com.bleuon.entity.PostCommentModel;
 import com.bleuon.entity.PostModel;
 import com.bleuon.entity.criterias.DiscussionCriteria;
-import com.bleuon.entity.dto.PostDTO;
 import com.github.pagehelper.PageInfo;
 
 /**
@@ -16,7 +15,7 @@ public interface IDiscussionService {
 
     PageInfo<PostModel> findAllByCriteria(DiscussionCriteria criteria);
 
-    PostDTO findDetailByCriteria(DiscussionCriteria criteria);
+    PostModel findDetailByCriteria(DiscussionCriteria criteria);
 
     PageInfo<PostCommentModel> findCommentsByCriteria(DiscussionCriteria criteria);
 

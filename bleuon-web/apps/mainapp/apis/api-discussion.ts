@@ -45,14 +45,8 @@ export async function findDetailByCriteria(model: {
   currPage?: number;
   sequences: { isAsc: boolean; col: string }[];
 }) {
-  const { data } = await request.post<
-    R<{
-      post: PostModel;
-      comments: {
-        list: PostCommentModel[];
-        total: number;
-      };
-    }>
-  >("/discussion/find/detail/by/criteria", model);
+  const { data } = await request.post<R<PostModel>>("/discussion/find/detail/by/criteria", model);
   return data.data;
 }
+
+export async function uploadImage() {}

@@ -48,7 +48,7 @@ public class FileService {
 
             return "";
         } catch (IOException e) {
-            throw new RuntimeException(e.getCause());
+            throw new RuntimeException(e);
         }
     }
 
@@ -58,8 +58,7 @@ public class FileService {
             response.setContentType(contentType.toString());
             return fileUtil.readFromResources(filepath, filename);
         } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+            throw new RuntimeException(e);
         }
     }
 

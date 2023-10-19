@@ -6,7 +6,7 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import "@common/lib/ckeditor/ckeditor.js";
 import { AxiosResponse } from "axios";
 
 const props = defineProps({
@@ -14,7 +14,7 @@ const props = defineProps({
     type: String,
     required: true
   },
-  uploadImg: {
+  imgaeUploader: {
     type: Function as PropType<(formData: FormData) => Promise<AxiosResponse<R>>>,
     required: true
   }
@@ -24,8 +24,8 @@ const emits = defineEmits<{
   (event: "update:modelValue", value: string): void;
 }>();
 
-class UploadAdapter {
-  loader: any;
+class ImageUploaderAdapter {
+  private loader: any;
 
   constructor(loader: any) {
     this.loader = loader;
@@ -43,7 +43,7 @@ class UploadAdapter {
   uploadFile(file: any, resolve: any) {
     const formData = new FormData();
     formData.append("file", file);
-    props.uploadImg(formData).then(({ data }) => {
+    props.imgaeUploader(formData).then(({ data }) => {
       resolve({
         default: data.data
       });
@@ -57,9 +57,9 @@ class UploadAdapter {
 }
 
 const editor = ref<HTMLDivElement>();
-let ckeditor: ClassicEditor;
 
 onMounted(() => {
+  // @ts-ignore
   ClassicEditor.create(editor.value, {
     heading: {
       options: [
@@ -69,20 +69,17 @@ onMounted(() => {
         { model: "heading3", view: "h3", title: "Heading 3", class: "ck-heading_heading3" }
       ]
     }
-  })
-    .then(ck => {
-      ckeditor = ck;
-      ckeditor.plugins.get("FileRepository").createUploadAdapter = loader => {
-        return new UploadAdapter(loader);
-      };
+    // @ts-ignore
+  }).then(ck => {
+    // @ts-ignore
+    ck.plugins.get("FileRepository").createUploadAdapter = loader => {
+      return new ImageUploaderAdapter(loader);
+    };
 
-      ckeditor.model.document.on("change:data", () => {
-        emits("update:modelValue", ckeditor.getData());
-      });
-    })
-    .catch(error => {
-      ElMessage.error(error);
+    ck.model.document.on("change:data", () => {
+      emits("update:modelValue", ck.getData());
     });
+  });
 });
 </script>
 
@@ -92,4 +89,4 @@ onMounted(() => {
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style lang="scss"></style>

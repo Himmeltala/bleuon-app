@@ -75,4 +75,8 @@ public class R<T> {
         return new R<>(Status.FAILED.getCode(), data);
     }
 
+    public static <T> R<T> unpass(String message) {
+        return new R<>(Status.NO_AUTHORITY.getCode(), message, null);
+    }
+
 }

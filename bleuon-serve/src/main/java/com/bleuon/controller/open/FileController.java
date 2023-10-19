@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import java.io.Serializable;
 
 /**
  * @description:
@@ -27,7 +27,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @RequestMappingPrefix("/public/file")
 @Tag(name = "文件")
-public class FileController {
+public class FileController implements Serializable {
 
     private final FileService fileService;
 
@@ -39,8 +39,8 @@ public class FileController {
             try (ServletOutputStream output = response.getOutputStream()) {
                 output.write(bytes);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 

@@ -47,7 +47,7 @@ public class CollectingFlowchartService implements ICollectingFlowchartService {
             Integer row = collectingFlowchartMapper.add(model);
             return row > 0;
         } catch (Exception e) {
-            throw new JdbcErrorException(e.getCause());
+            throw new JdbcErrorException(e);
         }
     }
 

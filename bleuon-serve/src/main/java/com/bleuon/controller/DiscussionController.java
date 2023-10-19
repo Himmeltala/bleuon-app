@@ -4,7 +4,6 @@ import com.bleuon.annotaion.RequestMappingPrefix;
 import com.bleuon.entity.PostCommentModel;
 import com.bleuon.entity.PostModel;
 import com.bleuon.entity.criterias.DiscussionCriteria;
-import com.bleuon.entity.dto.PostDTO;
 import com.bleuon.service.impl.DiscussionService;
 import com.bleuon.utils.http.R;
 import com.github.pagehelper.PageInfo;
@@ -15,6 +14,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.io.Serializable;
+
 /**
  * @description:
  * @package: com.bleuon.controller
@@ -24,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Tag(name = "社区")
 @RequestMappingPrefix("/discussion")
 @RequiredArgsConstructor
-public class DiscussionController {
+public class DiscussionController implements Serializable {
 
     private final DiscussionService discussionService;
 
@@ -39,7 +40,7 @@ public class DiscussionController {
     @Operation(summary = "根据条件查询帖子详情")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:post-detail')")
     @PostMapping("/find/detail/by/criteria")
-    public R<PostDTO> findDetailByCriteria(@RequestBody DiscussionCriteria criteria) {
+    public R<PostModel> findDetailByCriteria(@RequestBody DiscussionCriteria criteria) {
         return R.success(discussionService.findDetailByCriteria(criteria));
     }
 

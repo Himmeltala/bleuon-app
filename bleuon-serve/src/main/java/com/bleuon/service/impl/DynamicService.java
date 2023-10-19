@@ -50,7 +50,7 @@ public class DynamicService extends ServiceImpl<DynamicMapper, DynamicModel> imp
             Integer status = dynamicMapper.upgrade(model);
             return status > 0;
         } catch (Exception e) {
-            throw new JdbcErrorException(e.getCause());
+            throw new JdbcErrorException(e);
         }
     }
 
@@ -60,7 +60,7 @@ public class DynamicService extends ServiceImpl<DynamicMapper, DynamicModel> imp
         try {
             return removeById(model.getId());
         } catch (Exception e) {
-            throw new JdbcErrorException(e.getCause());
+            throw new JdbcErrorException(e);
         }
     }
 
@@ -73,7 +73,7 @@ public class DynamicService extends ServiceImpl<DynamicMapper, DynamicModel> imp
 
             return save(model);
         } catch (Exception e) {
-            throw new JdbcErrorException(e.getCause());
+            throw new JdbcErrorException(e);
         }
     }
 

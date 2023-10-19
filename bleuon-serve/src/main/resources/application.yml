@@ -45,4 +45,4 @@ request:
 
 logging:
   level:
-    com.bleuon: trace
+    com.bleuon.mapper: TRACE

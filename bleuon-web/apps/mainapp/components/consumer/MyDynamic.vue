@@ -21,9 +21,9 @@ async function fetchList() {
   });
 }
 
-function uploadImage(formData: FormData) {
+function uploadDynamicImage(formData: FormData) {
   formData.append("path", "/dynamic");
-  return FileAPI.uploadCkEditorImage(formData);
+  return FileAPI.uploadImageFile(formData);
 }
 
 function commit() {
@@ -58,7 +58,9 @@ await fetchList();
 <template>
   <div class="my-dynamic">
     <div class="px-5 py-5 rd-2 bg-bg-overlay" v-if="token.id === consumer.id">
-      <ClassicCkEditor v-model="ckeditorValue" :upload-img="uploadImage"></ClassicCkEditor>
+      <ClassicCkEditor
+        v-model="ckeditorValue"
+        :imgae-uploader="uploadDynamicImage"></ClassicCkEditor>
       <div class="f-c-e mt-2">
         <el-button type="primary" @click="commit">发表动态</el-button>
       </div>

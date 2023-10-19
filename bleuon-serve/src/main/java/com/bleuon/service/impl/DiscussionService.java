@@ -3,7 +3,6 @@ package com.bleuon.service.impl;
 import com.bleuon.entity.PostCommentModel;
 import com.bleuon.entity.PostModel;
 import com.bleuon.entity.criterias.DiscussionCriteria;
-import com.bleuon.entity.dto.PostDTO;
 import com.bleuon.mapper.DiscussionMapper;
 import com.bleuon.service.IDiscussionService;
 import com.github.pagehelper.PageHelper;
@@ -35,12 +34,11 @@ public class DiscussionService implements IDiscussionService {
     }
 
     @Override
-    public PostDTO findDetailByCriteria(DiscussionCriteria criteria) {
+    public PostModel findDetailByCriteria(DiscussionCriteria criteria) {
         PostModel postModel = discussionMapper.findDetailByCriteria(criteria);
         PageInfo<PostCommentModel> comments = findCommentsByCriteria(criteria);
-        System.out.println(postModel);
-        System.out.println(comments);
-        return new PostDTO(postModel, comments);
+        postModel.setComments(comments);
+        return postModel;
     }
 
     @Override

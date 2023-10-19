@@ -44,7 +44,7 @@ public class CollectingConsumerService implements ICollectingConsumerService {
             Integer added = collectingConsumerMapper.add(model);
             return added > 0;
         } catch (Exception e) {
-            throw new JdbcErrorException(e.getCause());
+            throw new JdbcErrorException(e);
         }
     }
 
@@ -54,7 +54,7 @@ public class CollectingConsumerService implements ICollectingConsumerService {
             Integer deled = collectingConsumerMapper.delete(model);
             return deled > 0;
         } catch (Exception e) {
-            throw new JdbcErrorException(e.getCause());
+            throw new JdbcErrorException(e);
         }
     }
 

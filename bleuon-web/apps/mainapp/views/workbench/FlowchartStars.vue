@@ -7,7 +7,7 @@
  */
 
 // jointjs
-import { downloadWithDataUri } from "@mainapp/lib/jointjs/utils";
+import { downloadWithDataUri } from "@common/lib/jointjs/utils";
 
 import { FlowchartAPI } from "@mainapp/apis";
 import { DateUtil } from "@common/utils";

@@ -7,7 +7,7 @@
  */
 
 import { dia } from "jointjs";
-import { downloadWithXml } from "@mainapp/lib/jointjs/utils";
+import { downloadWithXml } from "@common/lib/jointjs/utils";
 import { DateUtil } from "@common/utils";
 import { FlowchartAPI } from "@mainapp/apis";
 

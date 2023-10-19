@@ -64,7 +64,7 @@ public class ConsumerService extends ServiceImpl<ConsumerMapper, ConsumerModel> 
             Integer status = consumerMapper.upgrade(model);
             return status > 0;
         } catch (Exception e) {
-            throw new JdbcErrorException(e.getCause());
+            throw new JdbcErrorException(e);
         }
     }
 
@@ -87,7 +87,7 @@ public class ConsumerService extends ServiceImpl<ConsumerMapper, ConsumerModel> 
 
             return "";
         } catch (Exception e) {
-            throw new JdbcErrorException(e.getCause());
+            throw new JdbcErrorException(e);
         }
     }
 

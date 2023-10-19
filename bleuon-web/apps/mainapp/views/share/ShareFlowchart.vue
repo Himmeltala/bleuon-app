@@ -10,7 +10,7 @@
 import "jointjs/css/layout.css";
 import "jointjs/css/themes/default.css";
 import { dia } from "jointjs";
-import { createJointjs } from "@mainapp/lib/jointjs";
+import { createJointjs } from "@common/lib/jointjs";
 // service
 import { JointJsEventService } from "@mainapp/service/diagraming/flowchart/listener-service";
 // apis

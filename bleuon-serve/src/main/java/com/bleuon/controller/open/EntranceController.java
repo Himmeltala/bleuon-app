@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -33,7 +34,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @RequestMappingPrefix("/public/entrance")
 @Tag(name = "入口")
-public class EntranceController {
+public class EntranceController implements Serializable {
 
     private final ConsumerService consumerService;
     private final TokenService tokenService;

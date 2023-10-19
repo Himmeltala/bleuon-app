@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.bleuon.entity.dto.ConsumerDTO;
+import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -12,7 +13,6 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.List;
 
 /**
  * @description:
@@ -89,6 +89,6 @@ public class PostModel implements Serializable {
 
     @Schema(description = "帖子所属评论模型集合")
     @TableField(exist = false)
-    private List<PostCommentModel> comments;
+    private PageInfo<PostCommentModel> comments;
 
 }

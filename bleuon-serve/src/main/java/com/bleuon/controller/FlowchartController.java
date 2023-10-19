@@ -17,6 +17,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,7 +30,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @RequestMappingPrefix("/flowchart")
 @Tag(name = "流程图")
-public class FlowchartController {
+public class FlowchartController implements Serializable {
 
     private final FlowchartService flowchartService;
     private final CollectingFlowchartService collectingFlowchartService;

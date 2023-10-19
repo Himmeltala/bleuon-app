@@ -14,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 /**
  * 登出成功处理器
@@ -22,7 +23,7 @@ import java.io.IOException;
  */
 @Component
 @RequiredArgsConstructor
-public class LogoutSuccessHandler implements org.springframework.security.web.authentication.logout.LogoutSuccessHandler {
+public class LogoutSuccessHandler implements org.springframework.security.web.authentication.logout.LogoutSuccessHandler, Serializable {
 
     private final JwtUtil jwtUtil;
     private final RedisTemplate<String, String> redisTemplate;
@@ -33,21 +34,15 @@ public class LogoutSuccessHandler implements org.springframework.security.web.au
         String authToken = request.getHeader(KeyVals.Token);
         Claims claims = jwtUtil.parseJwt(authToken);
 
-        R<Object> success = R.success("退出成功！");
-
         if (claims != null) {
             String jwtUuid = claims.getId();
             Boolean hasKey = redisTemplate.hasKey(jwtUuid);
             if (Boolean.TRUE.equals(hasKey)) {
                 redisTemplate.delete(jwtUuid);
             }
-
-            response.getWriter()
-                    .write(JSON.toJSONString(success));
-        } else {
-            response.getWriter()
-                    .write(JSON.toJSONString(success));
         }
+
+        response.getWriter().write(JSON.toJSONString(R.success("退出成功！")));
     }
 
 }

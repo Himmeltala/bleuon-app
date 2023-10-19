@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +33,7 @@ import java.util.Map;
  */
 @Component
 @RequiredArgsConstructor
-public class VerifyJwtFilter extends OncePerRequestFilter {
+public class VerifyJwtFilter extends OncePerRequestFilter implements Serializable {
 
     private final JwtUtil jwtUtil;
     private final AuthorityMapper mapper;
