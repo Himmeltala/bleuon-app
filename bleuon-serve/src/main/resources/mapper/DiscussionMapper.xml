@@ -116,4 +116,29 @@
         </if>
     </select>
 
+    <insert id="addComment">
+        INSERT INTO t_post_comments(id, content, consumer_id, post_id)
+        VALUES (#{id}, #{content}, #{consumerId}, #{postId})
+    </insert>
+
+    <delete id="deleteComment">
+        DELETE
+        FROM t_post_comments
+        WHERE id = #{id}
+          AND consumer_id = #{consumerId}
+          AND post_id = #{postId};
+    </delete>
+
+    <update id="upgradeComment">
+        UPDATE t_post_comments
+        <set>
+            <trim suffixOverrides=",">
+                <if test="digg != null">digg = #{digg},</if>
+                <if test="bury != null">bury = #{bury},</if>
+                <if test="content != null">`content` = #{content},</if>
+            </trim>
+        </set>
+        WHERE id = #{id} AND post_id = #{postId}
+    </update>
+
 </mapper>

@@ -83,6 +83,7 @@ declare type PostCommentModel = Partial<{
   bury: number;
   createDate: string;
   modifyDate: string;
+  postId: string;
   consumerId: string;
   consumer: ConsumerModel;
 }>;
@@ -104,8 +105,4 @@ declare type PostModel = Partial<{
   createDate: string;
   modifyDate: string;
   consumer: ConsumerModel;
-  comments: {
-    list: PostCommentModel[];
-    total: number;
-  };
 }>;

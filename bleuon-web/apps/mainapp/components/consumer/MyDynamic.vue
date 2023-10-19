@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { DateUtil, TextUtil } from "@common/utils";
 import { ConsumerAPI, FileAPI } from "@mainapp/apis";
-import { DateUtil } from "@common/utils";
 
 import ClassicCkEditor from "@mainapp/components/ClassicCkEditor.vue";
 
@@ -27,6 +27,12 @@ function uploadDynamicImage(formData: FormData) {
 }
 
 function commit() {
+  const len = TextUtil.strlen(ckeditorValue.value);
+  if (len < 3) {
+    ElMessage.error("发表至少 3 个字的动态！");
+    return;
+  }
+
   ConsumerAPI.addDynamic({ content: ckeditorValue.value, consumerId: token.id }, async () => {
     await fetchList();
   });

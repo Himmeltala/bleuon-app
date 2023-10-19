@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.bleuon.entity.dto.ConsumerDTO;
-import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -86,9 +85,5 @@ public class PostModel implements Serializable {
     @Schema(description = "帖子所属用户模型")
     @TableField(exist = false)
     private ConsumerDTO consumer;
-
-    @Schema(description = "帖子所属评论模型集合")
-    @TableField(exist = false)
-    private PageInfo<PostCommentModel> comments;
 
 }

@@ -54,7 +54,7 @@ public class GlobalExceptionHandler implements Serializable {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public R<Object> HttpMessageNotReadableExceptionHandler(HttpMessageNotReadableException e) {
         log.error(e.getMessage(), e);
-        return R.error(e);
+        return R.error(e.getMessage(), e);
     }
 
     /**
@@ -63,19 +63,19 @@ public class GlobalExceptionHandler implements Serializable {
     @ExceptionHandler(AuthenticationException.class)
     public R<Object> handleAuthenticationException(AuthenticationException e) {
         log.error(e.getMessage(), e);
-        return R.error(e);
+        return R.error(e.getMessage(), e);
     }
 
     @ExceptionHandler({JdbcErrorException.class})
     public R<Object> handleJdbcErrorException(JdbcErrorException e) {
         log.error(e.getMessage(), e);
-        return R.error(e);
+        return R.error(e.getMessage(), e);
     }
 
     @ExceptionHandler({JdbcFailedException.class})
     public R<Object> handleJdbcOperationException(JdbcFailedException e) {
         log.error(e.getMessage(), e);
-        return R.error(e);
+        return R.error(e.getMessage(), e);
     }
 
 }

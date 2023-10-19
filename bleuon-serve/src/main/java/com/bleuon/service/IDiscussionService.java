@@ -19,4 +19,10 @@ public interface IDiscussionService {
 
     PageInfo<PostCommentModel> findCommentsByCriteria(DiscussionCriteria criteria);
 
+    boolean addComment(PostCommentModel model);
+
+    boolean deleteComment(PostCommentModel model);
+
+    boolean upgradeComment(PostCommentModel model);
+
 }

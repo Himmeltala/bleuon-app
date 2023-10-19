@@ -6,8 +6,8 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import { DateUtil } from "@common/utils";
-import { DiscussionAPI, FileAPI } from "@mainapp/apis";
+import { DateUtil, TextUtil } from "@common/utils";
+import { DiscussionAPI, FileAPI, ConsumerAPI } from "@mainapp/apis";
 
 // components
 import CommonHeader from "@mainapp/components/CommonHeader.vue";
@@ -15,10 +15,17 @@ import ClassicCkEditor from "@mainapp/components/ClassicCkEditor.vue";
 
 const route = useRoute();
 const mainData = ref<PostModel>();
+const commentList = ref<{ list: PostCommentModel[]; total: number }>();
+const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
 
 async function fetchData(params: any) {
   const id = route.params.id.toString();
   mainData.value = await DiscussionAPI.findDetailByCriteria({ ...params, ...{ postId: id } });
+}
+
+async function fetchCommentList(params: any) {
+  const id = route.params.id.toString();
+  commentList.value = await DiscussionAPI.findCommentsByCriteria({ ...params, ...{ postId: id } });
 }
 
 const commentContent = ref("");
@@ -28,7 +35,46 @@ function uploadCommentImage(formData: FormData) {
   return FileAPI.uploadImageFile(formData);
 }
 
+function collectConsumer() {
+  ConsumerAPI.addCollecting({ collectingCid: token.id, consumerId: mainData.value.consumer.id });
+}
+
+function addComment() {
+  const len = TextUtil.strlen(commentContent.value);
+  if (len < 3) {
+    ElMessage.error("发表至少 3 个字的评论！");
+    return;
+  }
+  DiscussionAPI.addComment({
+    postId: mainData.value.id,
+    consumerId: token.id,
+    content: commentContent.value
+  });
+}
+
+function deleteComment(id: string) {
+  DiscussionAPI.deleteComment({ id, postId: mainData.value.id, consumerId: token.id });
+}
+
+function digg(item: PostCommentModel) {
+  item.digg += 1;
+  DiscussionAPI.upgradeComment({ id: item.id, postId: mainData.value.id, digg: item.digg });
+}
+
+function bury(item: PostCommentModel) {
+  item.bury += 1;
+  DiscussionAPI.upgradeComment({ id: item.id, postId: mainData.value.id, bury: item.bury });
+}
+
+const isCommentDateAsc = ref(true);
+
+async function changeCommentAsc() {
+  isCommentDateAsc.value = !isCommentDateAsc.value;
+  await fetchCommentList({ sequences: [{ isAsc: isCommentDateAsc.value, col: "create_date" }] });
+}
+
 await fetchData({});
+await fetchCommentList({ sequences: [{ isAsc: true, col: "create_date" }] });
 </script>
 
 <template>
@@ -93,17 +139,24 @@ await fetchData({});
             <div class="text-text-secondary mb-4 text-0.9rem">看帖是喜欢，评论才是真爱：</div>
             <ClassicCkEditor v-model="commentContent" :imgae-uploader="uploadCommentImage" />
             <div class="f-c-e mt-5">
-              <el-button type="primary">评论</el-button>
+              <el-button type="primary" @click="addComment">评论</el-button>
             </div>
           </div>
           <div class="comment-list mt-5 bg-bg-overlay rd-2">
             <div
-              v-if="mainData.comments.list?.length"
-              v-for="(item, index) in mainData.comments.list"
+              v-if="commentList.list?.length"
+              v-for="(item, index) in commentList.list"
               class="p-5"
               :class="{
-                'b-b-1 b-b-solid b-border-dark': mainData.comments.list.length - 1 !== index
+                'b-b-1 b-b-solid b-border-dark': commentList.list.length - 1 !== index
               }">
+              <div class="f-c-e mb-5 text-0.9rem text-text-secondary">
+                <div @click="changeCommentAsc" class="hover f-c-c">
+                  <div class="i-tabler-arrows-sort mr-1"></div>
+                  <div v-if="isCommentDateAsc">日期升序</div>
+                  <div v-else>日期降序</div>
+                </div>
+              </div>
               <div class="consumer f-c-b">
                 <router-link :to="'/u/profile/' + item.consumer.id">
                   <div class="f-c-s">
@@ -116,15 +169,22 @@ await fetchData({});
                 </div>
               </div>
               <div>
-                <div class="mt-5 ml-12" v-html="item.content"></div>
-                <div class="mt-5 f-c-e text-text-regular">
-                  <div class="hover f-c-s mr-10" @click="">
+                <div class="mt-5 ml-12 article-detail-comment-content" v-html="item.content"></div>
+                <div class="mt-5 f-c-e text-text-secondary">
+                  <div class="hover f-c-s mr-10" @click="digg(item)">
                     <div class="i-tabler-thumb-up mr-1"></div>
                     <div>{{ item.digg }}</div>
                   </div>
-                  <div class="hover f-c-s" @click="">
+                  <div class="hover f-c-s mr-10" @click="bury(item)">
                     <div class="i-tabler-thumb-down mr-1"></div>
                     <div>{{ item.bury }}</div>
+                  </div>
+                  <div
+                    v-if="item.consumer.id === token.id"
+                    class="hover f-c-s"
+                    @click="deleteComment(item.id)">
+                    <div class="i-tabler-trash mr-1"></div>
+                    删除
                   </div>
                 </div>
               </div>
@@ -151,6 +211,9 @@ await fetchData({});
                 </router-link>
               </div>
             </div>
+            <div class="f-c-e mt-4" v-if="token.id !== mainData.consumer.id">
+              <el-button type="primary" @click="collectConsumer">关注用户</el-button>
+            </div>
           </div>
         </div>
       </div>
@@ -168,5 +231,15 @@ await fetchData({});
 
 .content {
   height: calc(100vh - 5rem);
+}
+</style>
+
+<style lang="scss">
+.article-detail-comment-content {
+  img {
+    object-fit: contain;
+    max-width: 100% !important;
+    height: auto !important;
+  }
 }
 </style>

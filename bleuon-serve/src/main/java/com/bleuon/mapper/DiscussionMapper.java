@@ -22,4 +22,10 @@ public interface DiscussionMapper {
 
     List<PostCommentModel> findCommentsByCriteria(DiscussionCriteria criteria);
 
+    Integer addComment(PostCommentModel model);
+
+    Integer deleteComment(PostCommentModel model);
+
+    Integer upgradeComment(PostCommentModel model);
+
 }

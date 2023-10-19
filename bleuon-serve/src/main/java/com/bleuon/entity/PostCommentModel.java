@@ -3,9 +3,10 @@ package com.bleuon.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.bleuon.constant.ValidPattern;
 import com.bleuon.entity.dto.ConsumerDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,12 +28,10 @@ import java.sql.Timestamp;
 public class PostCommentModel implements Serializable {
 
     @Schema(description = "UUID")
-    @NotEmpty
     @TableId
     private String id;
 
     @Schema(description = "评论内容")
-    @NotEmpty
     private String content;
 
     @Schema(description = "赞成数")
@@ -50,12 +49,17 @@ public class PostCommentModel implements Serializable {
     private Timestamp modifyDate;
 
     @Schema(description = "评论所属用户 ID")
-    @NotEmpty
+    @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
     @TableField("consumer_id")
     private String consumerId;
 
     @Schema(description = "评论所属用户模型")
     @TableField(exist = false)
     private ConsumerDTO consumer;
+
+    @Schema(description = "评论所属帖子 ID")
+    @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
+    @TableField("post_id")
+    private String postId;
 
 }

@@ -49,4 +49,57 @@ export async function findDetailByCriteria(model: {
   return data.data;
 }
 
-export async function uploadImage() {}
+export async function findCommentsByCriteria(model: {
+  postId: string;
+  pageSize?: number;
+  currPage?: number;
+  sequences: { isAsc: boolean; col: string }[];
+}) {
+  const { data } = await request.post<R<{ list: PostCommentModel[]; total: number }>>(
+    "/discussion/find/comments/by/criteria",
+    model
+  );
+  return data.data;
+}
+
+/**
+ * 发表评论
+ *
+ * @param model
+ * @param success
+ */
+export function addComment(
+  model: { postId: string; consumerId: string; content: string },
+  success?: Function
+) {
+  request.post<R>("/discussion/add/comment", model).then(() => {
+    success && success();
+  });
+}
+
+/**
+ * 删除评论
+ *
+ * @param model
+ * @param success
+ */
+export function deleteComment(
+  model: { id: string; postId: string; consumerId: string },
+  success?: Function
+) {
+  request.delete<R>("/discussion/delete/comment", { params: model }).then(() => {
+    success && success();
+  });
+}
+
+/**
+ * 更新评论数据
+ *
+ * @param model
+ * @param success
+ */
+export function upgradeComment(model: PostCommentModel, success?: Function) {
+  request.put<R>("/discussion/upgrade/comment", model).then(() => {
+    success && success();
+  });
+}
