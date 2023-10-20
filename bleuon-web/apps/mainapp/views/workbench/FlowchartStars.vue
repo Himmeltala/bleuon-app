@@ -13,8 +13,8 @@ import { FlowchartAPI } from "@mainapp/apis";
 import { DateUtil } from "@common/utils";
 
 // components
-import WorkbenchHeader from "@mainapp/components/workbench/WorkbenchHeader.vue";
 import File from "@mainapp/components/File.vue";
+import WorkbenchHeader from "@mainapp/fragments/workbench/WorkbenchHeader.vue";
 
 const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
 const mainData = ref<FlowchartModel[]>([]);

@@ -172,6 +172,15 @@ await fetchCommentList({
                 {{ titleTagItem }}
               </el-tag>
             </div>
+            <div class="f-c-e mb-4" v-if="token.id === mainData.consumerId">
+              <el-button
+                @click="$router.push('/community/article-editor?id=' + mainData.id + '&type=edit')"
+                type="primary"
+                plain
+                size="small"
+                >编辑</el-button
+              >
+            </div>
             <div class="post-info mb-4 f-c-e text-text-secondary">
               <div class="f-c-s mr-10">
                 <div class="i-tabler-eye mr-1"></div>

@@ -25,6 +25,12 @@ const emits = defineEmits<{
   (event: "change", value: string): void;
 }>();
 
+function initalData(data: string) {
+  ckeditor.value.setData(data);
+}
+
+defineExpose({ initalData });
+
 class ImageUploaderAdapter {
   private loader: any;
 
@@ -57,6 +63,7 @@ class ImageUploaderAdapter {
   }
 }
 
+const ckeditor = shallowRef();
 const editor = ref<HTMLDivElement>();
 
 onMounted(() => {
@@ -72,6 +79,8 @@ onMounted(() => {
     }
     // @ts-ignore
   }).then(ck => {
+    ckeditor.value = ck;
+
     // @ts-ignore
     ck.plugins.get("FileRepository").createUploadAdapter = loader => {
       return new ImageUploaderAdapter(loader);

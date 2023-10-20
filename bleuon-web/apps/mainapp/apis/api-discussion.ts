@@ -41,9 +41,6 @@ export async function findDetailByCriteria(model: {
   title?: string;
   rankingType?: string;
   type?: string;
-  pageSize?: number;
-  currPage?: number;
-  sequences: { isAsc: boolean; col: string }[];
 }) {
   const { data } = await request.post<R<ArticleModel>>(
     "/discussion/find/detail/by/criteria",

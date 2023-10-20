@@ -29,6 +29,12 @@ const props = defineProps({
 
 const emits = defineEmits(["update:modelValue"]);
 
+function initalData(data: string[]) {
+  tagList.value = data;
+}
+
+defineExpose({ initalData });
+
 const content = ref("");
 const tagList = ref([]);
 
@@ -59,6 +65,7 @@ const queryFromTagList = (target: any, filter: any) => {
 
 function closeTag(index: number) {
   tagList.value.splice(index, 1);
+  emits("update:modelValue", tagList.value);
 }
 </script>
 

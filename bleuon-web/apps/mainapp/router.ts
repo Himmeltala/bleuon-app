@@ -85,10 +85,10 @@ const router = createRouter({
           component: () => import("@mainapp/views/community/ArticleDetail.vue")
         },
         {
-          path: "create-article",
-          name: "auth-create-article",
-          meta: { title: "发表帖子" },
-          component: () => import("@mainapp/views/community/ArticleCreator.vue")
+          path: "article-editor",
+          name: "auth-article-editor",
+          meta: { title: "帖子编辑器" },
+          component: () => import("@mainapp/views/community/ArticleEditor.vue")
         }
       ]
     },

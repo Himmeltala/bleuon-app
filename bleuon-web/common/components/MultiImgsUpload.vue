@@ -31,6 +31,12 @@ const emits = defineEmits<{
   (event: "update:modelValue", urls: string[]): void;
 }>();
 
+function initalData(data: string[]) {
+  urls.value = data;
+}
+
+defineExpose({ initalData });
+
 const urls = ref<string[]>([]);
 const upload = ref<UploadInstance>();
 const dialog = ref(false);

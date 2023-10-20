@@ -7,7 +7,7 @@
  */
 
 // components
-import WorkbenchMenu from "@mainapp/components/workbench/WorkbenchMenu.vue";
+import WorkbenchMenu from "@mainapp/fragments/workbench/WorkbenchMenu.vue";
 
 const activeItem = ref("auth-flowchart-list");
 </script>

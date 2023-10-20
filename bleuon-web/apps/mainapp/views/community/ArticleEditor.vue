@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /**
- * @description 发表帖子
+ * @description 帖子编辑器（发表和编辑）
  * @author zheng
  * @since 2023/10/20
  * @link https://github.com/himmelbleu/bleuon-app
@@ -14,7 +14,9 @@ import { ElSelectData } from "@common/data";
 import CommonHeader from "@mainapp/components/CommonHeader.vue";
 import ClassicCkEditor from "@mainapp/components/ClassicCkEditor.vue";
 
-const formData = reactive<ArticleModel>({
+const route = useRoute();
+
+const formData = ref<ArticleModel>({
   title: "",
   content: "",
   desc: "",
@@ -26,28 +28,28 @@ const formData = reactive<ArticleModel>({
 
 const titleTagToJson: any = computed({
   set(value) {
-    formData.titleTag = JSON.stringify(value);
+    formData.value.titleTag = JSON.stringify(value);
   },
   get() {
-    return JSON.parse(formData.titleTag);
+    return JSON.parse(formData.value.titleTag);
   }
 });
 
 const descTagToJson: any = computed({
   set(value) {
-    formData.descTag = JSON.stringify(value);
+    formData.value.descTag = JSON.stringify(value);
   },
   get() {
-    return JSON.parse(formData.descTag);
+    return JSON.parse(formData.value.descTag);
   }
 });
 
 const descImgsToJson: any = computed({
   set(value) {
-    formData.descImgs = JSON.stringify(value);
+    formData.value.descImgs = JSON.stringify(value);
   },
   get() {
-    return JSON.parse(formData.descImgs);
+    return JSON.parse(formData.value.descImgs);
   }
 });
 
@@ -110,22 +112,48 @@ function uploadImageFile(formData: FormData) {
 
 function startCreateArticle() {
   FormValidatorsUtil.validate(formEl.value, () => {
-    formData.consumerId = token.id;
-    DiscussionAPI.addArticle(formData, () => {
+    formData.value.consumerId = token.id;
+    DiscussionAPI.addArticle(formData.value, () => {
       location.reload();
     });
   });
 }
+
+const classicCkEditor = ref();
+const multiImgsUpload = ref();
+const descEnterTags = ref();
+const titleEnterTags = ref();
+
+const type = ref();
+
+function repostArticle() {
+  FormValidatorsUtil.validate(formEl.value, () => {
+    formData.value.consumerId = token.id;
+    DiscussionAPI.upgradeDetail(formData.value);
+  });
+}
+
+onMounted(async () => {
+  type.value = route.query?.type.toString();
+  if (type.value === "edit") {
+    const id = route.query.id.toString();
+    formData.value = await DiscussionAPI.findDetailByCriteria({ articleId: id });
+    classicCkEditor.value.initalData(formData.value.content);
+    multiImgsUpload.value.initalData(JSON.parse(formData.value.descImgs));
+    descEnterTags.value.initalData(JSON.parse(formData.value.descTag));
+    titleEnterTags.value.initalData(JSON.parse(formData.value.titleTag));
+  }
+});
 </script>
 
 <template>
-  <div class="create-article h-100vh flow-hidden bg-bg-page">
+  <div class="article-editor h-100vh flow-hidden bg-bg-page">
     <CommonHeader></CommonHeader>
     <div class="content py-5 slim-slider flow-auto f-s-c">
       <div class="wrapper w-60vw">
         <div class="bg-bg-overlay rd-2 py-5 px-10">
           <div class="f-c-b mb-10">
-            <div class="font-bold text-1.2rem">编辑帖子</div>
+            <div class="font-bold text-1.2rem">帖子编辑器</div>
             <div>
               <el-button size="small" type="danger" plain @click="$router.back()">返回</el-button>
             </div>
@@ -142,6 +170,7 @@ function startCreateArticle() {
             <el-form-item label="内容" prop="content">
               <div class="w-100%">
                 <ClassicCkEditor
+                  ref="classicCkEditor"
                   @change="triggValidate"
                   v-model="formData.content"
                   :imgae-uploader="uploadImageFile" />
@@ -156,6 +185,7 @@ function startCreateArticle() {
             </el-form-item>
             <el-form-item label="标题 Tag">
               <EnterTags
+                ref="titleEnterTags"
                 width="w-100%"
                 v-model="titleTagToJson"
                 :content-min="2"
@@ -164,6 +194,7 @@ function startCreateArticle() {
             </el-form-item>
             <el-form-item label="描述 Tag">
               <EnterTags
+                ref="descEnterTags"
                 width="w-100%"
                 :content-min="2"
                 :advance="[
@@ -177,6 +208,7 @@ function startCreateArticle() {
             </el-form-item>
             <el-form-item label="帖子封面">
               <MultiImgsUpload
+                ref="multiImgsUpload"
                 v-model="descImgsToJson"
                 :remove-file="removeDescImgItem"
                 :start-upload="startUploadDescImgs" />
@@ -192,7 +224,10 @@ function startCreateArticle() {
             </el-form-item>
             <el-form-item>
               <div class="f-c-e w-100%">
-                <el-button type="primary" @click="startCreateArticle">发表帖子</el-button>
+                <el-button v-if="type === 'edit'" type="primary" @click="repostArticle">
+                  重新发表
+                </el-button>
+                <el-button v-else type="primary" @click="startCreateArticle">发表帖子</el-button>
               </div>
             </el-form-item>
           </el-form>
@@ -203,7 +238,7 @@ function startCreateArticle() {
 </template>
 
 <style scoped lang="scss">
-.create-article {
+.article-editor {
   background-image: url(https://www.miyoushe.com/_nuxt/img/background.cd0a312.png);
   background-position: 0 5rem;
   background-repeat: no-repeat;

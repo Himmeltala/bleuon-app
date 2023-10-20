@@ -7,7 +7,7 @@
  */
 
 import { CellsAPI } from "@mainapp/apis";
-import SVG from "../SVG.vue";
+import SVG from "./SVG.vue";
 
 const mainDataSource = ref(null);
 

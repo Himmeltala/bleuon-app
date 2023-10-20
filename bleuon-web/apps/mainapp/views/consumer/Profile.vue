@@ -10,16 +10,17 @@ import { ConsumerAPI } from "@mainapp/apis";
 
 // components
 import CommonHeader from "@mainapp/components/CommonHeader.vue";
-import MyDynamic from "@mainapp/components/consumer/MyDynamic.vue";
-import MyPublicFlowchart from "@mainapp/components/consumer/MyPublicFlowchart.vue";
-import MyShareFlowchart from "@mainapp/components/consumer/MyShareFlowchart.vue";
-import MyStarConsumer from "@mainapp/components/consumer/MyStarConsumer.vue";
+import MyDynamic from "@mainapp/fragments/consumer/MyDynamic.vue";
+import MyPublicFlowchart from "@mainapp/fragments/consumer/MyPublicFlowchart.vue";
+import MyShareFlowchart from "@mainapp/fragments/consumer/MyShareFlowchart.vue";
+import MyStarConsumer from "@mainapp/fragments/consumer/MyStarConsumer.vue";
+import MyPostArticles from "@mainapp/fragments/consumer/MyPostArticles.vue";
 
 const route = useRoute();
 const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
 const formData = ref<ConsumerModel>();
 
-const tabs = [MyDynamic, MyPublicFlowchart, MyShareFlowchart, MyStarConsumer];
+const tabs = [MyDynamic, MyPublicFlowchart, MyShareFlowchart, MyStarConsumer, MyPostArticles];
 const tabIndex = ref(0);
 
 async function fetchData(id: string | string[]) {

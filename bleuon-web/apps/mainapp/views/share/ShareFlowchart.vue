@@ -18,9 +18,9 @@ import { FlowchartAPI } from "@mainapp/apis";
 // common
 import { DateUtil } from "@common/utils";
 // components
-import HeaderToolsBottom from "@mainapp/components/diagraming/flowchart/HeaderToolsBottom.vue";
-import HeaderToolsTop from "@mainapp/components/diagraming/flowchart/HeaderToolsTop.vue";
-import FooterTools from "@mainapp/components/diagraming/flowchart/FooterTools.vue";
+import HeaderToolsBottom from "@mainapp/fragments/flowchart/HeaderToolsBottom.vue";
+import HeaderToolsTop from "@mainapp/fragments/flowchart/HeaderToolsTop.vue";
+import FooterTools from "@mainapp/fragments/flowchart/FooterTools.vue";
 
 const route = useRoute();
 const router = useRouter();

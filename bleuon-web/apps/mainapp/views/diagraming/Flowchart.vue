@@ -20,10 +20,10 @@ import { FormValidatorsUtil, PreventUtil } from "@common/utils";
 // apis
 import { FlowchartAPI } from "@mainapp/apis";
 // components
-import FooterTools from "@mainapp/components/diagraming/flowchart/FooterTools.vue";
-import HeaderToolsBottom from "@mainapp/components/diagraming/flowchart/HeaderToolsBottom.vue";
-import HeaderToolsTop from "@mainapp/components/diagraming/flowchart/HeaderToolsTop.vue";
-import Sidebar from "@mainapp/components/diagraming/flowchart/Sidebar.vue";
+import FooterTools from "@mainapp/fragments/flowchart/FooterTools.vue";
+import HeaderToolsBottom from "@mainapp/fragments/flowchart/HeaderToolsBottom.vue";
+import HeaderToolsTop from "@mainapp/fragments/flowchart/HeaderToolsTop.vue";
+import Sidebar from "@mainapp/fragments/flowchart/Sidebar.vue";
 
 const route = useRoute();
 const paper = shallowRef<dia.Paper>();
