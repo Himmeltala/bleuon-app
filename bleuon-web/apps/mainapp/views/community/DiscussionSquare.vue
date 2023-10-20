@@ -80,17 +80,22 @@ await fetchData({ sequences: [{ isAsc: false, col: "create_date" }] });
             <el-carousel-item class="rd-2">
               <img
                 class="object-cover w-100% h-100%"
-                src="https://bbs-static.miyoushe.com/static/2023/10/08/ddebfddc36c1d149c6efb98ac7d4ac1d_7310668953522602706.jpg" />
+                src="https://pocdn.processon.com/admin/file_img/64fabc62a8b074573703961d.png" />
             </el-carousel-item>
             <el-carousel-item class="rd-2">
               <img
                 class="object-cover w-100% h-100%"
-                src="https://bbs-static.miyoushe.com/static/2023/10/07/aef96812567533bd45aadfb27127f451_4204914147863808525.jpg" />
+                src="https://pocdn.processon.com/admin/file_img/64fabc75a8b0745737039629.png" />
             </el-carousel-item>
             <el-carousel-item class="rd-2">
               <img
                 class="object-cover w-100% h-100%"
-                src="https://bbs-static.miyoushe.com/static/2023/10/11/4f96f9a0afc8eb445baee629c4a30be2_2084764690953835457.png" />
+                src="https://pocdn.processon.com/admin/file_img/64fabb61a8b07457370395cc.png" />
+            </el-carousel-item>
+            <el-carousel-item class="rd-2">
+              <img
+                class="object-cover w-100% h-100%"
+                src="https://pocdn.processon.com/admin/file_img/64fabbdea8b07457370395f3.png" />
             </el-carousel-item>
           </el-carousel>
           <div class="mt-4">

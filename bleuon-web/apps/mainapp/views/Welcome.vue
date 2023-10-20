@@ -88,51 +88,39 @@ function confirmLogout() {
         </router-link>
       </div>
     </div>
-    <div class="mt-50">
-      <!-- 这里放一个简单的编辑流程图的东西 -->
-    </div>
     <div class="w-100% px-55 mt-50">
       <div class="f-c-b">
         <div class="w-60%">
-          <!-- 录制一个gif1 -->
-          <!-- 录制一个gif2 -->
-          <!-- 录制一个gif3 -->
+          <el-carousel :interval="2000" height="30rem">
+            <el-carousel-item class="rd-2">
+              <img src="/public/20231020223140.png" class="object-contain w-100% h-100%" />
+            </el-carousel-item>
+            <el-carousel-item class="rd-2">
+              <img src="/public/20231020223441.png" class="object-contain w-100% h-100%" />
+            </el-carousel-item>
+            <el-carousel-item class="rd-2">
+              <img src="/public/20231020223456.png" class="object-contain w-100% h-100%" />
+            </el-carousel-item>
+            <el-carousel-item class="rd-2">
+              <img src="/public/20231020223513.png" class="object-contain w-100% h-100%" />
+            </el-carousel-item>
+          </el-carousel>
         </div>
         <div class="w-35%">
           <div class="mb-4 pb-4 cursor-pointer b-b-1 b-b-solid b-b-#e4e4e4">
             <div class="text-1.3rem font-bold">图片导出</div>
-            <div class="text-text-secondary text-1.1rem mt-4">支出 png 格式导出</div>
+            <div class="text-text-secondary text-1.1rem mt-4">支出 jpg 图片格式导出</div>
           </div>
           <div class="mb-4 pb-4 cursor-pointer b-b-1 b-b-solid b-b-#e4e4e4">
             <div class="text-1.3rem font-bold">云端存储</div>
-            <div class="text-text-secondary text-1.1rem mt-4">支出 png 格式导出</div>
+            <div class="text-text-secondary text-1.1rem mt-4">存储到云端，不用担心丢失</div>
           </div>
           <div class="pb-4 cursor-pointer b-b-1 b-b-solid b-b-#e4e4e4">
-            <div class="text-1.3rem font-bold">多人共享</div>
-            <div class="text-text-secondary text-1.1rem mt-4">支出 png 格式导出</div>
+            <div class="text-1.3rem font-bold">多人分享</div>
+            <div class="text-text-secondary text-1.1rem mt-4">给好友分享，支持导出和导入模板</div>
           </div>
         </div>
       </div>
     </div>
-    <div class="mt-50 w-100% download">
-      <div>
-        <!-- 这里放一个图片 -->
-      </div>
-      <div class="text-center">
-        <div class="text-white">
-          <img class="w-10 h-10 object-cover" src="/browser.png" />
-          <div class="mt-4">网页版</div>
-        </div>
-      </div>
-    </div>
-    <!-- 底部 -->
-    <div></div>
   </div>
 </template>
-
-<style lang="scss" scoped>
-.download {
-  height: calc(100vh - 5rem);
-  background-image: url("https://www.processon.com/public_login/terminal_bg.7da39e2a.png");
-}
-</style>

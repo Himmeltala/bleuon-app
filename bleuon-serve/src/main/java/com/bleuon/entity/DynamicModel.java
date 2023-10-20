@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.bleuon.constant.ValidPattern;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,7 +32,6 @@ public class DynamicModel implements Serializable {
     private String id;
 
     @Schema(description = "动态内容")
-    @NotEmpty
     private String content;
 
     @Schema(description = "赞成数")

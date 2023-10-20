@@ -89,7 +89,7 @@ await fetchList();
               {{ DateUtil.formatted(item.createDate) }}
             </div>
           </div>
-          <div class="mt-4" v-html="item.content"></div>
+          <div class="mt-4 dynamic-detail-content" v-html="item.content"></div>
           <div class="f-c-s mt-6 text-text-secondary text-0.9rem">
             <div class="mr-15 hover f-c-c" @click="digg(item)">
               <div class="i-tabler-thumb-up mr-1"></div>
@@ -112,3 +112,11 @@ await fetchList();
 </template>
 
 <style scoped lang="scss"></style>
+
+<style lang="scss">
+.dynamic-detail-content {
+  img {
+    --uno: object-cover max-w-100% h-auto rd-2 !important;
+  }
+}
+</style>
