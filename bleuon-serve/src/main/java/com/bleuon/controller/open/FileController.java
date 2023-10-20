@@ -49,12 +49,12 @@ public class FileController implements Serializable {
             @Parameter(name = "path", description = "图片路径，上传到 classes/target 目录下", example = "/static/images/avatar", in = ParameterIn.HEADER)
     })
     @PostMapping("/upload/image")
-    public R<Object> uploadImageFile(MultipartFile file, String path) {
+    public R<Object> uploadImageFile(MultipartFile file, String filepath) {
         if (file.isEmpty()) {
             return R.error("请选择一个图片！");
         }
 
-        String imgUrl = fileService.upload("/static/images/" + path, null, file);
+        String imgUrl = fileService.upload("/static/images/" + filepath, null, file);
         if (StringUtils.hasText(imgUrl)) {
             return R.success("上传成功！", imgUrl);
         } else {

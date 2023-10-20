@@ -22,7 +22,7 @@ async function fetchList() {
 }
 
 function uploadDynamicImage(formData: FormData) {
-  formData.append("path", "/dynamic");
+  formData.append("filepath", "/dynamic");
   return FileAPI.uploadImageFile(formData);
 }
 

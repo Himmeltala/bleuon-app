@@ -95,7 +95,7 @@ function triggValidate() {
 }
 
 function startUploadDescImgs(formData: FormData) {
-  formData.append("path", "/article/desc");
+  formData.append("filepath", "/article/desc");
   return FileAPI.uploadImageFile(formData);
 }
 
@@ -104,14 +104,16 @@ function removeDescImgItem(str: string, callback: Function) {
 }
 
 function uploadImageFile(formData: FormData) {
-  formData.append("path", "/article/content");
+  formData.append("filepath", "/article/content");
   return FileAPI.uploadImageFile(formData);
 }
 
 function startCreateArticle() {
   FormValidatorsUtil.validate(formEl.value, () => {
     formData.consumerId = token.id;
-    DiscussionAPI.addArticle(formData);
+    DiscussionAPI.addArticle(formData, () => {
+      location.reload();
+    });
   });
 }
 </script>

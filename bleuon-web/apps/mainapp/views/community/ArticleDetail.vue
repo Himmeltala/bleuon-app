@@ -56,7 +56,7 @@ function buryArticle() {
 const commentContent = ref("");
 
 function uploadCommentImage(formData: FormData) {
-  formData.append("path", "/article/comments");
+  formData.append("filepath", "/article/comments");
   return FileAPI.uploadImageFile(formData);
 }
 

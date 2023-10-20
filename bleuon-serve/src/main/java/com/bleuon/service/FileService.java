@@ -9,6 +9,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.UUID;
 
 /**
  * @description:
@@ -34,8 +35,12 @@ public class FileService {
 
             if (filename != null && filename.lastIndexOf(".") != -1) {
                 String extension = filename.substring(filename.lastIndexOf(".") + 1);
+                String uuid = UUID.randomUUID().toString();
                 if (StringUtils.hasText(refilename)) {
-                    filename = refilename + "." + extension;
+                    filename = refilename + "_" + uuid + "." + extension;
+                } else {
+                    String prefix = filename.substring(0, filename.lastIndexOf('.'));
+                    filename = prefix + "_" + uuid + "." + extension;
                 }
                 boolean success = fileUtil.writeToResources(filepath, filename, file.getInputStream());
                 if (success) {
