@@ -44,9 +44,15 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, FlowchartMode
         }
     }
 
+    @Transactional
     @Override
     public FlowchartModel findById(String flowchartId) {
-        return query().eq("id", flowchartId).one();
+        FlowchartModel result = query().eq("id", flowchartId).one();
+        if (DateUtil.isAfter(result.getDeadShareDate())) {
+            result.setIsShare(0);
+            upgrade(result);
+        }
+        return result;
     }
 
     @Transactional
@@ -58,13 +64,13 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, FlowchartMode
                 .one();
 
         if (Objects.isNull(flowchart)) {
-            return R.failed("该流程图未公开分享！", null);
+            return R.error("该流程图未公开分享！");
         }
 
         if (DateUtil.isAfter(flowchart.getDeadShareDate())) {
-            flowchart.setDeadShareDate(null);
+            flowchart.setIsShare(0);
             upgrade(flowchart);
-            return R.failed("该流程图分享已过期！", null);
+            return R.error("该流程图分享已过期！");
         }
 
         return R.success(flowchart);
@@ -197,7 +203,9 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, FlowchartMode
         try {
             FlowchartModel flowchart = new FlowchartModel();
             flowchart.setId(flowchartId);
+            flowchart.setIsBlueprint(0);
             flowchart.setIsPublic(0);
+            flowchart.setIsShare(0);
             boolean status = upgrade(flowchart);
 
             if (!status) {
@@ -217,4 +225,5 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, FlowchartMode
             throw new JdbcErrorException(e);
         }
     }
+
 }

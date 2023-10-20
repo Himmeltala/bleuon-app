@@ -8,6 +8,7 @@ bleuon-web
 │   ├─ mainapp                  // 前台项目
 │   │   ├─ apis                 // 接口层
 │   │   ├─ components           // 前台项目的组件
+│   │   ├─ fragments            // views 下的子视图，区别于组件高可复用
 |   |   ├─ data                 // 数据层
 |   |   ├─ lib                  // lib jointjs 相关 api
 |   |   ├─ scss                 // 通用样式

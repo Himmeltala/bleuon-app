@@ -18,11 +18,11 @@ const scene = ref("全部");
 const price = ref("");
 const ranking = ref("");
 
-const templateListData = shallowRef<BlueprintFlowchartModel[]>();
+const mainData = shallowRef<BlueprintFlowchartModel[]>();
 
 async function fetchData(params?: BlueprintFlowchartModel) {
-  templateListData.value = await BlueprintAPI.findAll(params);
-  triggerRef(templateListData);
+  mainData.value = await BlueprintAPI.findAll(params);
+  triggerRef(mainData);
 }
 
 function onSceneChange(value: any) {
@@ -103,9 +103,9 @@ await fetchData();
           </div>
         </div>
         <div class="file-list mt-5 f-c-s flex-wrap flex-gap-1.25rem">
-          <template v-if="templateListData">
+          <template v-if="mainData">
             <File
-              v-for="item in templateListData"
+              v-for="item in mainData"
               :key="item.id"
               :path="'/blueprint/flowchart/' + item.id"
               :file-image="item.flowchart.dataUri"

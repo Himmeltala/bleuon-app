@@ -17,7 +17,7 @@ import File from "@mainapp/components/File.vue";
 import WorkbenchHeader from "@mainapp/components/workbench/WorkbenchHeader.vue";
 
 const clickedIndex = ref(0);
-const mainDataSource = ref<FlowchartModel[]>([]);
+const mainData = ref<FlowchartModel[]>([]);
 
 const dialogVisible = ref(false);
 const isFileNameCorrect = ref(false);
@@ -31,14 +31,14 @@ const fileNameRules = reactive({
 const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
 
 async function fetchData(params: any) {
-  mainDataSource.value = await FlowchartAPI.findAllByCriteria({
+  mainData.value = await FlowchartAPI.findAllByCriteria({
     ...params,
     collectingCid: token.id
   });
 }
 
 function upgrade() {
-  FlowchartAPI.upgrade(mainDataSource.value[clickedIndex.value], { nomessage: false }, () => {
+  FlowchartAPI.upgrade(mainData.value[clickedIndex.value], { nomessage: false }, () => {
     dialogVisible.value = !dialogVisible.value;
   });
 }
@@ -60,7 +60,7 @@ function replicate(data: FlowchartModel) {
 
 function remove(id: string, index: number) {
   FlowchartAPI.deleteById({ id }, async () => {
-    mainDataSource.value.splice(index, 1);
+    mainData.value.splice(index, 1);
   });
 }
 
@@ -191,7 +191,7 @@ await fetchData({});
       <div class="mt-5 text-text-regular text-0.9rem">文件</div>
       <div class="file-list mt-5 f-s-s flex-wrap flex-gap-1.25rem">
         <File
-          v-for="(item, index) in mainDataSource"
+          v-for="(item, index) in mainData"
           :key="item.id"
           :file-image="item.dataUri"
           :path="'/flowchart/' + item.id"
@@ -241,10 +241,10 @@ await fetchData({});
         </File>
       </div>
       <el-dialog v-model="dialogVisible" title="修改文件名称" width="30%">
-        <el-form :model="mainDataSource[clickedIndex]" :rules="fileNameRules">
+        <el-form :model="mainData[clickedIndex]" :rules="fileNameRules">
           <el-form-item prop="fileName">
             <el-input
-              v-model="mainDataSource[clickedIndex].fileName"
+              v-model="mainData[clickedIndex].fileName"
               placeholder="请输入文件名称"
               @keyup.enter="upgrade" />
           </el-form-item>

@@ -17,11 +17,11 @@ import WorkbenchHeader from "@mainapp/components/workbench/WorkbenchHeader.vue";
 import File from "@mainapp/components/File.vue";
 
 const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
-const mainDataSource = ref<FlowchartModel[]>([]);
+const mainData = ref<FlowchartModel[]>([]);
 const searchVal = ref("");
 
 async function fetchData(params?: any) {
-  mainDataSource.value = await FlowchartAPI.findAllCollectByCriteria({
+  mainData.value = await FlowchartAPI.findAllCollectByCriteria({
     ...params,
     collectingCid: token.id
   });
@@ -41,7 +41,7 @@ function replicate(data: FlowchartModel) {
 
 function remove(flowchartId: string, index: number) {
   FlowchartAPI.deleteCollecting({ flowchartId, collectingCid: token.id }, () => {
-    mainDataSource.value.splice(index, 1);
+    mainData.value.splice(index, 1);
   });
 }
 
@@ -62,9 +62,9 @@ await fetchData();
       </div>
       <div class="mt-5 text-text-regular text-0.9rem">文件</div>
       <div class="file-list mt-5 f-c-s flex-wrap flex-gap-1.25rem">
-        <template v-if="mainDataSource">
+        <template v-if="mainData">
           <File
-            v-for="(item, index) in mainDataSource"
+            v-for="(item, index) in mainData"
             :key="item.id"
             :file-image="item.dataUri"
             :is-reset="false"

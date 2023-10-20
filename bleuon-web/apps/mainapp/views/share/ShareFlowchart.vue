@@ -36,7 +36,8 @@ provide(KeyVals.BLEUON_FLOWCHART_DATA, mainData);
 const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
 
 async function fetchData() {
-  const data = await FlowchartAPI.findIsShare({ id: route.params.id.toString() }, () => {
+  const id = route.params.id.toString();
+  const data = await FlowchartAPI.findIsShare({ id }, () => {
     router.back();
   });
   mainData.value = data;

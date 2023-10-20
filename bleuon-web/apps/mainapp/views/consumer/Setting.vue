@@ -14,18 +14,18 @@ import { FormValidatorsUtil, DateUtil } from "@common/utils";
 import CommonHeader from "@mainapp/components/CommonHeader.vue";
 
 const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
-const formData = ref(await ConsumerAPI.findById(token.id));
+const mainData = ref(await ConsumerAPI.findById(token.id));
 
 function upgradeBasicData() {
   ConsumerAPI.upgrade({
     id: token.id,
-    username: formData.value.username,
-    profession: formData.value.profession,
-    company: formData.value.company,
-    position: formData.value.position,
-    degree: formData.value.degree,
-    signature: formData.value.signature,
-    sex: formData.value.sex
+    username: mainData.value.username,
+    profession: mainData.value.profession,
+    company: mainData.value.company,
+    position: mainData.value.position,
+    degree: mainData.value.degree,
+    signature: mainData.value.signature,
+    sex: mainData.value.sex
   });
 }
 
@@ -81,14 +81,14 @@ const resetPwdFormRules = reactive<FormRules>({
 
 function getResetPwdCode() {
   FormValidatorsUtil.getVerifyCode(interval, resetButtonCount, resetButtonDisabled, callback => {
-    ConsumerAPI.askResetEmailCaptcha({ email: formData.value.email }, () => callback());
+    ConsumerAPI.askResetEmailCaptcha({ email: mainData.value.email }, () => callback());
   });
 }
 
 function confirmResetPwd() {
   FormValidatorsUtil.validate(resetPwdFormRef.value, () => {
     ConsumerAPI.verifyEmailCaptcha(
-      { captcha: resetPwdFormData.captcha, email: formData.value.email },
+      { captcha: resetPwdFormData.captcha, email: mainData.value.email },
       () => {
         ConsumerAPI.upgrade(
           {
@@ -116,12 +116,12 @@ function confirmResetPwd() {
           </div>
           <div class="f-s-b">
             <div class="w-50%">
-              <el-form :model="formData" label-position="left" label-width="90px">
+              <el-form :model="mainData" label-position="left" label-width="90px">
                 <el-form-item label="昵称">
-                  <EditInput v-model:text="formData.username" :base-modification="true"></EditInput>
+                  <EditInput v-model:text="mainData.username" :base-modification="true"></EditInput>
                 </el-form-item>
                 <el-form-item label="行业">
-                  <el-select v-model="formData.position" placeholder="请选择您的行业">
+                  <el-select v-model="mainData.position" placeholder="请选择您的行业">
                     <el-option
                       v-for="item in ElSelectData.positionList"
                       :key="item.value"
@@ -130,7 +130,7 @@ function confirmResetPwd() {
                   </el-select>
                 </el-form-item>
                 <el-form-item label="职业">
-                  <el-select v-model="formData.profession" placeholder="请选择您的职业">
+                  <el-select v-model="mainData.profession" placeholder="请选择您的职业">
                     <el-option
                       v-for="item in ElSelectData.professionList"
                       :key="item.value"
@@ -139,10 +139,10 @@ function confirmResetPwd() {
                   </el-select>
                 </el-form-item>
                 <el-form-item label="公司">
-                  <el-input v-model="formData.company" clearable />
+                  <el-input v-model="mainData.company" clearable />
                 </el-form-item>
                 <el-form-item label="学历">
-                  <el-select v-model="formData.degree" placeholder="请选择您的学历">
+                  <el-select v-model="mainData.degree" placeholder="请选择您的学历">
                     <el-option
                       v-for="item in ElSelectData.degreeList"
                       :key="item.value"
@@ -151,7 +151,7 @@ function confirmResetPwd() {
                   </el-select>
                 </el-form-item>
                 <el-form-item label="性别">
-                  <el-select v-model="formData.sex" placeholder="请选择您的性别">
+                  <el-select v-model="mainData.sex" placeholder="请选择您的性别">
                     <el-option
                       v-for="item in ElSelectData.sexList"
                       :key="item.value"
@@ -161,7 +161,7 @@ function confirmResetPwd() {
                 </el-form-item>
                 <el-form-item label="个人简介">
                   <el-input
-                    v-model="formData.signature"
+                    v-model="mainData.signature"
                     :rows="4"
                     clearable
                     placeholder="请输入您的个性签名"
@@ -171,14 +171,14 @@ function confirmResetPwd() {
             </div>
             <div class="w-30% f-c-e cursor-pointer">
               <AvatarUpload
-                v-model:img-url="formData.avatar"
+                v-model:img-url="mainData.avatar"
                 :start-upload="formData => ConsumerAPI.upgradeAvatar(formData, token.id)" />
             </div>
           </div>
           <div class="mt-5 f-c-e text-0.8rem text-text-secondary">
             <div class="f-c-c">
               <div class="i-ep-clock mr-1"></div>
-              上次更新：{{ DateUtil.formatted(formData.modifyDate) }}
+              上次更新：{{ DateUtil.formatted(mainData.modifyDate) }}
             </div>
           </div>
           <div class="f-c-c mt-10">
@@ -196,7 +196,7 @@ function confirmResetPwd() {
                 <div>手机</div>
               </div>
               <div class="ml-10 f-c-s">
-                <div class="text-text-secondary mr-10">{{ formData.phone }}</div>
+                <div class="text-text-secondary mr-10">{{ mainData.phone }}</div>
                 <el-button bg size="small" text>更换</el-button>
               </div>
             </div>
@@ -206,7 +206,7 @@ function confirmResetPwd() {
                 <div>邮箱</div>
               </div>
               <div class="ml-10 f-c-s">
-                <div class="text-text-secondary mr-10">{{ formData.email }}</div>
+                <div class="text-text-secondary mr-10">{{ mainData.email }}</div>
                 <el-button bg size="small" text>更换</el-button>
               </div>
             </div>

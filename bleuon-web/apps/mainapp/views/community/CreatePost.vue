@@ -7,6 +7,7 @@
  */
 
 import { DiscussionAPI, FileAPI } from "@mainapp/apis";
+import { TextUtil } from "@common/utils";
 
 // components
 import CommonHeader from "@mainapp/components/CommonHeader.vue";
@@ -25,20 +26,37 @@ const formRules = reactive({
   title: [
     {
       required: true,
-      message: "请输入帖子内容！",
+      message: "请给帖子附上标题！",
       trigger: "blur"
     }
   ],
   content: [
     {
+      validator: (rule: any, value: any, callback: any) => {
+        const len = TextUtil.strlen(value);
+        if (len < 10) {
+          callback("帖子内容必须大于 10 个字！");
+        } else {
+          callback();
+        }
+      },
+      required: true
+    }
+  ],
+  desc: [
+    {
       required: true,
-      message: "请输入帖子内容！",
+      message: "请给帖子附上描述！",
       trigger: "blur"
     }
   ]
 });
 const formEl = ref();
 const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
+
+function triggValidate() {
+  formEl.value.validateField("content");
+}
 
 function uploadImageFile(formData: FormData) {
   return FileAPI.uploadImageFile(formData);
@@ -69,8 +87,9 @@ function uploadImageFile(formData: FormData) {
             <el-form-item label="内容" prop="content">
               <div class="w-100%">
                 <ClassicCkEditor
+                  @change="triggValidate"
                   v-model="formData.content"
-                  :imgae-uploader="uploadImageFile"></ClassicCkEditor>
+                  :imgae-uploader="uploadImageFile" />
               </div>
             </el-form-item>
             <el-form-item label="帖子描述" prop="desc">

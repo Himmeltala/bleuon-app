@@ -14,23 +14,23 @@ const props = defineProps({
   }
 });
 
-const starList = ref(
+const mainData = ref(
   await ConsumerAPI.findAllCollectingConsumerByCriteria({ collectingCid: props.consumer.id })
 );
 
 function cancelStar(item: CollectingConsumerModel, index: number) {
   ConsumerAPI.deleteCollecting({ id: item.id }, () => {
-    starList.value.splice(index, 1);
+    mainData.value.splice(index, 1);
   });
 }
 </script>
 
 <template>
-  <div v-if="starList.length" class="my-star-consumer bg-bg-overlay rd-2 px-5 py-5">
+  <div v-if="mainData.length" class="my-star-consumer bg-bg-overlay rd-2 px-5 py-5">
     <div
-      v-for="(item, index) in starList"
+      v-for="(item, index) in mainData"
       class="b-b-solid b-b-1 b-b-border-primary pb-4 f-c-b"
-      :class="{ 'mb-5': index != starList.length - 1 }">
+      :class="{ 'mb-5': index != mainData.length - 1 }">
       <div class="data f-c-s">
         <router-link :to="'/u/profile/' + item.consumer.id">
           <img :src="item.consumer.avatar" class="w-15 h-15 rd-50% mr-5" />

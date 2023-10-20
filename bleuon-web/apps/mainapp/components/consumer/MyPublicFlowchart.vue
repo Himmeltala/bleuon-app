@@ -16,7 +16,8 @@ const props = defineProps({
     type: Object as PropType<any>
   }
 });
-const flowchartList = ref(
+
+const mainData = ref(
   await ConsumerAPI.findAllFlowchart({ collectingCid: `${props.consumer.id}`, isPublic: 1 })
 );
 </script>
@@ -25,7 +26,7 @@ const flowchartList = ref(
   <div class="my-public-flowchart">
     <div class="file-list f-s-s flex-wrap flex-gap-1.25rem">
       <File
-        v-for="item in flowchartList"
+        v-for="item in mainData"
         :key="item.id"
         :file-image="item.dataUri"
         :path="'/flowchart/' + item.id"

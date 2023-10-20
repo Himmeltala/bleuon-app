@@ -1,4 +1,15 @@
-Storage.prototype.setStorageWithAge = function <T>(key: string, value: T, expire: number) {
+/**
+ * @description 修改 localStorage 原型对象
+ * @author zheng
+ * @since 2023/10/6
+ * @link https://github.com/himmelbleu/bleuon-app
+ */
+
+Storage.prototype.setStorageWithAge = function <T extends { expire: number }>(
+  key: string,
+  value: T,
+  expire: number
+) {
   function isTimestamp(timestamp: number) {
     const regex = /^\d{10}$/;
     if (regex.test(timestamp.toString())) {
@@ -25,7 +36,7 @@ Storage.prototype.getStorageWithAge = function <T>(key: string, value: T, expire
   } else return undefined;
 };
 
-Storage.prototype.getToken = function <T>(key: string) {
+Storage.prototype.getToken = function <T extends Token>(key: string) {
   const parsed = JSON.parse(localStorage.getItem(key));
   if (parsed) {
     return localStorage.getStorageWithAge<T>(key, parsed, parsed.expire);

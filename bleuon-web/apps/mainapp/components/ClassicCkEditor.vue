@@ -22,6 +22,7 @@ const props = defineProps({
 
 const emits = defineEmits<{
   (event: "update:modelValue", value: string): void;
+  (event: "change", value: string): void;
 }>();
 
 class ImageUploaderAdapter {
@@ -78,6 +79,7 @@ onMounted(() => {
 
     ck.model.document.on("change:data", () => {
       emits("update:modelValue", ck.getData());
+      emits("change", ck.getData());
     });
   });
 });

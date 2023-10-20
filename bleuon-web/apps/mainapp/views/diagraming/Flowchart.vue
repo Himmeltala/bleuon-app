@@ -179,7 +179,6 @@ function confirmShare() {
 
 function cancelShare() {
   mainData.value.isShare = 0;
-  mainData.value.deadShareDate = null;
   FlowchartAPI.upgrade(mainData.value, { nomessage: true }, message => {
     if (message.code === 200) {
       ElMessage.success("取消分享成功！");
@@ -224,34 +223,7 @@ const releaseFormRules = reactive<FormRules<any>>({
   ]
 });
 
-const releaseTagVal = ref("");
 const releaseTagList = ref([]);
-
-function onEnterReleaseTag() {
-  if (releaseTagVal.value.length < 3) {
-    ElMessage.warning("标签内容不能少于3个字符");
-    return;
-  }
-
-  if (releaseTagVal.value.length > 10) {
-    ElMessage.warning("标签内容不能超过10个字符");
-    return;
-  }
-
-  if (releaseTagList.value.length < 5) {
-    if (!releaseTagList.value.includes(releaseTagVal.value)) {
-      releaseTagList.value.push(releaseTagVal.value);
-    } else {
-      ElMessage.warning("不能重复添加标签");
-    }
-  } else {
-    ElMessage.warning("标签最多添加5个");
-  }
-}
-
-function closeReleaseTag(index: number) {
-  releaseTagList.value.splice(index, 1);
-}
 
 function confirmRelease() {
   FormValidatorsUtil.validate(releaseFormRef.value, () => {
@@ -377,20 +349,7 @@ function cancelRelease() {
           </el-select>
         </el-form-item>
         <el-form-item label="标签">
-          <el-input
-            v-model="releaseTagVal"
-            placeholder="按下回车键添加标签，最多添加5个"
-            @keyup.enter="onEnterReleaseTag" />
-          <div class="f-c-s mt-2">
-            <el-tag
-              v-for="(item, index) in releaseTagList"
-              :key="item"
-              class="mr-2"
-              closable
-              @close="closeReleaseTag(index)">
-              {{ item }}
-            </el-tag>
-          </div>
+          <EnterTags class="w-100%" v-model="releaseTagList"></EnterTags>
         </el-form-item>
       </el-form>
       <div v-else class="text-center text-1.2rem font-bold">

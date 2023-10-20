@@ -1,4 +1,11 @@
 /**
+ * @description 文本工具
+ * @author zheng
+ * @since 2023/10/20
+ * @link https://github.com/himmelbleu/bleuon-app
+ */
+
+/**
  * 统计纯文本中的中英文等字符的长度
  *
  * @param str
