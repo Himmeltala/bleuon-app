@@ -6,9 +6,24 @@ const props = defineProps({
     type: Array as PropType<string[]>,
     required: true
   },
-  max: {
+  advance: {
+    type: Array as PropType<{ value: string }[]>,
+    required: false
+  },
+  limit: {
     type: Number,
     default: 5
+  },
+  contentMax: {
+    type: Number,
+    default: 5
+  },
+  contentMin: {
+    type: Number,
+    default: 3
+  },
+  width: {
+    type: String
   }
 });
 
@@ -20,27 +35,26 @@ const tagList = ref([]);
 function onEnter() {
   const len = TextUtil.strlen(content.value);
 
-  if (len < 3) {
-    ElMessage.warning("标签内容不能少于 3 个字");
-    return;
-  }
-
-  if (len > 10) {
-    ElMessage.warning("标签内容不能超过 10 个字");
-    return;
-  }
-
-  if (tagList.value.length < props.max) {
-    if (!tagList.value.includes(content.value)) {
-      tagList.value.push(content.value);
-      emits("update:modelValue", tagList.value);
-    } else {
-      ElMessage.warning("不可重复添加标签！");
-    }
+  if (len < props.contentMin) {
+    ElMessage.warning(`标签内容不能少于 ${props.contentMin} 个字`);
+  } else if (len > props.contentMax) {
+    ElMessage.warning(`标签内容不能超过 ${props.contentMax} 字`);
+  } else if (tagList.value.length >= props.limit) {
+    ElMessage.warning(`最多添加 ${props.limit} 个标签`);
+  } else if (tagList.value.includes(content.value)) {
+    ElMessage.warning("不可重复添加标签！");
   } else {
-    ElMessage.warning("最多添加 " + props.max + " 个标签");
+    tagList.value.push(content.value);
+    emits("update:modelValue", tagList.value);
   }
 }
+
+const createFilter = (target: any) => (source: any) => source.value.includes(target);
+
+const queryFromTagList = (target: any, filter: any) => {
+  const result = target ? props.advance.filter(createFilter(target)) : props.advance;
+  filter(result);
+};
 
 function closeTag(index: number) {
   tagList.value.splice(index, 1);
@@ -48,10 +62,21 @@ function closeTag(index: number) {
 </script>
 
 <template>
-  <div class="enter-tags">
-    <el-input
+  <div class="enter-tags" :class="width">
+    <el-autocomplete
+      :class="width"
+      v-if="advance"
       v-model="content"
-      :placeholder="'回车添加标签，最多添加 ' + max + ' 个'"
+      clearable
+      :fetch-suggestions="queryFromTagList"
+      :placeholder="'回车添加标签，最多添加 ' + limit + ' 个'"
+      @keyup.enter="onEnter" />
+    <el-input
+      v-else
+      :class="width"
+      v-model="content"
+      :placeholder="'回车添加标签，最多添加 ' + limit + ' 个'"
+      clearable
       @keyup.enter="onEnter" />
     <div class="f-c-s mt-2">
       <el-tag

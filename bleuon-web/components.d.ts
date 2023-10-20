@@ -9,6 +9,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     AvatarUpload: typeof import('./common/components/AvatarUpload.vue')['default']
     EditInput: typeof import('./common/components/EditInput.vue')['default']
+    ElAutocomplete: typeof import('element-plus/es')['ElAutocomplete']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCarousel: typeof import('element-plus/es')['ElCarousel']
     ElCarouselItem: typeof import('element-plus/es')['ElCarouselItem']

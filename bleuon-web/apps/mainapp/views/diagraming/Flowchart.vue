@@ -349,7 +349,7 @@ function cancelRelease() {
           </el-select>
         </el-form-item>
         <el-form-item label="标签">
-          <EnterTags class="w-100%" v-model="releaseTagList"></EnterTags>
+          <EnterTags width="w-100%" v-model="releaseTagList"></EnterTags>
         </el-form-item>
       </el-form>
       <div v-else class="text-center text-1.2rem font-bold">

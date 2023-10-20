@@ -17,11 +17,30 @@ const formData = reactive<PostModel>({
   title: "",
   content: "",
   desc: "",
-  titleTag: "",
-  descTag: "",
+  titleTag: "[]",
+  descTag: "[]",
   descImgs: "",
   type: ""
 });
+
+const titleTagToJson: any = computed({
+  set(value) {
+    formData.titleTag = JSON.stringify(value);
+  },
+  get() {
+    return JSON.parse(formData.titleTag);
+  }
+});
+
+const descTagToJson: any = computed({
+  set(value) {
+    formData.descTag = JSON.stringify(value);
+  },
+  get() {
+    return JSON.parse(formData.descTag);
+  }
+});
+
 const formRules = reactive({
   title: [
     {
@@ -99,8 +118,16 @@ function uploadImageFile(formData: FormData) {
                 :rows="2"
                 placeholder="请输入帖子描述"></el-input>
             </el-form-item>
-            <el-form-item label="标题 Tag"> </el-form-item>
-            <el-form-item label="描述 Tag"> </el-form-item>
+            <el-form-item label="标题 Tag">
+              <EnterTags
+                width="w-100%"
+                v-model="titleTagToJson"
+                :advance="[{ value: '你' }, { value: '好' }]"
+                :limit="5" />
+            </el-form-item>
+            <el-form-item label="描述 Tag">
+              <EnterTags width="w-100%" v-model="descTagToJson" :limit="5" />
+            </el-form-item>
             <el-form-item label="帖子封面"> </el-form-item>
             <el-form-item label="帖子类型"> </el-form-item>
             <el-form-item>
