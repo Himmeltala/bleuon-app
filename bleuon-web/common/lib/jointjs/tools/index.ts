@@ -100,7 +100,7 @@ export class RotateTool extends elementTools.Control {
         tagName: "rect",
         selector: "handle",
         attributes: {
-          cursor: "nwse-resize",
+          cursor: "e-resize",
           width: 10,
           height: 10,
           x: -10,
@@ -114,9 +114,8 @@ export class RotateTool extends elementTools.Control {
   protected setPosition(view: dia.ElementView, coordinates: dia.Point): void {
     // @ts-ignore
     const { model } = view;
-    // 计算 x,y 点到原点(0,0)的直角坐标系中的角度
-    const degrees = Math.atan2(coordinates.x, coordinates.y);
-    model.rotate(degrees);
+    const angle = Math.atan2(coordinates.x, coordinates.y);
+    model.rotate(angle);
   }
 }
 
