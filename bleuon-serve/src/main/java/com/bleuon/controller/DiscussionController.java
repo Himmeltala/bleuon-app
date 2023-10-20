@@ -56,7 +56,7 @@ public class DiscussionController implements Serializable {
     }
 
     @Operation(summary = "根据条件查询帖子评论")
-    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:article-comments')")
+    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:article-comment')")
     @PostMapping("/find/comments/by/criteria")
     public R<PageInfo<ArticleCommentModel>> findCommentsByCriteria(@RequestBody @Validated DiscussionCriteria criteria) {
         return R.success(discussionService.findCommentsByCriteria(criteria));

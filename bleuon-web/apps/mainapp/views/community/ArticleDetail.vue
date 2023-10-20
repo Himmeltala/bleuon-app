@@ -177,9 +177,9 @@ await fetchCommentList({
                 @click="$router.push('/community/article-editor?id=' + mainData.id + '&type=edit')"
                 type="primary"
                 plain
-                size="small"
-                >编辑</el-button
-              >
+                size="small">
+                编辑
+              </el-button>
             </div>
             <div class="post-info mb-4 f-c-e text-text-secondary">
               <div class="f-c-s mr-10">
