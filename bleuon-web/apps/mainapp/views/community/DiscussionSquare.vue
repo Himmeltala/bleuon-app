@@ -209,7 +209,7 @@ await fetchData({ sequences: [{ isAsc: false, col: "create_date" }] });
               </div>
               <el-radio-group v-model="type" @change="onTypeChange">
                 <el-radio label="">全部</el-radio>
-                <el-radio v-for="item in ElSelectData.postTypeList" :label="item.label">
+                <el-radio v-for="item in ElSelectData.articleTypeList" :label="item.label">
                   {{ item.label }}
                 </el-radio>
               </el-radio-group>

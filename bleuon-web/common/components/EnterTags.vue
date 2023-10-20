@@ -71,7 +71,8 @@ function closeTag(index: number) {
       clearable
       :fetch-suggestions="queryFromTagList"
       :placeholder="'回车添加标签，最多添加 ' + limit + ' 个'"
-      @keyup.enter="onEnter" />
+      @keyup.enter="onEnter"
+      @select="onEnter" />
     <el-input
       v-else
       :class="width"

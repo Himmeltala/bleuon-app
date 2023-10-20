@@ -1,8 +1,8 @@
 package com.bleuon.controller;
 
 import com.bleuon.annotaion.RequestMappingPrefix;
-import com.bleuon.entity.PostCommentModel;
-import com.bleuon.entity.PostModel;
+import com.bleuon.entity.ArticleCommentModel;
+import com.bleuon.entity.ArticleModel;
 import com.bleuon.entity.criterias.DiscussionCriteria;
 import com.bleuon.service.impl.DiscussionService;
 import com.bleuon.utils.http.R;
@@ -33,57 +33,65 @@ public class DiscussionController implements Serializable {
     private final DiscussionService discussionService;
 
     @Operation(summary = "根据条件查询帖子列表")
-    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:post-all')")
+    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:article-all')")
     @PostMapping("/find/all/by/criteria")
-    public R<PageInfo<PostModel>> findAllByCriteria(@RequestBody @Validated DiscussionCriteria criteria) {
-        PageInfo<PostModel> pages = discussionService.findAllByCriteria(criteria);
+    public R<PageInfo<ArticleModel>> findAllByCriteria(@RequestBody @Validated DiscussionCriteria criteria) {
+        PageInfo<ArticleModel> pages = discussionService.findAllByCriteria(criteria);
         return R.success(pages);
     }
 
     @Operation(summary = "根据条件查询帖子详情")
-    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:post-detail')")
+    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:article-detail')")
     @PostMapping("/find/detail/by/criteria")
-    public R<PostModel> findDetailByCriteria(@RequestBody @Validated DiscussionCriteria criteria) {
+    public R<ArticleModel> findDetailByCriteria(@RequestBody @Validated DiscussionCriteria criteria) {
         return R.success(discussionService.findDetailByCriteria(criteria));
     }
 
     @Operation(summary = "更新帖子数据")
-    @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:upgrade:post-detail')")
+    @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:upgrade:article-detail')")
     @PutMapping("/upgrade/detail")
-    public R<Object> upgradeDetail(@RequestBody @Validated PostModel model) {
+    public R<Object> upgradeDetail(@RequestBody @Validated ArticleModel model) {
         boolean upgraded = discussionService.upgradeDetail(model);
         return upgraded ? R.success("更新成功！") : R.error("更新失败！");
     }
 
     @Operation(summary = "根据条件查询帖子评论")
-    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:post-comments')")
+    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:article-comments')")
     @PostMapping("/find/comments/by/criteria")
-    public R<PageInfo<PostCommentModel>> findCommentsByCriteria(@RequestBody @Validated DiscussionCriteria criteria) {
+    public R<PageInfo<ArticleCommentModel>> findCommentsByCriteria(@RequestBody @Validated DiscussionCriteria criteria) {
         return R.success(discussionService.findCommentsByCriteria(criteria));
     }
 
     @Operation(summary = "增加一条帖子评论")
-    @PreAuthorize("hasAnyAuthority('sys:add', 'sys:add:post-comment')")
+    @PreAuthorize("hasAnyAuthority('sys:add', 'sys:add:article-comment')")
     @PostMapping("/add/comment")
-    public R<Object> addComment(@RequestBody @Validated PostCommentModel model) {
+    public R<Object> addComment(@RequestBody @Validated ArticleCommentModel model) {
         boolean added = discussionService.addComment(model);
         return added ? R.success("评论发表成功！") : R.error("评论发表失败！");
     }
 
     @Operation(summary = "删除一条帖子评论")
-    @PreAuthorize("hasAnyAuthority('sys:delete', 'sys:delete:post-comment')")
+    @PreAuthorize("hasAnyAuthority('sys:delete', 'sys:delete:article-comment')")
     @DeleteMapping("/delete/comment")
-    public R<Object> deleteComment(PostCommentModel model) {
+    public R<Object> deleteComment(ArticleCommentModel model) {
         boolean removed = discussionService.deleteComment(model);
         return removed ? R.success("删除评论成功！") : R.error("删除评论失败！");
     }
 
-    @Operation(summary = "更新帖子数据")
-    @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:upgrade:post-comment')")
+    @Operation(summary = "更新一条帖子评论数据")
+    @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:upgrade:article-comment')")
     @PutMapping("/upgrade/comment")
-    public R<Object> upgradeComment(@RequestBody @Validated PostCommentModel model) {
+    public R<Object> upgradeComment(@RequestBody @Validated ArticleCommentModel model) {
         boolean upgraded = discussionService.upgradeComment(model);
         return upgraded ? R.success("更新成功！") : R.error("更新失败！");
+    }
+
+    @Operation(summary = "创建一条帖子")
+    @PreAuthorize("hasAnyAuthority('sys:add', 'sys:add:article')")
+    @PostMapping("/add/article")
+    public R<Object> addArticle(@RequestBody @Validated ArticleModel model) {
+        boolean added = discussionService.addArticle(model);
+        return added ? R.success("创建成功！") : R.error("创建失败！");
     }
 
 }

@@ -30,7 +30,7 @@ public class DiscussionCriteria extends CommonCriteria implements Serializable {
 
     @Schema(description = "帖子 UUID")
     @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
-    private String postId;
+    private String articleId;
 
     @Schema(description = "帖子标题")
     private String title;

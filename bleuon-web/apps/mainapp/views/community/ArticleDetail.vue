@@ -14,18 +14,21 @@ import CommonHeader from "@mainapp/components/CommonHeader.vue";
 import ClassicCkEditor from "@mainapp/components/ClassicCkEditor.vue";
 
 const route = useRoute();
-const mainData = ref<PostModel>();
-const commentList = ref<{ list: PostCommentModel[]; total: number }>();
+const mainData = ref<ArticleModel>();
+const commentList = ref<{ list: ArticleCommentModel[]; total: number }>();
 const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
 
 async function fetchData(params: any) {
   const id = route.params.id.toString();
-  mainData.value = await DiscussionAPI.findDetailByCriteria({ ...params, ...{ postId: id } });
+  mainData.value = await DiscussionAPI.findDetailByCriteria({ ...params, ...{ articleId: id } });
 }
 
 async function fetchCommentList(params: any) {
   const id = route.params.id.toString();
-  commentList.value = await DiscussionAPI.findCommentsByCriteria({ ...params, ...{ postId: id } });
+  commentList.value = await DiscussionAPI.findCommentsByCriteria({
+    ...params,
+    ...{ articleId: id }
+  });
 }
 
 function diggArticle() {
@@ -69,7 +72,7 @@ function addComment() {
   }
   DiscussionAPI.addComment(
     {
-      postId: mainData.value.id,
+      articleId: mainData.value.id,
       consumerId: token.id,
       content: commentContent.value
     },
@@ -84,23 +87,26 @@ function addComment() {
 }
 
 function deleteComment(id: string) {
-  DiscussionAPI.deleteComment({ id, postId: mainData.value.id, consumerId: token.id }, async () => {
-    await fetchCommentList({
-      currPage: currPage.value,
-      pageSize: pageSize.value,
-      sequences: [{ isAsc: isCommentDateAsc.value, col: "create_date" }]
-    });
-  });
+  DiscussionAPI.deleteComment(
+    { id, articleId: mainData.value.id, consumerId: token.id },
+    async () => {
+      await fetchCommentList({
+        currPage: currPage.value,
+        pageSize: pageSize.value,
+        sequences: [{ isAsc: isCommentDateAsc.value, col: "create_date" }]
+      });
+    }
+  );
 }
 
-function diggComment(item: PostCommentModel) {
+function diggComment(item: ArticleCommentModel) {
   item.digg += 1;
-  DiscussionAPI.upgradeComment({ id: item.id, postId: mainData.value.id, digg: item.digg });
+  DiscussionAPI.upgradeComment({ id: item.id, articleId: mainData.value.id, digg: item.digg });
 }
 
-function buryComment(item: PostCommentModel) {
+function buryComment(item: ArticleCommentModel) {
   item.bury += 1;
-  DiscussionAPI.upgradeComment({ id: item.id, postId: mainData.value.id, bury: item.bury });
+  DiscussionAPI.upgradeComment({ id: item.id, articleId: mainData.value.id, bury: item.bury });
 }
 
 const isCommentDateAsc = ref(true);
@@ -150,12 +156,19 @@ await fetchCommentList({
         <div class="w-70%">
           <div class="post-detail rd-2 p-10 bg-bg-overlay">
             <div class="title mb-4 text-1.4rem font-bold">{{ mainData.title }}</div>
-            <div class="mb-4 text-text-regular">
-              来自于:
+            <div class="mb-2 text-text-secondary">
+              帖子类型:
+              <el-tag size="small" class="ml-2">
+                {{ mainData.type }}
+              </el-tag>
+            </div>
+            <div class="text-text-secondary">
+              标题 Tag:
               <el-tag
                 size="small"
+                type="success"
                 v-for="titleTagItem in JSON.parse(mainData.titleTag)"
-                class="mr-2">
+                class="mr-2 ml-2">
                 {{ titleTagItem }}
               </el-tag>
             </div>

@@ -223,25 +223,6 @@ export const professionList = [
   }
 ];
 
-export const postTypeList = [
-  {
-    value: "图文",
-    label: "图文"
-  },
-  {
-    value: "教程",
-    label: "教程"
-  },
-  {
-    value: "活动",
-    label: "活动"
-  },
-  {
-    value: "视频",
-    label: "视频"
-  }
-];
-
 export const postRankingTypeList = [
   {
     value: "热门",
@@ -406,5 +387,31 @@ export const linkConnectorOptions = [
   {
     value: "curve",
     label: "curve"
+  }
+];
+
+/**
+ * 帖子类型
+ */
+export const articleTypeList = [
+  {
+    value: "图文",
+    label: "图文"
+  },
+  {
+    value: "教程",
+    label: "教程"
+  },
+  {
+    value: "活动",
+    label: "活动"
+  },
+  {
+    value: "分享",
+    label: "分享"
+  },
+  {
+    value: "求助",
+    label: "求助"
   }
 ];

@@ -1,7 +1,7 @@
 package com.bleuon.service;
 
-import com.bleuon.entity.PostCommentModel;
-import com.bleuon.entity.PostModel;
+import com.bleuon.entity.ArticleCommentModel;
+import com.bleuon.entity.ArticleModel;
 import com.bleuon.entity.criterias.DiscussionCriteria;
 import com.github.pagehelper.PageInfo;
 
@@ -13,18 +13,20 @@ import com.github.pagehelper.PageInfo;
  */
 public interface IDiscussionService {
 
-    PageInfo<PostModel> findAllByCriteria(DiscussionCriteria criteria);
+    PageInfo<ArticleModel> findAllByCriteria(DiscussionCriteria criteria);
 
-    PostModel findDetailByCriteria(DiscussionCriteria criteria);
+    ArticleModel findDetailByCriteria(DiscussionCriteria criteria);
 
-    PageInfo<PostCommentModel> findCommentsByCriteria(DiscussionCriteria criteria);
+    PageInfo<ArticleCommentModel> findCommentsByCriteria(DiscussionCriteria criteria);
 
-    boolean addComment(PostCommentModel model);
+    boolean addComment(ArticleCommentModel model);
 
-    boolean deleteComment(PostCommentModel model);
+    boolean deleteComment(ArticleCommentModel model);
 
-    boolean upgradeComment(PostCommentModel model);
+    boolean upgradeComment(ArticleCommentModel model);
 
-    boolean upgradeDetail(PostModel model);
+    boolean upgradeDetail(ArticleModel model);
+
+    boolean addArticle(ArticleModel model);
 
 }

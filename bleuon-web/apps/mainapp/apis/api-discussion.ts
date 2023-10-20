@@ -15,7 +15,7 @@ import request from "@common/apis/use-axios";
  */
 export async function findAllByCriteria(model: {
   consumerId?: string;
-  postId?: string;
+  articleId?: string;
   title?: string;
   rankingType?: string;
   type?: string;
@@ -23,7 +23,7 @@ export async function findAllByCriteria(model: {
   currPage?: number;
   sequences: { isAsc: boolean; col: string }[];
 }) {
-  const { data } = await request.post<R<{ list: PostModel[]; total: number }>>(
+  const { data } = await request.post<R<{ list: ArticleModel[]; total: number }>>(
     "/discussion/find/all/by/criteria",
     model
   );
@@ -36,7 +36,7 @@ export async function findAllByCriteria(model: {
  * @param model
  */
 export async function findDetailByCriteria(model: {
-  postId: string;
+  articleId: string;
   consumerId?: string;
   title?: string;
   rankingType?: string;
@@ -45,7 +45,10 @@ export async function findDetailByCriteria(model: {
   currPage?: number;
   sequences: { isAsc: boolean; col: string }[];
 }) {
-  const { data } = await request.post<R<PostModel>>("/discussion/find/detail/by/criteria", model);
+  const { data } = await request.post<R<ArticleModel>>(
+    "/discussion/find/detail/by/criteria",
+    model
+  );
   return data.data;
 }
 
@@ -54,8 +57,20 @@ export async function findDetailByCriteria(model: {
  *
  * @param model
  */
-export function upgradeDetail(model: PostModel, nomessage?: boolean, success?: Function) {
+export function upgradeDetail(model: ArticleModel, nomessage?: boolean, success?: Function) {
   request.put<R>("/discussion/upgrade/detail", model, { nomessage }).then(() => {
+    success && success();
+  });
+}
+
+/**
+ * 新增一个帖子
+ *
+ * @param model
+ * @param success
+ */
+export function addArticle(model: ArticleModel, success?: Function) {
+  request.post<R>("/discussion/add/article", model).then(() => {
     success && success();
   });
 }
@@ -67,12 +82,12 @@ export function upgradeDetail(model: PostModel, nomessage?: boolean, success?: F
  * @returns
  */
 export async function findCommentsByCriteria(model: {
-  postId: string;
+  articleId: string;
   pageSize?: number;
   currPage?: number;
   sequences: { isAsc: boolean; col: string }[];
 }) {
-  const { data } = await request.post<R<{ list: PostCommentModel[]; total: number }>>(
+  const { data } = await request.post<R<{ list: ArticleCommentModel[]; total: number }>>(
     "/discussion/find/comments/by/criteria",
     model
   );
@@ -86,7 +101,7 @@ export async function findCommentsByCriteria(model: {
  * @param success
  */
 export function addComment(
-  model: { postId: string; consumerId: string; content: string },
+  model: { articleId: string; consumerId: string; content: string },
   success?: Function
 ) {
   request.post<R>("/discussion/add/comment", model).then(() => {
@@ -101,7 +116,7 @@ export function addComment(
  * @param success
  */
 export function deleteComment(
-  model: { id: string; postId: string; consumerId: string },
+  model: { id: string; articleId: string; consumerId: string },
   success?: Function
 ) {
   request.delete<R>("/discussion/delete/comment", { params: model }).then(() => {
@@ -115,7 +130,7 @@ export function deleteComment(
  * @param model
  * @param success
  */
-export function upgradeComment(model: PostCommentModel, success?: Function) {
+export function upgradeComment(model: ArticleCommentModel, success?: Function) {
   request.put<R>("/discussion/upgrade/comment", model).then(() => {
     success && success();
   });

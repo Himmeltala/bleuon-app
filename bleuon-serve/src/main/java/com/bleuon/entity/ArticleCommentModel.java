@@ -21,11 +21,11 @@ import java.sql.Timestamp;
  * @date: 2023/10/14
  */
 @Schema(description = "社区帖子评论模型")
-@TableName("t_post_comments")
+@TableName("t_article_comments")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostCommentModel implements Serializable {
+public class ArticleCommentModel implements Serializable {
 
     @Schema(description = "UUID")
     @TableId
@@ -59,7 +59,7 @@ public class PostCommentModel implements Serializable {
 
     @Schema(description = "评论所属帖子 ID")
     @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
-    @TableField("post_id")
-    private String postId;
+    @TableField("article_id")
+    private String articleId;
 
 }

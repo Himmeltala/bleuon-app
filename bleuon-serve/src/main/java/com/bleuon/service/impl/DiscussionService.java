@@ -1,7 +1,7 @@
 package com.bleuon.service.impl;
 
-import com.bleuon.entity.PostCommentModel;
-import com.bleuon.entity.PostModel;
+import com.bleuon.entity.ArticleCommentModel;
+import com.bleuon.entity.ArticleModel;
 import com.bleuon.entity.criterias.DiscussionCriteria;
 import com.bleuon.exception.JdbcErrorException;
 import com.bleuon.mapper.DiscussionMapper;
@@ -28,7 +28,7 @@ public class DiscussionService implements IDiscussionService {
     private final DiscussionMapper discussionMapper;
 
     @Override
-    public PageInfo<PostModel> findAllByCriteria(DiscussionCriteria criteria) {
+    public PageInfo<ArticleModel> findAllByCriteria(DiscussionCriteria criteria) {
         // 如果 page size 为空，返回 5 默认值
         int pageSize = Optional.ofNullable(criteria.getPageSize()).orElse(5);
         int currPage = Optional.ofNullable(criteria.getCurrPage()).orElse(1);
@@ -37,12 +37,12 @@ public class DiscussionService implements IDiscussionService {
     }
 
     @Override
-    public PostModel findDetailByCriteria(DiscussionCriteria criteria) {
+    public ArticleModel findDetailByCriteria(DiscussionCriteria criteria) {
         return discussionMapper.findDetailByCriteria(criteria);
     }
 
     @Override
-    public PageInfo<PostCommentModel> findCommentsByCriteria(DiscussionCriteria criteria) {
+    public PageInfo<ArticleCommentModel> findCommentsByCriteria(DiscussionCriteria criteria) {
         // 如果 page size 为空，返回 5 默认值
         int pageSize = Optional.ofNullable(criteria.getPageSize()).orElse(10);
         int currPage = Optional.ofNullable(criteria.getCurrPage()).orElse(1);
@@ -52,7 +52,7 @@ public class DiscussionService implements IDiscussionService {
 
     @Transactional
     @Override
-    public boolean addComment(PostCommentModel model) {
+    public boolean addComment(ArticleCommentModel model) {
         try {
             String uuid = UUID.randomUUID().toString();
             model.setId(uuid);
@@ -65,7 +65,7 @@ public class DiscussionService implements IDiscussionService {
 
     @Transactional
     @Override
-    public boolean deleteComment(PostCommentModel model) {
+    public boolean deleteComment(ArticleCommentModel model) {
         try {
             Integer row = discussionMapper.deleteComment(model);
             return row > 0;
@@ -76,7 +76,7 @@ public class DiscussionService implements IDiscussionService {
 
     @Transactional
     @Override
-    public boolean upgradeComment(PostCommentModel model) {
+    public boolean upgradeComment(ArticleCommentModel model) {
         try {
             Integer row = discussionMapper.upgradeComment(model);
             return row > 0;
@@ -87,9 +87,22 @@ public class DiscussionService implements IDiscussionService {
 
     @Transactional
     @Override
-    public boolean upgradeDetail(PostModel model) {
+    public boolean upgradeDetail(ArticleModel model) {
         try {
             Integer row = discussionMapper.upgradeDetail(model);
+            return row > 0;
+        } catch (Exception e) {
+            throw new JdbcErrorException(e);
+        }
+    }
+
+    @Transactional
+    @Override
+    public boolean addArticle(ArticleModel model) {
+        try {
+            String uuid = UUID.randomUUID().toString();
+            model.setId(uuid);
+            Integer row = discussionMapper.addArticle(model);
             return row > 0;
         } catch (Exception e) {
             throw new JdbcErrorException(e);

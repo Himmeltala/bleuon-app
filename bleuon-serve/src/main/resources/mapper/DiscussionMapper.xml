@@ -16,7 +16,7 @@
 
     <!-- findAllByCriteria -->
 
-    <resultMap id="findAllByCriteriaMap" type="com.bleuon.entity.PostModel" autoMapping="true">
+    <resultMap id="findAllByCriteriaMap" type="com.bleuon.entity.ArticleModel" autoMapping="true">
         <id column="id" property="id"/>
         <association javaType="com.bleuon.entity.dto.ConsumerDTO" property="consumer" column="{consumerId=consumer_id}"
                      select="findConsumerById">
@@ -25,7 +25,7 @@
 
     <select id="findAllByCriteria" resultMap="findAllByCriteriaMap">
         SELECT *
-        FROM t_posts
+        FROM t_articles
         <where>
             <trim prefix="AND" prefixOverrides="AND">
                 <if test="consumerId != null and consumerId != ''">
@@ -59,7 +59,7 @@
 
     <!-- findByCriteria -->
 
-    <resultMap id="findByCriteriaMap" type="com.bleuon.entity.PostModel" autoMapping="true">
+    <resultMap id="findByCriteriaMap" type="com.bleuon.entity.ArticleModel" autoMapping="true">
         <id column="id" property="id"/>
         <association javaType="com.bleuon.entity.dto.ConsumerDTO" property="consumer" column="{consumerId=consumer_id}"
                      select="findConsumerById">
@@ -68,9 +68,9 @@
 
     <select id="findDetailByCriteria" resultMap="findByCriteriaMap">
         SELECT *
-        FROM t_posts
+        FROM t_articles
         <where>
-            AND id = #{postId}
+            AND id = #{articleId}
             <trim prefix="AND" prefixOverrides="AND">
                 <if test="consumerId != null and consumerId != ''">
                     AND consumer_id = #{consumerId}
@@ -90,7 +90,7 @@
 
     <!-- findCommentsByCriteria -->
 
-    <resultMap id="findCommentsByCriteria" type="com.bleuon.entity.PostCommentModel" autoMapping="true">
+    <resultMap id="findCommentsByCriteria" type="com.bleuon.entity.ArticleCommentModel" autoMapping="true">
         <id column="id" property="id"/>
         <association javaType="com.bleuon.entity.dto.ConsumerDTO" property="consumer" column="{consumerId=consumer_id}"
                      select="findConsumerById">
@@ -99,8 +99,8 @@
 
     <select id="findCommentsByCriteria" resultMap="findCommentsByCriteria">
         SELECT *
-        FROM t_post_comments
-        WHERE post_id = #{postId}
+        FROM t_article_comments
+        WHERE article_id = #{articleId}
         <if test="sequences != null">
             ORDER BY
             <foreach collection="sequences" item="sequence" separator=", ">
@@ -117,20 +117,20 @@
     </select>
 
     <insert id="addComment">
-        INSERT INTO t_post_comments(id, content, consumer_id, post_id)
-        VALUES (#{id}, #{content}, #{consumerId}, #{postId})
+        INSERT INTO t_article_comments(id, content, consumer_id, article_id)
+        VALUES (#{id}, #{content}, #{consumerId}, #{articleId})
     </insert>
 
     <delete id="deleteComment">
         DELETE
-        FROM t_post_comments
+        FROM t_article_comments
         WHERE id = #{id}
           AND consumer_id = #{consumerId}
-          AND post_id = #{postId};
+          AND article_id = #{articleId};
     </delete>
 
     <update id="upgradeComment">
-        UPDATE t_post_comments
+        UPDATE t_article_comments
         <set>
             <trim suffixOverrides=",">
                 <if test="digg != null">digg = #{digg},</if>
@@ -138,11 +138,11 @@
                 <if test="content != null">`content` = #{content},</if>
             </trim>
         </set>
-        WHERE id = #{id} AND post_id = #{postId}
+        WHERE id = #{id} AND article_id = #{articleId}
     </update>
 
     <update id="upgradeDetail">
-        UPDATE t_posts
+        UPDATE t_articles
         <set>
             <trim suffixOverrides=",">
                 <if test="digg != null">digg = #{digg},</if>
@@ -158,7 +158,12 @@
                 <if test="content != null">`content` = #{content},</if>
             </trim>
         </set>
-        WHERE id = #{id};
+        WHERE id = #{id}
     </update>
+
+    <insert id="addArticle">
+        INSERT INTO t_articles(id, title, title_tag, `desc`, desc_tag, desc_imgs, type, content, consumer_id)
+        VALUES (#{id}, #{title}, #{titleTag}, #{desc}, #{descTag}, #{descImgs}, #{type}, #{content}, #{consumerId})
+    </insert>
 
 </mapper>

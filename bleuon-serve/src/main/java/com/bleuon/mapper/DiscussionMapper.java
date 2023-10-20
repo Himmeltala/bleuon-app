@@ -1,7 +1,7 @@
 package com.bleuon.mapper;
 
-import com.bleuon.entity.PostCommentModel;
-import com.bleuon.entity.PostModel;
+import com.bleuon.entity.ArticleCommentModel;
+import com.bleuon.entity.ArticleModel;
 import com.bleuon.entity.criterias.DiscussionCriteria;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -16,18 +16,20 @@ import java.util.List;
 @Mapper
 public interface DiscussionMapper {
 
-    List<PostModel> findAllByCriteria(DiscussionCriteria criteria);
+    List<ArticleModel> findAllByCriteria(DiscussionCriteria criteria);
 
-    PostModel findDetailByCriteria(DiscussionCriteria criteria);
+    ArticleModel findDetailByCriteria(DiscussionCriteria criteria);
 
-    List<PostCommentModel> findCommentsByCriteria(DiscussionCriteria criteria);
+    List<ArticleCommentModel> findCommentsByCriteria(DiscussionCriteria criteria);
 
-    Integer addComment(PostCommentModel model);
+    Integer addComment(ArticleCommentModel model);
 
-    Integer deleteComment(PostCommentModel model);
+    Integer deleteComment(ArticleCommentModel model);
 
-    Integer upgradeComment(PostCommentModel model);
+    Integer upgradeComment(ArticleCommentModel model);
 
-    Integer upgradeDetail(PostModel model);
+    Integer upgradeDetail(ArticleModel model);
+
+    Integer addArticle(ArticleModel model);
 
 }

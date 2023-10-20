@@ -7,13 +7,14 @@
  */
 
 import { DiscussionAPI, FileAPI } from "@mainapp/apis";
-import { TextUtil } from "@common/utils";
+import { FormValidatorsUtil, TextUtil } from "@common/utils";
+import { ElSelectData } from "@common/data";
 
 // components
 import CommonHeader from "@mainapp/components/CommonHeader.vue";
 import ClassicCkEditor from "@mainapp/components/ClassicCkEditor.vue";
 
-const formData = reactive<PostModel>({
+const formData = reactive<ArticleModel>({
   title: "",
   content: "",
   desc: "",
@@ -77,6 +78,13 @@ const formRules = reactive({
       message: "请给帖子附上描述！",
       trigger: "blur"
     }
+  ],
+  type: [
+    {
+      required: true,
+      message: "请给帖子附上类型！",
+      trigger: "blur"
+    }
   ]
 });
 const formEl = ref();
@@ -101,7 +109,10 @@ function uploadImageFile(formData: FormData) {
 }
 
 function startCreateArticle() {
-  console.log(formData);
+  FormValidatorsUtil.validate(formEl.value, () => {
+    formData.consumerId = token.id;
+    DiscussionAPI.addArticle(formData);
+  });
 }
 </script>
 
@@ -168,7 +179,15 @@ function startCreateArticle() {
                 :remove-file="removeDescImgItem"
                 :start-upload="startUploadDescImgs" />
             </el-form-item>
-            <el-form-item label="帖子类型"> </el-form-item>
+            <el-form-item label="帖子类型" prop="type">
+              <el-select v-model="formData.type" placeholder="选择帖子类型">
+                <el-option
+                  v-for="item in ElSelectData.articleTypeList"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value" />
+              </el-select>
+            </el-form-item>
             <el-form-item>
               <div class="f-c-e w-100%">
                 <el-button type="primary" @click="startCreateArticle">发表帖子</el-button>

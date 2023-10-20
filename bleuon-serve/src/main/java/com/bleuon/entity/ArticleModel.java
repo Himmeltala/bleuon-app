@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.bleuon.entity.dto.ConsumerDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,11 +19,11 @@ import java.sql.Timestamp;
  * @date: 2023/10/14
  */
 @Schema(description = "社区帖子模型")
-@TableName("t_posts")
+@TableName("t_articles")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostModel implements Serializable {
+public class ArticleModel implements Serializable {
 
     @Schema(description = "UUID")
     @TableId
