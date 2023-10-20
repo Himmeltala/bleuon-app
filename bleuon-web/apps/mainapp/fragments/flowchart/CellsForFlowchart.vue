@@ -6,7 +6,7 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import { CellsAPI } from "@mainapp/apis";
+import { CellsAPI } from "@common/apis";
 import SVG from "./SVG.vue";
 
 const mainDataSource = ref(null);

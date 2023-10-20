@@ -6,7 +6,7 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import { ConsumerAPI } from "@mainapp/apis";
+import { ConsumerAPI } from "@common/apis";
 
 const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
 const consumer = ref(await ConsumerAPI.findById(token.id));

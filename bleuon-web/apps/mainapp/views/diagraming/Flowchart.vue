@@ -18,7 +18,7 @@ import { JointJsEventService } from "@mainapp/service/diagraming/flowchart/liste
 import { ElDatePickerData, ElSelectData } from "@common/data";
 import { FormValidatorsUtil, PreventUtil } from "@common/utils";
 // apis
-import { FlowchartAPI } from "@mainapp/apis";
+import { FlowchartAPI } from "@common/apis";
 // components
 import FooterTools from "@mainapp/fragments/flowchart/FooterTools.vue";
 import HeaderToolsBottom from "@mainapp/fragments/flowchart/HeaderToolsBottom.vue";
@@ -115,7 +115,7 @@ onMounted(() => {
 
   events.onKeydownWithShortcutKey({
     ctrlWithSKey: () =>
-      upgradeMeta({ nomessage: true }, message => {
+      upgradeMetaData(true, message => {
         if (message.code === 200) {
           ElMessage.success("保存成功！");
         } else {
@@ -125,24 +125,25 @@ onMounted(() => {
   });
 });
 
-async function upgradeMeta(config: { nomessage: boolean }, success?: (message: any) => void) {
+async function upgradeMetaData(nomessage: boolean, success?: (message: any) => void) {
   const { width, height } = paper.value.getArea();
-  const options = paper.value.options;
+  const { defaultConnector, defaultRouter, gridSize } = paper.value.options;
+  mainData.value = {
+    ...mainData.value,
+    width,
+    height,
+    gridSize,
+    id: route.params.id.toString(),
+    json: JSON.stringify(graph.value.toJSON()),
+    connectorDefault: JSON.stringify(defaultConnector),
+    routerDefault: JSON.stringify(defaultRouter),
+    dataUri: await getDataURI(paper.value)
+  };
 
-  mainData.value.width = width;
-  mainData.value.height = height;
-  mainData.value.id = route.params.id.toString();
-  mainData.value.json = JSON.stringify(graph.value.toJSON());
-  mainData.value.connectorDefault = JSON.stringify(options.defaultConnector);
-  mainData.value.routerDefault = JSON.stringify(options.defaultRouter);
-  mainData.value.dataUri = await getDataURI(paper.value);
-
-  FlowchartAPI.upgrade(mainData.value, config, success);
+  FlowchartAPI.upgrade(mainData.value, { nomessage }, success);
 }
 
-const upgradeThrottle = PreventUtil.throttle(() => upgradeMeta({ nomessage: true }), 300);
-
-// share
+const upgradeThrottle = PreventUtil.throttle(() => upgradeMetaData(true), 300);
 
 const shareDialogVisible = ref(false);
 const shareFormRef = ref<FormInstance>();
@@ -228,7 +229,7 @@ const releaseTagList = ref([]);
 function confirmRelease() {
   FormValidatorsUtil.validate(releaseFormRef.value, () => {
     releaseFormData.tags = JSON.stringify(releaseTagList.value);
-    FlowchartAPI.release({ ...{ flowchartId: mainData.value.id }, ...releaseFormData }, () => {
+    FlowchartAPI.release({ flowchartId: mainData.value.id, ...releaseFormData }, () => {
       mainData.value.isPublic = 1;
     });
   });
@@ -245,7 +246,7 @@ function cancelRelease() {
   <div class="bleuon__flowchart-container h-100vh">
     <div
       class="bleuon__flowchart-header h-22vh border-border-primary border-b-1 border-b-solid bg-bg-primary px-4 py-4">
-      <HeaderToolsTop :data="mainData" class="mb-4" @change="upgradeMeta">
+      <HeaderToolsTop :data="mainData" class="mb-4" @change="upgradeMetaData">
         <template #tools>
           <el-tooltip content="分享">
             <div

@@ -41,6 +41,7 @@ const shapeBgColorPicker = ref();
 const fontFamily = ref("微软雅黑");
 const textColor = ref("");
 const textSize = ref(14);
+const gridSize = ref(1);
 const shapeStrokeWidth = ref(1.5);
 const shapeBorderStyle = ref("solid");
 const shapeBackground = ref("white");
@@ -137,7 +138,8 @@ const shapeBackground = ref("white");
               :min="14"
               controls-position="right"
               style="width: 85px"
-              @change="value => CellService.changeTextSize(currView, value)" />
+              @keyup.enter="CellService.changeTextSize(currView, textSize)"
+              @change="CellService.changeTextSize(currView, textSize)" />
           </el-tooltip>
         </div>
       </div>
@@ -271,6 +273,18 @@ const shapeBackground = ref("white");
                 :label="item.label"
                 :value="item.value" />
             </el-select>
+          </el-tooltip>
+        </div>
+        <div class="gride-size-tool ml-2">
+          <el-tooltip content="网格大小" placement="bottom">
+            <el-input-number
+              v-model="gridSize"
+              :max="30"
+              :min="1"
+              controls-position="right"
+              style="width: 85px"
+              @keyup.enter="CellService.changeGridSize(gridSize, paper)"
+              @change="CellService.changeGridSize(gridSize, paper)" />
           </el-tooltip>
         </div>
       </div>

@@ -6,7 +6,7 @@
         UPDATE t_flowcharts
         <set>
             <trim suffixOverrides=",">
-                <if test="fileName != null">file_name = #{fileName},</if>
+                <if test="filename != null">filename = #{filename},</if>
                 <if test="json != null">`json` = #{json},</if>
                 <if test="dataUri != null">data_uri = #{dataUri},</if>
                 <if test="width != null">width = #{width},</if>

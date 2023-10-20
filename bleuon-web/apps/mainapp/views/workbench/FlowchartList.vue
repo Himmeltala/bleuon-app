@@ -10,7 +10,7 @@
 import { downloadWithDataURI } from "@common/lib/jointjs/utils";
 
 import { DateUtil, FormValidatorsUtil } from "@common/utils";
-import { FlowchartAPI } from "@mainapp/apis";
+import { FlowchartAPI } from "@common/apis";
 
 // components
 import File from "@mainapp/components/File.vue";
@@ -22,7 +22,7 @@ const mainData = ref<FlowchartModel[]>([]);
 const dialogVisible = ref(false);
 const isFileNameCorrect = ref(false);
 const fileNameRules = reactive({
-  fileName: [
+  filename: [
     { validator: FormValidatorsUtil.fileNameValidator(isFileNameCorrect), trigger: "blur" },
     { validator: FormValidatorsUtil.fileNameValidator(isFileNameCorrect), trigger: "change" }
   ]
@@ -49,7 +49,7 @@ function rename(index: number) {
 }
 
 function download(data: FlowchartModel) {
-  downloadWithDataURI(data.dataUri, data.fileName, "jpeg");
+  downloadWithDataURI(data.dataUri, data.filename, "jpeg");
 }
 
 function replicate(data: FlowchartModel) {
@@ -70,27 +70,27 @@ const isCreateDateAsc = ref(false);
 
 function allFlowchart() {
   fetchData({
-    fileName: searchVal.value
+    filename: searchVal.value
   });
 }
 
 function publicFlowchart() {
   fetchData({
-    fileName: searchVal.value,
+    filename: searchVal.value,
     isPublic: 1
   });
 }
 
 function shareFlowchart() {
   fetchData({
-    fileName: searchVal.value,
+    filename: searchVal.value,
     isShare: 1
   });
 }
 
 function legalFlowchart() {
   fetchData({
-    fileName: searchVal.value,
+    filename: searchVal.value,
     isLegal: 1
   });
 }
@@ -106,7 +106,7 @@ function createDateFlowchart() {
 }
 
 async function search() {
-  fetchData({ fileName: searchVal.value });
+  fetchData({ filename: searchVal.value });
 }
 
 await fetchData({});
@@ -202,7 +202,7 @@ await fetchData({});
           <template #footer>
             <div class="f-c-s flex-nowrap mt-4 w-100%">
               <div class="mr-2 i-tabler-chart-bubble text-theme-primary"></div>
-              <div class="text-0.9rem text-ellipsis line-clamp-1">{{ item.fileName }}</div>
+              <div class="text-0.9rem text-ellipsis line-clamp-1">{{ item.filename }}</div>
             </div>
             <div class="status mt-4">
               <el-tag size="small" v-if="item.isShare" :class="{ 'mr-2': item.isShare }">
@@ -242,9 +242,9 @@ await fetchData({});
       </div>
       <el-dialog v-model="dialogVisible" title="修改文件名称" width="30%">
         <el-form :model="mainData[clickedIndex]" :rules="fileNameRules">
-          <el-form-item prop="fileName">
+          <el-form-item prop="filename">
             <el-input
-              v-model="mainData[clickedIndex].fileName"
+              v-model="mainData[clickedIndex].filename"
               placeholder="请输入文件名称"
               @keyup.enter="upgrade" />
           </el-form-item>

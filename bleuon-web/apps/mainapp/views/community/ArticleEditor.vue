@@ -6,13 +6,11 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import { DiscussionAPI, FileAPI } from "@mainapp/apis";
+import { DiscussionAPI, FileAPI } from "@common/apis";
 import { FormValidatorsUtil, TextUtil } from "@common/utils";
 import { ElSelectData } from "@common/data";
 
-// components
-import CommonHeader from "@mainapp/components/CommonHeader.vue";
-import ClassicCkEditor from "@mainapp/components/ClassicCkEditor.vue";
+import CommonHeader from "@mainapp/fragments/CommonHeader.vue";
 
 const route = useRoute();
 

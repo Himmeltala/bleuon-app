@@ -20,8 +20,8 @@
         INNER JOIN co_collecting_flowchart cf ON f.id = cf.flowchart_id
         WHERE cf.collecting_cid = #{collectingCid}
         <trim prefix="AND" prefixOverrides="AND">
-            <if test="fileName != null and fileName != ''">
-                f.file_name = #{fileName}
+            <if test="filename != null and filename != ''">
+                f.filename = #{filename}
             </if>
         </trim>
     </select>

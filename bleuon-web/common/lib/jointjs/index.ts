@@ -52,22 +52,7 @@ export function createJointjs(config: {
     defaultLink: () => new shapes.bleuon.Link(),
     defaultConnectionPoint: { name: "boundary" },
     defaultRouter: config.defaultRouter,
-    defaultConnector: config.defaultConnector,
-    validateConnection: function (cellViewS, magnetS, cellViewT, magnetT, end, linkView) {
-      // if (config.isPreventLinkFromInputPorts || false) {
-      //   if (magnetS && magnetS.getAttribute("port-group") === "in") return false;
-      // }
-
-      // if (config.isPreventLinkFromOutputToInputWithinOneElement || false) {
-      //   if (cellViewS === cellViewT) return false;
-      // }
-
-      // if (config.isPreventLinkToOutputPorts || false) {
-      //   return magnetT && magnetT.getAttribute("port-group") === "in";
-      // }
-
-      return true;
-    }
+    defaultConnector: config.defaultConnector
   });
 
   return {

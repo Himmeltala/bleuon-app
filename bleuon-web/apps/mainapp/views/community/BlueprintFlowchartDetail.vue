@@ -11,14 +11,11 @@ import "jointjs/css/layout.css";
 import "jointjs/css/themes/default.css";
 import { dia } from "jointjs";
 import { createJointjs } from "@common/lib/jointjs";
-// service
-import { JointJsEventService } from "@mainapp/service/diagraming/flowchart/listener-service";
-// common
+
 import { DateUtil } from "@common/utils";
-// apips
-import { BlueprintAPI } from "@mainapp/apis";
-// components
-import CommonHeader from "@mainapp/components/CommonHeader.vue";
+import { BlueprintAPI } from "@common/apis";
+import { JointJsEventService } from "@mainapp/service/diagraming/flowchart/listener-service";
+import CommonHeader from "@mainapp/fragments/CommonHeader.vue";
 
 const paper = shallowRef<dia.Paper>();
 const graph = shallowRef<dia.Graph>();
@@ -104,7 +101,7 @@ onMounted(() => {
         <div class="bg-bg-overlay p-5">
           <div class="f-c-b">
             <div>
-              <div class="font-bold text-1.2rem">{{ mainData.flowchart.fileName }}</div>
+              <div class="font-bold text-1.2rem">{{ mainData.flowchart.filename }}</div>
               <div class="mt-2 text-text-secondary">
                 修改:{{ DateUtil.formatted(mainData.flowchart.modifyDate) }}
               </div>

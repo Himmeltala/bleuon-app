@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { FormValidatorsUtil } from "@common/utils";
-import { ConsumerAPI } from "@mainapp/apis";
+import { ConsumerAPI } from "@common/apis";
 
 const coudButtonCount = ref(60);
 let interval: number;

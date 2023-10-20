@@ -14,7 +14,7 @@ import { createJointjs } from "@common/lib/jointjs";
 // service
 import { JointJsEventService } from "@mainapp/service/diagraming/flowchart/listener-service";
 // apis
-import { FlowchartAPI } from "@mainapp/apis";
+import { FlowchartAPI } from "@common/apis";
 // common
 import { DateUtil } from "@common/utils";
 // components
@@ -116,7 +116,7 @@ onMounted(() => {
 const dialogVisible = ref(false);
 
 function replicate() {
-  mainData.value.fileName = mainData.value.fileName;
+  mainData.value.filename = mainData.value.filename;
   FlowchartAPI.replicate({ ...mainData.value, consumerId: token.id }, res =>
     ElMessage.success(res.message)
   );

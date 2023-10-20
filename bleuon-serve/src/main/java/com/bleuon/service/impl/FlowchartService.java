@@ -81,8 +81,8 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, FlowchartMode
         QueryWrapper<FlowchartModel> wrapper = new QueryWrapper<>();
         wrapper.eq("consumer_id", criteria.getCollectingCid());
 
-        if (StringUtils.hasText(criteria.getFileName())) {
-            wrapper.like("file_name", criteria.getFileName());
+        if (StringUtils.hasText(criteria.getFilename())) {
+            wrapper.like("file_name", criteria.getFilename());
         }
 
         if (criteria.getIsShare() != null) {
@@ -117,7 +117,7 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, FlowchartMode
             Timestamp timestamp = new Timestamp(new Date().getTime());
             flowchart.setCreateDate(timestamp);
             flowchart.setModifyDate(timestamp);
-            flowchart.setFileName("未命名的文件");
+            flowchart.setFilename("未命名的文件");
 
             save(flowchart);
 
@@ -137,7 +137,7 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, FlowchartMode
             rep.setId(uuid);
             rep.setConsumerId(model.getConsumerId());
             rep.setModifyDate(model.getModifyDate());
-            rep.setFileName(model.getFileName());
+            rep.setFilename(model.getFilename());
             rep.setJson(model.getJson());
             rep.setDataUri(model.getDataUri());
             rep.setWidth(model.getWidth());

@@ -39,9 +39,9 @@ public class BlueprintController implements Serializable {
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:blueprint-all')")
     @GetMapping("/find/all")
     public R<List<BlueprintFlowchartModel>> findAll(@Validated BlueprintFlowchartModel model) {
-        String filename = model.getFileName();
+        String filename = model.getFilename();
         if (StringUtils.hasText(filename)) {
-            model.setFileName(filename.toLowerCase());
+            model.setFilename(filename.toLowerCase());
         }
         return blueprintFlowchartService.findAll(model);
     }

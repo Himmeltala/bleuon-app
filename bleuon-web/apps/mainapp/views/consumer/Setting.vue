@@ -6,12 +6,11 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import { ConsumerAPI } from "@mainapp/apis";
+import { ConsumerAPI } from "@common/apis";
 import { ElSelectData } from "@common/data";
 import { FormValidatorsUtil, DateUtil } from "@common/utils";
 
-// components
-import CommonHeader from "@mainapp/components/CommonHeader.vue";
+import CommonHeader from "@mainapp/fragments/CommonHeader.vue";
 
 const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
 const mainData = ref(await ConsumerAPI.findById(token.id));

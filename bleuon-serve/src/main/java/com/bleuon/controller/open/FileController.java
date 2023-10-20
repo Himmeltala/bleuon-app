@@ -62,13 +62,10 @@ public class FileController implements Serializable {
         }
     }
 
-    @Operation(summary = "删除图片", parameters = {
-            @Parameter(name = "filepath", description = "文件路径"),
-            @Parameter(name = "filename", description = "文件名称"),
-    })
+    @Operation(summary = "删除图片")
     @DeleteMapping("/delete/image")
-    public R<Object> deleteImageFile(String filepath, String filename) {
-        boolean success = fileService.delete(filepath, filename);
+    public R<Object> deleteImageFile(FileParamsVO vo) {
+        boolean success = fileService.delete(vo.getFilepath(), vo.getFilename());
         return success ? R.success("删除成功！") : R.error("删除失败！");
     }
 

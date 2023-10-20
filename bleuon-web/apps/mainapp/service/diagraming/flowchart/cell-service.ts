@@ -15,7 +15,6 @@ import { getLinkOrElementAttr } from "./utils";
  * @param paper
  */
 export function changeRouterConfig(config: any, paper: dia.Paper) {
-  if (!paper?.options?.defaultRouter) return;
   paper.options.defaultRouter = config;
 }
 
@@ -26,8 +25,17 @@ export function changeRouterConfig(config: any, paper: dia.Paper) {
  * @param paper
  */
 export function changeConnectorConfig(config: any, paper: dia.Paper) {
-  if (!paper?.options?.defaultConnector) return;
   paper.options.defaultConnector = config;
+}
+
+/**
+ * 修改网格大小
+ *
+ * @param size
+ * @param paper
+ */
+export function changeGridSize(size: number, paper: dia.Paper) {
+  paper.setGridSize(size);
 }
 
 /**

@@ -6,7 +6,7 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import { ConsumerAPI } from "@mainapp/apis";
+import { ConsumerAPI } from "@common/apis";
 
 const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
 
@@ -93,16 +93,16 @@ function confirmLogout() {
         <div class="w-60%">
           <el-carousel :interval="2000" height="30rem">
             <el-carousel-item class="rd-2">
-              <img src="/public/20231020223140.png" class="object-contain w-100% h-100%" />
+              <img src="/20231020223140.png" class="object-contain w-100% h-100%" />
             </el-carousel-item>
             <el-carousel-item class="rd-2">
-              <img src="/public/20231020223441.png" class="object-contain w-100% h-100%" />
+              <img src="/20231020223441.png" class="object-contain w-100% h-100%" />
             </el-carousel-item>
             <el-carousel-item class="rd-2">
-              <img src="/public/20231020223456.png" class="object-contain w-100% h-100%" />
+              <img src="/20231020223456.png" class="object-contain w-100% h-100%" />
             </el-carousel-item>
             <el-carousel-item class="rd-2">
-              <img src="/public/20231020223513.png" class="object-contain w-100% h-100%" />
+              <img src="/20231020223513.png" class="object-contain w-100% h-100%" />
             </el-carousel-item>
           </el-carousel>
         </div>

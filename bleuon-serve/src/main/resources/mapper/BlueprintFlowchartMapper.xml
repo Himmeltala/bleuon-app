@@ -15,7 +15,7 @@
     <select id="findAll" resultMap="findMap">
         SELECT bf.*,
         f.id f_id,
-        f.file_name f_file_name,
+        f.filename f_filename,
         f.json f_json,
         f.data_uri f_data_uri,
         f.width f_width,
@@ -45,8 +45,8 @@
                 <if test="ranking != null and ranking != ''">
                     AND bf.ranking = #{ranking}
                 </if>
-                <if test="fileName != null and fileName != ''">
-                    AND f.file_name LIKE CONCAT('%', #{fileName}, '%')
+                <if test="filename != null and filename != ''">
+                    AND f.filename LIKE CONCAT('%', #{filename}, '%')
                 </if>
             </trim>
         </where>
@@ -65,7 +65,7 @@
     <select id="find" resultMap="findMap">
         SELECT bf.*,
                f.id                f_id,
-               f.file_name         f_file_name,
+               f.filename         f_file_name,
                f.json              f_json,
                f.data_uri          f_data_uri,
                f.width             f_width,

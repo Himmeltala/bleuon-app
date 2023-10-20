@@ -6,10 +6,10 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import { ConsumerAPI } from "@mainapp/apis";
+import { ConsumerAPI } from "@common/apis";
 
+import CommonHeader from "@mainapp/fragments/CommonHeader.vue";
 // components
-import CommonHeader from "@mainapp/components/CommonHeader.vue";
 import MyDynamic from "@mainapp/fragments/consumer/MyDynamic.vue";
 import MyPublicFlowchart from "@mainapp/fragments/consumer/MyPublicFlowchart.vue";
 import MyShareFlowchart from "@mainapp/fragments/consumer/MyShareFlowchart.vue";

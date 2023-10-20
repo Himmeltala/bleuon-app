@@ -7,11 +7,10 @@
  */
 
 import { DateUtil } from "@common/utils";
-import { DiscussionAPI } from "@mainapp/apis";
+import { DiscussionAPI } from "@common/apis";
 import { ElSelectData } from "@common/data";
 
-// components
-import CommonHeader from "@mainapp/components/CommonHeader.vue";
+import CommonHeader from "@mainapp/fragments/CommonHeader.vue";
 
 const mainData = ref();
 

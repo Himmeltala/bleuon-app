@@ -28,7 +28,7 @@ public class FlowchartCriteria extends CommonCriteria implements Serializable {
     private String collectingCid;
 
     @Schema(description = "文件名称")
-    private String fileName;
+    private String filename;
 
     @Schema(description = "是否公开")
     private Integer isPublic;

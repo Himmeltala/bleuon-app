@@ -61,7 +61,7 @@ export async function findIsShare(model: { id: string }, error?: Function) {
 export async function findAllByCriteria(criteria: {
   collectingCid: string;
   sequences?: { isAsc: boolean; col: string }[];
-  fileName?: string;
+  filename?: string;
   isPublic?: number;
   isShare?: number;
   isLegal?: number;
@@ -119,7 +119,7 @@ export function deleteById(model: { id?: string }, success: Function) {
  * @returns
  */
 export async function findAllCollectByCriteria(model: {
-  fileName?: string;
+  filename?: string;
   collectingCid: string;
 }) {
   const { data } = await request.get<R<FlowchartModel[]>>(

@@ -7,7 +7,7 @@
  */
 
 import { DateUtil } from "@common/utils";
-import { DiscussionAPI } from "@mainapp/apis";
+import { DiscussionAPI } from "@common/apis";
 
 const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
 const id = useRoute().params.id.toString();

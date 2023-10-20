@@ -6,8 +6,7 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-// components
-import MenuAvatar from "@mainapp/components/MenuAvatar.vue";
+import MenuAvatar from "@mainapp/fragments/MenuAvatar.vue";
 
 defineProps({
   value: {

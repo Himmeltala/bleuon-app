@@ -6,7 +6,7 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import { FlowchartAPI } from "@mainapp/apis";
+import { FlowchartAPI } from "@common/apis";
 
 defineProps({
   activeItem: {

@@ -33,8 +33,7 @@ public class FlowchartModel implements Serializable {
     private String id;
 
     @Schema(description = "文件名，即流程图名称")
-    @TableField("file_name")
-    private String fileName;
+    private String filename;
 
     @Schema(description = "流程图元数据")
     @TableField

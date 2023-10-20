@@ -17,7 +17,7 @@ declare type ConsumerModel = Partial<{
 
 declare type FlowchartModel = Partial<{
   id: string;
-  fileName: string;
+  filename: string;
   json: string;
   dataUri: string;
   width: number;
@@ -53,7 +53,7 @@ declare type BlueprintFlowchartModel = Partial<{
   flowchartId: string;
   flowchart: FlowchartModel;
   // not table file
-  fileName: string;
+  filename: string;
 }>;
 
 declare type DynamicModel = Partial<{

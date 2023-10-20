@@ -6,7 +6,6 @@
 bleuon-web
 ├─ apps
 │   ├─ mainapp                  // 前台项目
-│   │   ├─ apis                 // 接口层
 │   │   ├─ components           // 前台项目的组件
 │   │   ├─ fragments            // views 下的子视图，区别于组件高可复用
 |   |   ├─ data                 // 数据层
@@ -18,6 +17,7 @@ bleuon-web
 |   |   └─ views                // 视图层
 │   └─ admin                    // 后台项目
 ├─ common                       // 存放全局内容，可以提供给 apps 下所有模块使用
+│   ├─ apis                     // 接口层
 │   ├─ components               // 全局组件
 │   ├─ constants                // 全局常量
 │   ├─ data                     // 全局数据

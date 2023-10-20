@@ -9,10 +9,10 @@
 import { dia } from "jointjs";
 import { downloadWithDataURI, getDataURI } from "@common/lib/jointjs/utils";
 import { DateUtil } from "@common/utils";
-import { FlowchartAPI } from "@mainapp/apis";
+import { FlowchartAPI } from "@common/apis";
 
 // components
-import MenuAvatar from "@mainapp/components/MenuAvatar.vue";
+import MenuAvatar from "@mainapp/fragments/MenuAvatar.vue";
 
 const paper = inject<Ref<dia.Paper>>(KeyVals.BLEUON_FLOWCHART_PAPER);
 const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
@@ -25,18 +25,18 @@ async function download() {
   mainData.value.width = width;
   mainData.value.height = height;
   const dataURI = await getDataURI(paper.value);
-  downloadWithDataURI(dataURI, mainData.value.fileName, "jpeg");
+  downloadWithDataURI(dataURI, mainData.value.filename, "jpeg");
 }
 
 const calcFileName = computed({
   get() {
-    if (!mainData.value.fileName) {
-      mainData.value.fileName = "未命名的文件";
+    if (!mainData.value.filename) {
+      mainData.value.filename = "未命名的文件";
     }
-    return mainData.value.fileName;
+    return mainData.value.filename;
   },
   set(value) {
-    mainData.value.fileName = value;
+    mainData.value.filename = value;
   }
 });
 

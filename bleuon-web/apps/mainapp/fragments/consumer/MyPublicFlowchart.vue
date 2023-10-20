@@ -6,7 +6,7 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import { ConsumerAPI } from "@mainapp/apis";
+import { ConsumerAPI } from "@common/apis";
 import { DateUtil } from "@common/utils";
 
 import File from "@mainapp/components/File.vue";
@@ -34,7 +34,7 @@ const mainData = ref(
         <template #footer>
           <div class="f-c-s flex-nowrap mt-4 w-100%">
             <div class="mr-2 i-tabler-chart-bubble text-theme-primary"></div>
-            <div class="text-0.9rem text-ellipsis line-clamp-1">{{ item.fileName }}</div>
+            <div class="text-0.9rem text-ellipsis line-clamp-1">{{ item.filename }}</div>
           </div>
           <div class="text-0.8rem mt-4">
             <div class="text-text-regular">

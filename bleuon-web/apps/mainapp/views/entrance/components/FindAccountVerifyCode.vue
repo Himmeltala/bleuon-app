@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ConsumerAPI } from "@mainapp/apis";
+import { ConsumerAPI } from "@common/apis";
 import { FormValidatorsUtil } from "@common/utils";
 
 defineProps({

@@ -71,6 +71,6 @@ public class BlueprintFlowchartModel implements Serializable {
 
     @Schema(description = "条件查询时查询所需属性")
     @TableField(exist = false)
-    private String fileName;
+    private String filename;
 
 }

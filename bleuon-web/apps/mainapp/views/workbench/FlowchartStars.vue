@@ -9,7 +9,7 @@
 // jointjs
 import { downloadWithDataURI } from "@common/lib/jointjs/utils";
 
-import { FlowchartAPI } from "@mainapp/apis";
+import { FlowchartAPI } from "@common/apis";
 import { DateUtil } from "@common/utils";
 
 // components
@@ -28,11 +28,11 @@ async function fetchData(params?: any) {
 }
 
 async function search() {
-  await fetchData({ fileName: searchVal.value });
+  await fetchData({ filename: searchVal.value });
 }
 
 function download(data: FlowchartModel) {
-  downloadWithDataURI(data.dataUri, data.fileName, "jpeg");
+  downloadWithDataURI(data.dataUri, data.filename, "jpeg");
 }
 
 function replicate(data: FlowchartModel) {
@@ -75,7 +75,7 @@ await fetchData();
             <template #footer>
               <div class="f-c-s flex-nowrap mt-4 w-100%">
                 <div class="mr-2 i-tabler-chart-bubble text-theme-primary"></div>
-                <div class="text-0.9rem text-ellipsis line-clamp-1">{{ item.fileName }}</div>
+                <div class="text-0.9rem text-ellipsis line-clamp-1">{{ item.filename }}</div>
               </div>
               <div class="status mt-4">
                 <el-tag size="small" v-if="item.isShare" :class="{ 'mr-2': item.isShare }">

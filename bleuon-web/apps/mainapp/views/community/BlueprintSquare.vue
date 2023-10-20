@@ -6,12 +6,11 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import { BlueprintAPI } from "@mainapp/apis";
+import { BlueprintAPI } from "@common/apis";
 import { DateUtil } from "@common/utils";
 import { ElSelectData } from "@common/data";
 
-// components
-import CommonHeader from "@mainapp/components/CommonHeader.vue";
+import CommonHeader from "@mainapp/fragments/CommonHeader.vue";
 import File from "@mainapp/components/File.vue";
 
 const scene = ref("全部");
@@ -41,7 +40,7 @@ const searchVal = ref("");
 
 function onEnter() {
   fetchData({
-    fileName: searchVal.value
+    filename: searchVal.value
   });
 }
 
@@ -114,7 +113,7 @@ await fetchData();
                 <div class="f-c-s flex-nowrap mt-4 w-100%">
                   <div class="mr-2 i-tabler-chart-bubble text-theme-primary"></div>
                   <div class="text-0.9rem text-ellipsis line-clamp-1">
-                    {{ item.flowchart.fileName }}
+                    {{ item.flowchart.filename }}
                   </div>
                 </div>
                 <router-link :to="'/u/profile/' + item.flowchart.consumer.id">
