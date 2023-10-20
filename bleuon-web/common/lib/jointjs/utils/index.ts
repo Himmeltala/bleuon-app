@@ -2,39 +2,6 @@ import { dia } from "jointjs";
 import { DateUtil } from "@common/utils";
 
 /**
- * 更新 label 文本
- *
- * @param elementView
- * @param input
- */
-export function upgradeLabelText(elementView: dia.ElementView, input: HTMLInputElement) {
-  // @ts-ignore
-  const { model } = elementView;
-  const { position, size } = model.attributes;
-
-  input.value = model.attr("label/text");
-
-  input.style.top = position.y + "px";
-  input.style.left = position.x + "px";
-  input.style.width = size.width + "px";
-  input.style.height = size.height + "px";
-  input.style.display = "block";
-
-  function handleKeydownEvent(event: any) {
-    if (event.key === "Enter") {
-      let newCellText = input.value;
-      model.attr("label/text", newCellText);
-      input.style.display = "none";
-      input.removeEventListener("keydown", handleKeydownEvent);
-    }
-  }
-
-  input.value = "";
-  input.addEventListener("keydown", handleKeydownEvent);
-  input.focus();
-}
-
-/**
  * 将 SVG 字符串转换为图片 URI 形式
  *
  * @param str

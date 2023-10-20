@@ -93,7 +93,7 @@ onMounted(() => {
     "element:pointerclick": view => {
       events.onPointerClickElement(view);
     },
-    "element:pointerdblclick": view => {
+    "element:pointerdblclick": (view, evt) => {
       events.onPointerDoubleClickElement(view, texteditor.value);
     },
     "link:pointerclick": view => {

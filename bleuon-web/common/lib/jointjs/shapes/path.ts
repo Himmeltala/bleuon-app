@@ -5,7 +5,6 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 import { dia, elementTools } from "jointjs";
-import { upgradeLabelText } from "../utils";
 import { NormalResizeTool, RotateTool } from "../tools";
 
 const Path = dia.Element.define(
@@ -35,7 +34,33 @@ const Path = dia.Element.define(
     }
   },
   {
-    upgradeLabelText,
+    upgradeLabelText(elementView: dia.ElementView, input: HTMLInputElement) {
+      // @ts-ignore
+      const { model } = elementView;
+
+      input.value = model.attr("label/text");
+
+      input.style.top = "0px";
+      input.style.left = "0px";
+      input.style.width = "200px";
+      input.style.height = "100px";
+      input.style.display = "block";
+
+      function handleKeydownEvent(event: any) {
+        if (event.key === "Enter") {
+          model.attr("label/text", input.value);
+          input.style.display = "none";
+          input.removeEventListener("keydown", handleKeydownEvent);
+        } else if (event.key === "Escape") {
+          input.style.display = "none";
+          input.removeEventListener("keydown", handleKeydownEvent);
+        }
+      }
+
+      input.value = "";
+      input.focus();
+      input.addEventListener("keydown", handleKeydownEvent);
+    },
     addClickedTools(elementView: dia.ElementView) {
       const boundaryTool = new elementTools.Boundary();
       const resizeTool = new NormalResizeTool();
