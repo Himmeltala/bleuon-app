@@ -40,7 +40,7 @@ defineProps({
         <img
           v-if="fileImage"
           :src="fileImage"
-          class="w-100% h-100% rd-2 object-fill cursor-pointer bg-white" />
+          class="w-100% h-100% rd-2 object-cover cursor-pointer bg-white" />
         <div v-else class="w-100% h-100% rd-2 cursor-pointer bg-white"></div>
       </router-link>
     </div>

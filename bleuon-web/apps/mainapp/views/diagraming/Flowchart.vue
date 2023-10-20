@@ -11,7 +11,7 @@ import "jointjs/css/layout.css";
 import "jointjs/css/themes/default.css";
 import { dia } from "jointjs";
 import { createJointjs } from "@common/lib/jointjs";
-import { getDataUri } from "@common/lib/jointjs/utils";
+import { getDataURI } from "@common/lib/jointjs/utils";
 // service
 import { JointJsEventService } from "@mainapp/service/diagraming/flowchart/listener-service";
 // common
@@ -125,7 +125,7 @@ onMounted(() => {
   });
 });
 
-function upgradeMeta(config: { nomessage: boolean }, success?: (message: any) => void) {
+async function upgradeMeta(config: { nomessage: boolean }, success?: (message: any) => void) {
   const { width, height } = paper.value.getArea();
   const options = paper.value.options;
 
@@ -135,7 +135,7 @@ function upgradeMeta(config: { nomessage: boolean }, success?: (message: any) =>
   mainData.value.json = JSON.stringify(graph.value.toJSON());
   mainData.value.connectorDefault = JSON.stringify(options.defaultConnector);
   mainData.value.routerDefault = JSON.stringify(options.defaultRouter);
-  mainData.value.dataUri = getDataUri(paper.value);
+  mainData.value.dataUri = await getDataURI(paper.value);
 
   FlowchartAPI.upgrade(mainData.value, config, success);
 }

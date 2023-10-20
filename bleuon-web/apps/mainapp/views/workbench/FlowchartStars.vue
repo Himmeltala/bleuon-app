@@ -7,7 +7,7 @@
  */
 
 // jointjs
-import { downloadWithDataUri } from "@common/lib/jointjs/utils";
+import { downloadWithDataURI } from "@common/lib/jointjs/utils";
 
 import { FlowchartAPI } from "@mainapp/apis";
 import { DateUtil } from "@common/utils";
@@ -31,8 +31,8 @@ async function search() {
   await fetchData({ fileName: searchVal.value });
 }
 
-function download(data: any) {
-  downloadWithDataUri(data, "jpeg");
+function download(data: FlowchartModel) {
+  downloadWithDataURI(data.dataUri, data.fileName, "jpeg");
 }
 
 function replicate(data: FlowchartModel) {

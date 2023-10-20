@@ -7,7 +7,7 @@
  */
 
 // jointjs
-import { downloadWithDataUri } from "@common/lib/jointjs/utils";
+import { downloadWithDataURI } from "@common/lib/jointjs/utils";
 
 import { DateUtil, FormValidatorsUtil } from "@common/utils";
 import { FlowchartAPI } from "@mainapp/apis";
@@ -49,7 +49,7 @@ function rename(index: number) {
 }
 
 function download(data: FlowchartModel) {
-  downloadWithDataUri(data, "jpeg");
+  downloadWithDataURI(data.dataUri, data.fileName, "jpeg");
 }
 
 function replicate(data: FlowchartModel) {

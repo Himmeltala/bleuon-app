@@ -35,43 +35,42 @@ export function upgradeLabelText(elementView: dia.ElementView, input: HTMLInputE
 }
 
 /**
- * 导出 SVG 为图片
+ * 将 SVG 字符串转换为图片 URI 形式
  *
- * @param paper
- * @param graph
- * @param type png、jpeg
- * @param config
- * @param success
- * @param failure
+ * @param str
+ * @param width
+ * @param height
+ * @param format
+ * @returns
  */
-export function downloadWithXml(
-  paper: dia.Paper,
-  type: "png" | "jpeg",
-  config: FlowchartModel,
-  success?: Function
-) {
-  const canvas = document.createElement("canvas");
-  const context = canvas.getContext("2d");
-
-  const dataUri = getDataUri(paper);
-  const image = new Image();
-  image.src = dataUri;
-
-  image.onload = function () {
+export function SVGStrToImageURI(
+  str: string,
+  config: {
+    width: number;
+    height: number;
+    bgColor: string;
+    format: "png" | "jpeg";
+  }
+): Promise<string> {
+  return new Promise(resolve => {
+    const canvas = document.createElement("canvas");
     canvas.width = config.width;
     canvas.height = config.height;
-    context.fillStyle = config.bgColor;
-    context.fillRect(0, 0, canvas.width, canvas.height);
-    context.drawImage(image, 0, 0);
 
-    const dataURL = canvas.toDataURL(`image/${type}`);
-    const link = document.createElement("a");
-    link.href = dataURL;
-    link.download = `${config.fileName}-${DateUtil.formatted()}.${type}`;
-    link.click();
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = config.bgColor;
+    ctx.fillRect(0, 0, config.width, config.height);
 
-    success && success();
-  };
+    const image = new Image();
+    image.onload = function () {
+      ctx.drawImage(image, 0, 0, config.width, config.height);
+
+      const dataURI = canvas.toDataURL(`image/${config.format}`);
+      resolve(dataURI);
+    };
+
+    image.src = `data:image/svg+xml,${encodeURIComponent(str)}`;
+  });
 }
 
 /**
@@ -80,12 +79,11 @@ export function downloadWithXml(
  * @param paper
  * @param graph
  */
-export function getDataUri(paper: dia.Paper) {
+export async function getDataURI(paper: dia.Paper) {
   paper.hideTools();
 
-  const svgCopy = paper.childNodes.svg.cloneNode(true);
-  // @ts-ignore
-  const circles = svgCopy.querySelectorAll<SVGCircleElement>(".joint-port-body");
+  const SVGEle = paper.childNodes.svg.cloneNode(true) as SVGAElement;
+  const circles = SVGEle.querySelectorAll<SVGCircleElement>(".joint-port-body");
 
   circles.forEach((circle: SVGCircleElement) => {
     circle.style.fill = "transparent";
@@ -94,8 +92,13 @@ export function getDataUri(paper: dia.Paper) {
     circle.style.strokeDasharray = "none";
   });
 
-  const dataUri = new XMLSerializer().serializeToString(svgCopy);
-  return "data:image/svg+xml," + encodeURIComponent(dataUri);
+  const svgStr = new XMLSerializer().serializeToString(SVGEle);
+  return await SVGStrToImageURI(svgStr, {
+    width: paper.getArea().width,
+    height: paper.getArea().height,
+    bgColor: paper.options.background.color,
+    format: "jpeg"
+  });
 }
 
 /**
@@ -106,30 +109,9 @@ export function getDataUri(paper: dia.Paper) {
  * @param success
  * @param failure
  */
-export function downloadWithDataUri(data: FlowchartModel, type: "png" | "jpeg") {
-  const canvas = document.createElement("canvas");
-  const context = canvas.getContext("2d");
-
-  if (!data.dataUri) {
-    ElMessage.error("内容为空，不能下载！");
-    return;
-  }
-
-  const dataUri = data.dataUri;
-  const image = new Image();
-  image.src = dataUri;
-
-  image.onload = function () {
-    canvas.width = data.width;
-    canvas.height = data.height;
-    context.fillStyle = data.bgColor;
-    context.fillRect(0, 0, canvas.width, canvas.height);
-    context.drawImage(image, 0, 0);
-
-    const dataURL = canvas.toDataURL(`image/${type}`);
-    const link = document.createElement("a");
-    link.href = dataURL;
-    link.download = `${data.fileName}-${DateUtil.formatted()}.${type}`;
-    link.click();
-  };
+export function downloadWithDataURI(dataURI: string, filename: string, type: "png" | "jpeg") {
+  const link = document.createElement("a");
+  link.href = dataURI;
+  link.download = `${filename}-${DateUtil.formatted()}.${type}`;
+  link.click();
 }

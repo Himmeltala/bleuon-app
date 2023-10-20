@@ -86,7 +86,7 @@ function createFlowchart() {
         class="menu-item f-c-s"
         @click="navigateTo('auth-canvas-list')">
         <div class="mr-2 i-tabler-chalkboard"></div>
-        画布
+        画布 <span class="text-red">(敬请期待)</span>
       </div>
     </div>
     <div class="mt-5 pb-5 b-b-1 b-b-solid b-border-primary">
@@ -111,7 +111,7 @@ function createFlowchart() {
         class="menu-item f-c-s"
         @click="navigateTo('auth-recycle')">
         <div class="mr-2 i-tabler-trash-x"></div>
-        回收站
+        回收站 <span class="text-red">(敬请期待)</span>
       </div>
     </div>
   </div>

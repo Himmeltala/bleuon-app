@@ -7,7 +7,7 @@
  */
 
 import { dia } from "jointjs";
-import { downloadWithXml } from "@common/lib/jointjs/utils";
+import { downloadWithDataURI, getDataURI } from "@common/lib/jointjs/utils";
 import { DateUtil } from "@common/utils";
 import { FlowchartAPI } from "@mainapp/apis";
 
@@ -16,31 +16,32 @@ import MenuAvatar from "@mainapp/components/MenuAvatar.vue";
 
 const paper = inject<Ref<dia.Paper>>(KeyVals.BLEUON_FLOWCHART_PAPER);
 const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
-const mainDataSource = inject<Ref<FlowchartModel>>(KeyVals.BLEUON_FLOWCHART_DATA);
+const mainData = inject<Ref<FlowchartModel>>(KeyVals.BLEUON_FLOWCHART_DATA);
 
 const emits = defineEmits(["change"]);
 
-function download() {
+async function download() {
   const { width, height } = paper.value.getArea();
-  mainDataSource.value.width = width;
-  mainDataSource.value.height = height;
-  downloadWithXml(paper.value, "jpeg", mainDataSource.value);
+  mainData.value.width = width;
+  mainData.value.height = height;
+  const dataURI = await getDataURI(paper.value);
+  downloadWithDataURI(dataURI, mainData.value.fileName, "jpeg");
 }
 
 const calcFileName = computed({
   get() {
-    if (!mainDataSource.value.fileName) {
-      mainDataSource.value.fileName = "未命名的文件";
+    if (!mainData.value.fileName) {
+      mainData.value.fileName = "未命名的文件";
     }
-    return mainDataSource.value.fileName;
+    return mainData.value.fileName;
   },
   set(value) {
-    mainDataSource.value.fileName = value;
+    mainData.value.fileName = value;
   }
 });
 
 function collect() {
-  FlowchartAPI.addCollecting({ flowchartId: mainDataSource.value.id, collectingCid: token.id });
+  FlowchartAPI.addCollecting({ flowchartId: mainData.value.id, collectingCid: token.id });
 }
 </script>
 
@@ -65,7 +66,7 @@ function collect() {
         <div class="mt-2">
           <div class="text-text-secondary text-0.8rem f-c-c">
             <div class="i-tabler-clock mr-1"></div>
-            上次更新：{{ DateUtil.formatted(mainDataSource.modifyDate) }}
+            上次更新：{{ DateUtil.formatted(mainData.modifyDate) }}
           </div>
         </div>
       </div>
