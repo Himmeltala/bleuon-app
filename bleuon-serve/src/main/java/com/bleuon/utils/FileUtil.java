@@ -38,8 +38,8 @@ public class FileUtil {
         return false;
     }
 
-    public byte[] readFromResources(String path, String filename) throws IOException {
-        File file = getFileFromResources(path, filename);
+    public byte[] readFileFromResources(String filepath, String filename) throws IOException {
+        File file = getFileFromResources(filepath, filename);
 
         if (file != null && file.exists()) {
             try {
@@ -52,9 +52,9 @@ public class FileUtil {
         return null;
     }
 
-    public File getFileFromResources(String path, String filename) throws IOException {
+    public File getFileFromResources(String filepath, String filename) throws IOException {
         File resourceDirectory = ResourceUtils.getFile("classpath:");
-        File file = new File(resourceDirectory, path + File.separator + filename);
+        File file = new File(resourceDirectory, filepath + File.separator + filename);
 
         if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()) {
             return null;
@@ -63,11 +63,17 @@ public class FileUtil {
         return file;
     }
 
-    public String getFileSuffix(String filename) {
-        if (filename == null || filename.lastIndexOf(".") == -1) {
-            return "";
+    public boolean deleteFileFromResources(String filepath, String filename) throws IOException {
+        boolean success;
+        File file = getFileFromResources(filepath, filename);
+
+        if (file.exists()) {
+            success = file.delete();
+        } else {
+            success = false;
         }
-        return filename.substring(filename.lastIndexOf(".") + 1);
+
+        return success;
     }
 
     public MediaType getContentType(String filename) {

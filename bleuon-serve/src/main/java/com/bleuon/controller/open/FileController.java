@@ -12,6 +12,7 @@ import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,7 +36,7 @@ public class FileController implements Serializable {
     @GetMapping(value = "/preview/image")
     public void previewImageFile(FileParamsVO vo, HttpServletResponse response) {
         try {
-            byte[] bytes = fileService.load(vo.getFilename(), vo.getFilepath(), response);
+            byte[] bytes = fileService.download(vo.getFilepath(), vo.getFilename(), response);
             try (ServletOutputStream output = response.getOutputStream()) {
                 output.write(bytes);
             }
@@ -59,6 +60,16 @@ public class FileController implements Serializable {
         } else {
             return R.failed("上传失败！");
         }
+    }
+
+    @Operation(summary = "删除图片", parameters = {
+            @Parameter(name = "filepath", description = "文件路径"),
+            @Parameter(name = "filename", description = "文件名称"),
+    })
+    @DeleteMapping("/delete/image")
+    public R<Object> deleteImageFile(String filepath, String filename) {
+        boolean success = fileService.delete(filepath, filename);
+        return success ? R.success("删除成功！") : R.error("删除失败！");
     }
 
 }

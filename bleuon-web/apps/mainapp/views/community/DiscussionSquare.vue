@@ -169,7 +169,7 @@ await fetchData({ sequences: [{ isAsc: false, col: "create_date" }] });
               <el-button
                 type="primary"
                 class="w-100%"
-                @click="$router.push('/community/create-post')">
+                @click="$router.push('/community/create-article')">
                 发表帖子
                 <template #icon>
                   <div class="i-tabler-edit"></div>

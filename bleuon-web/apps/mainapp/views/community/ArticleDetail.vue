@@ -53,7 +53,7 @@ function buryArticle() {
 const commentContent = ref("");
 
 function uploadCommentImage(formData: FormData) {
-  formData.append("path", "/post");
+  formData.append("path", "/article/comments");
   return FileAPI.uploadImageFile(formData);
 }
 
@@ -218,7 +218,9 @@ await fetchCommentList({
           <div class="comment-list mt-5 bg-bg-overlay rd-2">
             <div class="p-5 f-c-b mb-5">
               <div class="text-text-regular font-bold">评论列表</div>
-              <div @click="changeCommentAsc" class="hover text-0.9rem f-c-c text-text-secondary select-none">
+              <div
+                @click="changeCommentAsc"
+                class="hover text-0.9rem f-c-c text-text-secondary select-none">
                 <div class="i-tabler-arrows-sort mr-1"></div>
                 <div v-if="isCommentDateAsc">日期升序</div>
                 <div v-else>日期降序</div>

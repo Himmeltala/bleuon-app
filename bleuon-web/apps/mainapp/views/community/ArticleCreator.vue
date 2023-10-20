@@ -19,7 +19,7 @@ const formData = reactive<PostModel>({
   desc: "",
   titleTag: "[]",
   descTag: "[]",
-  descImgs: "",
+  descImgs: "[]",
   type: ""
 });
 
@@ -38,6 +38,15 @@ const descTagToJson: any = computed({
   },
   get() {
     return JSON.parse(formData.descTag);
+  }
+});
+
+const descImgsToJson: any = computed({
+  set(value) {
+    formData.descImgs = JSON.stringify(value);
+  },
+  get() {
+    return JSON.parse(formData.descImgs);
   }
 });
 
@@ -77,13 +86,27 @@ function triggValidate() {
   formEl.value.validateField("content");
 }
 
-function uploadImageFile(formData: FormData) {
+function startUploadDescImgs(formData: FormData) {
+  formData.append("path", "/article/desc");
   return FileAPI.uploadImageFile(formData);
+}
+
+function removeDescImgItem(str: string, callback: Function) {
+  FileAPI.deleteImageFile(str, () => callback());
+}
+
+function uploadImageFile(formData: FormData) {
+  formData.append("path", "/article/content");
+  return FileAPI.uploadImageFile(formData);
+}
+
+function startCreateArticle() {
+  console.log(formData);
 }
 </script>
 
 <template>
-  <div class="create-post h-100vh flow-hidden bg-bg-page">
+  <div class="create-article h-100vh flow-hidden bg-bg-page">
     <CommonHeader></CommonHeader>
     <div class="content py-5 slim-slider flow-auto f-s-c">
       <div class="wrapper w-60vw">
@@ -122,17 +145,33 @@ function uploadImageFile(formData: FormData) {
               <EnterTags
                 width="w-100%"
                 v-model="titleTagToJson"
-                :advance="[{ value: '你' }, { value: '好' }]"
+                :content-min="2"
+                :advance="[{ value: '涨知识' }, { value: '图文教程' }, { value: '问题咨询' }]"
                 :limit="5" />
             </el-form-item>
             <el-form-item label="描述 Tag">
-              <EnterTags width="w-100%" v-model="descTagToJson" :limit="5" />
+              <EnterTags
+                width="w-100%"
+                :content-min="2"
+                :advance="[
+                  { value: '关系图' },
+                  { value: '鱼骨图' },
+                  { value: '甘特图' },
+                  { value: '时间轴' }
+                ]"
+                v-model="descTagToJson"
+                :limit="5" />
             </el-form-item>
-            <el-form-item label="帖子封面"> </el-form-item>
+            <el-form-item label="帖子封面">
+              <MultiImgsUpload
+                v-model="descImgsToJson"
+                :remove-file="removeDescImgItem"
+                :start-upload="startUploadDescImgs" />
+            </el-form-item>
             <el-form-item label="帖子类型"> </el-form-item>
             <el-form-item>
               <div class="f-c-e w-100%">
-                <el-button type="primary">发表帖子</el-button>
+                <el-button type="primary" @click="startCreateArticle">发表帖子</el-button>
               </div>
             </el-form-item>
           </el-form>
@@ -143,7 +182,7 @@ function uploadImageFile(formData: FormData) {
 </template>
 
 <style scoped lang="scss">
-.create-post {
+.create-article {
   background-image: url(https://www.miyoushe.com/_nuxt/img/background.cd0a312.png);
   background-position: 0 5rem;
   background-repeat: no-repeat;

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 /**
- * @description 头像上传组件
+ * @description 多文件上传组件
  * @author zheng
- * @since 2023/10/10
+ * @since 2023/10/20
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
@@ -10,20 +10,28 @@ import { genFileId } from "element-plus";
 import type { UploadInstance, UploadProps, UploadRawFile } from "element-plus";
 
 const props = defineProps({
-  imgUrl: {
-    type: String,
+  modelValue: {
+    type: Array as PropType<string[]>,
     required: true
   },
   startUpload: {
     type: Function as PropType<(formData: FormData) => XMLHttpRequest | Promise<unknown>>,
     required: true
+  },
+  removeFile: {
+    type: Function as PropType<(item: string, callback: Function) => void>
+  },
+  limit: {
+    type: Number,
+    default: 3
   }
 });
 
 const emits = defineEmits<{
-  (event: "update:imgUrl", imgUrl: string): void;
+  (event: "update:modelValue", urls: string[]): void;
 }>();
 
+const urls = ref<string[]>([]);
 const upload = ref<UploadInstance>();
 const dialog = ref(false);
 
@@ -45,7 +53,8 @@ const beforeUpload: UploadProps["beforeUpload"] = rawFile => {
 const onSuccessUpload: UploadProps["onSuccess"] = response => {
   dialog.value = !dialog.value;
   upload.value!.clearFiles();
-  emits("update:imgUrl", response.data.data);
+  urls.value.push(response.data.data);
+  emits("update:modelValue", urls.value);
 };
 
 function startUpload(options: any): XMLHttpRequest | Promise<unknown> {
@@ -53,27 +62,49 @@ function startUpload(options: any): XMLHttpRequest | Promise<unknown> {
   formData.append("file", options.file);
   return props.startUpload(formData);
 }
+
+function deleteFileItem(item: string, index: number) {
+  props.removeFile(item, () => {
+    urls.value.splice(index, 1);
+  });
+}
+
+function openUploadDialog() {
+  if (urls.value.length === props.limit) {
+    ElMessage.error(`最多只能上传 ${props.limit} 张图片`);
+  } else {
+    dialog.value = !dialog.value;
+  }
+}
 </script>
 
 <template>
-  <div class="avatar-upload">
-    <div class="avatar-box h-40 w-40 relative">
-      <div class="hover-box rd-50% h-100% w-100%" @click="dialog = !dialog">
-        <div class="f-c-c h-100% w-100%">点击上传头像</div>
+  <div class="multi-imgs-upload">
+    <div class="f-c-s">
+      <div
+        class="hover f-c-c b-1 b-solid b-border-primary h-30 w-30 mr-2 rd-2"
+        @click="openUploadDialog">
+        点击上传图片
       </div>
-      <img :src="imgUrl" class="rd-50% h-100% w-100%" />
+      <div class="relative h-30 w-30 mr-2" v-for="(item, index) in urls">
+        <div v-if="urls.length" class="absolute top-2 right-2">
+          <div class="bg-white rd-2 opacity-80" @click="deleteFileItem(item, index)">
+            <div class="hover i-tabler-x"></div>
+          </div>
+        </div>
+        <img :src="item" class="object-cover rd-2 h-100% w-100%" />
+      </div>
     </div>
-    <el-dialog v-model="dialog" title="上传头像" width="30%">
+    <el-dialog v-model="dialog" title="上传图片" width="30%">
       <el-upload
         drag
         ref="upload"
         accept="image/png, image/jpeg"
-        :limit="1"
+        :limit="limit"
         :on-exceed="handleExceed"
         :on-success="onSuccessUpload"
         :before-upload="beforeUpload"
-        :http-request="startUpload"
-        list-type="picture">
+        :http-request="startUpload">
         <div class="f-c-c">
           <div class="i-ep-upload-filled w-30 h-30 text-text-secondary"></div>
         </div>
@@ -86,21 +117,4 @@ function startUpload(options: any): XMLHttpRequest | Promise<unknown> {
   </div>
 </template>
 
-<style scoped lang="scss">
-.avatar-box {
-  .hover-box {
-    display: none;
-  }
-
-  &:hover {
-    .hover-box {
-      display: block;
-      position: absolute;
-      top: 0;
-      right: 0;
-      background-color: var(--bleuon-bg-color);
-      opacity: 0.8;
-    }
-  }
-}
-</style>
+<style scoped lang="scss"></style>

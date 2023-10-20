@@ -46,6 +46,7 @@ function onEnter() {
   } else {
     tagList.value.push(content.value);
     emits("update:modelValue", tagList.value);
+    content.value = "";
   }
 }
 
