@@ -1,7 +1,7 @@
 /**
  * @description 程序入口函数
  * @author zheng
- * @since 2023/6/23
+ * @since 2023/10/22
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
@@ -17,7 +17,7 @@ import "@common/utils/local-storage";
 /* Import Axios */
 import { createRequest } from "@common/requests/use-axios";
 
-createRequest("mainapp");
+createRequest("subapp");
 
 const app = createApp(App);
 app.use(router);

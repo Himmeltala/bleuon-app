@@ -5,7 +5,7 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import request from "@common/apis/use-axios";
+import { http } from "@common/requests/use-axios";
 
 /**
  * 通过条件查询图形列表
@@ -14,6 +14,6 @@ import request from "@common/apis/use-axios";
  * @returns
  */
 export async function findAllByCriteria(model: { type: "basic" | "flowchart" }) {
-  const { data } = await request.get<R>("/cell/find/all/by/criteria", { params: model });
+  const { data } = await http.get<R>("/cell/find/all/by/criteria", { params: model });
   return data.data;
 }

@@ -9,7 +9,7 @@
 // jointjs
 import { downloadWithDataURI } from "@common/lib/jointjs/utils";
 
-import { FlowchartAPI } from "@common/apis";
+import { FlowchartHttp } from "@common/requests";
 import { DateUtil } from "@common/utils";
 
 // components
@@ -21,7 +21,7 @@ const mainData = ref<FlowchartModel[]>([]);
 const searchVal = ref("");
 
 async function fetchData(params?: any) {
-  mainData.value = await FlowchartAPI.findAllCollectByCriteria({
+  mainData.value = await FlowchartHttp.findAllCollectByCriteria({
     ...params,
     collectingCid: token.id
   });
@@ -36,11 +36,11 @@ function download(data: FlowchartModel) {
 }
 
 function replicate(data: FlowchartModel) {
-  FlowchartAPI.replicate({ ...data, consumerId: token.id }, res => ElMessage.success(res.message));
+  FlowchartHttp.replicate({ ...data, consumerId: token.id }, res => ElMessage.success(res.message));
 }
 
 function remove(flowchartId: string, index: number) {
-  FlowchartAPI.deleteCollecting({ flowchartId, collectingCid: token.id }, () => {
+  FlowchartHttp.deleteCollecting({ flowchartId, collectingCid: token.id }, () => {
     mainData.value.splice(index, 1);
   });
 }

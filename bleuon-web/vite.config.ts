@@ -81,13 +81,14 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: {
         "@mainapp": resolve(__dirname, "apps/mainapp"),
+        "@subapp": resolve(__dirname, "apps/subapp"),
         "@common": resolve(__dirname, "common")
       }
     },
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: `@use "@mainapp/scss/mixins.scss" as *; @use "sass:math";`
+          additionalData: `@use "sass:math";`
         }
       }
     }

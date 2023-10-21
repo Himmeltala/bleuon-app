@@ -6,7 +6,7 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import { BlueprintAPI } from "@common/apis";
+import { BlueprintHttp } from "@common/requests";
 import { DateUtil } from "@common/utils";
 import { ElSelectData } from "@common/data";
 
@@ -20,7 +20,7 @@ const ranking = ref("");
 const mainData = shallowRef<BlueprintFlowchartModel[]>();
 
 async function fetchData(params?: BlueprintFlowchartModel) {
-  mainData.value = await BlueprintAPI.findAll(params);
+  mainData.value = await BlueprintHttp.findAll(params);
   triggerRef(mainData);
 }
 

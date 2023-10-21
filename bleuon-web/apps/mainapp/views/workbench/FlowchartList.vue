@@ -10,7 +10,7 @@
 import { downloadWithDataURI } from "@common/lib/jointjs/utils";
 
 import { DateUtil, FormValidatorsUtil } from "@common/utils";
-import { FlowchartAPI } from "@common/apis";
+import { FlowchartHttp } from "@common/requests";
 
 // components
 import File from "@mainapp/components/File.vue";
@@ -31,14 +31,14 @@ const fileNameRules = reactive({
 const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
 
 async function fetchData(params: any) {
-  mainData.value = await FlowchartAPI.findAllByCriteria({
+  mainData.value = await FlowchartHttp.findAllByCriteria({
     ...params,
     collectingCid: token.id
   });
 }
 
 function upgrade() {
-  FlowchartAPI.upgrade(mainData.value[clickedIndex.value], { nomessage: false }, () => {
+  FlowchartHttp.upgrade(mainData.value[clickedIndex.value], { nomessage: false }, () => {
     dialogVisible.value = !dialogVisible.value;
   });
 }
@@ -53,13 +53,13 @@ function download(data: FlowchartModel) {
 }
 
 function replicate(data: FlowchartModel) {
-  FlowchartAPI.replicate({ ...data, consumerId: token.id }, async () => {
+  FlowchartHttp.replicate({ ...data, consumerId: token.id }, async () => {
     await fetchData({});
   });
 }
 
 function remove(id: string, index: number) {
-  FlowchartAPI.deleteById({ id }, async () => {
+  FlowchartHttp.deleteById({ id }, async () => {
     mainData.value.splice(index, 1);
   });
 }

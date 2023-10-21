@@ -5,7 +5,7 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import request from "@common/apis/use-axios";
+import { http } from "@common/requests/use-axios";
 
 /**
  * 更新流程图
@@ -18,7 +18,7 @@ export function upgrade(
   config?: { nomessage: boolean },
   success?: (data: R) => void
 ) {
-  request.put<R>("/flowchart/upgrade", model, config).then(({ data }) => {
+  http.put<R>("/flowchart/upgrade", model, config).then(({ data }) => {
     success && success(data);
   });
 }
@@ -30,7 +30,7 @@ export function upgrade(
  * @returns
  */
 export async function findById(model: { id: string }) {
-  const { data } = await request.get<R<FlowchartModel>>("/flowchart/find/by/id", { params: model });
+  const { data } = await http.get<R<FlowchartModel>>("/flowchart/find/by/id", { params: model });
   return data.data;
 }
 
@@ -43,7 +43,7 @@ export async function findById(model: { id: string }) {
  */
 export async function findIsShare(model: { id: string }, error?: Function) {
   try {
-    const { data } = await request.get<R<FlowchartModel>>("/public/flowchart/find/share", {
+    const { data } = await http.get<R<FlowchartModel>>("/public/flowchart/find/share", {
       params: model
     });
     return data.data;
@@ -66,7 +66,7 @@ export async function findAllByCriteria(criteria: {
   isShare?: number;
   isLegal?: number;
 }) {
-  const { data } = await request.post<R<FlowchartModel[]>>(
+  const { data } = await http.post<R<FlowchartModel[]>>(
     "/flowchart/find/all/by/criteria",
     criteria
   );
@@ -79,7 +79,7 @@ export async function findAllByCriteria(criteria: {
  * @param success
  */
 export function add(model: { consumerId: string }, success: (res: R<FlowchartModel>) => void) {
-  request.post<R<FlowchartModel>>("/flowchart/add", model).then(({ data }) => {
+  http.post<R<FlowchartModel>>("/flowchart/add", model).then(({ data }) => {
     success && success(data);
   });
 }
@@ -91,7 +91,7 @@ export function add(model: { consumerId: string }, success: (res: R<FlowchartMod
  * @param success
  */
 export function replicate(model: FlowchartModel, success?: (res: R) => void) {
-  request.post<R<FlowchartModel>>("/flowchart/replicate", model).then(({ data }) => {
+  http.post<R<FlowchartModel>>("/flowchart/replicate", model).then(({ data }) => {
     success && success(data);
   });
 }
@@ -103,7 +103,7 @@ export function replicate(model: FlowchartModel, success?: (res: R) => void) {
  * @param success
  */
 export function deleteById(model: { id?: string }, success: Function) {
-  request
+  http
     .delete<R>("/flowchart/delete/by/id", {
       params: model
     })
@@ -122,7 +122,7 @@ export async function findAllCollectByCriteria(model: {
   filename?: string;
   collectingCid: string;
 }) {
-  const { data } = await request.get<R<FlowchartModel[]>>(
+  const { data } = await http.get<R<FlowchartModel[]>>(
     "/flowchart/find/all/collect/by/criteria",
     {
       params: model
@@ -141,7 +141,7 @@ export async function addCollecting(
   model: { flowchartId: string; collectingCid: string },
   success?: Function
 ) {
-  request.post("/flowchart/add/collecting", model).then(() => {
+  http.post("/flowchart/add/collecting", model).then(() => {
     success && success();
   });
 }
@@ -156,7 +156,7 @@ export async function deleteCollecting(
   model: { flowchartId: string; collectingCid: string },
   success?: Function
 ) {
-  await request.delete<R>("/flowchart/delete/collecting", { params: model }).then(() => {
+  await http.delete<R>("/flowchart/delete/collecting", { params: model }).then(() => {
     success && success();
   });
 }
@@ -168,7 +168,7 @@ export async function deleteCollecting(
  * @param success
  */
 export function release(model: BlueprintFlowchartModel, success?: Function) {
-  request.post<R>("/flowchart/release", model).then(() => {
+  http.post<R>("/flowchart/release", model).then(() => {
     success && success();
   });
 }
@@ -180,7 +180,7 @@ export function release(model: BlueprintFlowchartModel, success?: Function) {
  * @param success
  */
 export function cancelRelease(model: { flowchartId: string }, success?: Function) {
-  request.delete<R>("/flowchart/cancel/release", { params: model }).then(() => {
+  http.delete<R>("/flowchart/cancel/release", { params: model }).then(() => {
     success && success();
   });
 }

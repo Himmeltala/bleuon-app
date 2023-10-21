@@ -5,7 +5,7 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import request from "@common/apis/use-axios";
+import { http } from "@common/requests/use-axios";
 
 /**
  * 上传图片
@@ -14,7 +14,7 @@ import request from "@common/apis/use-axios";
  * @returns
  */
 export function uploadImageFile(formData: FormData) {
-  return request.post<R>("/public/file/upload/image", formData);
+  return http.post<R>("/public/file/upload/image", formData);
 }
 
 /**
@@ -24,7 +24,7 @@ export function uploadImageFile(formData: FormData) {
  */
 export function deleteImageFile(str: string, success?: Function) {
   const params = new URL(str).searchParams;
-  request
+  http
     .delete<R>("/public/file/delete/image", {
       params: { filename: params.get("filename"), filepath: params.get("filepath") }
     })

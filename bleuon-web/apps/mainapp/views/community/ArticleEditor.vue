@@ -6,7 +6,7 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import { DiscussionAPI, FileAPI } from "@common/apis";
+import { DiscussionHttp, FileHttp } from "@common/requests";
 import { FormValidatorsUtil, TextUtil } from "@common/utils";
 import { ElSelectData } from "@common/data";
 
@@ -96,22 +96,22 @@ function triggValidate() {
 
 function startUploadDescImgs(formData: FormData) {
   formData.append("filepath", "/article/desc");
-  return FileAPI.uploadImageFile(formData);
+  return FileHttp.uploadImageFile(formData);
 }
 
 function removeDescImgItem(str: string, callback: Function) {
-  FileAPI.deleteImageFile(str, () => callback());
+  FileHttp.deleteImageFile(str, () => callback());
 }
 
 function uploadImageFile(formData: FormData) {
   formData.append("filepath", "/article/content");
-  return FileAPI.uploadImageFile(formData);
+  return FileHttp.uploadImageFile(formData);
 }
 
 function startCreateArticle() {
   FormValidatorsUtil.validate(formEl.value, () => {
     formData.value.consumerId = token.id;
-    DiscussionAPI.addArticle(formData.value, () => {
+    DiscussionHttp.addArticle(formData.value, () => {
       location.reload();
     });
   });
@@ -127,7 +127,7 @@ const type = ref();
 function repostArticle() {
   FormValidatorsUtil.validate(formEl.value, () => {
     formData.value.consumerId = token.id;
-    DiscussionAPI.upgradeDetail(formData.value);
+    DiscussionHttp.upgradeDetail(formData.value);
   });
 }
 
@@ -135,7 +135,7 @@ onMounted(async () => {
   type.value = route.query?.type.toString();
   if (type.value === "edit") {
     const id = route.query.id.toString();
-    formData.value = await DiscussionAPI.findDetailByCriteria({ articleId: id });
+    formData.value = await DiscussionHttp.findDetailByCriteria({ articleId: id });
     classicCkEditor.value.initalData(formData.value.content);
     multiImgsUpload.value.initalData(JSON.parse(formData.value.descImgs));
     descEnterTags.value.initalData(JSON.parse(formData.value.descTag));

@@ -5,7 +5,7 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import request from "@common/apis/use-axios";
+import { http } from "@common/requests/use-axios";
 
 /**
  * 获取所有流程图模板
@@ -14,7 +14,7 @@ import request from "@common/apis/use-axios";
  * @returns
  */
 export async function findAll(model?: BlueprintFlowchartModel) {
-  const { data } = await request.get<R<BlueprintFlowchartModel[]>>("/blueprint/find/all", {
+  const { data } = await http.get<R<BlueprintFlowchartModel[]>>("/blueprint/find/all", {
     params: model
   });
   return data.data;
@@ -27,7 +27,7 @@ export async function findAll(model?: BlueprintFlowchartModel) {
  * @returns
  */
 export async function findById(model: BlueprintFlowchartModel) {
-  const { data } = await request.get<R<BlueprintFlowchartModel>>("/blueprint/find/by/id", {
+  const { data } = await http.get<R<BlueprintFlowchartModel>>("/blueprint/find/by/id", {
     params: model
   });
   return data.data;
@@ -44,7 +44,7 @@ export async function replicate(
   consumerId: string,
   success?: (res: R) => void
 ) {
-  request.post<R>(`/blueprint/replicate/${consumerId}`, model).then(({ data }) => {
+  http.post<R>(`/blueprint/replicate/${consumerId}`, model).then(({ data }) => {
     success && success(data);
   });
 }
@@ -61,7 +61,7 @@ export async function upgrade(
   config?: { nomessage: boolean },
   success?: (res: R) => void
 ) {
-  request.put("/blueprint/upgrade", model, config).then(({ data }) => {
+  http.put("/blueprint/upgrade", model, config).then(({ data }) => {
     success && success(data);
   });
 }
@@ -77,7 +77,7 @@ export function addCollecting(
   consumerId: string,
   success?: (res: R) => void
 ) {
-  request
+  http
     .post<R>(`/blueprint/add/collecting/${consumerId}`, model)
     .then(({ data }) => success && success(data));
 }

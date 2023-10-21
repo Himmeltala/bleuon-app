@@ -13,7 +13,7 @@ import { dia } from "jointjs";
 import { createJointjs } from "@common/lib/jointjs";
 
 import { DateUtil } from "@common/utils";
-import { BlueprintAPI } from "@common/apis";
+import { BlueprintHttp } from "@common/requests";
 import { JointJsEventService } from "@mainapp/service/diagraming/flowchart/listener-service";
 import CommonHeader from "@mainapp/fragments/CommonHeader.vue";
 
@@ -25,15 +25,15 @@ const mainData = ref<BlueprintFlowchartModel>();
 const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
 
 async function fetchData(params: BlueprintFlowchartModel) {
-  mainData.value = await BlueprintAPI.findById(params);
+  mainData.value = await BlueprintHttp.findById(params);
 }
 
 function replicate() {
-  BlueprintAPI.replicate(mainData.value, token.id, message => ElMessage.success(message.message));
+  BlueprintHttp.replicate(mainData.value, token.id, message => ElMessage.success(message.message));
 }
 
 function collect() {
-  BlueprintAPI.addCollecting(mainData.value, token.id);
+  BlueprintHttp.addCollecting(mainData.value, token.id);
 }
 
 await fetchData({ id: route.params.id.toString() });
@@ -86,7 +86,7 @@ onMounted(() => {
     "blank:mousewheel": evt => events.onMousewheelBlank(evt, paper.value)
   });
 
-  BlueprintAPI.upgrade(
+  BlueprintHttp.upgrade(
     { views: mainData.value.views + 1, id: mainData.value.id },
     { nomessage: true }
   );

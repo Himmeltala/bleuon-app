@@ -7,7 +7,7 @@
  */
 
 import { DateUtil, TextUtil } from "@common/utils";
-import { DiscussionAPI, FileAPI, ConsumerAPI } from "@common/apis";
+import { DiscussionHttp, FileHttp, ConsumerHttp } from "@common/requests";
 
 import CommonHeader from "@mainapp/fragments/CommonHeader.vue";
 
@@ -18,19 +18,19 @@ const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
 
 async function fetchData(params: any) {
   const id = route.params.id.toString();
-  mainData.value = await DiscussionAPI.findDetailByCriteria({ ...params, ...{ articleId: id } });
+  mainData.value = await DiscussionHttp.findDetailByCriteria({ ...params, ...{ articleId: id } });
 }
 
 async function fetchCommentList(params: any) {
   const id = route.params.id.toString();
-  commentList.value = await DiscussionAPI.findCommentsByCriteria({
+  commentList.value = await DiscussionHttp.findCommentsByCriteria({
     ...params,
     ...{ articleId: id }
   });
 }
 
 function diggArticle() {
-  DiscussionAPI.upgradeDetail(
+  DiscussionHttp.upgradeDetail(
     { id: mainData.value.id, digg: mainData.value.digg + 1 },
     true,
     () => {
@@ -41,7 +41,7 @@ function diggArticle() {
 }
 
 function buryArticle() {
-  DiscussionAPI.upgradeDetail(
+  DiscussionHttp.upgradeDetail(
     { id: mainData.value.id, bury: mainData.value.bury + 1 },
     true,
     () => {
@@ -55,11 +55,11 @@ const commentContent = ref("");
 
 function uploadCommentImage(formData: FormData) {
   formData.append("filepath", "/article/comments");
-  return FileAPI.uploadImageFile(formData);
+  return FileHttp.uploadImageFile(formData);
 }
 
 function collectConsumer() {
-  ConsumerAPI.addCollecting({ collectingCid: token.id, consumerId: mainData.value.consumer.id });
+  ConsumerHttp.addCollecting({ collectingCid: token.id, consumerId: mainData.value.consumer.id });
 }
 
 function addComment() {
@@ -68,7 +68,7 @@ function addComment() {
     ElMessage.error("发表至少 3 个字的评论！");
     return;
   }
-  DiscussionAPI.addComment(
+  DiscussionHttp.addComment(
     {
       articleId: mainData.value.id,
       consumerId: token.id,
@@ -85,7 +85,7 @@ function addComment() {
 }
 
 function deleteComment(id: string) {
-  DiscussionAPI.deleteComment(
+  DiscussionHttp.deleteComment(
     { id, articleId: mainData.value.id, consumerId: token.id },
     async () => {
       await fetchCommentList({
@@ -99,12 +99,12 @@ function deleteComment(id: string) {
 
 function diggComment(item: ArticleCommentModel) {
   item.digg += 1;
-  DiscussionAPI.upgradeComment({ id: item.id, articleId: mainData.value.id, digg: item.digg });
+  DiscussionHttp.upgradeComment({ id: item.id, articleId: mainData.value.id, digg: item.digg });
 }
 
 function buryComment(item: ArticleCommentModel) {
   item.bury += 1;
-  DiscussionAPI.upgradeComment({ id: item.id, articleId: mainData.value.id, bury: item.bury });
+  DiscussionHttp.upgradeComment({ id: item.id, articleId: mainData.value.id, bury: item.bury });
 }
 
 const isCommentDateAsc = ref(true);
@@ -135,7 +135,7 @@ async function handleCurrentChange() {
 
 onMounted(() => {
   mainData.value.views += 1;
-  DiscussionAPI.upgradeDetail({ id: mainData.value.id, views: mainData.value.views }, true);
+  DiscussionHttp.upgradeDetail({ id: mainData.value.id, views: mainData.value.views }, true);
 });
 
 await fetchData({});

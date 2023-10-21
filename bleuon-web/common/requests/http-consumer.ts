@@ -5,7 +5,7 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import request from "@common/apis/use-axios";
+import { http } from "@common/requests/use-axios";
 
 /**
  * 获取验证码
@@ -19,7 +19,7 @@ export function askMailCaptcha(
   },
   success?: Function
 ) {
-  request.get<R>("/public/entrance/aks/email-captcha", { params: model }).then(({ data }) => {
+  http.get<R>("/public/entrance/aks/email-captcha", { params: model }).then(({ data }) => {
     success && success(data);
   });
 }
@@ -36,7 +36,7 @@ export function askLoginEmailCaptcha(
   },
   success?: Function
 ) {
-  request.get<R>("/public/entrance/ask/login-email-captcha", { params: model }).then(({ data }) => {
+  http.get<R>("/public/entrance/ask/login-email-captcha", { params: model }).then(({ data }) => {
     success && success(data);
   });
 }
@@ -53,7 +53,7 @@ export function askRegisterEmailCaptcha(
   },
   success?: Function
 ) {
-  request
+  http
     .get<R>("/public/entrance/ask/register-email-captcha", { params: model })
     .then(({ data }) => {
       success && success(data);
@@ -72,7 +72,7 @@ export function askResetEmailCaptcha(
   },
   success?: Function
 ) {
-  request.get<R>("/public/entrance/ask/reset-email-captcha", { params: model }).then(({ data }) => {
+  http.get<R>("/public/entrance/ask/reset-email-captcha", { params: model }).then(({ data }) => {
     success && success(data);
   });
 }
@@ -90,7 +90,7 @@ export function verifyEmailCaptcha(
   },
   success: (res: Token) => void
 ) {
-  request.post<R<Token>>("/public/entrance/verify/email-captcha", model).then(({ data }) => {
+  http.post<R<Token>>("/public/entrance/verify/email-captcha", model).then(({ data }) => {
     success(data.data);
   });
 }
@@ -107,7 +107,7 @@ export function verifyRegisterEmailCaptcha(
   params: { email: string; captcha: string },
   success?: Function
 ) {
-  request
+  http
     .post<R>("/public/entrance/verify/register-email-captcha", model, { params })
     .then(({ data }) => {
       success && success(data);
@@ -127,7 +127,7 @@ export function verifyLoginEmailCaptcha(
   },
   success: (res: Token) => void
 ) {
-  request.post<R<Token>>("/public/entrance/verify/login-email-captcha", model).then(({ data }) => {
+  http.post<R<Token>>("/public/entrance/verify/login-email-captcha", model).then(({ data }) => {
     success(data.data);
   });
 }
@@ -139,7 +139,7 @@ export function verifyLoginEmailCaptcha(
  * @param success
  */
 export function accountRegister(model: ConsumerModel, success?: Function) {
-  request.post<R>("/public/entrance/account-register", model).then(({ data }) => {
+  http.post<R>("/public/entrance/account-register", model).then(({ data }) => {
     success && success(data);
   });
 }
@@ -155,7 +155,7 @@ export function authLogin(model: ConsumerModel, success: (res: Token) => void) {
     "Content-Type": "application/x-www-form-urlencoded"
   };
 
-  request.post<R<Token>>("/auth/login", model, { headers }).then(({ data }) => {
+  http.post<R<Token>>("/auth/login", model, { headers }).then(({ data }) => {
     success(data.data);
   });
 }
@@ -167,7 +167,7 @@ export function authLogin(model: ConsumerModel, success: (res: Token) => void) {
  * @param error
  */
 export function authLogout(success?: Function, error?: Function) {
-  request.post<R>("/auth/logout").then(({ data }) => {
+  http.post<R>("/auth/logout").then(({ data }) => {
     if (data.code === 200) {
       location.reload();
       localStorage.removeItem(KeyVals.MAINAPP_TOKEN_KEY);
@@ -183,7 +183,7 @@ export function authLogout(success?: Function, error?: Function) {
  * @param success
  */
 export function resetPassword(model: ConsumerModel, success: Function) {
-  request.post<R>("/public/entrance/reset-password", model).then(({ data }) => {
+  http.post<R>("/public/entrance/reset-password", model).then(({ data }) => {
     success(data);
   });
 }
@@ -195,7 +195,7 @@ export function resetPassword(model: ConsumerModel, success: Function) {
  * @returns
  */
 export async function findById(id: string) {
-  const { data } = await request.get<R<ConsumerModel>>(`/consumer/find/${id}`);
+  const { data } = await http.get<R<ConsumerModel>>(`/consumer/find/${id}`);
   return data.data;
 }
 
@@ -206,7 +206,7 @@ export async function findById(id: string) {
  * @param success
  */
 export async function upgrade(model: ConsumerModel, success?: Function) {
-  request.put<R>(`/consumer/upgrade`, model).then(({ data }) => {
+  http.put<R>(`/consumer/upgrade`, model).then(({ data }) => {
     success && success(data);
   });
 }
@@ -219,7 +219,7 @@ export async function upgrade(model: ConsumerModel, success?: Function) {
  * @returns
  */
 export function upgradeAvatar(formData: FormData, id: string) {
-  return request.put<R>(`/consumer/upgrade/avatar/${id}`, formData);
+  return http.put<R>(`/consumer/upgrade/avatar/${id}`, formData);
 }
 
 /**
@@ -232,7 +232,7 @@ export async function findAllDynamicByCriteria(criteria: {
   consumerId: string;
   sequences?: { isAsc: boolean; col: string }[];
 }) {
-  const { data } = await request.post<R<DynamicModel[]>>(
+  const { data } = await http.post<R<DynamicModel[]>>(
     "/consumer/find/all/dynamic/criteria",
     criteria
   );
@@ -246,7 +246,7 @@ export async function findAllDynamicByCriteria(criteria: {
  * @param success
  */
 export function upgradeDynamic(model: DynamicModel, success?: Function) {
-  request
+  http
     .put<R>("/consumer/upgrade/dynamic", model, {
       nomessage: true
     })
@@ -262,7 +262,7 @@ export function upgradeDynamic(model: DynamicModel, success?: Function) {
  * @param success
  */
 export function deleteDynamic(model: DynamicModel, success?: Function) {
-  request.delete<R>("/consumer/delete/dynamic", { params: model }).then(() => {
+  http.delete<R>("/consumer/delete/dynamic", { params: model }).then(() => {
     success && success();
   });
 }
@@ -274,7 +274,7 @@ export function deleteDynamic(model: DynamicModel, success?: Function) {
  * @param success
  */
 export function addDynamic(model: DynamicModel, success?: Function) {
-  request.post<R>("/consumer/add/dynamic", model).then(() => {
+  http.post<R>("/consumer/add/dynamic", model).then(() => {
     success && success();
   });
 }
@@ -290,7 +290,7 @@ export async function findAllFlowchart(model: {
   isPublic?: 1 | 0;
   isShare?: 1 | 0;
 }) {
-  const { data } = await request.get<R<FlowchartModel[]>>("/consumer/find/all/flowchart", {
+  const { data } = await http.get<R<FlowchartModel[]>>("/consumer/find/all/flowchart", {
     params: model
   });
   return data.data;
@@ -307,7 +307,7 @@ export async function findAllCollectingConsumerByCriteria(model: {
   remark?: string;
   sequences?: { isAsc: boolean; col: string }[];
 }) {
-  const { data } = await request.get<R<CollectingConsumerModel[]>>(
+  const { data } = await http.get<R<CollectingConsumerModel[]>>(
     "/consumer/find/all/collecting/criteria",
     { params: model }
   );
@@ -321,7 +321,7 @@ export async function findAllCollectingConsumerByCriteria(model: {
  * @param success
  */
 export function addCollecting(model: CollectingConsumerModel, success?: Function) {
-  request.post<R>("/consumer/add/collecting", model).then(() => {
+  http.post<R>("/consumer/add/collecting", model).then(() => {
     success && success();
   });
 }
@@ -333,7 +333,7 @@ export function addCollecting(model: CollectingConsumerModel, success?: Function
  * @param success
  */
 export function deleteCollecting(model: CollectingConsumerModel, success?: Function) {
-  request.delete<R>("/consumer/delete/collecting", { params: model }).then(() => {
+  http.delete<R>("/consumer/delete/collecting", { params: model }).then(() => {
     success && success();
   });
 }

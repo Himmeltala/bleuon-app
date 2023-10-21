@@ -6,7 +6,7 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import { ConsumerAPI } from "@common/apis";
+import { ConsumerHttp } from "@common/requests";
 import { DateUtil } from "@common/utils";
 
 import File from "@mainapp/components/File.vue";
@@ -18,7 +18,7 @@ const props = defineProps({
 });
 
 const mainData = ref(
-  await ConsumerAPI.findAllFlowchart({ collectingCid: `${props.consumer.id}`, isShare: 1 })
+  await ConsumerHttp.findAllFlowchart({ collectingCid: `${props.consumer.id}`, isShare: 1 })
 );
 </script>
 

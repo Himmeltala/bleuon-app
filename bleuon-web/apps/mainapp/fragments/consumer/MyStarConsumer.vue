@@ -6,7 +6,7 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import { ConsumerAPI } from "@common/apis";
+import { ConsumerHttp } from "@common/requests";
 
 const props = defineProps({
   consumer: {
@@ -15,11 +15,11 @@ const props = defineProps({
 });
 
 const mainData = ref(
-  await ConsumerAPI.findAllCollectingConsumerByCriteria({ collectingCid: props.consumer.id })
+  await ConsumerHttp.findAllCollectingConsumerByCriteria({ collectingCid: props.consumer.id })
 );
 
 function cancelStar(item: CollectingConsumerModel, index: number) {
-  ConsumerAPI.deleteCollecting({ id: item.id }, () => {
+  ConsumerHttp.deleteCollecting({ id: item.id }, () => {
     mainData.value.splice(index, 1);
   });
 }

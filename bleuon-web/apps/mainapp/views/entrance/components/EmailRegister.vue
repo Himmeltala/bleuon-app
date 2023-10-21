@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { FormValidatorsUtil } from "@common/utils";
-import { ConsumerAPI } from "@common/apis";
+import { ConsumerHttp } from "@common/requests";
 
 const coudButtonCount = ref(60);
 let interval: number;
@@ -61,13 +61,13 @@ const formRules = reactive<FormRules>({
 
 function confirmGetVerifyCode() {
   FormValidatorsUtil.getVerifyCode(interval, coudButtonCount, codeButtonDisabled, callback => {
-    ConsumerAPI.askRegisterEmailCaptcha({ email: formData.email }, () => callback());
+    ConsumerHttp.askRegisterEmailCaptcha({ email: formData.email }, () => callback());
   });
 }
 
 function confirmSubmitForm() {
   FormValidatorsUtil.validate(formRef.value, () => {
-    ConsumerAPI.verifyRegisterEmailCaptcha(
+    ConsumerHttp.verifyRegisterEmailCaptcha(
       formData,
       { email: formData.email, captcha: formData.captcha },
       () => {

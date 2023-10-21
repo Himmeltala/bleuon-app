@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { DateUtil, TextUtil } from "@common/utils";
-import { ConsumerAPI, FileAPI } from "@common/apis";
+import { ConsumerHttp, FileHttp } from "@common/requests";
 
 const props = defineProps({
   consumer: {
@@ -13,7 +13,7 @@ const ckeditorValue = ref("");
 const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
 
 async function fetchList() {
-  list.value = await ConsumerAPI.findAllDynamicByCriteria({
+  list.value = await ConsumerHttp.findAllDynamicByCriteria({
     sequences: [{ isAsc: false, col: "create_date" }],
     consumerId: `${props.consumer.id}`
   });
@@ -21,7 +21,7 @@ async function fetchList() {
 
 function uploadDynamicImage(formData: FormData) {
   formData.append("filepath", "/dynamic");
-  return FileAPI.uploadImageFile(formData);
+  return FileHttp.uploadImageFile(formData);
 }
 
 function commit() {
@@ -31,27 +31,27 @@ function commit() {
     return;
   }
 
-  ConsumerAPI.addDynamic({ content: ckeditorValue.value, consumerId: token.id }, async () => {
+  ConsumerHttp.addDynamic({ content: ckeditorValue.value, consumerId: token.id }, async () => {
     await fetchList();
   });
 }
 
 function digg(item: DynamicModel) {
   item.digg += 1;
-  ConsumerAPI.upgradeDynamic({ digg: item.digg, id: item.id }, () => {
+  ConsumerHttp.upgradeDynamic({ digg: item.digg, id: item.id }, () => {
     ElMessage.success("支持成功！");
   });
 }
 
 function bury(item: DynamicModel) {
   item.bury += 1;
-  ConsumerAPI.upgradeDynamic({ bury: item.bury, id: item.id }, () => {
+  ConsumerHttp.upgradeDynamic({ bury: item.bury, id: item.id }, () => {
     ElMessage.success("反对成功！");
   });
 }
 
 function remove(item: DynamicModel, index: number) {
-  ConsumerAPI.deleteDynamic({ id: item.id }, () => {
+  ConsumerHttp.deleteDynamic({ id: item.id }, () => {
     list.value.splice(index, 1);
   });
 }

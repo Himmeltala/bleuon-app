@@ -6,13 +6,13 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import { ConsumerAPI } from "@common/apis";
+import { ConsumerHttp } from "@common/requests";
 
 const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
-const consumer = ref(await ConsumerAPI.findById(token.id));
+const consumer = ref(await ConsumerHttp.findById(token.id));
 
 function confirmLogout() {
-  ConsumerAPI.authLogout();
+  ConsumerHttp.authLogout();
 }
 
 const root = document.querySelector("html");

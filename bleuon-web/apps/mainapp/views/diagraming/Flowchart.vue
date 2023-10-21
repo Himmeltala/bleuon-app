@@ -18,7 +18,7 @@ import { JointJsEventService } from "@mainapp/service/diagraming/flowchart/liste
 import { ElDatePickerData, ElSelectData } from "@common/data";
 import { FormValidatorsUtil, PreventUtil } from "@common/utils";
 // apis
-import { FlowchartAPI } from "@common/apis";
+import { FlowchartHttp } from "@common/requests";
 // components
 import FooterTools from "@mainapp/fragments/flowchart/FooterTools.vue";
 import HeaderToolsBottom from "@mainapp/fragments/flowchart/HeaderToolsBottom.vue";
@@ -47,7 +47,7 @@ const offsetX = ref(0);
 const offsetY = ref(0);
 
 async function fetchData() {
-  mainData.value = await FlowchartAPI.findById({ id: route.params.id.toString() });
+  mainData.value = await FlowchartHttp.findById({ id: route.params.id.toString() });
 }
 
 await fetchData();
@@ -140,7 +140,7 @@ async function upgradeMetaData(nomessage: boolean, success?: (message: any) => v
     dataUri: await getDataURI(paper.value)
   };
 
-  FlowchartAPI.upgrade(mainData.value, { nomessage }, success);
+  FlowchartHttp.upgrade(mainData.value, { nomessage }, success);
 }
 
 const upgradeThrottle = PreventUtil.throttle(() => upgradeMetaData(true), 300);
@@ -167,7 +167,7 @@ const shareFormRules = reactive<FormRules<any>>({
 function confirmShare() {
   FormValidatorsUtil.validate(shareFormRef.value, () => {
     mainData.value.isShare = 1;
-    FlowchartAPI.upgrade(mainData.value, { nomessage: true }, message => {
+    FlowchartHttp.upgrade(mainData.value, { nomessage: true }, message => {
       if (message.code === 200) {
         ElMessage.success("分享成功！");
       } else {
@@ -180,7 +180,7 @@ function confirmShare() {
 
 function cancelShare() {
   mainData.value.isShare = 0;
-  FlowchartAPI.upgrade(mainData.value, { nomessage: true }, message => {
+  FlowchartHttp.upgrade(mainData.value, { nomessage: true }, message => {
     if (message.code === 200) {
       ElMessage.success("取消分享成功！");
     } else {
@@ -229,14 +229,14 @@ const releaseTagList = ref([]);
 function confirmRelease() {
   FormValidatorsUtil.validate(releaseFormRef.value, () => {
     releaseFormData.tags = JSON.stringify(releaseTagList.value);
-    FlowchartAPI.release({ flowchartId: mainData.value.id, ...releaseFormData }, () => {
+    FlowchartHttp.release({ flowchartId: mainData.value.id, ...releaseFormData }, () => {
       mainData.value.isPublic = 1;
     });
   });
 }
 
 function cancelRelease() {
-  FlowchartAPI.cancelRelease({ flowchartId: mainData.value.id }, () => {
+  FlowchartHttp.cancelRelease({ flowchartId: mainData.value.id }, () => {
     mainData.value.isPublic = 0;
   });
 }

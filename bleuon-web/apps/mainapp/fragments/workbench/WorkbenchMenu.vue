@@ -6,7 +6,7 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import { FlowchartAPI } from "@common/apis";
+import { FlowchartHttp } from "@common/requests";
 
 defineProps({
   activeItem: {
@@ -31,7 +31,7 @@ onBeforeMount(() => {
 });
 
 function createFlowchart() {
-  FlowchartAPI.add({ consumerId: token.id }, res => {
+  FlowchartHttp.add({ consumerId: token.id }, res => {
     router.push(`/flowchart/${res.data.id}`);
   });
 }

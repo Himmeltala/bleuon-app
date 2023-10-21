@@ -6,17 +6,17 @@
  * @link https://github.com/himmelbleu/bleuon-app
  */
 
-import { ConsumerAPI } from "@common/apis";
+import { ConsumerHttp } from "@common/requests";
 import { ElSelectData } from "@common/data";
 import { FormValidatorsUtil, DateUtil } from "@common/utils";
 
 import CommonHeader from "@mainapp/fragments/CommonHeader.vue";
 
 const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
-const mainData = ref(await ConsumerAPI.findById(token.id));
+const mainData = ref(await ConsumerHttp.findById(token.id));
 
 function upgradeBasicData() {
-  ConsumerAPI.upgrade({
+  ConsumerHttp.upgrade({
     id: token.id,
     username: mainData.value.username,
     profession: mainData.value.profession,
@@ -80,22 +80,22 @@ const resetPwdFormRules = reactive<FormRules>({
 
 function getResetPwdCode() {
   FormValidatorsUtil.getVerifyCode(interval, resetButtonCount, resetButtonDisabled, callback => {
-    ConsumerAPI.askResetEmailCaptcha({ email: mainData.value.email }, () => callback());
+    ConsumerHttp.askResetEmailCaptcha({ email: mainData.value.email }, () => callback());
   });
 }
 
 function confirmResetPwd() {
   FormValidatorsUtil.validate(resetPwdFormRef.value, () => {
-    ConsumerAPI.verifyEmailCaptcha(
+    ConsumerHttp.verifyEmailCaptcha(
       { captcha: resetPwdFormData.captcha, email: mainData.value.email },
       () => {
-        ConsumerAPI.upgrade(
+        ConsumerHttp.upgrade(
           {
             id: token.id,
             password: resetPwdFormData.password
           },
           () => {
-            ConsumerAPI.authLogout();
+            ConsumerHttp.authLogout();
           }
         );
       }
@@ -171,7 +171,7 @@ function confirmResetPwd() {
             <div class="w-30% f-c-e cursor-pointer">
               <AvatarUpload
                 v-model:img-url="mainData.avatar"
-                :start-upload="formData => ConsumerAPI.upgradeAvatar(formData, token.id)" />
+                :start-upload="formData => ConsumerHttp.upgradeAvatar(formData, token.id)" />
             </div>
           </div>
           <div class="mt-5 f-c-e text-0.8rem text-text-secondary">
