@@ -1,14 +1,13 @@
 package com.bleuon.service;
 
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bleuon.constant.AuthorityType;
 import com.bleuon.entity.ConsumerModel;
+import com.bleuon.entity.dto.ConsumerDTO;
 import com.bleuon.mapper.AuthorityMapper;
-import com.bleuon.mapper.ConsumerMapper;
+import com.bleuon.service.impl.AdminService;
+import com.bleuon.service.impl.ConsumerService;
 import com.bleuon.utils.http.R;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,19 +16,15 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class EntranceService extends ServiceImpl<ConsumerMapper, ConsumerModel> {
+public class EntranceService {
 
-    private final BCryptPasswordEncoder passwordEncoder;
     private final AuthorityMapper authorityMapper;
+    private final ConsumerService consumerService;
+    private final AdminService adminService;
 
     public R<Object> resetPassword(ConsumerModel model) {
-        UpdateWrapper<ConsumerModel> updateWrapper = new UpdateWrapper<>();
-        String password = passwordEncoder.encode(model.getPassword());
-        updateWrapper
-                .eq("email", model.getEmail())
-                .set("password", password);
-        boolean f = update(model, updateWrapper);
-        if (f) {
+        boolean success = consumerService.upgrade(model);
+        if (success) {
             return R.success("密码重置成功！");
         } else {
             return R.failed("密码重置失败！");
@@ -37,20 +32,19 @@ public class EntranceService extends ServiceImpl<ConsumerMapper, ConsumerModel> 
     }
 
     @Transactional
-    public R<Object> registerByAccount(ConsumerModel body) {
+    public R<Object> registerByAccount(ConsumerModel model) {
         try {
-            ConsumerModel exists = query().eq("username", body.getUsername()).one();
+            ConsumerModel exists = consumerService.findByUname(model.getUsername());
 
             if (!Objects.isNull(exists)) {
                 return R.error("用户名已被注册！");
             }
 
-            body.setPassword(passwordEncoder.encode(body.getPassword()));
-            body.setId(UUID.randomUUID().toString());
+            model.setId(UUID.randomUUID().toString());
+            boolean status = consumerService.add(model);
 
-            boolean status = this.save(body);
             if (status) {
-                authorityMapper.setConsumerAuthority(body.getId(), AuthorityType.USER, body.getUsername());
+                authorityMapper.setConsumerAuthority(model.getId(), AuthorityType.USER, model.getUsername());
                 return R.success("注册成功！");
             } else {
                 return R.error("注册失败！");
@@ -61,23 +55,21 @@ public class EntranceService extends ServiceImpl<ConsumerMapper, ConsumerModel> 
     }
 
     @Transactional
-    public R<Object> registerByEmail(ConsumerModel body) {
+    public R<Object> registerByEmail(ConsumerModel model) {
         try {
-            ConsumerModel exists = query().eq("email", body.getEmail()).one();
+            ConsumerDTO exists = consumerService.findByEmail(model.getEmail());
 
             if (!Objects.isNull(exists)) {
                 return R.error("邮箱已被注册！");
             }
 
             String uuid = UUID.randomUUID().toString();
-
-            body.setId(uuid);
-            body.setUsername("用户_" + uuid);
-            body.setPassword(passwordEncoder.encode(body.getPassword()));
-            boolean status = this.save(body);
+            model.setId(uuid);
+            model.setUsername("用户_" + uuid);
+            boolean status = consumerService.add(model);
 
             if (status) {
-                authorityMapper.setConsumerAuthority(body.getId(), AuthorityType.USER, body.getUsername());
+                authorityMapper.setConsumerAuthority(model.getId(), AuthorityType.USER, model.getUsername());
                 return R.success("注册成功！");
             } else {
                 return R.error("注册失败！");

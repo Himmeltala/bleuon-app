@@ -48,9 +48,7 @@ function confirmSubmitForm() {
   FormValidatorsUtil.validate(formRef.value, () => {
     ConsumerHttp.verifyLoginEmailCaptcha(formData, token => {
       localStorage.setToken(KeyVals.MAINAPP_TOKEN_KEY, token);
-      ConsumerHttp.findById(token.id).then(data => {
-        router.push("/workbench");
-      });
+      router.push("/workbench");
     });
   });
 }

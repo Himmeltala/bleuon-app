@@ -19,4 +19,10 @@ public class AdminService extends ServiceImpl<AdminMapper, AdminModel> implement
 
     private final AdminMapper adminMapper;
 
+    public AdminModel findByAnyUniqueFiled(AdminModel model) {
+        return query().eq("username", model.getUsername())
+                .or().eq("email", model.getUsername())
+                .or().eq("phone", model.getUsername()).one();
+    }
+
 }

@@ -44,6 +44,13 @@ public class ConsumerService extends ServiceImpl<ConsumerMapper, ConsumerModel> 
     }
 
     @Override
+    public ConsumerModel findByUname(String uname) {
+        ConsumerModel exists = query().eq("username", uname).one();
+        if (Objects.isNull(exists)) return null;
+        return exists;
+    }
+
+    @Override
     public ConsumerDTO findByEmail(String email) {
         ConsumerModel exists = query().eq("email", email).one();
         if (Objects.isNull(exists)) return null;
@@ -99,6 +106,17 @@ public class ConsumerService extends ServiceImpl<ConsumerMapper, ConsumerModel> 
             }
 
             return "";
+        } catch (Exception e) {
+            throw new JdbcErrorException(e);
+        }
+    }
+
+    @Transactional
+    @Override
+    public boolean add(ConsumerModel model) {
+        try {
+            model.setPassword(passwordEncoder.encode(model.getPassword()));
+            return save(model);
         } catch (Exception e) {
             throw new JdbcErrorException(e);
         }

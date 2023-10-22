@@ -14,6 +14,8 @@ public interface IConsumerService {
 
     ConsumerDTO findById(String id);
 
+    ConsumerModel findByUname(String uname);
+
     ConsumerDTO findByEmail(String email);
 
     ConsumerDTO findByAnyUniqueFiled(ConsumerModel model);
@@ -21,4 +23,7 @@ public interface IConsumerService {
     boolean upgrade(ConsumerModel model);
 
     String upgradeAvatar(ConsumerModel model, MultipartFile file);
+
+    boolean add(ConsumerModel model);
+
 }

@@ -11,6 +11,7 @@ import com.bleuon.entity.vo.EmailCaptchaVO;
 import com.bleuon.service.EmailCaptchaService;
 import com.bleuon.service.EntranceService;
 import com.bleuon.service.TokenService;
+import com.bleuon.service.impl.AdminService;
 import com.bleuon.service.impl.ConsumerService;
 import com.bleuon.utils.http.IpUtil;
 import com.bleuon.utils.http.R;
@@ -38,6 +39,7 @@ import java.util.Objects;
 @RequestMappingPrefix("/public/entrance")
 public class ApiEntranceController implements Serializable {
 
+    private final AdminService adminService;
     private final ConsumerService consumerService;
     private final TokenService tokenService;
     private final EntranceService entranceService;
@@ -170,7 +172,14 @@ public class ApiEntranceController implements Serializable {
     @Operation(summary = "管理员登录", description = "后台管理系统的登录入口")
     @PostMapping("/admin-login")
     public R<TokenDTO> adminLogin(@RequestBody @Validated AdminModel model) {
-        return null;
+        AdminModel exists = adminService.findByAnyUniqueFiled(model);
+        if (Objects.isNull(exists)) {
+            return R.error("用户名或密码错误！");
+        } else {
+            CustomUserDetails details = new CustomUserDetails(exists.getId(), exists.getUsername(), "******", KeyVals.USER_TYPE_ADMIN, new ArrayList<>());
+            TokenDTO token = tokenService.grant(details);
+            return R.success("登录成功！", token);
+        }
     }
 
     @Operation(summary = "前台用户名、密码、手机号登录", description = "前台系统的登录入口")
@@ -178,7 +187,7 @@ public class ApiEntranceController implements Serializable {
     public R<TokenDTO> accountLogin(@RequestBody @Validated ConsumerModel model) {
         ConsumerDTO exists = consumerService.findByAnyUniqueFiled(model);
         if (Objects.isNull(exists)) {
-            return R.failed("用户名或密码错误！");
+            return R.error("用户名或密码错误！");
         } else {
             CustomUserDetails details = new CustomUserDetails(exists.getId(), exists.getUsername(), "******", KeyVals.USER_TYPE_NORMAL, new ArrayList<>());
             TokenDTO token = tokenService.grant(details);

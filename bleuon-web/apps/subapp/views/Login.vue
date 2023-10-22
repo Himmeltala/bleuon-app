@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ConsumerHttp } from "@common/requests";
+import { AdminHttp } from "@common/requests";
 import { FormValidatorsUtil } from "@common/utils";
 
 const router = useRouter();
@@ -30,11 +30,9 @@ const formRules = reactive<FormRules>({
 
 function confirmLogin() {
   FormValidatorsUtil.validate(formRef.value, async () => {
-    ConsumerHttp.authLogin(formData, token => {
-      localStorage.setToken(KeyVals.MAINAPP_TOKEN_KEY, token);
-      ConsumerHttp.findById(token.id).then(data => {
-        router.push("/home");
-      });
+    AdminHttp.authLogin(formData, token => {
+      localStorage.setToken(KeyVals.SUBAPP_TOKEN_KEY, token);
+      router.push("/");
     });
   });
 }

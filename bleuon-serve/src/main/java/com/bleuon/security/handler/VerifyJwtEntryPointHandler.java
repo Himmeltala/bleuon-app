@@ -1,10 +1,8 @@
 package com.bleuon.security.handler;
 
 import com.alibaba.fastjson2.JSON;
-import com.bleuon.constant.KeyVals;
 import com.bleuon.utils.http.IpUtil;
 import com.bleuon.utils.http.R;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
