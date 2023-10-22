@@ -26,20 +26,18 @@ public class CustomUserDetails implements UserDetails {
     @Setter
     private String id;
 
-    public CustomUserDetails(String username, String password, List<String> authorities) {
-        this.username = username;
-        this.password = password;
-        this.authorities = authorities.stream()
-                .map(SimpleGrantedAuthority::new) // 将String权限名称转换为GrantedAuthority对象
-                .collect(Collectors.toList());
-    }
+    @Getter
+    @Setter
+    private String type;
 
-    public CustomUserDetails(String id, String username, String password, List<String> authorities) {
+    public CustomUserDetails(String id, String username, String password, String type, List<String> authorities) {
         this.id = id;
         this.username = username;
         this.password = password;
+        this.type = type;
         this.authorities = authorities.stream()
-                .map(SimpleGrantedAuthority::new) // 将String权限名称转换为GrantedAuthority对象
+                // 将String权限名称转换为GrantedAuthority对象
+                .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
 

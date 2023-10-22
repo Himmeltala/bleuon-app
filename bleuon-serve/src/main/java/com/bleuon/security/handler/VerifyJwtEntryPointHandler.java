@@ -1,6 +1,8 @@
 package com.bleuon.security.handler;
 
 import com.alibaba.fastjson2.JSON;
+import com.bleuon.constant.KeyVals;
+import com.bleuon.utils.http.IpUtil;
 import com.bleuon.utils.http.R;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,9 +25,16 @@ import java.io.Serializable;
 public class VerifyJwtEntryPointHandler implements AuthenticationEntryPoint, Serializable {
 
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
-        response.setContentType("application/json;charset=utf-8");
-        response.getWriter().write(JSON.toJSONString(R.unpass("认证失败！")));
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException {
+        boolean sameSite = IpUtil.isSameSite(request);
+
+        if (sameSite) {
+            response.sendRedirect("/views/login");
+        } else {
+            response.setContentType("application/json;charset=utf-8");
+            response.getWriter().write(JSON.toJSONString(R.unpass("认证失败！")));
+        }
+
     }
 
 }

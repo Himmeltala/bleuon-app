@@ -22,15 +22,15 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * @description:
+ * @description: API 控制器
  * @package: com.bleuon.controller
  * @author: zheng
  * @date: 2023/9/29
  */
+@Tag(name = "流程图")
 @RequiredArgsConstructor
 @RequestMappingPrefix("/flowchart")
-@Tag(name = "流程图")
-public class FlowchartController implements Serializable {
+public class ApiFlowchartController implements Serializable {
 
     private final FlowchartService flowchartService;
     private final CollectingFlowchartService collectingFlowchartService;

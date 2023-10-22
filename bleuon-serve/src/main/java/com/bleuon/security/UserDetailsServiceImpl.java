@@ -1,10 +1,11 @@
 package com.bleuon.security;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.bleuon.entity.ConsumerModel;
+import com.bleuon.constant.KeyVals;
+import com.bleuon.entity.AdminModel;
 import com.bleuon.entity.CustomUserDetails;
+import com.bleuon.mapper.AdminMapper;
 import com.bleuon.mapper.AuthorityMapper;
-import com.bleuon.mapper.ConsumerMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,7 +13,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -26,30 +26,24 @@ import java.util.Objects;
  */
 @Service
 @RequiredArgsConstructor
-public class UserDetailsServiceImpl extends ServiceImpl<ConsumerMapper, ConsumerModel> implements UserDetailsService {
+public class UserDetailsServiceImpl extends ServiceImpl<AdminMapper, AdminModel> implements UserDetailsService {
 
-    private final AuthorityMapper mapper;
+    private final AuthorityMapper authorityMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        ConsumerModel exists = findUserByFiled(username);
+        AdminModel exists = findAdminByUname(username);
 
         if (Objects.isNull(exists)) {
             throw new UsernameNotFoundException("用户名或密码错误！");
         }
 
-        List<String> authorities = mapper.getAuthority(Map.of("username", exists.getUsername()));
-        return new CustomUserDetails(exists.getId(), exists.getUsername(), exists.getPassword(), authorities);
+        List<String> authorities = authorityMapper.getAdminAuthority(null, exists.getUsername());
+        return new CustomUserDetails(exists.getId(), exists.getUsername(), exists.getPassword(), KeyVals.USER_TYPE_ADMIN, authorities);
     }
 
-    private ConsumerModel findUserByFiled(String field) {
-        return query()
-                .eq("username", field)
-                .or()
-                .eq("email", field)
-                .or()
-                .eq("phone", field)
-                .one();
+    private AdminModel findAdminByUname(String uname) {
+        return query().eq("username", uname).one();
     }
 
 }

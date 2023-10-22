@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BleuOn - 访问后端系统登录</title>
+    <!-- Import style -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/element-plus/dist/index.css"/>
+    <!-- Import Vue 3 -->
+    <script src="//cdn.jsdelivr.net/npm/vue@3"></script>
+    <!-- Import component library -->
+    <script src="//cdn.jsdelivr.net/npm/element-plus"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        .w-100\% {
+            width: 100%;
+        }
+
+        .w-20\% {
+            width: 20%;
+        }
+
+        .h-100vh {
+            height: 100vh;
+        }
+
+        .f-c-c {
+            display: flex;
+            justify-content: center;
+            align-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="login f-c-c h-100vh">
+        <div class="w-20%">
+            <el-form class="w-100%" label-position="left" label-width="100px">
+                <el-form-item label="用户名">
+                    <el-input
+                            v-model="username"
+                            clearable
+                            placeholder="请输入用户名"
+                            size="large"/>
+                </el-form-item>
+                <el-form-item label="密码">
+                    <el-input
+                            v-model="password"
+                            :maxlength="16"
+                            :minlength="8"
+                            clearable
+                            placeholder="请输入密码"
+                            show-password
+                            size="large"/>
+                </el-form-item>
+                <el-form-item>
+                    <el-button
+                            class="w-100%"
+                            size="large"
+                            type="primary"
+                            @click="confirmLogin">
+                        登录
+                    </el-button>
+                </el-form-item>
+            </el-form>
+        </div>
+    </div>
+</div>
+<script type="module">
+    const App = {
+        data() {
+            return {
+                password: "",
+                username: "",
+            };
+        },
+        methods: {
+            confirmLogin() {
+                axios.post("http://localhost:8080/api/auth/login", {
+                    username: this.username,
+                    password: this.password
+                }, {
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    }
+                }).then(({data}) => {
+                    if (data.code !== 200) {
+                        this.$message.error(data.message)
+                    } else {
+                        this.$message.success(data.message)
+                        const token = JSON.stringify(data.data);
+                        const date = new Date(data.data.expire);
+                        document.cookie = `BleuOnBackEndToken=${token}; Expires=${date.toUTCString()}; Domain=.localhost; Path=/; SameSite=Strict`
+                    }
+                }).catch(err => {
+                    this.$message.error(err)
+                })
+            }
+        }
+    };
+
+    const app = Vue.createApp(App);
+    app.use(ElementPlus);
+    app.mount("#app");
+</script>
+</body>
+</html>

@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.io.Serializable;
 
 /**
- * @description:
+ * @description: API 控制器
  * @package: com.bleuon.controller.expose
  * @author: zheng
  * @date: 2023/9/30
  */
+@Tag(name = "公开的流程图")
 @RequiredArgsConstructor
 @RequestMappingPrefix("/public/flowchart")
-@Tag(name = "公开的流程图")
-public class OpenFlowchartController implements Serializable {
+public class OpenApiFlowchartController implements Serializable {
 
     private final FlowchartService flowchartService;
 

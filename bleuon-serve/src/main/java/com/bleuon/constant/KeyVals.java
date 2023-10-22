@@ -8,6 +8,12 @@ package com.bleuon.constant;
  */
 public class KeyVals {
 
-    public static final String Token = "Authorization";
+    public static final String MAINAPP_TOKEN = "Authorization";
+
+    public static final String ADMIN_TOKEN = "BleuOnBackEndToken";
+
+    public static final String USER_TYPE_NORMAL = "normal";
+
+    public static final String USER_TYPE_ADMIN = "admin";
 
 }

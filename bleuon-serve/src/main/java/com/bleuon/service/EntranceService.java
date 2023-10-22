@@ -50,7 +50,7 @@ public class EntranceService extends ServiceImpl<ConsumerMapper, ConsumerModel> 
 
             boolean status = this.save(body);
             if (status) {
-                authorityMapper.setAuthority(body.getId(), AuthorityType.USER, body.getUsername());
+                authorityMapper.setConsumerAuthority(body.getId(), AuthorityType.USER, body.getUsername());
                 return R.success("注册成功！");
             } else {
                 return R.error("注册失败！");
@@ -77,7 +77,7 @@ public class EntranceService extends ServiceImpl<ConsumerMapper, ConsumerModel> 
             boolean status = this.save(body);
 
             if (status) {
-                authorityMapper.setAuthority(body.getId(), AuthorityType.USER, body.getUsername());
+                authorityMapper.setConsumerAuthority(body.getId(), AuthorityType.USER, body.getUsername());
                 return R.success("注册成功！");
             } else {
                 return R.error("注册失败！");

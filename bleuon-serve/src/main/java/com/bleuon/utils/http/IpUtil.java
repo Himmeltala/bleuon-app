@@ -40,4 +40,39 @@ public class IpUtil {
         return ipAddress;
     }
 
+    public static boolean isSameSite(HttpServletRequest request) {
+        String compare = "http://localhost:8080";
+        String origin = request.getHeader("Origin");
+        String referer = request.getHeader("Referer");
+        if (origin != null) {
+            return origin.startsWith(compare);
+        } else if (referer != null) {
+            return referer.startsWith(compare);
+        } else {
+            return true;
+        }
+    }
+
+    public static String parseCookie(HttpServletRequest request, String key) {
+        String value = null;
+        String cookieHeader = request.getHeader("Cookie");
+
+        if (cookieHeader != null) {
+            String[] cookies = cookieHeader.split("; ");
+
+            for (String cookie : cookies) {
+                String[] parts = cookie.split("=");
+                if (parts.length == 2) {
+                    String name = parts[0];
+                    value = parts[1];
+                    if (key.equals(name)) {
+                        return value;
+                    }
+                }
+            }
+        }
+
+        return value;
+    }
+
 }

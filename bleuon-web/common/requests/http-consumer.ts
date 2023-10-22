@@ -53,11 +53,9 @@ export function askRegisterEmailCaptcha(
   },
   success?: Function
 ) {
-  http
-    .get<R>("/public/entrance/ask/register-email-captcha", { params: model })
-    .then(({ data }) => {
-      success && success(data);
-    });
+  http.get<R>("/public/entrance/ask/register-email-captcha", { params: model }).then(({ data }) => {
+    success && success(data);
+  });
 }
 
 /**
@@ -151,11 +149,7 @@ export function accountRegister(model: ConsumerModel, success?: Function) {
  * @param success
  */
 export function authLogin(model: ConsumerModel, success: (res: Token) => void) {
-  const headers = {
-    "Content-Type": "application/x-www-form-urlencoded"
-  };
-
-  http.post<R<Token>>("/auth/login", model, { headers }).then(({ data }) => {
+  http.post<R<Token>>("/public/entrance/account-login", model).then(({ data }) => {
     success(data.data);
   });
 }

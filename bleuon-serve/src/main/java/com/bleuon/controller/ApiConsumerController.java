@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * @description:
+ * @description: API 控制器
  * @package: com.bleuon.controller
  * @author: zheng
  * @date: 2023/10/6
@@ -42,7 +42,7 @@ import java.util.Objects;
 @Tag(name = "用户")
 @RequiredArgsConstructor
 @RequestMappingPrefix("/consumer")
-public class ConsumerController implements Serializable {
+public class ApiConsumerController implements Serializable {
 
     private final ConsumerService consumerService;
     private final DynamicService dynamicService;

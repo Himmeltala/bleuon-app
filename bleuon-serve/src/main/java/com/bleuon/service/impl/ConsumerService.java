@@ -43,8 +43,21 @@ public class ConsumerService extends ServiceImpl<ConsumerMapper, ConsumerModel> 
         return dto;
     }
 
+    @Override
     public ConsumerDTO findByEmail(String email) {
         ConsumerModel exists = query().eq("email", email).one();
+        if (Objects.isNull(exists)) return null;
+
+        ConsumerDTO dto = new ConsumerDTO();
+        BeanUtil.copyProperties(exists, dto);
+        return dto;
+    }
+
+    @Override
+    public ConsumerDTO findByAnyUniqueFiled(ConsumerModel model) {
+        ConsumerModel exists = query().eq("username", model.getUsername())
+                .or().eq("email", model.getUsername())
+                .or().eq("phone", model.getUsername()).one();
         if (Objects.isNull(exists)) return null;
 
         ConsumerDTO dto = new ConsumerDTO();

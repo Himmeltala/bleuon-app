@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.io.Serializable;
 
 /**
- * @description:
+ * @description: API 控制器
  * @package: com.bleuon.controller
  * @author: zheng
  * @date: 2023/10/14
@@ -28,7 +28,7 @@ import java.io.Serializable;
 @Tag(name = "社区")
 @RequestMappingPrefix("/discussion")
 @RequiredArgsConstructor
-public class DiscussionController implements Serializable {
+public class ApiDiscussionController implements Serializable {
 
     private final DiscussionService discussionService;
 

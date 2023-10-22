@@ -15,15 +15,15 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * @description:
+ * @description: API 控制器
  * @package: com.bleuon.controller
  * @author: zheng
  * @date: 2023/9/27
  */
+@Tag(name = "流程图图形")
 @RequiredArgsConstructor
 @RequestMappingPrefix("/cell")
-@Tag(name = "流程图图形")
-public class CellController implements Serializable {
+public class ApiCellController implements Serializable {
 
     private final CellService cellService;
 

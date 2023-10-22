@@ -26,6 +26,10 @@ src
 5. application.yml：应用的配置文件，包含应用的属性设置。
 6. mappers：存放 MyBatis 的 Mapper 接口，用于定义 SQL 映射操作。
 
+# TODO
+
+1. 在进入登录接口时，应该查询 Redis 是否存储了这个用户的 Token，如果存储了说明重复登录，直接返回之前的 Token 给客户端
+
 # 技术介绍
 
 ## SpringSecurity

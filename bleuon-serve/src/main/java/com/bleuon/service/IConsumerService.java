@@ -16,6 +16,8 @@ public interface IConsumerService {
 
     ConsumerDTO findByEmail(String email);
 
+    ConsumerDTO findByAnyUniqueFiled(ConsumerModel model);
+
     boolean upgrade(ConsumerModel model);
 
     String upgradeAvatar(ConsumerModel model, MultipartFile file);

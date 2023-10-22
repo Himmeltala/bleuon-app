@@ -28,7 +28,7 @@ public class TokenService {
         Long expire = jwtUtil.getExpire();
         String value = jwtUtil.createJwt(details, jwtUuid, expire);
         redisTemplate.opsForValue().set(jwtUuid, value, expire, TimeUnit.SECONDS);
-        return new TokenDTO(expire, value, details.getUsername(), details.getId());
+        return new TokenDTO(expire, value, details.getUsername(), details.getId(), details.getType());
     }
 
 }

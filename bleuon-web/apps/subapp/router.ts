@@ -11,13 +11,26 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      redirect: "/manager/consumer",
+      redirect: "/home"
+    },
+    {
+      path: "/home",
+      name: "auth-home",
+      meta: { title: "" },
+      redirect: "/home/manage/consumer",
+      component: () => import("@subapp/views/BaseHome.vue"),
       children: [
         {
-          path: "manager/consumer",
-          name: "auth-consumer-manager",
+          path: "manage/consumer",
+          name: "auth-manage-consumer",
           meta: { title: "用户管理" },
-          component: () => import("@subapp/views/ConsumerManager.vue")
+          component: () => import("@subapp/views/ManageConsumer.vue")
+        },
+        {
+          path: "manage/admins",
+          name: "auth-manage-admins",
+          meta: { title: "管理员管理" },
+          component: () => import("@subapp/views/ManageAdmins.vue")
         }
       ]
     },
@@ -44,10 +57,10 @@ function isAuthenticated() {
 
 router.beforeEach((to, from, next) => {
   if (to.meta.title) {
-    document.title = "BleuOn - " + to.meta.title.toString();
+    document.title = "BleuOn 后台管理系统 - " + to.meta.title.toString();
   }
 
-  const name = to.name.toString();
+  const name = String(to.name);
   const isAuth = isAuthenticated();
 
   if (name.startsWith("auth-") && !isAuth) {

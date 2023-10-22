@@ -20,15 +20,15 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.Serializable;
 
 /**
- * @description:
+ * @description: API 控制器
  * @package: com.bleuon.controller
  * @author: zheng
  * @date: 2023/10/9
  */
+@Tag(name = "文件管理")
 @RequiredArgsConstructor
 @RequestMappingPrefix("/public/file")
-@Tag(name = "文件")
-public class FileController implements Serializable {
+public class ApiFileController implements Serializable {
 
     private final FileService fileService;
 

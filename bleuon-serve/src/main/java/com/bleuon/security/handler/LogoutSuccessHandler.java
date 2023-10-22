@@ -1,8 +1,10 @@
 package com.bleuon.security.handler;
 
 import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
 import com.bleuon.constant.KeyVals;
 import com.bleuon.utils.JwtUtil;
+import com.bleuon.utils.http.IpUtil;
 import com.bleuon.utils.http.R;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.ServletException;
@@ -31,8 +33,18 @@ public class LogoutSuccessHandler implements org.springframework.security.web.au
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         response.setContentType("application/json;charset=utf-8");
-        String authToken = request.getHeader(KeyVals.Token);
-        Claims claims = jwtUtil.parseJwt(authToken);
+
+        String cookie = IpUtil.parseCookie(request, KeyVals.ADMIN_TOKEN);
+        String jwtVal;
+
+        if (cookie != null) {
+            JSONObject parsed = JSON.parseObject(cookie);
+            jwtVal = "Bearer " + parsed.get("value").toString();
+        } else {
+            jwtVal = request.getHeader(KeyVals.MAINAPP_TOKEN);
+        }
+
+        Claims claims = jwtUtil.parseJwt(jwtVal);
 
         if (claims != null) {
             String jwtUuid = claims.getId();

@@ -21,6 +21,9 @@ public class TokenDTO implements Serializable {
     @Schema(description = "用户 UUID")
     private String id;
 
+    @Schema(description = "用户类型，管理员或普通用户")
+    private String type;
+
     public TokenDTO() {
     }
 
@@ -29,11 +32,12 @@ public class TokenDTO implements Serializable {
         this.value = value;
     }
 
-    public TokenDTO(Long expire, String value, String username, String id) {
+    public TokenDTO(Long expire, String value, String username, String id, String type) {
         this.expire = expire;
         this.value = value;
         this.username = username;
         this.id = id;
+        this.type = type;
     }
 
 }

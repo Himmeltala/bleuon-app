@@ -33,7 +33,7 @@ public class ConsumerModel implements Serializable {
     private String id;
 
     @Schema(description = "用户名")
-    @Pattern(regexp = ValidPattern.USERNAME, message = "字母、中文、-、_，不能以数字开头、-、_开头，长度在4~16")
+    @Pattern(regexp = ValidPattern.ACCOUNT, message = "错误的手机号或邮箱或用户名的格式！")
     @TableField
     private String username;
 

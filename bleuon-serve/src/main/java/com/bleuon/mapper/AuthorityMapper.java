@@ -3,13 +3,14 @@ package com.bleuon.mapper;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
-import java.util.Map;
 
 @Mapper
 public interface AuthorityMapper {
 
-    List<String> getAuthority(Map<String, Object> map);
+    List<String> getConsumerAuthority(String consumerId, String username);
 
-    boolean setAuthority(String id, Long role, String uname);
+    List<String> getAdminAuthority(String adminId, String username);
+
+    boolean setConsumerAuthority(String consumerId, Long roleId, String username);
 
 }

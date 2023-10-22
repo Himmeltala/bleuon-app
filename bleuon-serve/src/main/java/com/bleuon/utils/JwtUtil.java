@@ -35,7 +35,7 @@ public class JwtUtil {
                 .setHeaderParam("alg", "HS256")
                 .claim("id", details.getId())
                 .claim("username", details.getUsername())
-                .setSubject("bleuon")
+                .claim("type", details.getType())
                 .setExpiration(new Date(expire))
                 .setIssuedAt(new Date())
                 .setId(jwtUuid)
@@ -47,10 +47,7 @@ public class JwtUtil {
         if (header == null || !header.startsWith("Bearer ")) return null;
         String token = header.substring(7);
         try {
-            JwtParser parser = Jwts
-                    .parserBuilder()
-                    .setSigningKey(generateKey())
-                    .build();
+            JwtParser parser = Jwts.parserBuilder().setSigningKey(generateKey()).build();
             Jws<Claims> claimsJws = parser.parseClaimsJws(token);
             return claimsJws.getBody();
         } catch (Exception e) {

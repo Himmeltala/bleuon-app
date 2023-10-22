@@ -1,9 +1,12 @@
 package com.bleuon.security.filter;
 
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
 import com.bleuon.constant.KeyVals;
 import com.bleuon.entity.CustomUserDetails;
 import com.bleuon.mapper.AuthorityMapper;
 import com.bleuon.utils.JwtUtil;
+import com.bleuon.utils.http.IpUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -21,7 +24,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 用户名和密码认证请求。
@@ -41,19 +43,36 @@ public class VerifyJwtFilter extends OncePerRequestFilter implements Serializabl
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
-        String authorization = request.getHeader(KeyVals.Token);
-        Claims claims = jwtUtil.parseJwt(authorization);
+        String cookie = IpUtil.parseCookie(request, KeyVals.ADMIN_TOKEN);
+        boolean sameSite = IpUtil.isSameSite(request);
+        String jwtVal;
+
+        if (cookie == null || !sameSite) {
+            jwtVal = request.getHeader(KeyVals.MAINAPP_TOKEN);
+        } else {
+            JSONObject parsed = JSON.parseObject(cookie);
+            jwtVal = "Bearer " + parsed.get("value").toString();
+        }
+
+        Claims claims = jwtUtil.parseJwt(jwtVal);
 
         if (claims != null) {
+            String id = (String) claims.get("id");
+            String type = (String) claims.get("type");
+            String username = (String) claims.get("username");
+
             String jwtId = claims.getId();
             Long expire = redisTemplate.getExpire(jwtId);
+            List<String> authorities;
 
             if (expire != null && expire != -2) {
-                List<String> authorities = mapper.getAuthority(Map.of("username", claims.get("username")));
+                if (type.equals(KeyVals.USER_TYPE_NORMAL)) {
+                    authorities = mapper.getConsumerAuthority(id, username);
+                } else {
+                    authorities = mapper.getAdminAuthority(id, username);
+                }
 
-                String id = (String) claims.get("id");
-                String username = (String) claims.get("username");
-                CustomUserDetails details = new CustomUserDetails(id, username, "******", authorities);
+                CustomUserDetails details = new CustomUserDetails(id, username, "******", type, authorities);
 
                 SecurityContext context = SecurityContextHolder.createEmptyContext();
                 UsernamePasswordAuthenticationToken authentication =
