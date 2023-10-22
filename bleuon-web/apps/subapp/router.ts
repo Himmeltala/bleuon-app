@@ -15,22 +15,38 @@ const router = createRouter({
     },
     {
       path: "/home",
-      name: "auth-home",
+      name: "auth-base-home",
       meta: { title: "" },
-      redirect: "/home/manage/consumer",
       component: () => import("@subapp/views/BaseHome.vue"),
+      redirect: "/home/consumer/find",
       children: [
         {
-          path: "manage/consumer",
-          name: "auth-manage-consumer",
+          path: "consumer",
+          name: "auth-consumer-base",
           meta: { title: "用户管理" },
-          component: () => import("@subapp/views/ManageConsumer.vue")
+          component: () => import("@subapp/views/ConsumerBase.vue"),
+          children: [
+            {
+              path: "find",
+              name: "auth-consumer-find",
+              meta: { title: "查询用户" },
+              component: () => import("@subapp/views/consumer/FindConsumer.vue")
+            }
+          ]
         },
         {
-          path: "manage/admins",
-          name: "auth-manage-admins",
+          path: "admin",
+          name: "auth-admin-base",
           meta: { title: "管理员管理" },
-          component: () => import("@subapp/views/ManageAdmins.vue")
+          component: () => import("@subapp/views/AdminBase.vue"),
+          children: [
+            {
+              path: "find",
+              name: "auth-admin-find",
+              meta: { title: "查询管理员" },
+              component: () => import("@subapp/views/admin/FindAdmin.vue")
+            }
+          ]
         }
       ]
     },
