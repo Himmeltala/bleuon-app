@@ -2,7 +2,7 @@
  * @description 日期工具
  * @author zheng
  * @since 2023/9/29
- * @link https://github.com/himmelbleu/bleuon-app
+ * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 export function formatted(

@@ -3,7 +3,7 @@
  * @description 文件夹
  * @author zheng
  * @since 2023/8/23
- * @link https://github.com/himmelbleu/bleuon-app
+ * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 const props = defineProps({

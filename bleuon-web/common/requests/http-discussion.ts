@@ -2,7 +2,7 @@
  * @description 社区 API
  * @author zheng
  * @since 2023/10/14
- * @link https://github.com/himmelbleu/bleuon-app
+ * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 import { http } from "@common/requests/use-axios";
@@ -42,10 +42,7 @@ export async function findDetailByCriteria(model: {
   rankingType?: string;
   type?: string;
 }) {
-  const { data } = await http.post<R<ArticleModel>>(
-    "/discussion/find/detail/by/criteria",
-    model
-  );
+  const { data } = await http.post<R<ArticleModel>>("/discussion/find/detail/by/criteria", model);
   return data.data;
 }
 

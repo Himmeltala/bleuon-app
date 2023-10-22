@@ -2,7 +2,7 @@
  * @description 配置路由组件
  * @author zheng
  * @since 2023/10/22
- * @link https://github.com/himmelbleu/bleuon-app
+ * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 import { createRouter, createWebHashHistory } from "vue-router";
@@ -17,34 +17,75 @@ const router = createRouter({
       path: "/home",
       name: "auth-base-home",
       meta: { title: "" },
-      component: () => import("@subapp/views/BaseHome.vue"),
       redirect: "/home/consumer/find",
+      component: () => import("@subapp/views/BaseHome.vue"),
       children: [
         {
           path: "consumer",
           name: "auth-consumer-base",
-          meta: { title: "用户管理" },
-          component: () => import("@subapp/views/ConsumerBase.vue"),
+          meta: { title: "用户管理", icon: "User" },
           children: [
             {
               path: "find",
               name: "auth-consumer-find",
-              meta: { title: "查询用户" },
+              meta: { title: "查询用户", icon: "Search" },
               component: () => import("@subapp/views/consumer/FindConsumer.vue")
+            },
+            {
+              path: "add",
+              name: "auth-consumer-add",
+              meta: { title: "新增用户", icon: "Plus" },
+              component: () => import("@subapp/views/consumer/AddConsumer.vue")
+            },
+            {
+              path: "modify",
+              name: "auth-consumer-modify",
+              meta: { title: "修改用户", icon: "MagicStick" },
+              component: () => import("@subapp/views/consumer/ModifyConsumer.vue")
             }
           ]
         },
         {
           path: "admin",
           name: "auth-admin-base",
-          meta: { title: "管理员管理" },
-          component: () => import("@subapp/views/AdminBase.vue"),
+          meta: { title: "管理员管理", icon: "UserFilled" },
           children: [
             {
               path: "find",
               name: "auth-admin-find",
-              meta: { title: "查询管理员" },
+              meta: { title: "查询管理员", icon: "Search" },
               component: () => import("@subapp/views/admin/FindAdmin.vue")
+            },
+            {
+              path: "add",
+              name: "auth-admin-add",
+              meta: { title: "新增管理员", icon: "Plus" },
+              component: () => import("@subapp/views/admin/AddAdmin.vue")
+            },
+            {
+              path: "modify",
+              name: "auth-admin-modify",
+              meta: { title: "修改管理员", icon: "MagicStick" },
+              component: () => import("@subapp/views/admin/ModifyAdmin.vue")
+            }
+          ]
+        },
+        {
+          path: "authority",
+          name: "auth-authority-base",
+          meta: { title: "管理员管理", icon: "Lock" },
+          children: [
+            {
+              path: "consumer",
+              name: "auth-authority-consumer",
+              meta: { title: "用户权限", icon: "User" },
+              component: () => import("@subapp/views/authority/ConsumerAuthority.vue")
+            },
+            {
+              path: "admin",
+              name: "auth-authority-admin",
+              meta: { title: "管理员权限", icon: "UserFilled" },
+              component: () => import("@subapp/views/authority/AdminAuthority.vue")
             }
           ]
         }
@@ -79,12 +120,16 @@ router.beforeEach((to, from, next) => {
   const name = String(to.name);
   const isAuth = isAuthenticated();
 
-  if (name.startsWith("auth-") && !isAuth) {
-    next("/login");
-  } else if (name.startsWith("enter-") && isAuth) {
-    next("/");
+  if (to.matched.length === 0) {
+    next(false);
   } else {
-    next();
+    if (name.startsWith("auth-") && !isAuth) {
+      next("/login");
+    } else if (name.startsWith("enter-") && isAuth) {
+      next("/");
+    } else {
+      next();
+    }
   }
 });
 

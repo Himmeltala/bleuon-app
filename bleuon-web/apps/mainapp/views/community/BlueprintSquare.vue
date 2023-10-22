@@ -3,7 +3,7 @@
  * @description 社区模板
  * @author zheng
  * @since 2023/10/5
- * @link https://github.com/himmelbleu/bleuon-app
+ * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 import { BlueprintHttp } from "@common/requests";

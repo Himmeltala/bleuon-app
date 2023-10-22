@@ -3,7 +3,7 @@
  * @description Flowchart 图形创建组件
  * @author zheng
  * @since 2023/9/25
- * @link https://github.com/himmelbleu/bleuon-app
+ * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 import { CellsHttp } from "@common/requests";

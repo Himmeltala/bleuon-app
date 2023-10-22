@@ -3,7 +3,7 @@
  * @description 公开的流程图
  * @author zheng
  * @since 2023/10/13
- * @link https://github.com/himmelbleu/bleuon-app
+ * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 import { ConsumerHttp } from "@common/requests";

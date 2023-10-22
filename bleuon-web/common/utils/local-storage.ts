@@ -2,7 +2,7 @@
  * @description 修改 localStorage 原型对象
  * @author zheng
  * @since 2023/10/6
- * @link https://github.com/himmelbleu/bleuon-app
+ * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 Storage.prototype.setStorageWithAge = function <T extends { expire: number }>(

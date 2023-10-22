@@ -8,7 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * @description:
@@ -21,7 +23,7 @@ import java.sql.Timestamp;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AdminModel {
+public class AdminModel implements Serializable {
 
     @Schema(description = "UUID", example = "ea209fbb-8f0e-483e-be86-c3629ecbe6d1")
     @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
@@ -36,5 +38,9 @@ public class AdminModel {
     private Timestamp createDate;
 
     private Timestamp modifyDate;
+
+    private List<AuthorityModel> authorities;
+
+    private RoleModel role;
 
 }

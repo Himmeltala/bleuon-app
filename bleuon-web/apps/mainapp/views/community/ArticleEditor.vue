@@ -3,7 +3,7 @@
  * @description 帖子编辑器（发表和编辑）
  * @author zheng
  * @since 2023/10/20
- * @link https://github.com/himmelbleu/bleuon-app
+ * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 import { DiscussionHttp, FileHttp } from "@common/requests";

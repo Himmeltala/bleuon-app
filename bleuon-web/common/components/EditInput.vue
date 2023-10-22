@@ -3,7 +3,7 @@
  * @description 输入框文本编辑
  * @author zheng
  * @since 2023/10/7
- * @link https://github.com/himmelbleu/bleuon-app
+ * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 const props = defineProps({

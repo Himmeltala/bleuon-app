@@ -2,7 +2,7 @@
  * @description 程序入口函数
  * @author zheng
  * @since 2023/6/23
- * @link https://github.com/himmelbleu/bleuon-app
+ * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 /* Import Vue */

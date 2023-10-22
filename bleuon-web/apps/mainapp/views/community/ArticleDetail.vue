@@ -3,7 +3,7 @@
  * @description 帖子详情
  * @author zheng
  * @since 2023/10/15
- * @link https://github.com/himmelbleu/bleuon-app
+ * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 import { DateUtil, TextUtil } from "@common/utils";

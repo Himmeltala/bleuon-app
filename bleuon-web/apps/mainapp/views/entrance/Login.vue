@@ -3,7 +3,7 @@
  * @description 登录页
  * @author zheng
  * @since 2023/8/23
- * @link https://github.com/himmelbleu/bleuon-app
+ * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 import AccountLogin from "./components/AccountLogin.vue";

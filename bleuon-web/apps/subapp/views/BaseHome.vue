@@ -9,13 +9,23 @@ const routes = route.matched[0].children;
       <el-header>Header</el-header>
       <el-container>
         <el-aside width="200px">
-          <el-menu unique-opened default-active="/home/consumer/find" router>
+          <el-menu unique-opened default-active="/home/authority/consumer" router>
             <el-sub-menu :index="`${fatherIndex + 1}`" v-for="(fatherRoute, fatherIndex) in routes">
-              <template #title>{{ fatherRoute.meta.title }}</template>
+              <template #title>
+                <el-icon>
+                  <component :is="fatherRoute.meta.icon"></component>
+                </el-icon>
+                <div>{{ fatherRoute.meta.title }}</div>
+              </template>
               <el-menu-item
                 v-for="childRoute in fatherRoute.children"
                 :index="'/home/' + fatherRoute.path + '/' + childRoute.path">
-                {{ childRoute.meta.title }}
+                <template #title>
+                  <el-icon>
+                    <component :is="childRoute.meta.icon"></component>
+                  </el-icon>
+                  <div>{{ childRoute.meta.title }}</div>
+                </template>
               </el-menu-item>
             </el-sub-menu>
           </el-menu>

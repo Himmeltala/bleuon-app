@@ -2,7 +2,7 @@
  * @description Diagraming 工具
  * @author zheng
  * @since 2023/9/22
- * @link https://github.com/himmelbleu/bleuon-app
+ * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 export function getLinkOrElementAttr(model: any, attrKey: string) {

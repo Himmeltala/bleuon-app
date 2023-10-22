@@ -2,7 +2,7 @@
  * @description FlowChart API
  * @author zheng
  * @since 2023/9/28
- * @link https://github.com/himmelbleu/bleuon-app
+ * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 import { http } from "@common/requests/use-axios";
@@ -122,12 +122,9 @@ export async function findAllCollectByCriteria(model: {
   filename?: string;
   collectingCid: string;
 }) {
-  const { data } = await http.get<R<FlowchartModel[]>>(
-    "/flowchart/find/all/collect/by/criteria",
-    {
-      params: model
-    }
-  );
+  const { data } = await http.get<R<FlowchartModel[]>>("/flowchart/find/all/collect/by/criteria", {
+    params: model
+  });
   return data.data;
 }
 

@@ -3,7 +3,7 @@
  * @description Flowchart 流程图
  * @author zheng
  * @since 2023/9/9
- * @link https://github.com/himmelbleu/bleuon-app
+ * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 // jointjs

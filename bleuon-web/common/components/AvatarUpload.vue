@@ -3,7 +3,7 @@
  * @description 头像上传组件
  * @author zheng
  * @since 2023/10/10
- * @link https://github.com/himmelbleu/bleuon-app
+ * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 import { genFileId } from "element-plus";

@@ -3,7 +3,7 @@
  * @description Flowchat 头部工具
  * @author zheng
  * @since 2023/9/21
- * @link https://github.com/himmelbleu/bleuon-app
+ * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 import { dia } from "jointjs";

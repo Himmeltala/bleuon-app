@@ -2,7 +2,7 @@
  * @description 拦截器工具
  * @author zheng
  * @since 2023/9/17
- * @link https://github.com/himmelbleu/bleuon-app
+ * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 import type { InternalAxiosRequestConfig } from "axios";

@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * @description:
@@ -83,6 +84,10 @@ public class ConsumerModel implements Serializable {
 
     @TableField("modify_date")
     private Timestamp modifyDate;
+
+    private List<AuthorityModel> authorities;
+
+    private RoleModel role;
 
     public ConsumerModel(String id) {
         this.id = id;

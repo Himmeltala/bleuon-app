@@ -2,7 +2,7 @@
  * @description 配置路由组件
  * @author zheng
  * @since 2023/6/23
- * @link https://github.com/himmelbleu/bleuon-app
+ * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 import { createRouter, createWebHashHistory } from "vue-router";
@@ -155,12 +155,16 @@ router.beforeEach((to, from, next) => {
   const name = to.name as string;
   const isAuth = isAuthenticated();
 
-  if (name.startsWith("auth-") && !isAuth) {
-    next("/entrance");
-  } else if (name.startsWith("enter-") && isAuth) {
-    next("/workbench");
+  if (to.matched.length === 0) {
+    next(false);
   } else {
-    next();
+    if (name.startsWith("auth-") && !isAuth) {
+      next("/entrance");
+    } else if (name.startsWith("enter-") && isAuth) {
+      next("/workbench");
+    } else {
+      next();
+    }
   }
 });
 
