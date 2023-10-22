@@ -23,7 +23,6 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = true)
 public class DynamicCriteria extends CommonCriteria implements Serializable {
 
-    @Schema(description = "用户 UUID")
     @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
     private String consumerId;
 

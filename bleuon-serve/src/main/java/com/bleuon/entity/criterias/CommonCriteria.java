@@ -20,7 +20,6 @@ import java.util.List;
 @AllArgsConstructor
 public class CommonCriteria implements Serializable {
 
-    @Schema(description = "排序条件")
     private List<Sequence> sequences;
 
 }

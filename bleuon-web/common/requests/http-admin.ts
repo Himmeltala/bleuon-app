@@ -18,3 +18,30 @@ export function authLogin(model: ConsumerModel, success: (res: Token) => void) {
     success(data.data);
   });
 }
+
+/**
+ * 请求退出登录
+ *
+ * @param success
+ * @param error
+ */
+export function authLogout(success?: Function, error?: Function) {
+  http.post<R>("/auth/logout").then(({ data }) => {
+    if (data.code === 200) {
+      location.reload();
+      localStorage.removeItem(KeyVals.SUBAPP_TOKEN_KEY);
+      success && success(data);
+    } else error && error();
+  });
+}
+
+/**
+ * 查询管理员信息
+ *
+ * @param id
+ * @returns
+ */
+export async function findById(id: string) {
+  const { data } = await http.get<R<AdminModel>>(`/admin/find/${id}`);
+  return data.data;
+}

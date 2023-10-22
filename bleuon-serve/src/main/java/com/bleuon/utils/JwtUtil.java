@@ -1,20 +1,27 @@
 package com.bleuon.utils;
 
 import com.bleuon.entity.CustomUserDetails;
+import com.bleuon.entity.dto.TokenModel;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @Data
 @Component
+@RequiredArgsConstructor
 public class JwtUtil {
 
+    private final RedisTemplate<String, String> redisTemplate;
     @Value("${spring.security.token-expire}")
     private Long expire; // 24 小时，单位毫秒
     @Value("${spring.security.token-key}")
@@ -53,6 +60,14 @@ public class JwtUtil {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public TokenModel grant(CustomUserDetails details) {
+        String jwtUuid = UUID.randomUUID().toString();
+        Long expire = getExpire();
+        String value = createJwt(details, jwtUuid, expire);
+        redisTemplate.opsForValue().set(jwtUuid, value, expire, TimeUnit.SECONDS);
+        return new TokenModel(expire, value, details.getUsername(), details.getId(), details.getType());
     }
 
 }

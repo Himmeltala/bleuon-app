@@ -13,9 +13,6 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface FlowchartMapper extends BaseMapper<FlowchartModel> {
 
-    /**
-     * 更新流程图
-     */
     Integer upgrade(FlowchartModel model);
 
 }

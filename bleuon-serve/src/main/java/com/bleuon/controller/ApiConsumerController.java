@@ -49,9 +49,7 @@ public class ApiConsumerController implements Serializable {
     private final FlowchartService flowchartService;
     private final CollectingConsumerService collectingConsumerService;
 
-    @Operation(summary = "查询用户", parameters = {
-            @Parameter(name = "id", description = "用户 UUID", example = "ea209fbb-8f0e-483e-be86-c3629ecbe6d1", in = ParameterIn.PATH)
-    })
+    @Operation(summary = "查询用户")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:consumer')")
     @GetMapping("/find/{id}")
     public R<ConsumerDTO> findById(@Validated @PathVariable @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！") String id) {
@@ -67,9 +65,7 @@ public class ApiConsumerController implements Serializable {
         return status ? R.success("更新资料成功！") : R.error("更新资料失败！");
     }
 
-    @Operation(summary = "更新用户头像", parameters = {
-            @Parameter(name = "id", description = "用户 UUID", example = "ea209fbb-8f0e-483e-be86-c3629ecbe6d1", in = ParameterIn.PATH)
-    })
+    @Operation(summary = "更新用户头像")
     @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:upgrade:consumer')")
     @PutMapping("/upgrade/avatar/{id}")
     public R<String> upgradeAvatar(@Validated @PathVariable @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！") String id,

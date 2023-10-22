@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.bleuon.mapper.AuthorityMapper">
+<mapper namespace="com.bleuon.mapper.PermissionMapper">
 
-    <cache/>
+    <cache-ref namespace="com.bleuon.mapper.PermissionMapper"/>
 
-    <insert id="setConsumerAuthority">
+    <insert id="addConsumerAuthority">
         INSERT INTO co_consumer_role(consumer_id, role_id, user_name)
         VALUES (#{consumerId}, #{roleId}, #{username})
     </insert>
 
-    <select id="getConsumerAuthority" resultType="string">
+    <select id="findConsumerAuthorityList" resultType="string">
         SELECT a.value
         FROM co_consumer_role AS cur
-        INNER JOIN p_roles AS r ON r.id = cur.role_id
-        INNER JOIN co_auth_role AS car ON car.role_id = cur.role_id
-        INNER JOIN p_auths AS a ON a.id = car.auth_id
+        LEFT JOIN p_roles AS r ON r.id = cur.role_id
+        LEFT JOIN co_auth_role AS car ON car.role_id = cur.role_id
+        LEFT JOIN p_auths AS a ON a.id = car.auth_id
         <trim prefix="WHERE" prefixOverrides="AND">
             <if test="consumerId != null">
                 AND cur.consumer_id = #{consumerId}
@@ -25,12 +25,12 @@
         </trim>
     </select>
 
-    <select id="getAdminAuthority" resultType="string">
+    <select id="findAdminAuthorityList" resultType="string">
         SELECT a.value
         FROM co_admin_role AS cur
-        INNER JOIN p_roles AS r ON r.id = cur.role_id
-        INNER JOIN co_auth_role AS car ON car.role_id = cur.role_id
-        INNER JOIN p_auths AS a ON a.id = car.auth_id
+        LEFT JOIN p_roles AS r ON r.id = cur.role_id
+        LEFT JOIN co_auth_role AS car ON car.role_id = cur.role_id
+        LEFT JOIN p_auths AS a ON a.id = car.auth_id
         <trim prefix="WHERE" prefixOverrides="AND">
             <if test="adminId != null">
                 AND cur.admin_id = #{adminId}
@@ -44,54 +44,54 @@
     <select id="findAdminAuthorities" resultType="com.bleuon.entity.AuthorityModel">
         SELECT a.*
         FROM co_admin_role AS cur
-                 INNER JOIN p_roles AS r ON r.id = cur.role_id
-                 INNER JOIN co_auth_role AS car ON car.role_id = cur.role_id
-                 INNER JOIN p_auths AS a ON a.id = car.auth_id
+                 LEFT JOIN p_roles AS r ON r.id = cur.role_id
+                 LEFT JOIN co_auth_role AS car ON car.role_id = cur.role_id
+                 LEFT JOIN p_auths AS a ON a.id = car.auth_id
         WHERE cur.admin_id = #{adminId}
     </select>
 
     <select id="findConsumerAuthorities" resultType="com.bleuon.entity.AuthorityModel">
         SELECT a.*
         FROM co_consumer_role AS cur
-                 INNER JOIN p_roles AS r ON r.id = cur.role_id
-                 INNER JOIN co_auth_role AS car ON car.role_id = cur.role_id
-                 INNER JOIN p_auths AS a ON a.id = car.auth_id
+                 LEFT JOIN p_roles AS r ON r.id = cur.role_id
+                 LEFT JOIN co_auth_role AS car ON car.role_id = cur.role_id
+                 LEFT JOIN p_auths AS a ON a.id = car.auth_id
         WHERE cur.consumer_id = #{consumerId}
     </select>
 
     <select id="findAdminRoleByAdminId" resultType="com.bleuon.entity.RoleModel">
         SELECT r.*
         FROM co_admin_role AS cur
-                 INNER JOIN p_roles AS r ON r.id = cur.role_id
+                 LEFT JOIN p_roles AS r ON r.id = cur.role_id
         WHERE cur.admin_id = #{adminId}
     </select>
 
     <select id="findConsumerRoleByConsumerId" resultType="com.bleuon.entity.RoleModel">
         SELECT r.*
         FROM co_consumer_role AS cur
-                 INNER JOIN p_roles AS r ON r.id = cur.role_id
+                 LEFT JOIN p_roles AS r ON r.id = cur.role_id
         WHERE cur.consumer_id = #{consumerId}
     </select>
 
-    <resultMap id="findAdminAllMap" type="com.bleuon.entity.AdminModel" autoMapping="true">
-        <association property="role" select="findAdminRoleByAdminId" column="{adminId=id}" autoMapping="true" />
+    <resultMap id="findAdminWithAuthorityListMap" type="com.bleuon.entity.AdminModel" autoMapping="true">
+        <association property="role" select="findAdminRoleByAdminId" column="{adminId=id}" autoMapping="true"/>
         <collection property="authorities" select="findAdminAuthorities" column="{adminId=id}"
                     autoMapping="true"/>
     </resultMap>
 
-    <select id="findAdmin" resultMap="findAdminAllMap">
+    <select id="findAdminWithAuthorityList" resultMap="findAdminWithAuthorityListMap">
         SELECT id, username, phone, email, create_date, modify_date
         FROM t_admins
         WHERE id = #{adminId}
     </select>
 
-    <resultMap id="findConsumerAllMap" type="com.bleuon.entity.ConsumerModel" autoMapping="true">
-        <association property="role" select="findConsumerRoleByConsumerId" column="{consumerId=id}" autoMapping="true" />
+    <resultMap id="findConsumerWithAuthorityListMap" type="com.bleuon.entity.ConsumerModel" autoMapping="true">
+        <association property="role" select="findConsumerRoleByConsumerId" column="{consumerId=id}" autoMapping="true"/>
         <collection property="authorities" select="findConsumerAuthorities" column="{consumerId=id}"
                     autoMapping="true"/>
     </resultMap>
 
-    <select id="findConsumer" resultMap="findConsumerAllMap">
+    <select id="findConsumerWithAuthorityList" resultMap="findConsumerWithAuthorityListMap">
         SELECT id,
                username,
                email,
@@ -102,13 +102,13 @@
         FROM t_consumers
         WHERE id = #{consumerId}
     </select>
-    
-    <select id="findAllAdmin" resultMap="findAdminAllMap">
+
+    <select id="findAllAdminsWithAuthorityList" resultMap="findAdminWithAuthorityListMap">
         SELECT id, username, phone, email, create_date, modify_date
         FROM t_admins
     </select>
-    
-    <select id="findAllConsumer" resultMap="findConsumerAllMap">
+
+    <select id="findAllConsumersWithAuthorityList" resultMap="findConsumerWithAuthorityListMap">
         SELECT id,
                username,
                email,
@@ -117,6 +117,20 @@
                create_date,
                modify_date
         FROM t_consumers
+    </select>
+
+    <resultMap id="findRoleWithAuthorityListMap" type="com.bleuon.entity.RoleModel" autoMapping="true">
+        <id column="id" property="id"/>
+        <collection property="authorities" ofType="com.bleuon.entity.AuthorityModel"
+                    autoMapping="true"
+                    columnPrefix="a_"/>
+    </resultMap>
+
+    <select id="findAllRoleWithAuthorityList" resultMap="findRoleWithAuthorityListMap">
+        SELECT r.*
+        FROM p_roles r
+                 LEFT JOIN co_auth_role ar ON ar.role_id = r.id
+                 LEFT JOIN p_auths a ON ar.auth_id = a.id
     </select>
 
 </mapper>

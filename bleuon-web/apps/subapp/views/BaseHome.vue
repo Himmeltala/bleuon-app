@@ -6,6 +6,8 @@
  * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
+import MenuAvatar from "@subapp/fragments/MenuAvatar.vue";
+
 const route = useRoute();
 const router = useRouter();
 const routes = route.matched[0].children;
@@ -25,10 +27,12 @@ watch(route, () => {
 <template>
   <div class="base-home">
     <el-container>
-      <el-header>Header</el-header>
+      <el-header>
+        <MenuAvatar />
+      </el-header>
       <el-container>
         <el-aside width="200px">
-          <el-menu unique-opened default-active="/home/authority/admin" router>
+          <el-menu unique-opened default-active="/home/authority/admin/find" router>
             <el-sub-menu :index="`${fatherIndex + 1}`" v-for="(fatherRoute, fatherIndex) in routes">
               <template #title>
                 <el-icon>
@@ -50,14 +54,24 @@ watch(route, () => {
           </el-menu>
         </el-aside>
         <el-main style="padding: 0 1.25rem">
-          <div class="mb-5">
+          <div class="mb-10">
             <el-breadcrumb separator="/">
               <template v-for="(item, index) in routeList">
                 <el-breadcrumb-item v-if="index != routeList.length - 1" :to="item.path">
-                  {{ item.meta.title }}
+                  <div class="f-c-s">
+                    <el-icon class="mr-1">
+                      <component :is="item.meta.icon"></component>
+                    </el-icon>
+                    {{ item.meta.title }}
+                  </div>
                 </el-breadcrumb-item>
                 <el-breadcrumb-item v-else>
-                  {{ item.meta.title }}
+                  <div class="f-c-s">
+                    <el-icon class="mr-1">
+                      <component :is="item.meta.icon"></component>
+                    </el-icon>
+                    {{ item.meta.title }}
+                  </div>
                 </el-breadcrumb-item>
               </template>
             </el-breadcrumb>

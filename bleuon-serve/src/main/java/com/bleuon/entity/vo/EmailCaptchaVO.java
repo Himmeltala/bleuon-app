@@ -22,11 +22,9 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class EmailCaptchaVO implements Serializable {
 
-    @Schema(description = "邮箱地址")
     @Email(message = "不是合法的邮箱地址！")
     private String email;
 
-    @Schema(description = "6 位验证码")
     @Pattern(regexp = ValidPattern.DIGIT_6, message = "验证码必须是 6 位正整数！")
     private String captcha;
 

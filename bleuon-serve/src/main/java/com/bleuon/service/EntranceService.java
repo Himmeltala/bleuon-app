@@ -3,9 +3,8 @@ package com.bleuon.service;
 import com.bleuon.constant.AuthorityType;
 import com.bleuon.entity.ConsumerModel;
 import com.bleuon.entity.dto.ConsumerDTO;
-import com.bleuon.mapper.AuthorityMapper;
-import com.bleuon.service.impl.AdminService;
 import com.bleuon.service.impl.ConsumerService;
+import com.bleuon.service.impl.PermissionService;
 import com.bleuon.utils.http.R;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,9 +17,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class EntranceService {
 
-    private final AuthorityMapper authorityMapper;
+    private final PermissionService permissionService;
     private final ConsumerService consumerService;
-    private final AdminService adminService;
 
     public R<Object> resetPassword(ConsumerModel model) {
         boolean success = consumerService.upgrade(model);
@@ -44,7 +42,7 @@ public class EntranceService {
             boolean status = consumerService.add(model);
 
             if (status) {
-                authorityMapper.setConsumerAuthority(model.getId(), AuthorityType.USER, model.getUsername());
+                permissionService.addConsumerAuthority(model.getId(), AuthorityType.USER, model.getUsername());
                 return R.success("注册成功！");
             } else {
                 return R.error("注册失败！");
@@ -69,7 +67,7 @@ public class EntranceService {
             boolean status = consumerService.add(model);
 
             if (status) {
-                authorityMapper.setConsumerAuthority(model.getId(), AuthorityType.USER, model.getUsername());
+                permissionService.addConsumerAuthority(model.getId(), AuthorityType.USER, model.getUsername());
                 return R.success("注册成功！");
             } else {
                 return R.error("注册失败！");

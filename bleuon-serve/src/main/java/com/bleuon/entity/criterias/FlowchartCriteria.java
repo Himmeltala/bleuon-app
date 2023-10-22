@@ -23,29 +23,21 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = true)
 public class FlowchartCriteria extends CommonCriteria implements Serializable {
 
-    @Schema(description = "收藏者 UUID")
     @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
     private String collectingCid;
 
-    @Schema(description = "文件名称")
     private String filename;
 
-    @Schema(description = "是否公开")
     private Integer isPublic;
 
-    @Schema(description = "是否审核通过")
     private Integer isLegal;
 
-    @Schema(description = "是否分享")
     private Integer isShare;
 
-    @Schema(description = "使用场景")
     private String scene;
 
-    @Schema(description = "价格，比如免费、VIP免费")
     private String price;
 
-    @Schema(description = "排序类型，比如热门、推荐")
     private String ranking;
 
 }

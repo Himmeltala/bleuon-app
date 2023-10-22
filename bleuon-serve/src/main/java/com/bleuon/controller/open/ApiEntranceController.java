@@ -6,13 +6,13 @@ import com.bleuon.entity.AdminModel;
 import com.bleuon.entity.ConsumerModel;
 import com.bleuon.entity.CustomUserDetails;
 import com.bleuon.entity.dto.ConsumerDTO;
-import com.bleuon.entity.dto.TokenDTO;
+import com.bleuon.entity.dto.TokenModel;
 import com.bleuon.entity.vo.EmailCaptchaVO;
 import com.bleuon.service.EmailCaptchaService;
 import com.bleuon.service.EntranceService;
-import com.bleuon.service.TokenService;
 import com.bleuon.service.impl.AdminService;
 import com.bleuon.service.impl.ConsumerService;
+import com.bleuon.utils.JwtUtil;
 import com.bleuon.utils.http.IpUtil;
 import com.bleuon.utils.http.R;
 import io.swagger.v3.oas.annotations.Operation;
@@ -41,9 +41,9 @@ public class ApiEntranceController implements Serializable {
 
     private final AdminService adminService;
     private final ConsumerService consumerService;
-    private final TokenService tokenService;
     private final EntranceService entranceService;
     private final EmailCaptchaService captchaService;
+    private final JwtUtil jwtUtil;
 
     @Operation(summary = "获取邮箱验证码，没有其他逻辑，输入邮箱直接获取验证码")
     @GetMapping("/aks/email-captcha")
@@ -110,7 +110,7 @@ public class ApiEntranceController implements Serializable {
 
     @Operation(summary = "校验邮箱验证码，需判断是否过期或存在")
     @PostMapping("/verify/email-captcha")
-    public R<TokenDTO> verifyMailCode(@RequestBody @Validated EmailCaptchaVO vo) {
+    public R<TokenModel> verifyMailCode(@RequestBody @Validated EmailCaptchaVO vo) {
         String key = vo.getEmail() + ":captcha";
         boolean expired = captchaService.hasCaptchaExpire(key);
         if (expired) return R.error("验证码过期或不存在！");
@@ -138,7 +138,7 @@ public class ApiEntranceController implements Serializable {
 
     @Operation(summary = "校验登录验证码")
     @PostMapping("/verify/login-email-captcha")
-    public R<TokenDTO> verifyLoginMailCaptcha(@RequestBody @Validated EmailCaptchaVO vo) {
+    public R<TokenModel> verifyLoginMailCaptcha(@RequestBody @Validated EmailCaptchaVO vo) {
         String key = vo.getEmail() + ":captcha";
         boolean expired = captchaService.hasCaptchaExpire(key);
         if (expired) return R.error("验证码过期或不存在！");
@@ -151,7 +151,7 @@ public class ApiEntranceController implements Serializable {
                 return R.error("该用户不存在！");
             } else {
                 CustomUserDetails details = new CustomUserDetails(exists.getId(), exists.getUsername(), "******", KeyVals.USER_TYPE_NORMAL, new ArrayList<>());
-                TokenDTO token = tokenService.grant(details);
+                TokenModel token = jwtUtil.grant(details);
                 return R.success("登录成功！", token);
             }
         } else return R.error("验证码错误！");
@@ -171,26 +171,26 @@ public class ApiEntranceController implements Serializable {
 
     @Operation(summary = "管理员登录", description = "后台管理系统的登录入口")
     @PostMapping("/admin-login")
-    public R<TokenDTO> adminLogin(@RequestBody @Validated AdminModel model) {
+    public R<TokenModel> adminLogin(@RequestBody @Validated AdminModel model) {
         AdminModel exists = adminService.findByAnyUniqueFiled(model);
         if (Objects.isNull(exists)) {
             return R.error("用户名或密码错误！");
         } else {
             CustomUserDetails details = new CustomUserDetails(exists.getId(), exists.getUsername(), "******", KeyVals.USER_TYPE_ADMIN, new ArrayList<>());
-            TokenDTO token = tokenService.grant(details);
+            TokenModel token = jwtUtil.grant(details);
             return R.success("登录成功！", token);
         }
     }
 
     @Operation(summary = "前台用户名、密码、手机号登录", description = "前台系统的登录入口")
     @PostMapping("/account-login")
-    public R<TokenDTO> accountLogin(@RequestBody @Validated ConsumerModel model) {
+    public R<TokenModel> accountLogin(@RequestBody @Validated ConsumerModel model) {
         ConsumerDTO exists = consumerService.findByAnyUniqueFiled(model);
         if (Objects.isNull(exists)) {
             return R.error("用户名或密码错误！");
         } else {
             CustomUserDetails details = new CustomUserDetails(exists.getId(), exists.getUsername(), "******", KeyVals.USER_TYPE_NORMAL, new ArrayList<>());
-            TokenDTO token = tokenService.grant(details);
+            TokenModel token = jwtUtil.grant(details);
             return R.success("登录成功！", token);
         }
     }

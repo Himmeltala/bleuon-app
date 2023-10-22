@@ -19,10 +19,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class FileParamsVO implements Serializable {
 
-    @Schema(description = "文件路径")
     private String filepath;
 
-    @Schema(description = "文件名称")
     private String filename;
 
 }

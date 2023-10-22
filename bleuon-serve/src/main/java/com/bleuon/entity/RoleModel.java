@@ -1,10 +1,12 @@
 package com.bleuon.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @description:
@@ -17,8 +19,11 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class RoleModel implements Serializable {
 
+    @TableId
     private Integer id;
     private String name;
     private String value;
+
+    private List<AuthorityModel> authorities;
 
 }

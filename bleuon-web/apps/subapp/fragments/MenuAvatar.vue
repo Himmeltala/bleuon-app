@@ -2,17 +2,17 @@
 /**
  * @description 可以点击出菜单的头像组件
  * @author zheng
- * @since 2023/8/23
+ * @since 2023/10/23
  * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
-import { ConsumerHttp } from "@common/requests";
+import { AdminHttp } from "@common/requests";
 
-const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
-const consumer = ref(await ConsumerHttp.findById(token.id));
+const token = localStorage.getToken(KeyVals.SUBAPP_TOKEN_KEY);
+const admin = ref(await AdminHttp.findById(token.id));
 
 const root = document.querySelector("html");
-const mode = useStorage(KeyVals.MAINAPP_THEME_MODE, "");
+const mode = useStorage(KeyVals.SUBAPP_THEME_MODE, "");
 const isDark = ref(mode.value == "dark");
 
 function switchThemeMode() {
@@ -22,7 +22,7 @@ function switchThemeMode() {
 }
 
 function confirmLogout() {
-  ConsumerHttp.authLogout();
+  AdminHttp.authLogout();
 }
 
 switchThemeMode();
@@ -31,43 +31,27 @@ switchThemeMode();
 <template>
   <div class="f-c-c relative">
     <el-dropdown :teleported="false">
-      <img :src="consumer.avatar" class="rd-50% w-10 h-10 cursor-pointer" />
+      <img :src="admin.avatar" class="rd-50% w-10 h-10 cursor-pointer" />
       <template #dropdown>
         <el-dropdown-menu>
           <div class="b-b-solid b-border-primary b-b-1 pb-2 mb-2">
             <el-dropdown-item>
-              <router-link to="/workbench">
+              <router-link to="/profile">
                 <div class="f-c-s">
                   <div class="i-tabler-files mr-2"></div>
-                  个人文件
-                </div>
-              </router-link>
-            </el-dropdown-item>
-            <el-dropdown-item>
-              <router-link to="/u/setting">
-                <div class="f-c-s">
-                  <div class="i-tabler-user mr-2"></div>
                   个人资料
-                </div>
-              </router-link>
-            </el-dropdown-item>
-            <el-dropdown-item>
-              <router-link :to="'/u/profile/' + consumer.id">
-                <div class="f-c-s">
-                  <div class="i-tabler-user mr-2"></div>
-                  个人主页
                 </div>
               </router-link>
             </el-dropdown-item>
           </div>
           <div class="b-b-solid b-border-primary b-b-1 pb-2 mb-2">
             <el-dropdown-item>
-              <router-link to="/">
+              <a href="http://localhost:5173">
                 <div class="f-c-s">
                   <div class="i-tabler-home mr-2"></div>
                   官网首页
                 </div>
-              </router-link>
+              </a>
             </el-dropdown-item>
             <el-dropdown-item>
               <el-switch

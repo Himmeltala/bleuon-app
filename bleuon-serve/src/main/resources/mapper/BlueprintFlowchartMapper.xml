@@ -33,7 +33,7 @@
         f.dead_share_date f_dead_share_date,
         f.consumer_id f_consumer_id
         FROM t_blueprint_flowcharts bf
-        INNER JOIN t_flowcharts f ON f.id = bf.flowchart_id
+        LEFT JOIN t_flowcharts f ON f.id = bf.flowchart_id
         <where>
             <trim prefix="AND" prefixOverrides="AND">
                 <if test="scene != null and scene != ''">
@@ -79,7 +79,7 @@
                f.dead_share_date   f_dead_share_date,
                f.consumer_id       f_consumer_id
         FROM t_blueprint_flowcharts bf
-                 INNER JOIN t_flowcharts f ON bf.flowchart_id = f.id
+                 LEFT JOIN t_flowcharts f ON bf.flowchart_id = f.id
         WHERE bf.id = #{id};
     </select>
 

@@ -15,73 +15,55 @@ const router = createRouter({
     },
     {
       path: "/home",
-      meta: { title: "首页", icon: "User" },
-      redirect: "/home/consumer/find",
+      meta: { title: "首页", icon: "House" },
+      redirect: "/home/permission/admin-authorities",
       component: () => import("@subapp/views/BaseHome.vue"),
       children: [
         {
           path: "consumer",
-          meta: { title: "用户管理", icon: "User" },
+          meta: { title: "维护用户", icon: "User" },
           children: [
             {
               path: "find",
-              name: "auth-consumer-find",
-              meta: { title: "查询用户", icon: "Search" },
+              name: "auth-find-consumer",
+              meta: { title: "用户列表", icon: "Search" },
               component: () => import("@subapp/views/consumer/FindConsumer.vue")
-            },
-            {
-              path: "add",
-              name: "auth-consumer-add",
-              meta: { title: "新增用户", icon: "Plus" },
-              component: () => import("@subapp/views/consumer/AddConsumer.vue")
-            },
-            {
-              path: "modify",
-              name: "auth-consumer-modify",
-              meta: { title: "修改用户", icon: "MagicStick" },
-              component: () => import("@subapp/views/consumer/ModifyConsumer.vue")
             }
           ]
         },
         {
           path: "admin",
-          meta: { title: "管理员管理", icon: "UserFilled" },
+          meta: { title: "维护管理员", icon: "UserFilled" },
           children: [
             {
               path: "find",
-              name: "auth-admin-find",
-              meta: { title: "查询管理员", icon: "Search" },
+              name: "auth-find-admin",
+              meta: { title: "管理员列表", icon: "Search" },
               component: () => import("@subapp/views/admin/FindAdmin.vue")
-            },
-            {
-              path: "add",
-              name: "auth-admin-add",
-              meta: { title: "新增管理员", icon: "Plus" },
-              component: () => import("@subapp/views/admin/AddAdmin.vue")
-            },
-            {
-              path: "modify",
-              name: "auth-admin-modify",
-              meta: { title: "修改管理员", icon: "MagicStick" },
-              component: () => import("@subapp/views/admin/ModifyAdmin.vue")
             }
           ]
         },
         {
-          path: "authority",
-          meta: { title: "管理员管理", icon: "Lock" },
+          path: "permission",
+          meta: { title: "权限和角色", icon: "Key" },
           children: [
             {
-              path: "consumer",
-              name: "auth-authority-consumer",
+              path: "consumer-authorities",
+              name: "auth-find-consumer-authorities",
               meta: { title: "用户权限", icon: "User" },
-              component: () => import("@subapp/views/authority/ConsumerAuthority.vue")
+              component: () => import("@subapp/views/permission/ConsumerAuthority.vue")
             },
             {
-              path: "admin",
-              name: "auth-authority-admin",
+              path: "admin-authorities",
+              name: "auth-find-admin-authorities",
               meta: { title: "管理员权限", icon: "UserFilled" },
-              component: () => import("@subapp/views/authority/AdminAuthority.vue")
+              component: () => import("@subapp/views/permission/AdminAuthority.vue")
+            },
+            {
+              path: "role",
+              name: "auth-find-role",
+              meta: { title: "角色分组", icon: "List" },
+              component: () => import("@subapp/views/permission/Role.vue")
             }
           ]
         }
@@ -92,6 +74,12 @@ const router = createRouter({
       name: "enter-login",
       meta: { title: "登录" },
       component: () => import("@subapp/views/Login.vue")
+    },
+    {
+      path: "/profile",
+      name: "auth-profile",
+      meta: { title: "个人资料" },
+      component: () => import("@subapp/views/Profile.vue")
     }
   ],
   history: createWebHashHistory(),

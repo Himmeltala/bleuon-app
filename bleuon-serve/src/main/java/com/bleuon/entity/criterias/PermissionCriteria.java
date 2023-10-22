@@ -17,7 +17,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthorityCriteria extends CommonCriteria implements Serializable {
+public class PermissionCriteria extends CommonCriteria implements Serializable {
 
     private Integer currPage;
 

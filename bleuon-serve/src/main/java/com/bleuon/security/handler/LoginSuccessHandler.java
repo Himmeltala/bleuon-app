@@ -2,8 +2,8 @@ package com.bleuon.security.handler;
 
 import com.alibaba.fastjson2.JSON;
 import com.bleuon.entity.CustomUserDetails;
-import com.bleuon.entity.dto.TokenDTO;
-import com.bleuon.service.TokenService;
+import com.bleuon.entity.dto.TokenModel;
+import com.bleuon.utils.JwtUtil;
 import com.bleuon.utils.http.R;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,13 +25,13 @@ import java.io.Serializable;
 @RequiredArgsConstructor
 public class LoginSuccessHandler implements AuthenticationSuccessHandler, Serializable {
 
-    private final TokenService tokenService;
+    private final JwtUtil jwtUtil;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         response.setContentType("application/json;charset=utf-8");
         CustomUserDetails details = (CustomUserDetails) authentication.getPrincipal();
-        R<TokenDTO> success = R.success("登录成功！", tokenService.grant(details));
+        R<TokenModel> success = R.success("登录成功！", jwtUtil.grant(details));
         response.getWriter().write(JSON.toJSONString(success));
     }
 

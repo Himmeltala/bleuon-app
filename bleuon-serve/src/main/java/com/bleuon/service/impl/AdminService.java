@@ -25,4 +25,8 @@ public class AdminService extends ServiceImpl<AdminMapper, AdminModel> implement
                 .or().eq("phone", model.getUsername()).one();
     }
 
+    public AdminModel findById(AdminModel model) {
+        return query().eq("id", model.getId()).one();
+    }
+
 }

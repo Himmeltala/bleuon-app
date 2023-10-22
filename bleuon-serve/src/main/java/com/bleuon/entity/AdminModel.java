@@ -1,5 +1,6 @@
 package com.bleuon.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.bleuon.constant.ValidPattern;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -25,7 +26,6 @@ import java.util.List;
 @AllArgsConstructor
 public class AdminModel implements Serializable {
 
-    @Schema(description = "UUID", example = "ea209fbb-8f0e-483e-be86-c3629ecbe6d1")
     @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
     private String id;
 
@@ -35,12 +35,16 @@ public class AdminModel implements Serializable {
 
     private String phone;
 
+    private String avatar;
+
     private Timestamp createDate;
 
     private Timestamp modifyDate;
 
+    @TableField(exist = false)
     private List<AuthorityModel> authorities;
 
+    @TableField(exist = false)
     private RoleModel role;
 
 }

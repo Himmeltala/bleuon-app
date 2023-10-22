@@ -114,6 +114,7 @@ declare type AdminModel = Partial<{
   username: string;
   password: string;
   phone: string;
+  avatar: string;
   createDate: string;
   modifyDate: string;
   authorities: AuthorityModel[];

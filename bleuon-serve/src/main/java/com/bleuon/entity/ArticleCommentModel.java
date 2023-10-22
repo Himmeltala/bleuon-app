@@ -27,39 +27,26 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class ArticleCommentModel implements Serializable {
 
-    @Schema(description = "UUID")
     @TableId
     private String id;
 
-    @Schema(description = "评论内容")
     private String content;
 
-    @Schema(description = "赞成数")
     private Integer digg;
 
-    @Schema(description = "反对数")
     private Integer bury;
 
-    @Schema(description = "创建日期")
-    @TableField("create_date")
     private Timestamp createDate;
 
-    @Schema(description = "修改日期")
-    @TableField("modify_date")
     private Timestamp modifyDate;
 
-    @Schema(description = "评论所属用户 ID")
     @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
-    @TableField("consumer_id")
     private String consumerId;
 
-    @Schema(description = "评论所属用户模型")
     @TableField(exist = false)
     private ConsumerDTO consumer;
 
-    @Schema(description = "评论所属帖子 ID")
     @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
-    @TableField("article_id")
     private String articleId;
 
 }

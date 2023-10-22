@@ -23,15 +23,12 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = true)
 public class ConsumerCriteria extends CommonCriteria implements Serializable {
 
-    @Schema(description = "用户 UUID")
     @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
     private String consumerId;
 
-    @Schema(description = "收藏者 UUID")
     @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
     private String collectingCid;
 
-    @Schema(description = "备注")
     private String remark;
 
 }

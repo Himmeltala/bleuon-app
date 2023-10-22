@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Schema(description = "token 模型")
 @Data
-public class TokenDTO implements Serializable {
+public class TokenModel implements Serializable {
 
     @Schema(description = "过期时间")
     private Long expire;
@@ -24,15 +24,7 @@ public class TokenDTO implements Serializable {
     @Schema(description = "用户类型，管理员或普通用户")
     private String type;
 
-    public TokenDTO() {
-    }
-
-    public TokenDTO(Long expire, String value) {
-        this.expire = expire;
-        this.value = value;
-    }
-
-    public TokenDTO(Long expire, String value, String username, String id, String type) {
+    public TokenModel(Long expire, String value, String username, String id, String type) {
         this.expire = expire;
         this.value = value;
         this.username = username;

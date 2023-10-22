@@ -26,18 +26,15 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class BlueprintFlowchartModel implements Serializable {
 
-    @Schema(description = "UUID")
     @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
     @TableId
     private String id;
 
-    @Schema(description = "浏览数")
     private Integer views;
 
     @Schema(description = "导入数")
     private Integer copies;
 
-    @Schema(description = "收藏数")
     private Integer stars;
 
     @Schema(description = "标签集")
@@ -46,30 +43,22 @@ public class BlueprintFlowchartModel implements Serializable {
     @Schema(description = "使用场景")
     private String scene;
 
-    @Schema(description = "价格")
     private String price;
 
-    @Schema(description = "描述")
     private String description;
 
     @Schema(description = "推荐、热门等")
     private String ranking;
 
-    @TableField("create_date")
     private Timestamp createDate;
 
-    @TableField("modify_date")
     private Timestamp modifyDate;
 
-    @Schema(description = "外键，引用流程图表，UUID")
-    @TableField("flowchart_id")
     private String flowchartId;
 
-    @Schema(description = "流程图模型")
     @TableField(exist = false)
     private FlowchartModel flowchart;
 
-    @Schema(description = "条件查询时查询所需属性")
     @TableField(exist = false)
     private String filename;
 

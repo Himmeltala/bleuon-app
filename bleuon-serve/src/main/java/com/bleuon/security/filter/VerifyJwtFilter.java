@@ -4,7 +4,7 @@ import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.bleuon.constant.KeyVals;
 import com.bleuon.entity.CustomUserDetails;
-import com.bleuon.mapper.AuthorityMapper;
+import com.bleuon.service.impl.PermissionService;
 import com.bleuon.utils.JwtUtil;
 import com.bleuon.utils.http.IpUtil;
 import io.jsonwebtoken.Claims;
@@ -38,7 +38,7 @@ import java.util.List;
 public class VerifyJwtFilter extends OncePerRequestFilter implements Serializable {
 
     private final JwtUtil jwtUtil;
-    private final AuthorityMapper mapper;
+    private final PermissionService permissionService;
     private final RedisTemplate<String, String> redisTemplate;
 
     @Override
@@ -67,9 +67,9 @@ public class VerifyJwtFilter extends OncePerRequestFilter implements Serializabl
 
             if (expire != null && expire != -2) {
                 if (type.equals(KeyVals.USER_TYPE_NORMAL)) {
-                    authorities = mapper.getConsumerAuthority(id, username);
+                    authorities = permissionService.findConsumerAuthorityList(id, username);
                 } else {
-                    authorities = mapper.getAdminAuthority(id, username);
+                    authorities = permissionService.findAdminAuthorityList(id, username);
                 }
 
                 CustomUserDetails details = new CustomUserDetails(id, username, "******", type, authorities);

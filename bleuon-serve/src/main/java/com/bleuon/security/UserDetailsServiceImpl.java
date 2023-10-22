@@ -5,7 +5,7 @@ import com.bleuon.constant.KeyVals;
 import com.bleuon.entity.AdminModel;
 import com.bleuon.entity.CustomUserDetails;
 import com.bleuon.mapper.AdminMapper;
-import com.bleuon.mapper.AuthorityMapper;
+import com.bleuon.service.impl.PermissionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -28,7 +28,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl extends ServiceImpl<AdminMapper, AdminModel> implements UserDetailsService {
 
-    private final AuthorityMapper authorityMapper;
+    private final PermissionService permissionService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -38,7 +38,7 @@ public class UserDetailsServiceImpl extends ServiceImpl<AdminMapper, AdminModel>
             throw new UsernameNotFoundException("用户名或密码错误！");
         }
 
-        List<String> authorities = authorityMapper.getAdminAuthority(null, exists.getUsername());
+        List<String> authorities = permissionService.findAdminAuthorityList(null, exists.getUsername());
         return new CustomUserDetails(exists.getId(), exists.getUsername(), exists.getPassword(), KeyVals.USER_TYPE_ADMIN, authorities);
     }
 
