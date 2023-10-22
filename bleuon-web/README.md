@@ -32,10 +32,16 @@ bleuon-web
 
 ## JointJS
 
-## KonvaJS
-
-## Vue3
+JointJS 是一个开源 JavaScript 库，用于创建交互式可视化图表和图形用户界面。它主要用于构建流程图、组织图、UML 图、网络拓扑图和其他类型的可视化图表。
 
 ## UnoCSS
 
+原子化 CSS 框架，提升 CSS 复用率，减少 CSS 打包体积。
+
 ## TypeScript
+
+TypeScript 是 JavaScript 的严格语法超集，类型的支持减少出错，使得 JS 更加严谨。
+
+## KonvaJS
+
+KonvaJS 是一个开源的 JavaScript 库，用于在 HTML5 Canvas 上创建交互式的可视化图形和图形用户界面。Konva 使得在 Web 应用程序中绘制、操作和交互可视化元素变得非常容易。

@@ -1,6 +1,25 @@
 <script setup lang="ts">
+/**
+ * @description Home 基础组件
+ * @author zheng
+ * @since 2023/10/22
+ * @link https://gitee.com/himmelbleu/bleuon-app
+ */
+
 const route = useRoute();
+const router = useRouter();
 const routes = route.matched[0].children;
+const routeList = ref([]);
+
+function getCurrentRouteList() {
+  return router.currentRoute.value.matched;
+}
+
+routeList.value = getCurrentRouteList();
+
+watch(route, () => {
+  routeList.value = getCurrentRouteList();
+});
 </script>
 
 <template>
@@ -9,7 +28,7 @@ const routes = route.matched[0].children;
       <el-header>Header</el-header>
       <el-container>
         <el-aside width="200px">
-          <el-menu unique-opened default-active="/home/authority/consumer" router>
+          <el-menu unique-opened default-active="/home/authority/admin" router>
             <el-sub-menu :index="`${fatherIndex + 1}`" v-for="(fatherRoute, fatherIndex) in routes">
               <template #title>
                 <el-icon>
@@ -30,7 +49,19 @@ const routes = route.matched[0].children;
             </el-sub-menu>
           </el-menu>
         </el-aside>
-        <el-main>
+        <el-main style="padding: 0 1.25rem">
+          <div class="mb-5">
+            <el-breadcrumb separator="/">
+              <template v-for="(item, index) in routeList">
+                <el-breadcrumb-item v-if="index != routeList.length - 1" :to="item.path">
+                  {{ item.meta.title }}
+                </el-breadcrumb-item>
+                <el-breadcrumb-item v-else>
+                  {{ item.meta.title }}
+                </el-breadcrumb-item>
+              </template>
+            </el-breadcrumb>
+          </div>
           <router-view></router-view>
         </el-main>
       </el-container>

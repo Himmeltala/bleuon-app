@@ -12,7 +12,7 @@ import { ElSelectData } from "@common/data";
 
 import CommonHeader from "@mainapp/fragments/CommonHeader.vue";
 
-const mainData = ref();
+const mainData = ref<PageInfo<ArticleModel>>();
 
 async function fetchData(pamras: any) {
   mainData.value = await DiscussionHttp.findAllByCriteria(pamras);

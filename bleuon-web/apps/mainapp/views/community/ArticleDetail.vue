@@ -13,7 +13,7 @@ import CommonHeader from "@mainapp/fragments/CommonHeader.vue";
 
 const route = useRoute();
 const mainData = ref<ArticleModel>();
-const commentList = ref<{ list: ArticleCommentModel[]; total: number }>();
+const commentList = ref<PageInfo<ArticleCommentModel>>();
 const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
 
 async function fetchData(params: any) {

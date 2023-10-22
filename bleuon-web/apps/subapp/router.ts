@@ -15,14 +15,12 @@ const router = createRouter({
     },
     {
       path: "/home",
-      name: "auth-base-home",
-      meta: { title: "" },
+      meta: { title: "首页", icon: "User" },
       redirect: "/home/consumer/find",
       component: () => import("@subapp/views/BaseHome.vue"),
       children: [
         {
           path: "consumer",
-          name: "auth-consumer-base",
           meta: { title: "用户管理", icon: "User" },
           children: [
             {
@@ -47,7 +45,6 @@ const router = createRouter({
         },
         {
           path: "admin",
-          name: "auth-admin-base",
           meta: { title: "管理员管理", icon: "UserFilled" },
           children: [
             {
@@ -72,7 +69,6 @@ const router = createRouter({
         },
         {
           path: "authority",
-          name: "auth-authority-base",
           meta: { title: "管理员管理", icon: "Lock" },
           children: [
             {

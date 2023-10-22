@@ -2,6 +2,10 @@ package com.bleuon.service;
 
 import com.bleuon.entity.AdminModel;
 import com.bleuon.entity.ConsumerModel;
+import com.bleuon.entity.criterias.AuthorityCriteria;
+import com.github.pagehelper.PageInfo;
+
+import java.util.List;
 
 /**
  * @description:
@@ -11,8 +15,12 @@ import com.bleuon.entity.ConsumerModel;
  */
 public interface IAuthorityService {
 
-    AdminModel findAdminAuthoritiesAll(String adminId);
+    AdminModel findAdmin(String adminId);
 
-    ConsumerModel findConsumerAuthoritiesAll(String consumerId);
+    ConsumerModel findConsumer(String consumerId);
+
+    PageInfo<AdminModel> findAllAdmin(AuthorityCriteria criteria);
+
+    PageInfo<ConsumerModel> findAllConsumer(AuthorityCriteria criteria);
 
 }

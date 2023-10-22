@@ -41,7 +41,7 @@
         </trim>
     </select>
 
-    <select id="findAdminAuthoritiesByAdminId" resultType="com.bleuon.entity.AuthorityModel">
+    <select id="findAdminAuthorities" resultType="com.bleuon.entity.AuthorityModel">
         SELECT a.*
         FROM co_admin_role AS cur
                  INNER JOIN p_roles AS r ON r.id = cur.role_id
@@ -50,7 +50,7 @@
         WHERE cur.admin_id = #{adminId}
     </select>
 
-    <select id="findConsumerAuthoritiesByConsumerId" resultType="com.bleuon.entity.AuthorityModel">
+    <select id="findConsumerAuthorities" resultType="com.bleuon.entity.AuthorityModel">
         SELECT a.*
         FROM co_consumer_role AS cur
                  INNER JOIN p_roles AS r ON r.id = cur.role_id
@@ -73,25 +73,25 @@
         WHERE cur.consumer_id = #{consumerId}
     </select>
 
-    <resultMap id="findAdminAuthoritiesAllMap" type="com.bleuon.entity.AdminModel" autoMapping="true">
+    <resultMap id="findAdminAllMap" type="com.bleuon.entity.AdminModel" autoMapping="true">
         <association property="role" select="findAdminRoleByAdminId" column="{adminId=id}" autoMapping="true" />
-        <collection property="authorities" select="findAdminAuthoritiesByAdminId" column="{adminId=id}"
+        <collection property="authorities" select="findAdminAuthorities" column="{adminId=id}"
                     autoMapping="true"/>
     </resultMap>
 
-    <select id="findAdminAuthoritiesAll" resultMap="findAdminAuthoritiesAllMap">
+    <select id="findAdmin" resultMap="findAdminAllMap">
         SELECT id, username, phone, email, create_date, modify_date
         FROM t_admins
         WHERE id = #{adminId}
     </select>
 
-    <resultMap id="findConsumerAuthoritiesAllMap" type="com.bleuon.entity.ConsumerModel" autoMapping="true">
+    <resultMap id="findConsumerAllMap" type="com.bleuon.entity.ConsumerModel" autoMapping="true">
         <association property="role" select="findConsumerRoleByConsumerId" column="{consumerId=id}" autoMapping="true" />
-        <collection property="authorities" select="findConsumerAuthoritiesByConsumerId" column="{consumerId=id}"
+        <collection property="authorities" select="findConsumerAuthorities" column="{consumerId=id}"
                     autoMapping="true"/>
     </resultMap>
 
-    <select id="findConsumerAuthoritiesAll" resultMap="findConsumerAuthoritiesAllMap">
+    <select id="findConsumer" resultMap="findConsumerAllMap">
         SELECT id,
                username,
                email,
@@ -101,6 +101,22 @@
                modify_date
         FROM t_consumers
         WHERE id = #{consumerId}
+    </select>
+    
+    <select id="findAllAdmin" resultMap="findAdminAllMap">
+        SELECT id, username, phone, email, create_date, modify_date
+        FROM t_admins
+    </select>
+    
+    <select id="findAllConsumer" resultMap="findConsumerAllMap">
+        SELECT id,
+               username,
+               email,
+               phone,
+               avatar,
+               create_date,
+               modify_date
+        FROM t_consumers
     </select>
 
 </mapper>

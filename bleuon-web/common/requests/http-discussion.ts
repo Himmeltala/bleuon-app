@@ -23,7 +23,7 @@ export async function findAllByCriteria(model: {
   currPage?: number;
   sequences: { isAsc: boolean; col: string }[];
 }) {
-  const { data } = await http.post<R<{ list: ArticleModel[]; total: number }>>(
+  const { data } = await http.post<R<PageInfo<ArticleModel>>>(
     "/discussion/find/all/by/criteria",
     model
   );
@@ -81,7 +81,7 @@ export async function findCommentsByCriteria(model: {
   currPage?: number;
   sequences: { isAsc: boolean; col: string }[];
 }) {
-  const { data } = await http.post<R<{ list: ArticleCommentModel[]; total: number }>>(
+  const { data } = await http.post<R<PageInfo<ArticleCommentModel>>>(
     "/discussion/find/comments/by/criteria",
     model
   );

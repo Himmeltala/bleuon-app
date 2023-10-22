@@ -11,7 +11,7 @@ import { DiscussionHttp } from "@common/requests";
 
 const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
 const id = useRoute().params.id.toString();
-const mainData = ref();
+const mainData = ref<PageInfo<ArticleModel>>();
 
 async function fetchData() {
   mainData.value = await DiscussionHttp.findAllByCriteria({

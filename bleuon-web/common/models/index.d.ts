@@ -13,6 +13,8 @@ declare type ConsumerModel = Partial<{
   sex: string;
   createDate: string;
   modifyDate: string;
+  authorities: AuthorityModel[];
+  role: RoleModel;
 }>;
 
 declare type FlowchartModel = Partial<{
@@ -106,3 +108,36 @@ declare type ArticleModel = Partial<{
   modifyDate: string;
   consumer: ConsumerModel;
 }>;
+
+declare type AdminModel = Partial<{
+  id: string;
+  username: string;
+  password: string;
+  phone: string;
+  createDate: string;
+  modifyDate: string;
+  authorities: AuthorityModel[];
+  role: RoleModel;
+}>;
+
+declare type AuthorityModel = {
+  id: number;
+  name: string;
+  value: string;
+};
+
+declare type RoleModel = {
+  id: number;
+  name: string;
+  value: string;
+};
+
+declare type PageInfo<T> = {
+  list: T[];
+  total: number;
+  pageSize: number;
+  pageNum: number;
+  hasNextPage: boolean;
+  isFirstPage: boolean;
+  isLastPage: boolean;
+};

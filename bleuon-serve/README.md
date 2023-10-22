@@ -34,10 +34,20 @@ src
 
 ## SpringSecurity
 
+Spring Security是一个功能强大的身份验证和授权框架，用于保护Java应用程序的安全性。它提供了一系列工具和类，用于处理用户身份验证、授权、会话管理以及其他与安全相关的功能。
+
 ## SpringDoc OpenAPI
+
+SpringDoc OpenAPI 是一个用于在Spring Boot应用程序中生成和发布OpenAPI规范（以前称为Swagger规范）的工具。OpenAPI规范是一种用于描述RESTful API的标准，它提供了API的详细文档，包括资源、路径、参数、请求和响应的格式等信息。
 
 ## Redis
 
+Redis（Remote Dictionary Server）是一个开源的内存数据库，它提供了高性能的数据存储和检索功能。Redis以键值对的形式存储数据，被广泛用于缓存、会话管理、消息队列、实时统计数据等各种应用场景。
+
 ## MySQL
 
+MySQL是一个开源的关系型数据库管理系统（RDBMS），它广泛用于各种Web应用程序和服务器端应用程序中。
+
 ## Mybatis+MybatisPlus
+
+MyBatis是一个开源的Java持久层框架，用于将数据库操作与Java应用程序的数据访问层解耦。
