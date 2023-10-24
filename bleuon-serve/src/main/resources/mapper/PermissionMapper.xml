@@ -174,4 +174,11 @@
         </foreach>
     </insert>
 
+    <delete id="deleteRoleAuthority">
+        DELETE
+        FROM co_auth_role
+        WHERE role_id = #{roleId}
+          AND auth_id = #{authId}
+    </delete>
+
 </mapper>

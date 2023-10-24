@@ -20,6 +20,7 @@ import java.io.Serializable;
 public class PermissionCriteria extends CommonCriteria implements Serializable {
 
     private String roleId;
+    private String authId;
     private String[] authIds;
 
 }

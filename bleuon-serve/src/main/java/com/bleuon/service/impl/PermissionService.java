@@ -155,4 +155,15 @@ public class PermissionService implements IPermissionService {
         }
     }
 
+    @Transactional
+    @Override
+    public boolean deleteRoleAuthority(PermissionCriteria criteria) {
+        try {
+            Integer row = permissionMapper.deleteRoleAuthority(criteria);
+            return row > 0;
+        } catch (Exception e) {
+            throw new JdbcErrorException(e);
+        }
+    }
+
 }

@@ -123,3 +123,9 @@ export function addAuthorityListToRole(
     success();
   });
 }
+
+export function deleteRoleAuthority(params: { roleId: number; authId: number }, success: Function) {
+  http.delete<R>("/permission/delete/role/authority", { params }).then(() => {
+    success();
+  });
+}

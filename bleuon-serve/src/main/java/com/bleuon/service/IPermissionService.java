@@ -49,4 +49,6 @@ public interface IPermissionService {
 
     boolean addAuthorityListToRole(PermissionCriteria criteria);
 
+    boolean deleteRoleAuthority(PermissionCriteria criteria);
+
 }

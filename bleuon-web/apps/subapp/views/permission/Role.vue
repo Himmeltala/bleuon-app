@@ -139,11 +139,9 @@ const addRoleAuthFormRules = ref({
 const addRoleAuthFormEl = ref();
 const addRoleAuthsList = ref<AuthorityModel[]>([]);
 const addRoleAuthItem = ref();
-const addRoleAuthIndex = ref(0);
 
-function openAddRoleDialog(index: number, item: any) {
+function openAddRoleDialog(item: any) {
   addRoleAuthItem.value = item;
-  addRoleAuthIndex.value = index;
   PermissionHttp.findAllAuthorityList({ roleId: item.id }, data => {
     addRoleAuthsList.value = data;
     addRoleAuthDialog.value = true;
@@ -155,22 +153,39 @@ function handleAddRoleAuth() {
     PermissionHttp.addAuthorityListToRole(
       { roleId: addRoleAuthItem.value.id, authIds: addRoleAuthFormData.value.values },
       () => {
-        const item = mainList.value.list[addRoleAuthIndex.value] as any;
-        item.loading = true;
+        addRoleAuthItem.value.loading = true;
         PermissionHttp.findRoleAuthorityList(
           {
             roleId: addRoleAuthItem.value.id,
-            pageSize: item.pageSize,
-            currPage: item.currPage
+            pageSize: addRoleAuthItem.value.pageSize,
+            currPage: addRoleAuthItem.value.currPage
           },
           data => {
-            item.authorities = data;
-            item.hasGetAuthorities = true;
-            item.loading = false;
+            addRoleAuthItem.value.authorities = data;
+            addRoleAuthItem.value.hasGetAuthorities = true;
+            addRoleAuthItem.value.loading = false;
             addRoleAuthDialog.value = false;
             addRoleAuthFormData.value.values = [];
           }
         );
+      }
+    );
+  });
+}
+
+function handleDeleteAuth(authItem: any, roleItem: any) {
+  PermissionHttp.deleteRoleAuthority({ roleId: roleItem.id, authId: authItem.id }, () => {
+    roleItem.loading = true;
+    PermissionHttp.findRoleAuthorityList(
+      {
+        roleId: roleItem.id,
+        pageSize: roleItem.pageSize,
+        currPage: roleItem.currPage
+      },
+      data => {
+        roleItem.authorities = data;
+        roleItem.hasGetAuthorities = true;
+        roleItem.loading = false;
       }
     );
   });
@@ -194,44 +209,52 @@ await fetchDataList();
       style="width: 100%">
       <el-table-column label="权限列表" type="expand" width="120">
         <template #default="scope">
-          <div class="m-5 f-c-e">
-            <div>
-              <el-button
-                type="primary"
-                size="small"
-                plain
-                @click="openAddRoleDialog(scope.$index, scope.row)">
-                添加权限
-              </el-button>
+          <div class="mx-20 my-5">
+            <div class="f-c-e mb-5">
+              <div>
+                <el-button type="primary" size="small" plain @click="openAddRoleDialog(scope.row)">
+                  添加权限
+                </el-button>
+              </div>
             </div>
-          </div>
-          <div class="m-5 font-bold">权限列表</div>
-          <div class="m-5" v-if="scope.row.authorities?.list">
-            <el-table v-loading="scope.row.loading" border :data="scope.row.authorities.list">
-              <el-table-column prop="id" label="权限 ID"></el-table-column>
-              <el-table-column prop="name" label="权限备注"></el-table-column>
-              <el-table-column prop="value" label="权限值"></el-table-column>
-              <el-table-column prop="createDate" label="创建日期">
-                <template #default="scope">
-                  {{ DateUtil.formatted(scope.row.createDate) }}
-                </template>
-              </el-table-column>
-              <el-table-column prop="modifyDate" label="修改日期">
-                <template #default="scope">
-                  {{ DateUtil.formatted(scope.row.modifyDate) }}
-                </template>
-              </el-table-column>
-            </el-table>
-            <div class="mt-5 f-c-e">
-              <el-pagination
-                small
-                v-model:current-page="scope.row.currPage"
-                v-model:page-size="scope.row.pageSize"
-                @size-change="handleAuthSizeChange(scope.row)"
-                @current-change="handleAuthCurrentChange(scope.row)"
-                layout="sizes, prev, pager, next, jumper"
-                :page-sizes="[5, 10]"
-                :total="scope.row.authorities.total" />
+            <div class="mb-5 font-bold">权限列表</div>
+            <div class="" v-if="scope.row.authorities?.list">
+              <el-table v-loading="scope.row.loading" border :data="scope.row.authorities.list">
+                <el-table-column prop="id" label="权限 ID"></el-table-column>
+                <el-table-column prop="name" label="权限备注"></el-table-column>
+                <el-table-column prop="value" label="权限值"></el-table-column>
+                <el-table-column prop="createDate" label="创建日期">
+                  <template #default="authScope">
+                    {{ DateUtil.formatted(authScope.row.createDate) }}
+                  </template>
+                </el-table-column>
+                <el-table-column prop="modifyDate" label="修改日期">
+                  <template #default="authScope">
+                    {{ DateUtil.formatted(authScope.row.modifyDate) }}
+                  </template>
+                </el-table-column>
+                <el-table-column label="操作">
+                  <template #default="authScope">
+                    <el-popconfirm
+                      title="确定是否要删除该权限？"
+                      @confirm="handleDeleteAuth(authScope.row, scope.row)">
+                      <template #reference>
+                        <el-button size="small" type="danger" plain> 删除 </el-button>
+                      </template>
+                    </el-popconfirm>
+                  </template>
+                </el-table-column>
+              </el-table>
+              <div class="mt-5 f-c-e">
+                <el-pagination
+                  small
+                  v-model:current-page="scope.row.currPage"
+                  v-model:page-size="scope.row.pageSize"
+                  @size-change="handleAuthSizeChange(scope.row)"
+                  @current-change="handleAuthCurrentChange(scope.row)"
+                  layout="prev, pager, next"
+                  :total="scope.row.authorities.total" />
+              </div>
             </div>
           </div>
         </template>
@@ -354,7 +377,7 @@ await fetchDataList();
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         layout="sizes, prev, pager, next, jumper"
-        :page-sizes="[5, 10, 15, 20]"
+        :page-sizes="[10, 15, 20, 25, 30]"
         background
         :total="mainList.total" />
     </div>

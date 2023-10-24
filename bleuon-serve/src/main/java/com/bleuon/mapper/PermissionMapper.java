@@ -50,4 +50,6 @@ public interface PermissionMapper {
 
     Integer addAuthorityListToRole(PermissionCriteria criteria);
 
+    Integer deleteRoleAuthority(PermissionCriteria criteria);
+
 }
