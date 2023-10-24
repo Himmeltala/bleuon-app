@@ -19,8 +19,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class PermissionCriteria extends CommonCriteria implements Serializable {
 
-    private Integer currPage;
-
-    private Integer pageSize;
+    private String roleId;
 
 }

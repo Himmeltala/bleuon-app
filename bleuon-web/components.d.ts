@@ -56,4 +56,7 @@ declare module 'vue' {
     TabPage: typeof import('./common/components/TabPage.vue')['default']
     TabPageItem: typeof import('./common/components/TabPageItem.vue')['default']
   }
+  export interface ComponentCustomProperties {
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
+  }
 }

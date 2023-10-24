@@ -13,10 +13,7 @@ import { http } from "@common/requests/use-axios";
  * @param model
  * @returns
  */
-export async function findAllAdminsWithAuthorityList(model: {
-  pageSize: number;
-  currPage: number;
-}) {
+export async function findAllAdminsWithAuthorityList(model: Criteria) {
   const { data } = await http.post<R<PageInfo<AdminModel>>>(
     "/permission/find/all/admins/with/authority/list",
     model
@@ -30,12 +27,40 @@ export async function findAllAdminsWithAuthorityList(model: {
  * @param model
  * @returns
  */
-export async function findAllRoleWithAuthorityList(model: { pageSize: number; currPage: number }) {
+export async function findAllRoleWithAuthorityList(model: Criteria) {
   const { data } = await http.post<R<PageInfo<RoleModel>>>(
     "/permission/find/all/role/with/authority/list",
     model
   );
   return data.data;
+}
+
+/**
+ * 查询角色分组，但是没有权限列表
+ *
+ * @param criteria
+ * @returns
+ */
+export async function findAllRole(criteria: Criteria) {
+  const { data } = await http.post<R<PageInfo<RoleModel>>>(`/permission/find/all/role`, criteria);
+  return data.data;
+}
+
+/**
+ * 查询角色分组，但是没有权限列表
+ *
+ * @param criteria
+ * @returns
+ */
+export function findRoleAuthorityList(
+  criteria: Criteria<{ roleId: number }>,
+  success: (data: PageInfo<AuthorityModel>) => void
+) {
+  http
+    .post<R<PageInfo<AuthorityModel>>>(`/permission/find/role/authority/list`, criteria)
+    .then(({ data }) => {
+      success(data.data);
+    });
 }
 
 /**

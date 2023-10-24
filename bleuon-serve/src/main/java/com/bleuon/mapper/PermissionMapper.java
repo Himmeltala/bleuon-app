@@ -1,6 +1,7 @@
 package com.bleuon.mapper;
 
 import com.bleuon.entity.AdminModel;
+import com.bleuon.entity.AuthorityModel;
 import com.bleuon.entity.ConsumerModel;
 import com.bleuon.entity.RoleModel;
 import com.bleuon.entity.criterias.PermissionCriteria;
@@ -40,5 +41,9 @@ public interface PermissionMapper {
     Integer deleteRole(RoleModel model);
 
     Integer upgradeRole(RoleModel model);
+
+    List<AuthorityModel> findRoleAuthorityList(String roleId);
+
+    List<RoleModel> findAllRole(PermissionCriteria criteria);
 
 }

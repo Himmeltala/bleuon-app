@@ -2,9 +2,11 @@ package com.bleuon.controller;
 
 import com.bleuon.annotaion.RequestMappingPrefix;
 import com.bleuon.entity.AdminModel;
+import com.bleuon.entity.AuthorityModel;
 import com.bleuon.entity.ConsumerModel;
 import com.bleuon.entity.RoleModel;
 import com.bleuon.entity.criterias.PermissionCriteria;
+import com.bleuon.entity.criterias.Sequence;
 import com.bleuon.service.impl.PermissionService;
 import com.bleuon.utils.http.R;
 import com.github.pagehelper.PageInfo;
@@ -14,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -62,6 +66,20 @@ public class ApiPermissionController {
     @PostMapping("/find/all/role/with/authority/list")
     public R<PageInfo<RoleModel>> findAllRoleWithAuthorityList(@RequestBody PermissionCriteria criteria) {
         return R.success(permissionService.findAllRoleWithAuthorityList(criteria));
+    }
+
+    @Operation(summary = "查询角色分组，但是没有权限列表")
+    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:permission:AllRole')")
+    @PostMapping("/find/all/role")
+    public R<PageInfo<RoleModel>> findAllRole(@RequestBody PermissionCriteria criteria) {
+        return R.success(permissionService.findAllRole(criteria));
+    }
+
+    @Operation(summary = "查询角色的权限列表")
+    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:permission:RoleAuthorityList')")
+    @PostMapping("/find/role/authority/list")
+    public R<PageInfo<AuthorityModel>> findRoleAuthorityList(@RequestBody PermissionCriteria criteria) {
+        return R.success(permissionService.findRoleAuthorityList(criteria));
     }
 
     @Operation(summary = "新增一个角色")

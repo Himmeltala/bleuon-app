@@ -12,10 +12,10 @@ import { DateUtil, ElFormUtil } from "@common/utils";
 const currPage = ref(1);
 const pageSize = ref(10);
 
-const mainList = ref<PageInfo<RoleModel>>();
+const mainList = shallowRef<PageInfo<RoleModel>>();
 
 async function fetchDataList() {
-  mainList.value = await PermissionHttp.findAllRoleWithAuthorityList({
+  mainList.value = await PermissionHttp.findAllRole({
     pageSize: pageSize.value,
     currPage: currPage.value
   });
@@ -90,6 +90,46 @@ function handleDeleteRole(index: number, row: RoleModel) {
   });
 }
 
+const authPageSize = ref(10);
+const authCurrPage = ref(1);
+
+function onExpandChange(row: any) {
+  row.loading = true;
+  if (!row.hasGetAuthorities) {
+    PermissionHttp.findRoleAuthorityList({ roleId: row.id }, data => {
+      row.authorities = data;
+      row.hasGetAuthorities = true;
+      row.loading = false;
+    });
+  } else {
+    row.loading = false;
+  }
+}
+
+function handleAuthSizeChange(item: any) {
+  item.loading = true;
+  PermissionHttp.findRoleAuthorityList(
+    { roleId: item.id, pageSize: authPageSize.value, currPage: authCurrPage.value },
+    data => {
+      item.authorities = data;
+      item.hasGetAuthorities = true;
+      item.loading = false;
+    }
+  );
+}
+
+function handleAuthCurrentChange(item: any) {
+  item.loading = true;
+  PermissionHttp.findRoleAuthorityList(
+    { roleId: item.id, pageSize: authPageSize.value, currPage: authCurrPage.value },
+    data => {
+      item.authorities = data;
+      item.hasGetAuthorities = true;
+      item.loading = false;
+    }
+  );
+}
+
 await fetchDataList();
 </script>
 
@@ -100,12 +140,17 @@ await fetchDataList();
         <el-button @click="addRoleDialog = true" type="primary">新增角色</el-button>
       </div>
     </div>
-    <el-table stripe :data="mainList.list" border style="width: 100%">
+    <el-table
+      stripe
+      border
+      @expand-change="onExpandChange"
+      :data="mainList.list"
+      style="width: 100%">
       <el-table-column label="权限列表" type="expand" width="120">
         <template #default="scope">
           <div class="m-5 font-bold">权限列表</div>
-          <div class="m-5">
-            <el-table border :data="scope.row.authorities">
+          <div class="m-5" v-if="scope.row.authorities?.list">
+            <el-table v-loading="scope.row.loading" border :data="scope.row.authorities.list">
               <el-table-column prop="id" label="权限 ID"></el-table-column>
               <el-table-column prop="name" label="权限备注"></el-table-column>
               <el-table-column prop="value" label="权限值"></el-table-column>
@@ -120,6 +165,17 @@ await fetchDataList();
                 </template>
               </el-table-column>
             </el-table>
+            <div class="mt-5 f-c-e">
+              <el-pagination
+                small
+                v-model:current-page="authCurrPage"
+                v-model:page-size="authPageSize"
+                @size-change="handleAuthSizeChange(scope.row)"
+                @current-change="handleAuthCurrentChange(scope.row)"
+                layout="sizes, prev, pager, next, jumper"
+                :page-sizes="[5, 10]"
+                :total="scope.row.authorities.total" />
+            </div>
           </div>
         </template>
       </el-table-column>

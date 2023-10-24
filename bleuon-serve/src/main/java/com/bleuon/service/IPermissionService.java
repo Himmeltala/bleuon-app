@@ -1,6 +1,7 @@
 package com.bleuon.service;
 
 import com.bleuon.entity.AdminModel;
+import com.bleuon.entity.AuthorityModel;
 import com.bleuon.entity.ConsumerModel;
 import com.bleuon.entity.RoleModel;
 import com.bleuon.entity.criterias.PermissionCriteria;
@@ -39,5 +40,9 @@ public interface IPermissionService {
     boolean deleteRole(RoleModel model);
 
     boolean upgradeRole(RoleModel model);
+
+    PageInfo<AuthorityModel> findRoleAuthorityList(PermissionCriteria criteria);
+
+    PageInfo<RoleModel> findAllRole(PermissionCriteria criteria);
 
 }

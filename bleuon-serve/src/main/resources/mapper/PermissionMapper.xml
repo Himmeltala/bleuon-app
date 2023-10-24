@@ -125,7 +125,7 @@
         SELECT *
         FROM co_auth_role ar
                  LEFT JOIN p_auths a ON ar.auth_id = a.id
-        WHERE role_id = #{roleId};
+        WHERE role_id = #{roleId}
     </select>
 
     <select id="findAllRoleWithAuthorityList" resultMap="findRoleWithAuthorityListMap">
@@ -157,5 +157,10 @@
             remark = #{remark}
         WHERE id = #{id}
     </update>
+
+    <select id="findAllRole" resultType="com.bleuon.entity.RoleModel">
+        SELECT *
+        FROM p_roles
+    </select>
 
 </mapper>

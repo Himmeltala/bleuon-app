@@ -34,7 +34,7 @@ await fetchDataList();
 
 <template>
   <div>
-    <el-table stripe :data="mainList.list" border style="width: 100%">
+    <el-table stripe border :data="mainList.list" style="width: 100%">
       <el-table-column label="权限列表" type="expand" width="120">
         <template #default="scope">
           <div class="m-5 font-bold">权限列表</div>

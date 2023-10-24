@@ -36,8 +36,4 @@ public class DiscussionCriteria extends CommonCriteria implements Serializable {
 
     private String type;
 
-    private Integer currPage;
-
-    private Integer pageSize;
-
 }

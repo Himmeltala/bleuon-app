@@ -1,6 +1,7 @@
 package com.bleuon.service.impl;
 
 import com.bleuon.entity.AdminModel;
+import com.bleuon.entity.AuthorityModel;
 import com.bleuon.entity.ConsumerModel;
 import com.bleuon.entity.RoleModel;
 import com.bleuon.entity.criterias.PermissionCriteria;
@@ -117,6 +118,22 @@ public class PermissionService implements IPermissionService {
         } catch (Exception e) {
             throw new JdbcErrorException(e);
         }
+    }
+
+    @Override
+    public PageInfo<AuthorityModel> findRoleAuthorityList(PermissionCriteria criteria) {
+        int pageSize = Optional.ofNullable(criteria.getPageSize()).orElse(10);
+        int currPage = Optional.ofNullable(criteria.getCurrPage()).orElse(1);
+
+        return PageHelper.startPage(currPage, pageSize).doSelectPageInfo(() -> permissionMapper.findRoleAuthorityList(criteria.getRoleId()));
+    }
+
+    @Override
+    public PageInfo<RoleModel> findAllRole(PermissionCriteria criteria) {
+        int pageSize = Optional.ofNullable(criteria.getPageSize()).orElse(10);
+        int currPage = Optional.ofNullable(criteria.getCurrPage()).orElse(1);
+
+        return PageHelper.startPage(currPage, pageSize).doSelectPageInfo(() -> permissionMapper.findAllRole(criteria));
     }
 
 }

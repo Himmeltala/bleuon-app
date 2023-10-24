@@ -20,6 +20,8 @@ import java.util.List;
 @AllArgsConstructor
 public class CommonCriteria implements Serializable {
 
+    private Integer pageSize;
+    private Integer currPage;
     private List<Sequence> sequences;
 
 }
