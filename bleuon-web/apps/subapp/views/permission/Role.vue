@@ -90,16 +90,13 @@ function handleDeleteRole(row: RoleModel) {
   });
 }
 
-const authPageSize = ref(10);
-const authCurrPage = ref(1);
-
 function onExpandChange(item: any) {
-  authPageSize.value = 10;
-  authCurrPage.value = 1;
   item.loading = true;
   if (!item.hasGetAuthorities) {
     PermissionHttp.findRoleAuthorityList({ roleId: item.id }, data => {
       item.authorities = data;
+      item.pageSize = 10;
+      item.currPage = 1;
       item.hasGetAuthorities = true;
       item.loading = false;
     });
@@ -111,7 +108,7 @@ function onExpandChange(item: any) {
 function handleAuthSizeChange(item: any) {
   item.loading = true;
   PermissionHttp.findRoleAuthorityList(
-    { roleId: item.id, pageSize: authPageSize.value, currPage: authCurrPage.value },
+    { roleId: item.id, pageSize: item.pageSize, currPage: item.currPage },
     data => {
       item.authorities = data;
       item.hasGetAuthorities = true;
@@ -123,7 +120,7 @@ function handleAuthSizeChange(item: any) {
 function handleAuthCurrentChange(item: any) {
   item.loading = true;
   PermissionHttp.findRoleAuthorityList(
-    { roleId: item.id, pageSize: authPageSize.value, currPage: authCurrPage.value },
+    { roleId: item.id, pageSize: item.pageSize, currPage: item.currPage },
     data => {
       item.authorities = data;
       item.hasGetAuthorities = true;
@@ -163,8 +160,8 @@ function handleAddRoleAuth() {
         PermissionHttp.findRoleAuthorityList(
           {
             roleId: addRoleAuthItem.value.id,
-            pageSize: authPageSize.value,
-            currPage: authCurrPage.value
+            pageSize: item.pageSize,
+            currPage: item.currPage
           },
           data => {
             item.authorities = data;
@@ -228,8 +225,8 @@ await fetchDataList();
             <div class="mt-5 f-c-e">
               <el-pagination
                 small
-                v-model:current-page="authCurrPage"
-                v-model:page-size="authPageSize"
+                v-model:current-page="scope.row.currPage"
+                v-model:page-size="scope.row.pageSize"
                 @size-change="handleAuthSizeChange(scope.row)"
                 @current-change="handleAuthCurrentChange(scope.row)"
                 layout="sizes, prev, pager, next, jumper"
