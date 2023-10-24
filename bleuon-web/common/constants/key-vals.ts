@@ -6,3 +6,5 @@ export const SUBAPP_THEME_MODE = "BleuOn-Subapp-Theme-Mode";
 export const BLEUON_FLOWCHART_DATA = Symbol("BleuOnFlowchartData");
 export const BLEUON_FLOWCHART_PAPER = Symbol("BleuOnFlowchartPaper");
 export const BLEUON_FLOWCHART_GRAPH = Symbol("BleuOnFlowchartGraph");
+
+export const SUBAPP_ADMIN_DATA = Symbol("SUBAPP_ADMIN_DATA");

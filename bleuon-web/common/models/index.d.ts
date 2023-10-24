@@ -125,12 +125,17 @@ declare type AuthorityModel = {
   id: number;
   name: string;
   value: string;
+  createDate: string;
+  modifyDate: string;
 };
 
 declare type RoleModel = {
   id: number;
   name: string;
   value: string;
+  createDate: string;
+  modifyDate: string;
+  authorities: AuthorityModel[];
 };
 
 declare type PageInfo<T> = {

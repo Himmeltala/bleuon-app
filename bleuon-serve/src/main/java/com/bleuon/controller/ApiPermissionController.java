@@ -57,7 +57,7 @@ public class ApiPermissionController {
         return R.success(permissionService.findAllConsumersWithAuthorityList(criteria));
     }
 
-    @Operation(summary = "查询角色，包括角色所拥有的权限")
+    @Operation(summary = "查询角色分组，包括权限列表")
     @PostMapping("/find/all/role/with/authority/list")
     public R<PageInfo<RoleModel>> findAllRoleWithAuthorityList(@RequestBody PermissionCriteria criteria) {
         // TODO 查询角色所包含的权限

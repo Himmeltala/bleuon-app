@@ -1,4 +1,4 @@
-package com.bleuon.entity.dto;
+package com.bleuon.entity;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

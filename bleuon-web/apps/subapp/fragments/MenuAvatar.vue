@@ -6,10 +6,14 @@
  * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
-import { AdminHttp } from "@common/requests";
+defineProps({
+  data: {
+    type: Object,
+    required: true
+  }
+});
 
-const token = localStorage.getToken(KeyVals.SUBAPP_TOKEN_KEY);
-const admin = ref(await AdminHttp.findById(token.id));
+defineEmits(["logout"]);
 
 const root = document.querySelector("html");
 const mode = useStorage(KeyVals.SUBAPP_THEME_MODE, "");
@@ -21,17 +25,13 @@ function switchThemeMode() {
   mode.value = name;
 }
 
-function confirmLogout() {
-  AdminHttp.authLogout();
-}
-
 switchThemeMode();
 </script>
 
 <template>
   <div class="f-c-c relative">
     <el-dropdown :teleported="false">
-      <img :src="admin.avatar" class="rd-50% w-10 h-10 cursor-pointer" />
+      <img :src="data.avatar" class="rd-50% w-10 h-10 cursor-pointer" />
       <template #dropdown>
         <el-dropdown-menu>
           <div class="b-b-solid b-border-primary b-b-1 pb-2 mb-2">
@@ -63,7 +63,7 @@ switchThemeMode();
           </div>
           <div>
             <el-dropdown-item>
-              <el-popconfirm title="是否确定退出登录？" @confirm="confirmLogout">
+              <el-popconfirm title="是否确定退出登录？" @confirm="$emit('logout')">
                 <template #reference>
                   <div class="f-c-s">
                     <div class="i-tabler-logout mr-2"></div>

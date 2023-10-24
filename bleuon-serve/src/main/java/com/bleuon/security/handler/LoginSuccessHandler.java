@@ -2,7 +2,7 @@ package com.bleuon.security.handler;
 
 import com.alibaba.fastjson2.JSON;
 import com.bleuon.entity.CustomUserDetails;
-import com.bleuon.entity.dto.TokenModel;
+import com.bleuon.entity.TokenModel;
 import com.bleuon.utils.JwtUtil;
 import com.bleuon.utils.http.R;
 import jakarta.servlet.ServletException;

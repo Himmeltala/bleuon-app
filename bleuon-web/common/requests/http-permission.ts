@@ -25,12 +25,15 @@ export async function findAllAdminsWithAuthorityList(model: {
 }
 
 /**
- * 获取管理员权限连同获取管理员的模型数据
+ * 查询角色分组以及权限列表
  *
  * @param model
  * @returns
  */
-export async function findAll(model: { pageSize: number; currPage: number }) {
-  const { data } = await http.post<R<PageInfo<RoleModel>>>("/permission/find/role", model);
+export async function findAllRoleWithAuthorityList(model: { pageSize: number; currPage: number }) {
+  const { data } = await http.post<R<PageInfo<RoleModel>>>(
+    "/permission/find/all/role/with/authority/list",
+    model
+  );
   return data.data;
 }

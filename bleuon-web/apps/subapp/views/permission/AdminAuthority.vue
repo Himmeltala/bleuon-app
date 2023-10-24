@@ -9,15 +9,33 @@
 import { PermissionHttp } from "@common/requests";
 import { DateUtil } from "@common/utils";
 
-const mainList = ref(
-  await PermissionHttp.findAllAdminsWithAuthorityList({ pageSize: 1, currPage: 10 })
-);
+const currPage = ref(1);
+const pageSize = ref(10);
+
+const mainList = ref<PageInfo<AdminModel>>();
+
+async function fetchDataList() {
+  mainList.value = await PermissionHttp.findAllAdminsWithAuthorityList({
+    pageSize: pageSize.value,
+    currPage: currPage.value
+  });
+}
+
+async function handleSizeChange() {
+  await fetchDataList();
+}
+
+async function handleCurrentChange() {
+  await fetchDataList();
+}
+
+await fetchDataList();
 </script>
 
 <template>
   <div>
     <el-table stripe :data="mainList.list" border style="width: 100%">
-      <el-table-column label="用户权限" type="expand" width="120">
+      <el-table-column label="权限列表" type="expand" width="120">
         <template #default="scope">
           <div class="m-5 font-bold">权限列表</div>
           <div class="m-5">
@@ -30,23 +48,6 @@ const mainList = ref(
         </template>
       </el-table-column>
       <el-table-column prop="username" label="用户名" />
-      <el-table-column prop="createDate" label="注册日期">
-        <template #default="scope">
-          {{ DateUtil.formatted(scope.row.createDate) }}
-        </template>
-      </el-table-column>
-      <el-table-column prop="modifyDate" label="修改日期">
-        <template #default="scope">
-          <el-popover placement="top" width="auto">
-            <template #default>
-              <div>该用户距离上一次更新日期</div>
-            </template>
-            <template #reference>
-              {{ DateUtil.formatted(scope.row.modifyDate) }}
-            </template>
-          </el-popover>
-        </template>
-      </el-table-column>
       <el-table-column label="角色备注">
         <template #default="scope">
           <el-tag v-if="scope.row.role.name === '超级管理员'" type="danger">
@@ -62,7 +63,28 @@ const mainList = ref(
       </el-table-column>
       <el-table-column prop="role.value" label="角色值"></el-table-column>
       <el-table-column prop="role.id" label="角色 ID" />
+      <el-table-column prop="createDate" label="注册日期">
+        <template #default="scope">
+          {{ DateUtil.formatted(scope.row.createDate) }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="modifyDate" label="修改日期">
+        <template #default="scope">
+          {{ DateUtil.formatted(scope.row.modifyDate) }}
+        </template>
+      </el-table-column>
     </el-table>
+    <div class="mt-5 f-c-e">
+      <el-pagination
+        v-model:current-page="currPage"
+        v-model:page-size="pageSize"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        layout="sizes, prev, pager, next, jumper"
+        :page-sizes="[5, 10, 15, 20]"
+        background
+        :total="mainList.total" />
+    </div>
   </div>
 </template>
 

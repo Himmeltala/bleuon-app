@@ -6,12 +6,25 @@
  * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
+import { AdminHttp } from "@common/requests";
 import MenuAvatar from "@subapp/fragments/MenuAvatar.vue";
 
 const route = useRoute();
 const router = useRouter();
 const routes = route.matched[0].children;
 const routeList = ref([]);
+
+const adminData = ref<AdminModel>();
+provide(KeyVals.SUBAPP_ADMIN_DATA, adminData);
+
+async function fetchAdminData() {
+  const token = localStorage.getToken(KeyVals.SUBAPP_TOKEN_KEY);
+  if (token) {
+    adminData.value = await AdminHttp.findById(token.id);
+  } else {
+    adminData.value = {};
+  }
+}
 
 function getCurrentRouteList() {
   return router.currentRoute.value.matched;
@@ -22,17 +35,24 @@ routeList.value = getCurrentRouteList();
 watch(route, () => {
   routeList.value = getCurrentRouteList();
 });
+
+await fetchAdminData();
 </script>
 
 <template>
   <div class="base-home">
     <el-container>
-      <el-header>
-        <MenuAvatar />
+      <el-header class="f-c-c">
+        <div class="wapper f-c-e w-100% h-100%">
+          <div class="f-c-c">
+            <MenuAvatar :data="adminData" @logout="AdminHttp.authLogout" />
+            <div class="ml-2">{{ adminData.username }}</div>
+          </div>
+        </div>
       </el-header>
       <el-container>
         <el-aside width="200px">
-          <el-menu unique-opened default-active="/home/authority/admin/find" router>
+          <el-menu unique-opened default-active="/home/permission/role" router>
             <el-sub-menu :index="`${fatherIndex + 1}`" v-for="(fatherRoute, fatherIndex) in routes">
               <template #title>
                 <el-icon>

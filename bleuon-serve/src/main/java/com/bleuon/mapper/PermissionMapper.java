@@ -4,7 +4,6 @@ import com.bleuon.entity.AdminModel;
 import com.bleuon.entity.ConsumerModel;
 import com.bleuon.entity.RoleModel;
 import com.bleuon.entity.criterias.PermissionCriteria;
-import org.apache.ibatis.annotations.CacheNamespace;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -16,7 +15,6 @@ import java.util.List;
  * @date: 2023/10/24
  */
 @Mapper
-@CacheNamespace
 public interface PermissionMapper {
 
     List<String> findConsumerAuthorityList(String consumerId, String username);

@@ -1,11 +1,11 @@
 package com.bleuon.entity;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 /**
  * @description:
@@ -19,11 +19,9 @@ import java.io.Serializable;
 public class AuthorityModel implements Serializable {
 
     private Integer id;
-
-    @Schema(description = "权限名称或备注")
     private String name;
-
-    @Schema(description = "权限集合")
     private String value;
+    private Timestamp modifyDate;
+    private Timestamp createDate;
 
 }

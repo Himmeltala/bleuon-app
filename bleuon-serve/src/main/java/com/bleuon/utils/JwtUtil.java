@@ -1,7 +1,7 @@
 package com.bleuon.utils;
 
 import com.bleuon.entity.CustomUserDetails;
-import com.bleuon.entity.dto.TokenModel;
+import com.bleuon.entity.TokenModel;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
