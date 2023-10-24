@@ -3,7 +3,7 @@
 <mapper namespace="com.bleuon.mapper.PermissionMapper">
 
     <insert id="addConsumerAuthority">
-        INSERT INTO co_consumer_role(consumer_id, role_id, user_name)
+        INSERT INTO co_consumer_role(consumer_id, role_id, username)
         VALUES (#{consumerId}, #{roleId}, #{username})
     </insert>
 
@@ -18,7 +18,7 @@
                 AND cur.consumer_id = #{consumerId}
             </if>
             <if test="username != null">
-                AND cur.user_name = #{username}
+                AND cur.username = #{username}
             </if>
         </trim>
     </select>
@@ -144,5 +144,18 @@
         WHERE name = #{name}
            OR remark = #{remark}
     </select>
+
+    <delete id="deleteRole">
+        DELETE
+        FROM p_roles
+        WHERE id = #{id}
+    </delete>
+
+    <update id="upgradeRole">
+        UPDATE p_roles
+        SET name   = #{name},
+            remark = #{remark}
+        WHERE id = #{id}
+    </update>
 
 </mapper>

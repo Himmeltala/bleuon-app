@@ -36,4 +36,8 @@ public interface IPermissionService {
 
     RoleModel findRoleAnyFiled(RoleModel model);
 
+    boolean deleteRole(RoleModel model);
+
+    boolean upgradeRole(RoleModel model);
+
 }

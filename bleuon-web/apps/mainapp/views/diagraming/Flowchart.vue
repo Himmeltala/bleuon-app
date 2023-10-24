@@ -16,7 +16,7 @@ import { getDataURI } from "@common/lib/jointjs/utils";
 import { JointJsEventService } from "@mainapp/service/diagraming/flowchart/listener-service";
 // common
 import { ElDatePickerData, ElSelectData } from "@common/data";
-import { FormValidatorsUtil, PreventUtil } from "@common/utils";
+import { ElFormUtil, PreventUtil } from "@common/utils";
 // apis
 import { FlowchartHttp } from "@common/requests";
 // components
@@ -165,7 +165,7 @@ const shareFormRules = reactive<FormRules<any>>({
 });
 
 function confirmShare() {
-  FormValidatorsUtil.validate(shareFormRef.value, () => {
+  ElFormUtil.validate(shareFormRef.value, () => {
     mainData.value.isShare = 1;
     FlowchartHttp.upgrade(mainData.value, { nomessage: true }, message => {
       if (message.code === 200) {
@@ -227,7 +227,7 @@ const releaseFormRules = reactive<FormRules<any>>({
 const releaseTagList = ref([]);
 
 function confirmRelease() {
-  FormValidatorsUtil.validate(releaseFormRef.value, () => {
+  ElFormUtil.validate(releaseFormRef.value, () => {
     releaseFormData.tags = JSON.stringify(releaseTagList.value);
     FlowchartHttp.release({ flowchartId: mainData.value.id, ...releaseFormData }, () => {
       mainData.value.isPublic = 1;

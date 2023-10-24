@@ -49,3 +49,27 @@ export function addRole(model: RoleModel, success?: Function) {
     success && success();
   });
 }
+
+/**
+ * 删除角色
+ *
+ * @param params
+ * @param success
+ */
+export function deleteRole(params: RoleModel, success?: Function) {
+  http.delete<R>("/permission/delete/role", { params }).then(() => {
+    success && success();
+  });
+}
+
+/**
+ * 更新角色
+ *
+ * @param params
+ * @param success
+ */
+export function upgradeRole(model: RoleModel, success?: Function) {
+  http.put<R>("/permission/upgrade/role", model).then(() => {
+    success && success();
+  });
+}

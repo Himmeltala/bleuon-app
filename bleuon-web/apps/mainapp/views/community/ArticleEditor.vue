@@ -7,7 +7,7 @@
  */
 
 import { DiscussionHttp, FileHttp } from "@common/requests";
-import { FormValidatorsUtil, TextUtil } from "@common/utils";
+import { ElFormUtil, TextUtil } from "@common/utils";
 import { ElSelectData } from "@common/data";
 
 import CommonHeader from "@mainapp/fragments/CommonHeader.vue";
@@ -109,7 +109,7 @@ function uploadImageFile(formData: FormData) {
 }
 
 function startCreateArticle() {
-  FormValidatorsUtil.validate(formEl.value, () => {
+  ElFormUtil.validate(formEl.value, () => {
     formData.value.consumerId = token.id;
     DiscussionHttp.addArticle(formData.value, () => {
       location.reload();
@@ -125,7 +125,7 @@ const titleEnterTags = ref();
 const type = ref();
 
 function repostArticle() {
-  FormValidatorsUtil.validate(formEl.value, () => {
+  ElFormUtil.validate(formEl.value, () => {
     formData.value.consumerId = token.id;
     DiscussionHttp.upgradeDetail(formData.value);
   });

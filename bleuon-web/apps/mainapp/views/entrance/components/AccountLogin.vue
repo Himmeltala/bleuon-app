@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ConsumerHttp } from "@common/requests";
-import { FormValidatorsUtil } from "@common/utils";
+import { ElFormUtil } from "@common/utils";
 
 const router = useRouter();
 
@@ -15,8 +15,8 @@ const formData = reactive<ConsumerModel>({
 const formRules = reactive<FormRules>({
   username: [
     { required: true, message: "请输入账号信息", trigger: "blur" },
-    { validator: FormValidatorsUtil.accountValidator(isAccountCorrect), trigger: "change" },
-    { validator: FormValidatorsUtil.accountValidator(isAccountCorrect), trigger: "blur" }
+    { validator: ElFormUtil.accountValidator(isAccountCorrect), trigger: "change" },
+    { validator: ElFormUtil.accountValidator(isAccountCorrect), trigger: "blur" }
   ],
   password: [
     {
@@ -24,13 +24,13 @@ const formRules = reactive<FormRules>({
       message: "请输入密码",
       trigger: "blur"
     },
-    { validator: FormValidatorsUtil.passwordValidator(isPasswordCorrect), trigger: "change" },
-    { validator: FormValidatorsUtil.passwordValidator(isPasswordCorrect), trigger: "blur" }
+    { validator: ElFormUtil.passwordValidator(isPasswordCorrect), trigger: "change" },
+    { validator: ElFormUtil.passwordValidator(isPasswordCorrect), trigger: "blur" }
   ]
 });
 
 function confirmLogin() {
-  FormValidatorsUtil.validate(formRef.value, async () => {
+  ElFormUtil.validate(formRef.value, async () => {
     ConsumerHttp.authLogin(formData, token => {
       localStorage.setToken(KeyVals.MAINAPP_TOKEN_KEY, token);
       router.push("/workbench");

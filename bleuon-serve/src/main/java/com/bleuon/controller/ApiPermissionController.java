@@ -12,9 +12,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
 
@@ -78,6 +76,22 @@ public class ApiPermissionController {
 
         boolean success = permissionService.addRole(model);
         return success ? R.success("新增成功！") : R.error("新增失败！");
+    }
+
+    @Operation(summary = "删除一个角色")
+    @PreAuthorize("hasAnyAuthority('sys:delete', 'sys:delete:role')")
+    @DeleteMapping("/delete/role")
+    public R<Object> deleteRole(RoleModel model) {
+        boolean success = permissionService.deleteRole(model);
+        return success ? R.success("删除成功！") : R.error("删除失败！");
+    }
+
+    @Operation(summary = "修改一个角色")
+    @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:upgrade:role')")
+    @PutMapping("/upgrade/role")
+    public R<Object> upgradeRole(@RequestBody RoleModel model) {
+        boolean success = permissionService.upgradeRole(model);
+        return success ? R.success("修改成功！") : R.error("修改失败！");
     }
 
 }

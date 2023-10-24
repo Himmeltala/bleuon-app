@@ -7,7 +7,7 @@
  */
 
 import { PermissionHttp } from "@common/requests";
-import { DateUtil, FormValidatorsUtil } from "@common/utils";
+import { DateUtil, ElFormUtil } from "@common/utils";
 
 const currPage = ref(1);
 const pageSize = ref(10);
@@ -29,20 +29,64 @@ async function handleCurrentChange() {
   await fetchDataList();
 }
 
-const addRoleDialog = ref(false);
-const roleFormEl = ref();
-const roleFormData = reactive({
-  name: "",
-  remark: ""
-});
 const roleFormRules = reactive({
   name: [{ required: true, message: "角色名称必须填写！", trigger: "blur" }],
   remark: [{ required: true, message: "角色备注必须填写！", trigger: "blur" }]
 });
 
-function addRole() {
-  FormValidatorsUtil.validate(roleFormEl.value, () => {
-    PermissionHttp.addRole(roleFormData);
+const addRoleDialog = ref(false);
+const addRoleFormEl = ref();
+const addRoleFormData = ref<RoleModel>({
+  name: "",
+  remark: ""
+});
+
+function handleAddRole() {
+  ElFormUtil.validate(addRoleFormEl.value, () => {
+    PermissionHttp.addRole(addRoleFormData.value, async () => {
+      ElFormUtil.reset(addRoleFormEl.value);
+      addRoleDialog.value = false;
+      await fetchDataList();
+    });
+  });
+}
+
+function closeAddDialog() {
+  ElFormUtil.reset(addRoleFormEl.value);
+  addRoleDialog.value = false;
+}
+
+const editRoleDialog = ref(false);
+const editRoleFormEl = ref();
+const editRoleFormData = ref<RoleModel>({
+  name: "",
+  remark: ""
+});
+
+function openEditDialog(row: RoleModel) {
+  editRoleDialog.value = true;
+  editRoleFormData.value = row;
+}
+
+function handleEditRole() {
+  ElFormUtil.validate(editRoleFormEl.value, () => {
+    console.log(editRoleFormData.value);
+    PermissionHttp.upgradeRole(editRoleFormData.value, async () => {
+      ElFormUtil.reset(editRoleFormEl.value);
+      editRoleDialog.value = false;
+      await fetchDataList();
+    });
+  });
+}
+
+function closeEditDialog() {
+  ElFormUtil.reset(editRoleFormEl.value);
+  editRoleDialog.value = false;
+}
+
+function handleDeleteRole(index: number, row: RoleModel) {
+  PermissionHttp.deleteRole({ id: row.id }, () => {
+    mainList.value.list.splice(index, 1);
   });
 }
 
@@ -54,29 +98,6 @@ await fetchDataList();
     <div class="f-c-e mb-5">
       <div class="add-role">
         <el-button @click="addRoleDialog = true" type="primary">新增角色</el-button>
-        <el-dialog v-model="addRoleDialog" width="40%" title="新增角色">
-          <div>
-            <el-form
-              ref="roleFormEl"
-              :rules="roleFormRules"
-              :model="roleFormData"
-              label-position="left"
-              label-width="100px">
-              <el-form-item prop="name" label="角色名称">
-                <el-input placeholder="角色名称，如维护用户管理员" v-model="roleFormData.name" />
-              </el-form-item>
-              <el-form-item prop="remark" label="角色备注">
-                <el-input
-                  placeholder="角色备注，尽可能清晰描述该角色的主要工作"
-                  v-model="roleFormData.remark" />
-              </el-form-item>
-            </el-form>
-          </div>
-          <template #footer>
-            <el-button @click="addRoleDialog = false">取消</el-button>
-            <el-button type="primary" @click="addRole">确定</el-button>
-          </template>
-        </el-dialog>
       </div>
     </div>
     <el-table stripe :data="mainList.list" border style="width: 100%">
@@ -105,10 +126,7 @@ await fetchDataList();
       <el-table-column prop="remark" label="角色备注"></el-table-column>
       <el-table-column label="角色名称">
         <template #default="scope">
-          <el-tag v-if="scope.row.name === '超级管理员'" type="danger">
-            {{ scope.row.name }}
-          </el-tag>
-          <el-tag v-else type="info">
+          <el-tag>
             {{ scope.row.name }}
           </el-tag>
         </template>
@@ -124,7 +142,73 @@ await fetchDataList();
           {{ DateUtil.formatted(scope.row.modifyDate) }}
         </template>
       </el-table-column>
+      <el-table-column label="操作">
+        <template #default="scope">
+          <el-button size="small" plain @click="openEditDialog(scope.row)"> 修改 </el-button>
+          <el-popconfirm
+            title="确定是否要删除该角色？"
+            @confirm="handleDeleteRole(scope.$index, scope.row)">
+            <template #reference>
+              <el-button size="small" type="danger" plain> 删除 </el-button>
+            </template>
+          </el-popconfirm>
+        </template>
+      </el-table-column>
     </el-table>
+    <el-dialog
+      :close-on-press-escape="false"
+      :close-on-click-modal="false"
+      v-model="addRoleDialog"
+      width="40%"
+      title="新增角色">
+      <el-form
+        ref="addRoleFormEl"
+        :rules="roleFormRules"
+        :model="addRoleFormData"
+        label-position="left"
+        label-width="100px">
+        <el-form-item prop="name" label="角色名称">
+          <el-input placeholder="角色名称，如维护用户管理员" v-model="addRoleFormData.name" />
+        </el-form-item>
+        <el-form-item prop="remark" label="角色备注">
+          <el-input
+            type="textarea"
+            placeholder="角色备注，尽可能清晰描述该角色的主要工作"
+            v-model="addRoleFormData.remark" />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button @click="closeAddDialog">取消</el-button>
+        <el-button type="primary" @click="handleAddRole">确定</el-button>
+      </template>
+    </el-dialog>
+    <el-dialog
+      :close-on-press-escape="false"
+      :close-on-click-modal="false"
+      v-model="editRoleDialog"
+      width="40%"
+      title="修改角色">
+      <el-form
+        ref="editRoleFormEl"
+        :rules="roleFormRules"
+        :model="editRoleFormData"
+        label-position="left"
+        label-width="100px">
+        <el-form-item prop="name" label="角色名称">
+          <el-input placeholder="角色名称，如维护用户管理员" v-model="editRoleFormData.name" />
+        </el-form-item>
+        <el-form-item prop="remark" label="角色备注">
+          <el-input
+            type="textarea"
+            placeholder="角色备注，尽可能清晰描述该角色的主要工作"
+            v-model="editRoleFormData.remark" />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button @click="closeEditDialog">取消</el-button>
+        <el-button type="primary" @click="handleEditRole">确定</el-button>
+      </template>
+    </el-dialog>
     <div class="mt-5 f-c-e">
       <el-pagination
         v-model:current-page="currPage"

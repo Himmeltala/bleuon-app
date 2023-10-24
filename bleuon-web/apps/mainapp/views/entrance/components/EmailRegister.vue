@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { FormValidatorsUtil } from "@common/utils";
+import { ElFormUtil } from "@common/utils";
 import { ConsumerHttp } from "@common/requests";
 
 const coudButtonCount = ref(60);
@@ -21,8 +21,8 @@ const formData = reactive({
 const formRules = reactive<FormRules>({
   email: [
     { required: true, message: "请输入电子邮箱", trigger: "blur" },
-    { validator: FormValidatorsUtil.emailValidator(isEmailCorrect), trigger: "change" },
-    { validator: FormValidatorsUtil.emailValidator(isEmailCorrect), trigger: "blur" }
+    { validator: ElFormUtil.emailValidator(isEmailCorrect), trigger: "change" },
+    { validator: ElFormUtil.emailValidator(isEmailCorrect), trigger: "blur" }
   ],
   captcha: [
     {
@@ -30,8 +30,8 @@ const formRules = reactive<FormRules>({
       message: "请输入验证码",
       trigger: "blur"
     },
-    { validator: FormValidatorsUtil.verifyCodeValidator(isCodeCorrect), trigger: "change" },
-    { validator: FormValidatorsUtil.verifyCodeValidator(isCodeCorrect), trigger: "blur" }
+    { validator: ElFormUtil.verifyCaptchaValidator(isCodeCorrect), trigger: "change" },
+    { validator: ElFormUtil.verifyCaptchaValidator(isCodeCorrect), trigger: "blur" }
   ],
   password: [
     {
@@ -39,8 +39,8 @@ const formRules = reactive<FormRules>({
       message: "请输入密码",
       trigger: "blur"
     },
-    { validator: FormValidatorsUtil.passwordValidator(isPasswordCorrect), trigger: "change" },
-    { validator: FormValidatorsUtil.passwordValidator(isPasswordCorrect), trigger: "blur" }
+    { validator: ElFormUtil.passwordValidator(isPasswordCorrect), trigger: "change" },
+    { validator: ElFormUtil.passwordValidator(isPasswordCorrect), trigger: "blur" }
   ],
   rePasswd: [
     {
@@ -49,24 +49,24 @@ const formRules = reactive<FormRules>({
       trigger: "blur"
     },
     {
-      validator: FormValidatorsUtil.rePasswdValidator(isRePasswdCorrect, formData),
+      validator: ElFormUtil.rePasswdValidator(isRePasswdCorrect, formData),
       trigger: "change"
     },
     {
-      validator: FormValidatorsUtil.rePasswdValidator(isRePasswdCorrect, formData),
+      validator: ElFormUtil.rePasswdValidator(isRePasswdCorrect, formData),
       trigger: "blur"
     }
   ]
 });
 
 function confirmGetVerifyCode() {
-  FormValidatorsUtil.getVerifyCode(interval, coudButtonCount, codeButtonDisabled, callback => {
+  ElFormUtil.askVerifyCaptcha(interval, coudButtonCount, codeButtonDisabled, callback => {
     ConsumerHttp.askRegisterEmailCaptcha({ email: formData.email }, () => callback());
   });
 }
 
 function confirmSubmitForm() {
-  FormValidatorsUtil.validate(formRef.value, () => {
+  ElFormUtil.validate(formRef.value, () => {
     ConsumerHttp.verifyRegisterEmailCaptcha(
       formData,
       { email: formData.email, captcha: formData.captcha },

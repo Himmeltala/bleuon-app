@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { FormValidatorsUtil } from "@common/utils";
+import { ElFormUtil } from "@common/utils";
 import { ConsumerHttp } from "@common/requests";
 
 const formData = reactive({
@@ -14,8 +14,8 @@ const formRef = ref();
 const formRules = reactive<FormRules>({
   username: [
     { required: true, message: "请输入用户名", trigger: "blur" },
-    { validator: FormValidatorsUtil.usernameValidator(isUnameCorrect), trigger: "change" },
-    { validator: FormValidatorsUtil.usernameValidator(isUnameCorrect), trigger: "blur" }
+    { validator: ElFormUtil.usernameValidator(isUnameCorrect), trigger: "change" },
+    { validator: ElFormUtil.usernameValidator(isUnameCorrect), trigger: "blur" }
   ],
   password: [
     {
@@ -23,8 +23,8 @@ const formRules = reactive<FormRules>({
       message: "请输入密码",
       trigger: "blur"
     },
-    { validator: FormValidatorsUtil.passwordValidator(isPasswordCorrect), trigger: "change" },
-    { validator: FormValidatorsUtil.passwordValidator(isPasswordCorrect), trigger: "blur" }
+    { validator: ElFormUtil.passwordValidator(isPasswordCorrect), trigger: "change" },
+    { validator: ElFormUtil.passwordValidator(isPasswordCorrect), trigger: "blur" }
   ],
   rePasswd: [
     {
@@ -33,18 +33,18 @@ const formRules = reactive<FormRules>({
       trigger: "blur"
     },
     {
-      validator: FormValidatorsUtil.rePasswdValidator(isRePasswdCorrect, formData),
+      validator: ElFormUtil.rePasswdValidator(isRePasswdCorrect, formData),
       trigger: "change"
     },
     {
-      validator: FormValidatorsUtil.rePasswdValidator(isRePasswdCorrect, formData),
+      validator: ElFormUtil.rePasswdValidator(isRePasswdCorrect, formData),
       trigger: "blur"
     }
   ]
 });
 
 function confirmRegister() {
-  FormValidatorsUtil.validate(formRef.value, async () => {
+  ElFormUtil.validate(formRef.value, async () => {
     ConsumerHttp.accountRegister(formData, () => {
       ElMessage.success("请返回登录页面进行登录！");
     });

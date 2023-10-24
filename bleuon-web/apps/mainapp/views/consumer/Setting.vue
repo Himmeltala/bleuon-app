@@ -8,7 +8,7 @@
 
 import { ConsumerHttp } from "@common/requests";
 import { ElSelectData } from "@common/data";
-import { FormValidatorsUtil, DateUtil } from "@common/utils";
+import { ElFormUtil, DateUtil } from "@common/utils";
 
 import CommonHeader from "@mainapp/fragments/CommonHeader.vue";
 
@@ -49,8 +49,8 @@ const resetPwdFormRules = reactive<FormRules>({
       message: "请输入验证码",
       trigger: "blur"
     },
-    { validator: FormValidatorsUtil.verifyCodeValidator(isCodeCorrect), trigger: "change" },
-    { validator: FormValidatorsUtil.verifyCodeValidator(isCodeCorrect), trigger: "blur" }
+    { validator: ElFormUtil.verifyCaptchaValidator(isCodeCorrect), trigger: "change" },
+    { validator: ElFormUtil.verifyCaptchaValidator(isCodeCorrect), trigger: "blur" }
   ],
   password: [
     {
@@ -58,8 +58,8 @@ const resetPwdFormRules = reactive<FormRules>({
       message: "请输入密码",
       trigger: "blur"
     },
-    { validator: FormValidatorsUtil.passwordValidator(isPasswordCorrect), trigger: "change" },
-    { validator: FormValidatorsUtil.passwordValidator(isPasswordCorrect), trigger: "blur" }
+    { validator: ElFormUtil.passwordValidator(isPasswordCorrect), trigger: "change" },
+    { validator: ElFormUtil.passwordValidator(isPasswordCorrect), trigger: "blur" }
   ],
   rePasswd: [
     {
@@ -68,24 +68,24 @@ const resetPwdFormRules = reactive<FormRules>({
       trigger: "blur"
     },
     {
-      validator: FormValidatorsUtil.rePasswdValidator(isRePasswdCorrect, resetPwdFormData),
+      validator: ElFormUtil.rePasswdValidator(isRePasswdCorrect, resetPwdFormData),
       trigger: "change"
     },
     {
-      validator: FormValidatorsUtil.rePasswdValidator(isRePasswdCorrect, resetPwdFormData),
+      validator: ElFormUtil.rePasswdValidator(isRePasswdCorrect, resetPwdFormData),
       trigger: "blur"
     }
   ]
 });
 
 function getResetPwdCode() {
-  FormValidatorsUtil.getVerifyCode(interval, resetButtonCount, resetButtonDisabled, callback => {
+  ElFormUtil.askVerifyCaptcha(interval, resetButtonCount, resetButtonDisabled, callback => {
     ConsumerHttp.askResetEmailCaptcha({ email: mainData.value.email }, () => callback());
   });
 }
 
 function confirmResetPwd() {
-  FormValidatorsUtil.validate(resetPwdFormRef.value, () => {
+  ElFormUtil.validate(resetPwdFormRef.value, () => {
     ConsumerHttp.verifyEmailCaptcha(
       { captcha: resetPwdFormData.captcha, email: mainData.value.email },
       () => {

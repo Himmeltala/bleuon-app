@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { FormValidatorsUtil } from "@common/utils";
+import { ElFormUtil } from "@common/utils";
 import { ConsumerHttp } from "@common/requests";
 
 const props = defineProps({
@@ -25,8 +25,8 @@ const formRules = reactive<FormRules>({
       message: "请输入密码",
       trigger: "blur"
     },
-    { validator: FormValidatorsUtil.passwordValidator(isPasswordCorrect), trigger: "change" },
-    { validator: FormValidatorsUtil.passwordValidator(isPasswordCorrect), trigger: "blur" }
+    { validator: ElFormUtil.passwordValidator(isPasswordCorrect), trigger: "change" },
+    { validator: ElFormUtil.passwordValidator(isPasswordCorrect), trigger: "blur" }
   ],
   rePasswd: [
     {
@@ -35,11 +35,11 @@ const formRules = reactive<FormRules>({
       trigger: "blur"
     },
     {
-      validator: FormValidatorsUtil.rePasswdValidator(isRePasswdCorrect, formData),
+      validator: ElFormUtil.rePasswdValidator(isRePasswdCorrect, formData),
       trigger: "change"
     },
     {
-      validator: FormValidatorsUtil.rePasswdValidator(isRePasswdCorrect, formData),
+      validator: ElFormUtil.rePasswdValidator(isRePasswdCorrect, formData),
       trigger: "blur"
     }
   ]
@@ -50,7 +50,7 @@ onMounted(() => {
 });
 
 function confirmSubmitForm() {
-  FormValidatorsUtil.validate(formRef.value, () => {
+  ElFormUtil.validate(formRef.value, () => {
     ConsumerHttp.resetPassword(formData, () => {
       ElMessage.success("密码重置成功，请返回登录！");
     });

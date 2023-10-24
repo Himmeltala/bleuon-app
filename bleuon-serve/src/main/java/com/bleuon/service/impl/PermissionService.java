@@ -97,4 +97,26 @@ public class PermissionService implements IPermissionService {
         return permissionMapper.findRoleAnyFiled(model);
     }
 
+    @Transactional
+    @Override
+    public boolean deleteRole(RoleModel model) {
+        try {
+            Integer row = permissionMapper.deleteRole(model);
+            return row > 0;
+        } catch (Exception e) {
+            throw new JdbcErrorException(e);
+        }
+    }
+
+    @Transactional
+    @Override
+    public boolean upgradeRole(RoleModel model) {
+        try {
+            Integer row = permissionMapper.upgradeRole(model);
+            return row > 0;
+        } catch (Exception e) {
+            throw new JdbcErrorException(e);
+        }
+    }
+
 }

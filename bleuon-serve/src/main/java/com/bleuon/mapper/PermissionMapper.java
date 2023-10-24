@@ -37,4 +37,8 @@ public interface PermissionMapper {
 
     RoleModel findRoleAnyFiled(RoleModel model);
 
+    Integer deleteRole(RoleModel model);
+
+    Integer upgradeRole(RoleModel model);
+
 }

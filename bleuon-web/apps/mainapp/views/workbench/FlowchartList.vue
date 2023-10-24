@@ -9,7 +9,7 @@
 // jointjs
 import { downloadWithDataURI } from "@common/lib/jointjs/utils";
 
-import { DateUtil, FormValidatorsUtil } from "@common/utils";
+import { DateUtil, ElFormUtil } from "@common/utils";
 import { FlowchartHttp } from "@common/requests";
 
 // components
@@ -23,8 +23,8 @@ const dialogVisible = ref(false);
 const isFileNameCorrect = ref(false);
 const fileNameRules = reactive({
   filename: [
-    { validator: FormValidatorsUtil.fileNameValidator(isFileNameCorrect), trigger: "blur" },
-    { validator: FormValidatorsUtil.fileNameValidator(isFileNameCorrect), trigger: "change" }
+    { validator: ElFormUtil.filenameValidator(isFileNameCorrect), trigger: "blur" },
+    { validator: ElFormUtil.filenameValidator(isFileNameCorrect), trigger: "change" }
   ]
 });
 

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ConsumerHttp } from "@common/requests";
-import { FormValidatorsUtil } from "@common/utils";
+import { ElFormUtil } from "@common/utils";
 
 defineProps({
   dynamicCompName: {
@@ -28,8 +28,8 @@ const formData = reactive({
 const formRules = reactive<FormRules>({
   email: [
     { required: true, message: "请输入电子邮箱", trigger: "blur" },
-    { validator: FormValidatorsUtil.emailValidator(isEmailCorrect), trigger: "change" },
-    { validator: FormValidatorsUtil.emailValidator(isEmailCorrect), trigger: "blur" }
+    { validator: ElFormUtil.emailValidator(isEmailCorrect), trigger: "change" },
+    { validator: ElFormUtil.emailValidator(isEmailCorrect), trigger: "blur" }
   ],
   captcha: [
     {
@@ -37,26 +37,21 @@ const formRules = reactive<FormRules>({
       message: "请输入验证码",
       trigger: "blur"
     },
-    { validator: FormValidatorsUtil.verifyCodeValidator(isCodeCorrect), trigger: "change" },
-    { validator: FormValidatorsUtil.verifyCodeValidator(isCodeCorrect), trigger: "blur" }
+    { validator: ElFormUtil.verifyCaptchaValidator(isCodeCorrect), trigger: "change" },
+    { validator: ElFormUtil.verifyCaptchaValidator(isCodeCorrect), trigger: "blur" }
   ]
 });
 
 function confirmGetVerifyCode() {
-  FormValidatorsUtil.getVerifyCode(
-    interval,
-    coudButtonCount,
-    codeButtonDisabled,
-    (callback: any) => {
-      ConsumerHttp.askResetEmailCaptcha({ email: formData.email }, () => callback());
-    }
-  );
+  ElFormUtil.askVerifyCaptcha(interval, coudButtonCount, codeButtonDisabled, (callback: any) => {
+    ConsumerHttp.askResetEmailCaptcha({ email: formData.email }, () => callback());
+  });
 }
 
 const isVerifySuccess = ref(false);
 
 function confirmSubmitForm() {
-  FormValidatorsUtil.validate(formRef.value, () => {
+  ElFormUtil.validate(formRef.value, () => {
     ConsumerHttp.verifyEmailCaptcha(formData, () => {
       isVerifySuccess.value = true;
       emits("update:email", formData.email);

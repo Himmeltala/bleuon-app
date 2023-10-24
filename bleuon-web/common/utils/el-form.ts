@@ -31,6 +31,17 @@ export async function validate(
 }
 
 /**
+ * 重置表单
+ *
+ * @param formEl
+ * @returns
+ */
+export function reset(formEl: FormInstance | undefined) {
+  if (!formEl) return;
+  formEl.resetFields();
+}
+
+/**
  * 邮箱验证器
  *
  * @param isCorrect 邮箱地址是否正确的标识变量
@@ -56,7 +67,7 @@ export function emailValidator(isCorrect: Ref<boolean>) {
  *
  * @param isCorrect 验证码是否正确的标志变量
  */
-export function verifyCodeValidator(isCorrect: Ref<boolean>) {
+export function verifyCaptchaValidator(isCorrect: Ref<boolean>) {
   return (rule: any, value: any, callback: any) => {
     if (value.length < 6) {
       isCorrect.value = false;
@@ -78,7 +89,7 @@ export function verifyCodeValidator(isCorrect: Ref<boolean>) {
  * @param count 倒计时变量，一般是 60s
  * @param disabled 控制发送验证码按钮是否显示的布尔变量
  */
-export function getVerifyCode(
+export function askVerifyCaptcha(
   interval: number,
   count: Ref<number>,
   disabled: Ref<boolean>,
@@ -197,7 +208,7 @@ export function accountValidator(isCorrect: Ref<boolean>) {
  *
  * @param isCorrect 是否正确的标志变量
  */
-export function fileNameValidator(isCorrect: Ref<boolean>) {
+export function filenameValidator(isCorrect: Ref<boolean>) {
   return (rule: any, value: any, callback: any) => {
     const regex =
       /^(?:[\u4e00-\u9fa5a-zA-Z][\u4e00-\u9fa5a-zA-Z\d\s\S]{1,28}|[\u4e00-\u9fa5a-zA-Z])$/;

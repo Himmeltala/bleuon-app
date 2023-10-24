@@ -50,10 +50,7 @@ await fetchDataList();
       <el-table-column prop="username" label="用户名" />
       <el-table-column label="角色名称">
         <template #default="scope">
-          <el-tag v-if="scope.row.role.name === '超级管理员'" type="danger">
-            {{ scope.row.role.name }}
-          </el-tag>
-          <el-tag v-else type="info">
+          <el-tag>
             {{ scope.row.role.name }}
           </el-tag>
         </template>
