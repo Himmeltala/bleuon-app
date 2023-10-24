@@ -48,20 +48,17 @@ await fetchDataList();
         </template>
       </el-table-column>
       <el-table-column prop="username" label="用户名" />
-      <el-table-column label="角色备注">
+      <el-table-column label="角色名称">
         <template #default="scope">
           <el-tag v-if="scope.row.role.name === '超级管理员'" type="danger">
             {{ scope.row.role.name }}
           </el-tag>
-          <el-tag v-else-if="scope.row.role.name === '管理员'">
-            {{ scope.row.role.name }}
-          </el-tag>
-          <el-tag v-else type="success">
+          <el-tag v-else type="info">
             {{ scope.row.role.name }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="role.value" label="角色值"></el-table-column>
+      <el-table-column prop="role.remark" label="角色备注"></el-table-column>
       <el-table-column prop="role.id" label="角色 ID" />
       <el-table-column prop="createDate" label="注册日期">
         <template #default="scope">

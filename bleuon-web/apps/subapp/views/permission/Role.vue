@@ -7,7 +7,7 @@
  */
 
 import { PermissionHttp } from "@common/requests";
-import { DateUtil } from "@common/utils";
+import { DateUtil, FormValidatorsUtil } from "@common/utils";
 
 const currPage = ref(1);
 const pageSize = ref(10);
@@ -30,13 +30,20 @@ async function handleCurrentChange() {
 }
 
 const addRoleDialog = ref(false);
+const roleFormEl = ref();
 const roleFormData = reactive({
-  value: "",
-  name: ""
+  name: "",
+  remark: ""
+});
+const roleFormRules = reactive({
+  name: [{ required: true, message: "角色名称必须填写！", trigger: "blur" }],
+  remark: [{ required: true, message: "角色备注必须填写！", trigger: "blur" }]
 });
 
 function addRole() {
-  PermissionHttp.addRole(roleFormData);
+  FormValidatorsUtil.validate(roleFormEl.value, () => {
+    PermissionHttp.addRole(roleFormData);
+  });
 }
 
 await fetchDataList();
@@ -47,14 +54,21 @@ await fetchDataList();
     <div class="f-c-e mb-5">
       <div class="add-role">
         <el-button @click="addRoleDialog = true" type="primary">新增角色</el-button>
-        <el-dialog v-model="addRoleDialog" width="30%" title="新增角色">
+        <el-dialog v-model="addRoleDialog" width="40%" title="新增角色">
           <div>
-            <el-form label-position="left" label-width="100px">
-              <el-form-item label="角色值">
-                <el-input placeholder="角色值，如 super_admin" v-model="roleFormData.name" />
+            <el-form
+              ref="roleFormEl"
+              :rules="roleFormRules"
+              :model="roleFormData"
+              label-position="left"
+              label-width="100px">
+              <el-form-item prop="name" label="角色名称">
+                <el-input placeholder="角色名称，如维护用户管理员" v-model="roleFormData.name" />
               </el-form-item>
-              <el-form-item label="角色名称">
-                <el-input placeholder="角色备注、名称" v-model="roleFormData.name" />
+              <el-form-item prop="remark" label="角色备注">
+                <el-input
+                  placeholder="角色备注，尽可能清晰描述该角色的主要工作"
+                  v-model="roleFormData.remark" />
               </el-form-item>
             </el-form>
           </div>
@@ -88,20 +102,17 @@ await fetchDataList();
           </div>
         </template>
       </el-table-column>
+      <el-table-column prop="remark" label="角色备注"></el-table-column>
       <el-table-column label="角色名称">
         <template #default="scope">
           <el-tag v-if="scope.row.name === '超级管理员'" type="danger">
             {{ scope.row.name }}
           </el-tag>
-          <el-tag v-else-if="scope.row.name === '管理员'">
-            {{ scope.row.name }}
-          </el-tag>
-          <el-tag v-else type="success">
+          <el-tag v-else type="info">
             {{ scope.row.name }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="value" label="角色值"></el-table-column>
       <el-table-column prop="id" label="角色 ID" />
       <el-table-column prop="createDate" label="创建日期">
         <template #default="scope">

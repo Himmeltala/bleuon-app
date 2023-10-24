@@ -34,4 +34,6 @@ public interface IPermissionService {
 
     boolean addRole(RoleModel model);
 
+    RoleModel findRoleAnyFiled(RoleModel model);
+
 }

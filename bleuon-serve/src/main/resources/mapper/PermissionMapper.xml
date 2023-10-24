@@ -134,8 +134,15 @@
     </select>
 
     <insert id="addRole">
-        INSERT INTO p_roles(name, value)
-        VALUES (#{name}, #{value})
+        INSERT INTO p_roles(remark, name)
+        VALUES (#{remark}, #{name})
     </insert>
+
+    <select id="findRoleAnyFiled" resultType="com.bleuon.entity.RoleModel">
+        SELECT *
+        FROM p_roles
+        WHERE name = #{name}
+           OR remark = #{remark}
+    </select>
 
 </mapper>

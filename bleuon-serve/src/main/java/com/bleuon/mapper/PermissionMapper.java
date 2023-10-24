@@ -35,4 +35,6 @@ public interface PermissionMapper {
 
     Integer addRole(RoleModel model);
 
+    RoleModel findRoleAnyFiled(RoleModel model);
+
 }

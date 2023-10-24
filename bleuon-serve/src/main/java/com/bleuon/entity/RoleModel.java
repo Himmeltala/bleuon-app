@@ -20,8 +20,8 @@ import java.util.List;
 public class RoleModel implements Serializable {
 
     private Integer id;
+    private String remark;
     private String name;
-    private String value;
     private Timestamp modifyDate;
     private Timestamp createDate;
 

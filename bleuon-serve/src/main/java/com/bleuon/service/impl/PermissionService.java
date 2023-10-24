@@ -86,11 +86,15 @@ public class PermissionService implements IPermissionService {
     public boolean addRole(RoleModel model) {
         try {
             Integer row = permissionMapper.addRole(model);
-            // 查询是否已经存在了该 value 和 name
             return row > 0;
         } catch (Exception e) {
             throw new JdbcErrorException(e);
         }
+    }
+
+    @Override
+    public RoleModel findRoleAnyFiled(RoleModel model) {
+        return permissionMapper.findRoleAnyFiled(model);
     }
 
 }

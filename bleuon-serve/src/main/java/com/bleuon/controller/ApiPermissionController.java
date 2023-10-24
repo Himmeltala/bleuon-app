@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.Objects;
+
 /**
  * @description:
  * @package: com.bleuon.controller
@@ -68,6 +70,12 @@ public class ApiPermissionController {
     @PreAuthorize("hasAnyAuthority('sys:add', 'sys:add:role')")
     @PostMapping("/add/role")
     public R<Object> addRole(@RequestBody RoleModel model) {
+        RoleModel exists = permissionService.findRoleAnyFiled(model);
+
+        if (!Objects.isNull(exists)) {
+            return R.error("不能重复添加角色！");
+        }
+
         boolean success = permissionService.addRole(model);
         return success ? R.success("新增成功！") : R.error("新增失败！");
     }

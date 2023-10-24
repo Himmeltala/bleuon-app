@@ -131,8 +131,8 @@ declare type AuthorityModel = Partial<{
 
 declare type RoleModel = Partial<{
   id: number;
+  remark: string;
   name: string;
-  value: string;
   createDate: string;
   modifyDate: string;
   authorities: AuthorityModel[];
