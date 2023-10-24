@@ -121,22 +121,22 @@ declare type AdminModel = Partial<{
   role: RoleModel;
 }>;
 
-declare type AuthorityModel = {
+declare type AuthorityModel = Partial<{
   id: number;
   name: string;
   value: string;
   createDate: string;
   modifyDate: string;
-};
+}>;
 
-declare type RoleModel = {
+declare type RoleModel = Partial<{
   id: number;
   name: string;
   value: string;
   createDate: string;
   modifyDate: string;
   authorities: AuthorityModel[];
-};
+}>;
 
 declare type PageInfo<T> = {
   list: T[];

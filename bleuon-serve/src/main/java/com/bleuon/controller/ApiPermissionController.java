@@ -30,38 +30,46 @@ public class ApiPermissionController {
     private final PermissionService permissionService;
 
     @Operation(summary = "获取单个管理员，包括权限和角色")
-    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:authority-admin')")
+    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:permission:AdminWithAuthorityList')")
     @GetMapping("/find/admin/with/authority/list")
     public R<AdminModel> findAdminWithAuthorityList(String adminId) {
         return R.success(permissionService.findAdminWithAuthorityList(adminId));
     }
 
     @Operation(summary = "获取所有管理员，包括权限和角色")
-    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:authority-admin-all')")
+    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:permission:AllAdminsWithAuthorityList')")
     @PostMapping("/find/all/admins/with/authority/list")
     public R<PageInfo<AdminModel>> findAllAdminsWithAuthorityList(@RequestBody PermissionCriteria criteria) {
         return R.success(permissionService.findAllAdminsWithAuthorityList(criteria));
     }
 
     @Operation(summary = "获取单个用户，包括权限和角色")
-    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:authority-consumer')")
+    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:permission:ConsumerWithAuthorityList')")
     @GetMapping("/find/consumer/with/authority/list")
     public R<ConsumerModel> findConsumerWithAuthorityList(String consumerId) {
         return R.success(permissionService.findConsumerWithAuthorityList(consumerId));
     }
 
     @Operation(summary = "获取所有用户，包括权限和角色")
-    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:authority-consumer-all')")
+    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:permission:AllConsumersWithAuthorityList')")
     @PostMapping("/find/all/consumers/with/authority/list")
     public R<PageInfo<ConsumerModel>> findAllConsumersWithAuthorityList(@RequestBody PermissionCriteria criteria) {
         return R.success(permissionService.findAllConsumersWithAuthorityList(criteria));
     }
 
     @Operation(summary = "查询角色分组，包括权限列表")
+    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:permission:AllRoleWithAuthorityList')")
     @PostMapping("/find/all/role/with/authority/list")
     public R<PageInfo<RoleModel>> findAllRoleWithAuthorityList(@RequestBody PermissionCriteria criteria) {
-        // TODO 查询角色所包含的权限
         return R.success(permissionService.findAllRoleWithAuthorityList(criteria));
+    }
+
+    @Operation(summary = "新增一个角色")
+    @PreAuthorize("hasAnyAuthority('sys:add', 'sys:add:role')")
+    @PostMapping("/add/role")
+    public R<Object> addRole(@RequestBody RoleModel model) {
+        boolean success = permissionService.addRole(model);
+        return success ? R.success("新增成功！") : R.error("新增失败！");
     }
 
 }

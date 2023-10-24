@@ -29,11 +29,42 @@ async function handleCurrentChange() {
   await fetchDataList();
 }
 
+const addRoleDialog = ref(false);
+const roleFormData = reactive({
+  value: "",
+  name: ""
+});
+
+function addRole() {
+  PermissionHttp.addRole(roleFormData);
+}
+
 await fetchDataList();
 </script>
 
 <template>
   <div>
+    <div class="f-c-e mb-5">
+      <div class="add-role">
+        <el-button @click="addRoleDialog = true" type="primary">新增角色</el-button>
+        <el-dialog v-model="addRoleDialog" width="30%" title="新增角色">
+          <div>
+            <el-form label-position="left" label-width="100px">
+              <el-form-item label="角色值">
+                <el-input placeholder="角色值，如 super_admin" v-model="roleFormData.name" />
+              </el-form-item>
+              <el-form-item label="角色名称">
+                <el-input placeholder="角色备注、名称" v-model="roleFormData.name" />
+              </el-form-item>
+            </el-form>
+          </div>
+          <template #footer>
+            <el-button @click="addRoleDialog = false">取消</el-button>
+            <el-button type="primary" @click="addRole">确定</el-button>
+          </template>
+        </el-dialog>
+      </div>
+    </div>
     <el-table stripe :data="mainList.list" border style="width: 100%">
       <el-table-column label="权限列表" type="expand" width="120">
         <template #default="scope">

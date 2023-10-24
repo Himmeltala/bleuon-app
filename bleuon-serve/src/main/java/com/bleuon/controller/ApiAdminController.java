@@ -27,7 +27,7 @@ public class ApiAdminController {
     private final AdminService adminService;
 
     @Operation(summary = "查询管理员")
-    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:admin')")
+    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find')")
     @GetMapping("/find/{id}")
     public R<AdminModel> findById(@Validated AdminModel model) {
         AdminModel exists = adminService.findById(model);

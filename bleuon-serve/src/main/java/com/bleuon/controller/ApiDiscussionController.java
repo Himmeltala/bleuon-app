@@ -33,7 +33,7 @@ public class ApiDiscussionController implements Serializable {
     private final DiscussionService discussionService;
 
     @Operation(summary = "根据条件查询帖子列表")
-    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:article-all')")
+    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:article:all')")
     @PostMapping("/find/all/by/criteria")
     public R<PageInfo<ArticleModel>> findAllByCriteria(@RequestBody @Validated DiscussionCriteria criteria) {
         PageInfo<ArticleModel> pages = discussionService.findAllByCriteria(criteria);
@@ -41,14 +41,14 @@ public class ApiDiscussionController implements Serializable {
     }
 
     @Operation(summary = "根据条件查询帖子详情")
-    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:article-detail')")
+    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:article:detail')")
     @PostMapping("/find/detail/by/criteria")
     public R<ArticleModel> findDetailByCriteria(@RequestBody @Validated DiscussionCriteria criteria) {
         return R.success(discussionService.findDetailByCriteria(criteria));
     }
 
     @Operation(summary = "更新帖子数据")
-    @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:upgrade:article-detail')")
+    @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:upgrade:article:detail')")
     @PutMapping("/upgrade/detail")
     public R<Object> upgradeDetail(@RequestBody @Validated ArticleModel model) {
         boolean upgraded = discussionService.upgradeDetail(model);
@@ -56,14 +56,14 @@ public class ApiDiscussionController implements Serializable {
     }
 
     @Operation(summary = "根据条件查询帖子评论")
-    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:article-comment')")
+    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:article:comment')")
     @PostMapping("/find/comments/by/criteria")
     public R<PageInfo<ArticleCommentModel>> findCommentsByCriteria(@RequestBody @Validated DiscussionCriteria criteria) {
         return R.success(discussionService.findCommentsByCriteria(criteria));
     }
 
     @Operation(summary = "增加一条帖子评论")
-    @PreAuthorize("hasAnyAuthority('sys:add', 'sys:add:article-comment')")
+    @PreAuthorize("hasAnyAuthority('sys:add', 'sys:add:article:comment')")
     @PostMapping("/add/comment")
     public R<Object> addComment(@RequestBody @Validated ArticleCommentModel model) {
         boolean added = discussionService.addComment(model);
@@ -71,7 +71,7 @@ public class ApiDiscussionController implements Serializable {
     }
 
     @Operation(summary = "删除一条帖子评论")
-    @PreAuthorize("hasAnyAuthority('sys:delete', 'sys:delete:article-comment')")
+    @PreAuthorize("hasAnyAuthority('sys:delete', 'sys:delete:article:comment')")
     @DeleteMapping("/delete/comment")
     public R<Object> deleteComment(ArticleCommentModel model) {
         boolean removed = discussionService.deleteComment(model);
@@ -79,7 +79,7 @@ public class ApiDiscussionController implements Serializable {
     }
 
     @Operation(summary = "更新一条帖子评论数据")
-    @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:upgrade:article-comment')")
+    @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:upgrade:article:comment')")
     @PutMapping("/upgrade/comment")
     public R<Object> upgradeComment(@RequestBody @Validated ArticleCommentModel model) {
         boolean upgraded = discussionService.upgradeComment(model);

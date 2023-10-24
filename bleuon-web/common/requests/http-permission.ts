@@ -37,3 +37,15 @@ export async function findAllRoleWithAuthorityList(model: { pageSize: number; cu
   );
   return data.data;
 }
+
+/**
+ * 新增角色
+ *
+ * @param model
+ * @param success
+ */
+export function addRole(model: RoleModel, success?: Function) {
+  http.post<R>("/permission/add/role", model).then(() => {
+    success && success();
+  });
+}

@@ -1,28 +1,28 @@
-package com.bleuon.service;
+package com.bleuon.utils;
 
-import com.bleuon.utils.NumbersUtil;
-import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @description: 与 redis 交互，发送邮箱、校验验证码是否正确、校验验证码是否存在、验证码是否过期登
- * @package: com.bleuon.service
+ * @description:
+ * @package: com.bleuon.utils
  * @author: zheng
- * @date: 2023/10/8
+ * @date: 2023/10/24
  */
-@Data
-@Service
+@Component
 @RequiredArgsConstructor
-public class EmailCaptchaService {
+public class EmailUtil {
+
 
     private final JavaMailSender mailSender;
     private final RedisTemplate<String, String> redisTemplate;
@@ -33,6 +33,9 @@ public class EmailCaptchaService {
     private Integer timeout;
     @Value("${spring.mail.expire}")
     private Integer expire;
+
+    @Getter
+    @Setter
     private String principal;
 
     /**

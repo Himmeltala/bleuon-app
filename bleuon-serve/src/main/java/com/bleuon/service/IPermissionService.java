@@ -32,4 +32,6 @@ public interface IPermissionService {
 
     PageInfo<RoleModel> findAllRoleWithAuthorityList(PermissionCriteria criteria);
 
+    boolean addRole(RoleModel model);
+
 }

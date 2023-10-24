@@ -28,7 +28,7 @@ public class ApiCellController implements Serializable {
     private final CellService cellService;
 
     @Operation(summary = "根据条件查询所有的流程图图形")
-    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:consumer')")
+    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:cell:all')")
     @GetMapping("/find/all/by/criteria")
     public R<List<CellModel>> findAllByCriteria(@Validated CellModel model) {
         return cellService.findAllByCriteria(model);

@@ -36,7 +36,7 @@ public class ApiFlowchartController implements Serializable {
     private final CollectingFlowchartService collectingFlowchartService;
 
     @Operation(summary = "更新流程图")
-    @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:upgrade:consumer')")
+    @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:upgrade:flowchart')")
     @PutMapping("/upgrade")
     public R<Object> upgrade(@RequestBody @Validated FlowchartModel model) {
         boolean status = flowchartService.upgrade(model);
@@ -44,7 +44,7 @@ public class ApiFlowchartController implements Serializable {
     }
 
     @Operation(summary = "根据 ID 查询流程图")
-    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:consumer')")
+    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:flowchart')")
     @GetMapping("/find/by/id")
     public R<FlowchartModel> findById(@Validated FlowchartModel model) {
         FlowchartModel result = flowchartService.findById(model.getId());
@@ -52,7 +52,7 @@ public class ApiFlowchartController implements Serializable {
     }
 
     @Operation(summary = "根据条件查询所有流程图")
-    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:consumer')")
+    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:flowchart')")
     @PostMapping("/find/all/by/criteria")
     public R<List<FlowchartModel>> findAllByCriteria(@Validated @RequestBody FlowchartCriteria criteria) {
         List<FlowchartModel> list = flowchartService.findAllByCriteria(criteria);
@@ -60,7 +60,7 @@ public class ApiFlowchartController implements Serializable {
     }
 
     @Operation(summary = "新增一个流程图", description = "consumerId 必填")
-    @PreAuthorize("hasAnyAuthority('sys:add', 'sys:add:consumer')")
+    @PreAuthorize("hasAnyAuthority('sys:add', 'sys:add:flowchart')")
     @PostMapping("/add")
     public R<FlowchartModel> add(@RequestBody FlowchartModel model) {
         FlowchartModel flowchart = flowchartService.add(model.getConsumerId());
@@ -68,7 +68,7 @@ public class ApiFlowchartController implements Serializable {
     }
 
     @Operation(summary = "将流程图导入到个人文件中")
-    @PreAuthorize("hasAnyAuthority('sys:add', 'sys:add:consumer')")
+    @PreAuthorize("hasAnyAuthority('sys:add', 'sys:add:flowchart:replicate')")
     @PostMapping("/replicate")
     public R<FlowchartModel> replicate(@RequestBody @Validated FlowchartModel model) {
         FlowchartModel success = flowchartService.replicate(model);
@@ -76,7 +76,7 @@ public class ApiFlowchartController implements Serializable {
     }
 
     @Operation(summary = "删除单个流程图")
-    @PreAuthorize("hasAnyAuthority('sys:delete', 'sys:delete:consumer')")
+    @PreAuthorize("hasAnyAuthority('sys:delete', 'sys:delete:flowchart')")
     @DeleteMapping("/delete/by/id")
     public R<Object> deleteById(@Validated FlowchartModel model) {
         boolean status = flowchartService.deleteById(model.getId());
@@ -84,7 +84,7 @@ public class ApiFlowchartController implements Serializable {
     }
 
     @Operation(summary = "根据条件查询所有收藏的流程图")
-    @PreAuthorize("hasAnyAuthority('sys:add', 'sys:add:consumer')")
+    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:flowchart:collect')")
     @GetMapping("/find/all/collect/by/criteria")
     public R<List<FlowchartModel>> findAllCollectByCriteria(@Validated FlowchartCriteria criteria) {
         List<FlowchartModel> list = collectingFlowchartService.findAllByCriteria(criteria);
@@ -92,7 +92,7 @@ public class ApiFlowchartController implements Serializable {
     }
 
     @Operation(summary = "删除收藏的流程图", description = "flowchartId、collectingCid 必填")
-    @PreAuthorize("hasAnyAuthority('sys:delete', 'sys:delete:consumer')")
+    @PreAuthorize("hasAnyAuthority('sys:delete', 'sys:delete:flowchart:collect')")
     @DeleteMapping("/delete/collecting")
     public R<Object> deleteCollecting(@Validated CollectingFlowchartModel model) {
         boolean status = collectingFlowchartService.delete(model);
@@ -100,7 +100,7 @@ public class ApiFlowchartController implements Serializable {
     }
 
     @Operation(summary = "收藏一个流程图", description = "flowchartId、collectingCid 必填")
-    @PreAuthorize("hasAnyAuthority('sys:add', 'sys:add:consumer')")
+    @PreAuthorize("hasAnyAuthority('sys:add', 'sys:add:flowchart:collect')")
     @PostMapping("/add/collecting")
     public R<Object> addCollecting(@RequestBody @Validated CollectingFlowchartModel model) {
         FlowchartModel exists = collectingFlowchartService.find(model);
@@ -111,14 +111,14 @@ public class ApiFlowchartController implements Serializable {
     }
 
     @Operation(summary = "把流程图公开到模板社区")
-    @PreAuthorize("hasAnyAuthority('sys:add', 'sys:add:consumer')")
+    @PreAuthorize("hasAnyAuthority('sys:add', 'sys:add:flowchart:relase')")
     @PostMapping("/release")
     public R<Object> release(@RequestBody @Validated BlueprintFlowchartModel model) {
         return flowchartService.release(model);
     }
 
     @Operation(summary = "取消已公开到模板社区的流程图")
-    @PreAuthorize("hasAnyAuthority('sys:delete', 'sys:delete:consumer')")
+    @PreAuthorize("hasAnyAuthority('sys:delete', 'sys:delete:flowchart:release')")
     @DeleteMapping("/cancel/release")
     public R<Object> cancelRelease(
             @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")

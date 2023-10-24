@@ -21,7 +21,7 @@ public interface PermissionMapper {
 
     List<String> findAdminAuthorityList(String adminId, String username);
 
-    boolean addConsumerAuthority(String consumerId, Long roleId, String username);
+    Integer addConsumerAuthority(String consumerId, Long roleId, String username);
 
     AdminModel findAdminWithAuthorityList(String adminId);
 
@@ -32,5 +32,7 @@ public interface PermissionMapper {
     List<ConsumerModel> findAllConsumersWithAuthorityList(PermissionCriteria criteria);
 
     List<RoleModel> findAllRoleWithAuthorityList(PermissionCriteria criteria);
+
+    Integer addRole(RoleModel model);
 
 }

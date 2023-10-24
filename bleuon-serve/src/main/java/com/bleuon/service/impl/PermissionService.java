@@ -4,12 +4,14 @@ import com.bleuon.entity.AdminModel;
 import com.bleuon.entity.ConsumerModel;
 import com.bleuon.entity.RoleModel;
 import com.bleuon.entity.criterias.PermissionCriteria;
+import com.bleuon.exception.JdbcErrorException;
 import com.bleuon.mapper.PermissionMapper;
 import com.bleuon.service.IPermissionService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,9 +38,15 @@ public class PermissionService implements IPermissionService {
         return permissionMapper.findAdminAuthorityList(adminId, username);
     }
 
+    @Transactional
     @Override
     public boolean addConsumerAuthority(String consumerId, Long roleId, String username) {
-        return permissionMapper.addConsumerAuthority(consumerId, roleId, username);
+        try {
+            Integer row = permissionMapper.addConsumerAuthority(consumerId, roleId, username);
+            return row > 0;
+        } catch (Exception e) {
+            throw new JdbcErrorException(e);
+        }
     }
 
     @Override
@@ -71,6 +79,18 @@ public class PermissionService implements IPermissionService {
         int currPage = Optional.ofNullable(criteria.getCurrPage()).orElse(1);
 
         return PageHelper.startPage(currPage, pageSize).doSelectPageInfo(() -> permissionMapper.findAllRoleWithAuthorityList(criteria));
+    }
+
+    @Transactional
+    @Override
+    public boolean addRole(RoleModel model) {
+        try {
+            Integer row = permissionMapper.addRole(model);
+            // 查询是否已经存在了该 value 和 name
+            return row > 0;
+        } catch (Exception e) {
+            throw new JdbcErrorException(e);
+        }
     }
 
 }
