@@ -6,7 +6,6 @@ import com.bleuon.entity.AuthorityModel;
 import com.bleuon.entity.ConsumerModel;
 import com.bleuon.entity.RoleModel;
 import com.bleuon.entity.criterias.PermissionCriteria;
-import com.bleuon.entity.criterias.Sequence;
 import com.bleuon.service.impl.PermissionService;
 import com.bleuon.utils.http.R;
 import com.github.pagehelper.PageInfo;
@@ -16,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -83,7 +81,7 @@ public class ApiPermissionController {
     }
 
     @Operation(summary = "新增一个角色")
-    @PreAuthorize("hasAnyAuthority('sys:add', 'sys:add:role')")
+    @PreAuthorize("hasAnyAuthority('sys:add', 'sys:add:permisson:role')")
     @PostMapping("/add/role")
     public R<Object> addRole(@RequestBody RoleModel model) {
         RoleModel exists = permissionService.findRoleAnyFiled(model);
@@ -97,7 +95,7 @@ public class ApiPermissionController {
     }
 
     @Operation(summary = "删除一个角色")
-    @PreAuthorize("hasAnyAuthority('sys:delete', 'sys:delete:role')")
+    @PreAuthorize("hasAnyAuthority('sys:delete', 'sys:delete:permisson:role')")
     @DeleteMapping("/delete/role")
     public R<Object> deleteRole(RoleModel model) {
         boolean success = permissionService.deleteRole(model);
@@ -105,11 +103,27 @@ public class ApiPermissionController {
     }
 
     @Operation(summary = "修改一个角色")
-    @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:upgrade:role')")
+    @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:upgrade:permisson:role')")
     @PutMapping("/upgrade/role")
     public R<Object> upgradeRole(@RequestBody RoleModel model) {
         boolean success = permissionService.upgradeRole(model);
         return success ? R.success("修改成功！") : R.error("修改失败！");
+    }
+
+    @Operation(summary = "查询所有权限")
+    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:permission:AllAuthorityList')")
+    @GetMapping("/find/all/authority/list")
+    public R<List<AuthorityModel>> findAllAuthorityList(PermissionCriteria criteria) {
+        List<AuthorityModel> list = permissionService.findAllAuthorityList(criteria);
+        return R.success(list);
+    }
+
+    @Operation(summary = "添加权限列表到权限角色关联表中")
+    @PreAuthorize("hasAnyAuthority('sys:add', 'sys:add:permission:AuthorityListToRole')")
+    @PostMapping("/add/authority/list/to/role")
+    public R<Object> addAuthorityListToRole(@RequestBody PermissionCriteria criteria) {
+        boolean success = permissionService.addAuthorityListToRole(criteria);
+        return success ? R.success("添加成功！") : R.error("添加失败！");
     }
 
 }

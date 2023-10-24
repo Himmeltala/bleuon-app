@@ -24,4 +24,17 @@ public class AuthorityModel implements Serializable {
     private Timestamp modifyDate;
     private Timestamp createDate;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AuthorityModel that = (AuthorityModel) o;
+        return name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
+
 }

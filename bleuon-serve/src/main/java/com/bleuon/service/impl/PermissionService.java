@@ -136,4 +136,23 @@ public class PermissionService implements IPermissionService {
         return PageHelper.startPage(currPage, pageSize).doSelectPageInfo(() -> permissionMapper.findAllRole(criteria));
     }
 
+    @Override
+    public List<AuthorityModel> findAllAuthorityList(PermissionCriteria criteria) {
+        List<AuthorityModel> allAuthorityList = permissionMapper.findAllAuthorityList();
+        List<AuthorityModel> roleAuthorityList = permissionMapper.findRoleAuthorityList(criteria.getRoleId());
+        allAuthorityList.removeAll(roleAuthorityList);
+        return allAuthorityList;
+    }
+
+    @Transactional
+    @Override
+    public boolean addAuthorityListToRole(PermissionCriteria criteria) {
+        try {
+            Integer row = permissionMapper.addAuthorityListToRole(criteria);
+            return row > 0;
+        } catch (Exception e) {
+            throw new JdbcErrorException(e);
+        }
+    }
+
 }

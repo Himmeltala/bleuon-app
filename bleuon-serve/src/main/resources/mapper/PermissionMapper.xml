@@ -163,4 +163,15 @@
         FROM p_roles
     </select>
 
+    <select id="findAllAuthorityList" resultType="com.bleuon.entity.AuthorityModel">
+        SELECT *
+        FROM p_auths
+    </select>
+
+    <insert id="addAuthorityListToRole">
+        <foreach collection="authIds" item="authId">
+            INSERT INTO co_auth_role(auth_id, role_id) VALUES (#{authId}, #{roleId});
+        </foreach>
+    </insert>
+
 </mapper>

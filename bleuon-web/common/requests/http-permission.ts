@@ -98,3 +98,28 @@ export function upgradeRole(model: RoleModel, success?: Function) {
     success && success();
   });
 }
+
+/**
+ * 查询所有权限
+ *
+ * @param success
+ */
+export function findAllAuthorityList(
+  criteria: Criteria<{ roleId: number }>,
+  success: (data: AuthorityModel[]) => void
+) {
+  http
+    .get<R<AuthorityModel[]>>("/permission/find/all/authority/list", { params: criteria })
+    .then(({ data }) => {
+      success && success(data.data);
+    });
+}
+
+export function addAuthorityListToRole(
+  model: { roleId: number; authIds: number[] },
+  success: Function
+) {
+  http.post<R>("/permission/add/authority/list/to/role", model).then(() => {
+    success();
+  });
+}

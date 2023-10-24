@@ -46,4 +46,8 @@ public interface PermissionMapper {
 
     List<RoleModel> findAllRole(PermissionCriteria criteria);
 
+    List<AuthorityModel> findAllAuthorityList();
+
+    Integer addAuthorityListToRole(PermissionCriteria criteria);
+
 }

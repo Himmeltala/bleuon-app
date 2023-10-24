@@ -84,25 +84,27 @@ function closeEditDialog() {
   editRoleDialog.value = false;
 }
 
-function handleDeleteRole(index: number, row: RoleModel) {
-  PermissionHttp.deleteRole({ id: row.id }, () => {
-    mainList.value.list.splice(index, 1);
+function handleDeleteRole(row: RoleModel) {
+  PermissionHttp.deleteRole({ id: row.id }, async () => {
+    await fetchDataList();
   });
 }
 
 const authPageSize = ref(10);
 const authCurrPage = ref(1);
 
-function onExpandChange(row: any) {
-  row.loading = true;
-  if (!row.hasGetAuthorities) {
-    PermissionHttp.findRoleAuthorityList({ roleId: row.id }, data => {
-      row.authorities = data;
-      row.hasGetAuthorities = true;
-      row.loading = false;
+function onExpandChange(item: any) {
+  authPageSize.value = 10;
+  authCurrPage.value = 1;
+  item.loading = true;
+  if (!item.hasGetAuthorities) {
+    PermissionHttp.findRoleAuthorityList({ roleId: item.id }, data => {
+      item.authorities = data;
+      item.hasGetAuthorities = true;
+      item.loading = false;
     });
   } else {
-    row.loading = false;
+    item.loading = false;
   }
 }
 
@@ -130,6 +132,53 @@ function handleAuthCurrentChange(item: any) {
   );
 }
 
+const addRoleAuthDialog = ref(false);
+const addRoleAuthFormData = ref({
+  values: []
+});
+const addRoleAuthFormRules = ref({
+  values: [{ required: true, message: "请选择权限！", trigger: "blur" }]
+});
+const addRoleAuthFormEl = ref();
+const addRoleAuthsList = ref<AuthorityModel[]>([]);
+const addRoleAuthItem = ref();
+const addRoleAuthIndex = ref(0);
+
+function openAddRoleDialog(index: number, item: any) {
+  addRoleAuthItem.value = item;
+  addRoleAuthIndex.value = index;
+  PermissionHttp.findAllAuthorityList({ roleId: item.id }, data => {
+    addRoleAuthsList.value = data;
+    addRoleAuthDialog.value = true;
+  });
+}
+
+function handleAddRoleAuth() {
+  ElFormUtil.validate(addRoleAuthFormEl.value, () => {
+    PermissionHttp.addAuthorityListToRole(
+      { roleId: addRoleAuthItem.value.id, authIds: addRoleAuthFormData.value.values },
+      () => {
+        const item = mainList.value.list[addRoleAuthIndex.value] as any;
+        item.loading = true;
+        PermissionHttp.findRoleAuthorityList(
+          {
+            roleId: addRoleAuthItem.value.id,
+            pageSize: authPageSize.value,
+            currPage: authCurrPage.value
+          },
+          data => {
+            item.authorities = data;
+            item.hasGetAuthorities = true;
+            item.loading = false;
+            addRoleAuthDialog.value = false;
+            addRoleAuthFormData.value.values = [];
+          }
+        );
+      }
+    );
+  });
+}
+
 await fetchDataList();
 </script>
 
@@ -148,6 +197,17 @@ await fetchDataList();
       style="width: 100%">
       <el-table-column label="权限列表" type="expand" width="120">
         <template #default="scope">
+          <div class="m-5 f-c-e">
+            <div>
+              <el-button
+                type="primary"
+                size="small"
+                plain
+                @click="openAddRoleDialog(scope.$index, scope.row)">
+                添加权限
+              </el-button>
+            </div>
+          </div>
           <div class="m-5 font-bold">权限列表</div>
           <div class="m-5" v-if="scope.row.authorities?.list">
             <el-table v-loading="scope.row.loading" border :data="scope.row.authorities.list">
@@ -201,9 +261,7 @@ await fetchDataList();
       <el-table-column label="操作">
         <template #default="scope">
           <el-button size="small" plain @click="openEditDialog(scope.row)"> 修改 </el-button>
-          <el-popconfirm
-            title="确定是否要删除该角色？"
-            @confirm="handleDeleteRole(scope.$index, scope.row)">
+          <el-popconfirm title="确定是否要删除该角色？" @confirm="handleDeleteRole(scope.row)">
             <template #reference>
               <el-button size="small" type="danger" plain> 删除 </el-button>
             </template>
@@ -263,6 +321,33 @@ await fetchDataList();
       <template #footer>
         <el-button @click="closeEditDialog">取消</el-button>
         <el-button type="primary" @click="handleEditRole">确定</el-button>
+      </template>
+    </el-dialog>
+    <el-dialog
+      :close-on-press-escape="false"
+      :close-on-click-modal="false"
+      v-model="addRoleAuthDialog"
+      width="40%"
+      title="添加权限">
+      <el-form
+        ref="addRoleAuthFormEl"
+        :rules="addRoleAuthFormRules"
+        :model="addRoleAuthFormData"
+        label-position="left"
+        label-width="100px">
+        <el-form-item prop="values" label="选择权限">
+          <el-select v-model="addRoleAuthFormData.values" multiple placeholder="请选择权限">
+            <el-option
+              v-for="item in addRoleAuthsList"
+              :key="item.value"
+              :label="item.name"
+              :value="item.id" />
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button @click="addRoleAuthDialog = false">取消</el-button>
+        <el-button type="primary" @click="handleAddRoleAuth">确定</el-button>
       </template>
     </el-dialog>
     <div class="mt-5 f-c-e">

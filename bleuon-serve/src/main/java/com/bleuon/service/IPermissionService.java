@@ -45,4 +45,8 @@ public interface IPermissionService {
 
     PageInfo<RoleModel> findAllRole(PermissionCriteria criteria);
 
+    List<AuthorityModel> findAllAuthorityList(PermissionCriteria criteria);
+
+    boolean addAuthorityListToRole(PermissionCriteria criteria);
+
 }
