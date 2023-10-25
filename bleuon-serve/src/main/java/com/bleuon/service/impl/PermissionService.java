@@ -51,27 +51,27 @@ public class PermissionService implements IPermissionService {
     }
 
     @Override
-    public AdminModel findAdminWithAuthorityList(String adminId) {
-        return permissionMapper.findAdminWithAuthorityList(adminId);
+    public AdminModel findAdminWithRoleAndAuthorityList(String adminId) {
+        return permissionMapper.findAdminWithRoleAndAuthorityList(adminId);
     }
 
     @Override
-    public ConsumerModel findConsumerWithAuthorityList(String consumerId) {
-        return permissionMapper.findConsumerWithAuthorityList(consumerId);
+    public ConsumerModel findConsumerWithRoleAndAuthorityList(String consumerId) {
+        return permissionMapper.findConsumerWithRoleAndAuthorityList(consumerId);
     }
 
     @Override
-    public PageInfo<AdminModel> findAllAdminsWithAuthorityList(PermissionCriteria criteria) {
+    public PageInfo<AdminModel> findAllAdminWithRoleAndAuthorityList(PermissionCriteria criteria) {
         int pageSize = Optional.ofNullable(criteria.getPageSize()).orElse(10);
         int currPage = Optional.ofNullable(criteria.getCurrPage()).orElse(1);
-        return PageHelper.startPage(currPage, pageSize).doSelectPageInfo(() -> permissionMapper.findAllAdminsWithAuthorityList(criteria));
+        return PageHelper.startPage(currPage, pageSize).doSelectPageInfo(() -> permissionMapper.findAllAdminWithRoleAndAuthorityList(criteria));
     }
 
     @Override
-    public PageInfo<ConsumerModel> findAllConsumersWithAuthorityList(PermissionCriteria criteria) {
+    public PageInfo<ConsumerModel> findAllConsumerWithRoleAndAuthorityList(PermissionCriteria criteria) {
         int pageSize = Optional.ofNullable(criteria.getPageSize()).orElse(10);
         int currPage = Optional.ofNullable(criteria.getCurrPage()).orElse(1);
-        return PageHelper.startPage(currPage, pageSize).doSelectPageInfo(() -> permissionMapper.findAllConsumersWithAuthorityList(criteria));
+        return PageHelper.startPage(currPage, pageSize).doSelectPageInfo(() -> permissionMapper.findAllConsumerWithRoleAndAuthorityList(criteria));
     }
 
     @Override
@@ -121,25 +121,25 @@ public class PermissionService implements IPermissionService {
     }
 
     @Override
-    public PageInfo<AuthorityModel> findRoleAuthorityList(PermissionCriteria criteria) {
+    public PageInfo<AuthorityModel> findAuthorityListOfRole(PermissionCriteria criteria) {
         int pageSize = Optional.ofNullable(criteria.getPageSize()).orElse(10);
         int currPage = Optional.ofNullable(criteria.getCurrPage()).orElse(1);
 
-        return PageHelper.startPage(currPage, pageSize).doSelectPageInfo(() -> permissionMapper.findRoleAuthorityList(criteria.getRoleId()));
+        return PageHelper.startPage(currPage, pageSize).doSelectPageInfo(() -> permissionMapper.findAuthorityListOfRole(criteria.getRoleId()));
     }
 
     @Override
-    public PageInfo<RoleModel> findAllRole(PermissionCriteria criteria) {
+    public PageInfo<RoleModel> findAllRoleButNoAuthorityList(PermissionCriteria criteria) {
         int pageSize = Optional.ofNullable(criteria.getPageSize()).orElse(10);
         int currPage = Optional.ofNullable(criteria.getCurrPage()).orElse(1);
 
-        return PageHelper.startPage(currPage, pageSize).doSelectPageInfo(() -> permissionMapper.findAllRole(criteria));
+        return PageHelper.startPage(currPage, pageSize).doSelectPageInfo(() -> permissionMapper.findAllRoleButNoAuthorityList(criteria));
     }
 
     @Override
     public List<AuthorityModel> findAllAuthorityList(PermissionCriteria criteria) {
         List<AuthorityModel> allAuthorityList = permissionMapper.findAllAuthorityList();
-        List<AuthorityModel> roleAuthorityList = permissionMapper.findRoleAuthorityList(criteria.getRoleId());
+        List<AuthorityModel> roleAuthorityList = permissionMapper.findAuthorityListOfRole(criteria.getRoleId());
         allAuthorityList.removeAll(roleAuthorityList);
         return allAuthorityList;
     }
@@ -160,6 +160,25 @@ public class PermissionService implements IPermissionService {
     public boolean deleteRoleAuthority(PermissionCriteria criteria) {
         try {
             Integer row = permissionMapper.deleteRoleAuthority(criteria);
+            return row > 0;
+        } catch (Exception e) {
+            throw new JdbcErrorException(e);
+        }
+    }
+
+    public boolean isDuplicateAddRoleToAdmin(String adminId) {
+        AdminModel admin = permissionMapper.findAdminWithRoleAndAuthorityList(adminId);
+
+        return false;
+    }
+
+    @Transactional
+    @Override
+    public boolean addRoleToAdmin(PermissionCriteria criteria) {
+        try {
+            // 分配之前，查询已有的角色
+            // 如果插入了重复的角色，就返回 false
+            Integer row = permissionMapper.addRoleToAdmin(criteria);
             return row > 0;
         } catch (Exception e) {
             throw new JdbcErrorException(e);

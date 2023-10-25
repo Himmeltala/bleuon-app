@@ -138,7 +138,7 @@ declare type AdminModel = Partial<{
   createDate: string;
   modifyDate: string;
   authorities: AuthorityModel[];
-  role: RoleModel;
+  roles: RoleModel;
 }>;
 
 declare type AuthorityModel = Partial<{

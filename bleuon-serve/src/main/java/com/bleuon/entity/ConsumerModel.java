@@ -70,7 +70,7 @@ public class ConsumerModel implements Serializable {
     private List<AuthorityModel> authorities;
 
     @TableField(exist = false)
-    private RoleModel role;
+    private List<RoleModel> roles;
 
     public ConsumerModel(String id) {
         this.id = id;

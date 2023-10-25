@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.bleuon.entity.AdminModel;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * @description:
  * @package: com.bleuon.mapper
@@ -12,5 +14,11 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface AdminMapper extends BaseMapper<AdminModel> {
+
+    AdminModel findByUsernameOrPhoneOrEmail(AdminModel model);
+
+    AdminModel findBy(AdminModel model);
+
+    List<AdminModel> findListBy(AdminModel model);
 
 }

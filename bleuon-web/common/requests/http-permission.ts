@@ -8,28 +8,44 @@
 import { http } from "@common/requests/use-axios";
 
 /**
- * 获取管理员权限连同获取管理员的模型数据
+ * 获取单个管理员，包括权限和角色
+ *
+ * @param params
+ * @returns
+ */
+export async function findAdminWithRoleAndAuthorityList(params: { adminId: string }) {
+  const { data } = await http.get<R<AdminModel>>(
+    "/permission/find/admin/with/role-and-authority-list",
+    {
+      params
+    }
+  );
+  return data.data;
+}
+
+/**
+ * 获取所有管理员，包括权限和角色
  *
  * @param model
  * @returns
  */
-export async function findAllAdminsWithAuthorityList(model: Criteria) {
+export async function findAllAdminWithRoleAndAuthorityList(model: Criteria) {
   const { data } = await http.post<R<PageInfo<AdminModel>>>(
-    "/permission/find/all/admins/with/authority/list",
+    "/permission/find/all/admin/with/role-and-authority-list",
     model
   );
   return data.data;
 }
 
 /**
- * 查询角色分组以及权限列表
+ * 查询角色分组，包括权限列表
  *
  * @param model
  * @returns
  */
 export async function findAllRoleWithAuthorityList(model: Criteria) {
   const { data } = await http.post<R<PageInfo<RoleModel>>>(
-    "/permission/find/all/role/with/authority/list",
+    "/permission/find/all/role/with-authority-list",
     model
   );
   return data.data;
@@ -41,30 +57,33 @@ export async function findAllRoleWithAuthorityList(model: Criteria) {
  * @param criteria
  * @returns
  */
-export async function findAllRole(criteria: Criteria) {
-  const { data } = await http.post<R<PageInfo<RoleModel>>>(`/permission/find/all/role`, criteria);
+export async function findAllRoleButNoAuthorityList(criteria: Criteria) {
+  const { data } = await http.post<R<PageInfo<RoleModel>>>(
+    `/permission/find/all/role/but-no-authority-list`,
+    criteria
+  );
   return data.data;
 }
 
 /**
- * 查询角色分组，但是没有权限列表
+ * 查询角色的权限列表
  *
  * @param criteria
  * @returns
  */
-export function findRoleAuthorityList(
+export function findAuthorityListOfRole(
   criteria: Criteria<{ roleId: number }>,
   success: (data: PageInfo<AuthorityModel>) => void
 ) {
   http
-    .post<R<PageInfo<AuthorityModel>>>(`/permission/find/role/authority/list`, criteria)
+    .post<R<PageInfo<AuthorityModel>>>(`/permission/find/authority-list-of-role`, criteria)
     .then(({ data }) => {
       success(data.data);
     });
 }
 
 /**
- * 新增角色
+ * 新增一个角色
  *
  * @param model
  * @param success
@@ -76,7 +95,7 @@ export function addRole(model: RoleModel, success?: Function) {
 }
 
 /**
- * 删除角色
+ * 删除一个角色
  *
  * @param params
  * @param success
@@ -88,7 +107,7 @@ export function deleteRole(params: RoleModel, success?: Function) {
 }
 
 /**
- * 更新角色
+ * 修改一个角色
  *
  * @param params
  * @param success
@@ -115,6 +134,12 @@ export function findAllAuthorityList(
     });
 }
 
+/**
+ * 添加权限列表到权限角色关联表中
+ *
+ * @param model
+ * @param success
+ */
 export function addAuthorityListToRole(
   model: { roleId: number; authIds: number[] },
   success: Function
@@ -124,8 +149,29 @@ export function addAuthorityListToRole(
   });
 }
 
+/**
+ * 删除角色权限
+ *
+ * @param params
+ * @param success
+ */
 export function deleteRoleAuthority(params: { roleId: number; authId: number }, success: Function) {
   http.delete<R>("/permission/delete/role/authority", { params }).then(() => {
+    success();
+  });
+}
+
+/**
+ * 将角色分配给管理员
+ *
+ * @param model
+ * @param success
+ */
+export function addRoleToAdmin(
+  model: { adminId: string; roleId: number; username: string },
+  success: Function
+) {
+  http.post<R>("/permission/add/role/to/admin", model).then(() => {
     success();
   });
 }

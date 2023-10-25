@@ -35,6 +35,8 @@ public class AdminModel implements Serializable {
 
     private String phone;
 
+    private String email;
+
     private String avatar;
 
     private Timestamp createDate;
@@ -45,6 +47,6 @@ public class AdminModel implements Serializable {
     private List<AuthorityModel> authorities;
 
     @TableField(exist = false)
-    private RoleModel role;
+    private List<RoleModel> roles;
 
 }

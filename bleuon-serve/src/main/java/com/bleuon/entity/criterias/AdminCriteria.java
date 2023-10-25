@@ -1,5 +1,6 @@
 package com.bleuon.entity.criterias;
 
+import com.bleuon.entity.AdminModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,18 +13,16 @@ import java.util.List;
  * @description:
  * @package: com.bleuon.entity.criterias
  * @author: zheng
- * @date: 2023/10/23
+ * @date: 2023/10/26
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PermissionCriteria extends CommonCriteria implements Serializable {
+public class AdminCriteria extends AdminModel implements Serializable {
 
-    private String adminId;
-    private String roleId;
-    private String authId;
-    private String username;
-    private List<String> authIds;
+    private Integer pageSize;
+    private Integer currPage;
+    private List<Sequence> sequences;
 
 }

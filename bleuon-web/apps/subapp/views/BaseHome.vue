@@ -20,7 +20,7 @@ provide(KeyVals.SUBAPP_ADMIN_DATA, adminData);
 async function fetchAdminData() {
   const token = localStorage.getToken(KeyVals.SUBAPP_TOKEN_KEY);
   if (token) {
-    adminData.value = await AdminHttp.findById(token.id);
+    adminData.value = await AdminHttp.findBy({ id: token.id });
   } else {
     adminData.value = {};
   }

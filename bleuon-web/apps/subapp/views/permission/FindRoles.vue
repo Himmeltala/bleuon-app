@@ -14,7 +14,7 @@ const pageSize = ref(10);
 const mainList = shallowRef<PageInfo<RoleModel>>();
 
 async function fetchDataList() {
-  mainList.value = await PermissionHttp.findAllRole({
+  mainList.value = await PermissionHttp.findAllRoleButNoAuthorityList({
     pageSize: pageSize.value,
     currPage: currPage.value
   });
@@ -92,7 +92,7 @@ function handleDeleteRole(item: RoleModel) {
 function onExpandAuthChange(item: any) {
   item.loading = true;
   if (!item.hasGetAuthorities) {
-    PermissionHttp.findRoleAuthorityList({ roleId: item.id }, data => {
+    PermissionHttp.findAuthorityListOfRole({ roleId: item.id }, data => {
       item.authorities = data;
       item.pageSize = 10;
       item.currPage = 1;
@@ -106,7 +106,7 @@ function onExpandAuthChange(item: any) {
 
 function handleAuthSizeChange(item: any) {
   item.loading = true;
-  PermissionHttp.findRoleAuthorityList(
+  PermissionHttp.findAuthorityListOfRole(
     { roleId: item.id, pageSize: item.pageSize, currPage: item.currPage },
     data => {
       item.authorities = data;
@@ -118,7 +118,7 @@ function handleAuthSizeChange(item: any) {
 
 function handleAuthCurrentChange(item: any) {
   item.loading = true;
-  PermissionHttp.findRoleAuthorityList(
+  PermissionHttp.findAuthorityListOfRole(
     { roleId: item.id, pageSize: item.pageSize, currPage: item.currPage },
     data => {
       item.authorities = data;
@@ -155,7 +155,7 @@ function handleAddRoleAuth() {
     { roleId: addRoleAuthItem.value.id, authIds: authIdList.value },
     () => {
       addRoleAuthItem.value.loading = true;
-      PermissionHttp.findRoleAuthorityList(
+      PermissionHttp.findAuthorityListOfRole(
         {
           roleId: addRoleAuthItem.value.id,
           pageSize: addRoleAuthItem.value.pageSize,
@@ -175,7 +175,7 @@ function handleAddRoleAuth() {
 function handleDeleteAuth(authItem: any, roleItem: any) {
   PermissionHttp.deleteRoleAuthority({ roleId: roleItem.id, authId: authItem.id }, () => {
     roleItem.loading = true;
-    PermissionHttp.findRoleAuthorityList(
+    PermissionHttp.findAuthorityListOfRole(
       {
         roleId: roleItem.id,
         pageSize: roleItem.pageSize,

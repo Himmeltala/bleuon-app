@@ -2,10 +2,15 @@ package com.bleuon.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bleuon.entity.AdminModel;
+import com.bleuon.entity.criterias.AdminCriteria;
 import com.bleuon.mapper.AdminMapper;
 import com.bleuon.service.IAdminService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 /**
  * @description:
@@ -19,14 +24,21 @@ public class AdminService extends ServiceImpl<AdminMapper, AdminModel> implement
 
     private final AdminMapper adminMapper;
 
-    public AdminModel findByAnyUniqueFiled(AdminModel model) {
-        return query().eq("username", model.getUsername())
-                .or().eq("email", model.getUsername())
-                .or().eq("phone", model.getUsername()).one();
+    @Override
+    public AdminModel findByUsernameOrPhoneOrEmail(AdminModel model) {
+        return adminMapper.findByUsernameOrPhoneOrEmail(model);
     }
 
-    public AdminModel findById(AdminModel model) {
-        return query().eq("id", model.getId()).one();
+    @Override
+    public AdminModel findBy(AdminModel model) {
+        return adminMapper.findBy(model);
+    }
+
+    @Override
+    public PageInfo<AdminModel> findListBy(AdminCriteria model) {
+        int pageSize = Optional.ofNullable(model.getPageSize()).orElse(10);
+        int currPage = Optional.ofNullable(model.getCurrPage()).orElse(1);
+        return PageHelper.startPage(currPage, pageSize).doSelectPageInfo(() -> adminMapper.findListBy(model));
     }
 
 }

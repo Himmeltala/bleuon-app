@@ -23,13 +23,13 @@ public interface IPermissionService {
 
     boolean addConsumerAuthority(String consumerId, Long roleId, String username);
 
-    AdminModel findAdminWithAuthorityList(String adminId);
+    AdminModel findAdminWithRoleAndAuthorityList(String adminId);
 
-    ConsumerModel findConsumerWithAuthorityList(String consumerId);
+    ConsumerModel findConsumerWithRoleAndAuthorityList(String consumerId);
 
-    PageInfo<AdminModel> findAllAdminsWithAuthorityList(PermissionCriteria criteria);
+    PageInfo<AdminModel> findAllAdminWithRoleAndAuthorityList(PermissionCriteria criteria);
 
-    PageInfo<ConsumerModel> findAllConsumersWithAuthorityList(PermissionCriteria criteria);
+    PageInfo<ConsumerModel> findAllConsumerWithRoleAndAuthorityList(PermissionCriteria criteria);
 
     PageInfo<RoleModel> findAllRoleWithAuthorityList(PermissionCriteria criteria);
 
@@ -41,14 +41,16 @@ public interface IPermissionService {
 
     boolean upgradeRole(RoleModel model);
 
-    PageInfo<AuthorityModel> findRoleAuthorityList(PermissionCriteria criteria);
+    PageInfo<AuthorityModel> findAuthorityListOfRole(PermissionCriteria criteria);
 
-    PageInfo<RoleModel> findAllRole(PermissionCriteria criteria);
+    PageInfo<RoleModel> findAllRoleButNoAuthorityList(PermissionCriteria criteria);
 
     List<AuthorityModel> findAllAuthorityList(PermissionCriteria criteria);
 
     boolean addAuthorityListToRole(PermissionCriteria criteria);
 
     boolean deleteRoleAuthority(PermissionCriteria criteria);
+
+    boolean addRoleToAdmin(PermissionCriteria criteria);
 
 }

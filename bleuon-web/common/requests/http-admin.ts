@@ -13,7 +13,7 @@ import { http } from "@common/requests/use-axios";
  * @param model
  * @param success
  */
-export function authLogin(model: ConsumerModel, success: (res: Token) => void) {
+export function authLogin(model: AdminModel, success: (res: Token) => void) {
   http.post<R<Token>>("/public/entrance/admin-login", model).then(({ data }) => {
     success(data.data);
   });
@@ -38,10 +38,21 @@ export function authLogout(success?: Function, error?: Function) {
 /**
  * 查询管理员信息
  *
- * @param id
+ * @param params
  * @returns
  */
-export async function findById(id: string) {
-  const { data } = await http.get<R<AdminModel>>(`/admin/find/${id}`);
+export async function findBy(params: Criteria<AdminModel>) {
+  const { data } = await http.get<R<AdminModel>>(`/admin/find/by`, { params });
+  return data.data;
+}
+
+/**
+ * 查询管理员列表
+ *
+ * @param model
+ * @returns
+ */
+export async function findListBy(model: Criteria<AdminModel>) {
+  const { data } = await http.post<R<PageInfo<AdminModel>>>(`/admin/find/list/by`, model);
   return data.data;
 }

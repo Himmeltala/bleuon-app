@@ -238,7 +238,7 @@ public class ApiEntranceController implements Serializable {
     @Operation(summary = "管理员登录", description = "后台管理系统的登录入口")
     @PostMapping("/admin-login")
     public R<TokenModel> adminLogin(@RequestBody @Validated AdminModel model) {
-        AdminModel exists = adminService.findByAnyUniqueFiled(model);
+        AdminModel exists = adminService.findByUsernameOrPhoneOrEmail(model);
 
         if (Objects.isNull(exists)) {
             return R.error("用户名或密码错误！");
