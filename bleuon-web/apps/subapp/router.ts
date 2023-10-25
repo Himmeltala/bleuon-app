@@ -16,7 +16,7 @@ const router = createRouter({
     {
       path: "/home",
       meta: { title: "首页", icon: "House" },
-      redirect: "/home/permission/role",
+      redirect: "/home/permission/roles",
       component: () => import("@subapp/views/BaseHome.vue"),
       children: [
         {
@@ -25,9 +25,9 @@ const router = createRouter({
           children: [
             {
               path: "find",
-              name: "auth-find-consumer",
+              name: "auth-find-consumers",
               meta: { title: "用户列表", icon: "Search" },
-              component: () => import("@subapp/views/consumer/FindConsumer.vue")
+              component: () => import("@subapp/views/consumer/FindConsumers.vue")
             }
           ]
         },
@@ -37,9 +37,9 @@ const router = createRouter({
           children: [
             {
               path: "find",
-              name: "auth-find-admin",
+              name: "auth-find-admins",
               meta: { title: "管理员列表", icon: "Search" },
-              component: () => import("@subapp/views/admin/FindAdmin.vue")
+              component: () => import("@subapp/views/admin/FindAdmins.vue")
             }
           ]
         },
@@ -48,22 +48,28 @@ const router = createRouter({
           meta: { title: "权限和角色", icon: "Key" },
           children: [
             {
-              path: "consumer-authorities",
-              name: "auth-find-consumer-authorities",
-              meta: { title: "用户权限", icon: "User" },
-              component: () => import("@subapp/views/permission/ConsumerAuthority.vue")
+              path: "consumer-roles",
+              name: "auth-consumer-roles",
+              meta: { title: "用户角色", icon: "User" },
+              component: () => import("@subapp/views/permission/ConsumerRoles.vue")
             },
             {
-              path: "admin-authorities",
-              name: "auth-find-admin-authorities",
-              meta: { title: "管理员权限", icon: "UserFilled" },
-              component: () => import("@subapp/views/permission/AdminAuthority.vue")
+              path: "admin-roles",
+              name: "auth-admin-roles",
+              meta: { title: "管理员角色", icon: "UserFilled" },
+              component: () => import("@subapp/views/permission/AdminRoles.vue")
             },
             {
-              path: "role",
-              name: "auth-find-role",
+              path: "authorities",
+              name: "auth-authorities",
+              meta: { title: "权限管理", icon: "Lock" },
+              component: () => import("@subapp/views/permission/FindAuthorities.vue")
+            },
+            {
+              path: "roles",
+              name: "auth-roles",
               meta: { title: "角色分组", icon: "List" },
-              component: () => import("@subapp/views/permission/Role.vue")
+              component: () => import("@subapp/views/permission/FindRoles.vue")
             }
           ]
         }

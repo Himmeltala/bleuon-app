@@ -7,11 +7,10 @@
  */
 
 import { PermissionHttp } from "@common/requests";
-import { DateUtil, ElFormUtil } from "@common/utils";
+import { DateUtil, ElFormUtil, PagerUtil } from "@common/utils";
 
 const currPage = ref(1);
 const pageSize = ref(10);
-
 const mainList = shallowRef<PageInfo<RoleModel>>();
 
 async function fetchDataList() {
@@ -63,9 +62,9 @@ const editRoleFormData = ref<RoleModel>({
   remark: ""
 });
 
-function openEditDialog(row: RoleModel) {
+function openEditDialog(item: RoleModel) {
   editRoleDialog.value = true;
-  editRoleFormData.value = row;
+  editRoleFormData.value = item;
 }
 
 function handleEditRole() {
@@ -84,13 +83,13 @@ function closeEditDialog() {
   editRoleDialog.value = false;
 }
 
-function handleDeleteRole(row: RoleModel) {
-  PermissionHttp.deleteRole({ id: row.id }, async () => {
+function handleDeleteRole(item: RoleModel) {
+  PermissionHttp.deleteRole({ id: item.id }, async () => {
     await fetchDataList();
   });
 }
 
-function onExpandChange(item: any) {
+function onExpandAuthChange(item: any) {
   item.loading = true;
   if (!item.hasGetAuthorities) {
     PermissionHttp.findRoleAuthorityList({ roleId: item.id }, data => {
@@ -129,48 +128,48 @@ function handleAuthCurrentChange(item: any) {
   );
 }
 
-const addRoleAuthDialog = ref(false);
-const addRoleAuthFormData = ref({
-  values: []
-});
-const addRoleAuthFormRules = ref({
-  values: [{ required: true, message: "请选择权限！", trigger: "blur" }]
-});
-const addRoleAuthFormEl = ref();
-const addRoleAuthsList = ref<AuthorityModel[]>([]);
 const addRoleAuthItem = ref();
+const addRoleAuthDialog = ref(false);
 
-function openAddRoleDialog(item: any) {
+const authIdList = ref([]);
+const roleAuthList = ref([]);
+
+const addRoleAuthCurrPage = ref(1);
+const addRoleAuthPageSize = ref(5);
+const calcRoleAuthList = PagerUtil.paginate(roleAuthList, addRoleAuthCurrPage, addRoleAuthPageSize);
+
+function openAddRoleAuthDialog(item: any) {
   addRoleAuthItem.value = item;
   PermissionHttp.findAllAuthorityList({ roleId: item.id }, data => {
-    addRoleAuthsList.value = data;
+    roleAuthList.value = data;
     addRoleAuthDialog.value = true;
   });
 }
 
+function handleAddRoleAuthSelectionChange(val: AuthorityModel[]) {
+  authIdList.value = val.map(i => i.id);
+}
+
 function handleAddRoleAuth() {
-  ElFormUtil.validate(addRoleAuthFormEl.value, () => {
-    PermissionHttp.addAuthorityListToRole(
-      { roleId: addRoleAuthItem.value.id, authIds: addRoleAuthFormData.value.values },
-      () => {
-        addRoleAuthItem.value.loading = true;
-        PermissionHttp.findRoleAuthorityList(
-          {
-            roleId: addRoleAuthItem.value.id,
-            pageSize: addRoleAuthItem.value.pageSize,
-            currPage: addRoleAuthItem.value.currPage
-          },
-          data => {
-            addRoleAuthItem.value.authorities = data;
-            addRoleAuthItem.value.hasGetAuthorities = true;
-            addRoleAuthItem.value.loading = false;
-            addRoleAuthDialog.value = false;
-            addRoleAuthFormData.value.values = [];
-          }
-        );
-      }
-    );
-  });
+  PermissionHttp.addAuthorityListToRole(
+    { roleId: addRoleAuthItem.value.id, authIds: authIdList.value },
+    () => {
+      addRoleAuthItem.value.loading = true;
+      PermissionHttp.findRoleAuthorityList(
+        {
+          roleId: addRoleAuthItem.value.id,
+          pageSize: addRoleAuthItem.value.pageSize,
+          currPage: addRoleAuthItem.value.currPage
+        },
+        data => {
+          addRoleAuthItem.value.authorities = data;
+          addRoleAuthItem.value.hasGetAuthorities = true;
+          addRoleAuthItem.value.loading = false;
+          addRoleAuthDialog.value = false;
+        }
+      );
+    }
+  );
 }
 
 function handleDeleteAuth(authItem: any, roleItem: any) {
@@ -196,15 +195,16 @@ await fetchDataList();
 
 <template>
   <div>
+    <div class="mb-2 text-text-secondary text-0.9rem">描述: 管理角色分组以及角色的权限列表</div>
     <div class="f-c-e mb-5">
       <div class="add-role">
-        <el-button @click="addRoleDialog = true" type="primary">新增角色</el-button>
+        <el-button @click="addRoleDialog = true" size="small" type="primary">新增角色</el-button>
       </div>
     </div>
     <el-table
       stripe
       border
-      @expand-change="onExpandChange"
+      @expand-change="onExpandAuthChange"
       :data="mainList.list"
       style="width: 100%">
       <el-table-column label="权限列表" type="expand" width="120">
@@ -212,7 +212,11 @@ await fetchDataList();
           <div class="mx-20 my-5">
             <div class="f-c-e mb-5">
               <div>
-                <el-button type="primary" size="small" plain @click="openAddRoleDialog(scope.row)">
+                <el-button
+                  type="primary"
+                  size="small"
+                  plain
+                  @click="openAddRoleAuthDialog(scope.row)">
                   添加权限
                 </el-button>
               </div>
@@ -220,15 +224,15 @@ await fetchDataList();
             <div class="mb-5 font-bold">权限列表</div>
             <div class="" v-if="scope.row.authorities?.list">
               <el-table v-loading="scope.row.loading" border :data="scope.row.authorities.list">
-                <el-table-column prop="id" label="权限 ID"></el-table-column>
+                <el-table-column sortable prop="id" label="权限 ID"></el-table-column>
                 <el-table-column prop="name" label="权限备注"></el-table-column>
                 <el-table-column prop="value" label="权限值"></el-table-column>
-                <el-table-column prop="createDate" label="创建日期">
+                <el-table-column sortable prop="createDate" label="创建日期">
                   <template #default="authScope">
                     {{ DateUtil.formatted(authScope.row.createDate) }}
                   </template>
                 </el-table-column>
-                <el-table-column prop="modifyDate" label="修改日期">
+                <el-table-column sortable prop="modifyDate" label="修改日期">
                   <template #default="authScope">
                     {{ DateUtil.formatted(authScope.row.modifyDate) }}
                   </template>
@@ -267,13 +271,13 @@ await fetchDataList();
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="id" label="角色 ID" />
-      <el-table-column prop="createDate" label="创建日期">
+      <el-table-column sortable prop="id" label="角色 ID" />
+      <el-table-column sortable prop="createDate" label="创建日期">
         <template #default="scope">
           {{ DateUtil.formatted(scope.row.createDate) }}
         </template>
       </el-table-column>
-      <el-table-column prop="modifyDate" label="修改日期">
+      <el-table-column sortable prop="modifyDate" label="修改日期">
         <template #default="scope">
           {{ DateUtil.formatted(scope.row.modifyDate) }}
         </template>
@@ -349,22 +353,26 @@ await fetchDataList();
       v-model="addRoleAuthDialog"
       width="40%"
       title="添加权限">
-      <el-form
-        ref="addRoleAuthFormEl"
-        :rules="addRoleAuthFormRules"
-        :model="addRoleAuthFormData"
-        label-position="left"
-        label-width="100px">
-        <el-form-item prop="values" label="选择权限">
-          <el-select v-model="addRoleAuthFormData.values" multiple placeholder="请选择权限">
-            <el-option
-              v-for="item in addRoleAuthsList"
-              :key="item.value"
-              :label="item.name"
-              :value="item.id" />
-          </el-select>
-        </el-form-item>
-      </el-form>
+      <el-table
+        stripe
+        border
+        :data="calcRoleAuthList"
+        @selection-change="handleAddRoleAuthSelectionChange">
+        <el-table-column type="selection" width="55" />
+        <el-table-column sortable label="权限 ID" prop="id" />
+        <el-table-column label="权限名称" prop="name" />
+        <el-table-column label="权限值" prop="value" />
+      </el-table>
+      <div class="mt-5 f-c-e">
+        <el-pagination
+          small
+          background
+          v-model:current-page="addRoleAuthCurrPage"
+          v-model:page-size="addRoleAuthPageSize"
+          layout="sizes, prev, pager, next, jumper"
+          :page-sizes="[5, 10, 15, 20, 25, 30]"
+          :total="roleAuthList.length" />
+      </div>
       <template #footer>
         <el-button @click="addRoleAuthDialog = false">取消</el-button>
         <el-button type="primary" @click="handleAddRoleAuth">确定</el-button>
@@ -372,13 +380,14 @@ await fetchDataList();
     </el-dialog>
     <div class="mt-5 f-c-e">
       <el-pagination
+        small
+        background
         v-model:current-page="currPage"
         v-model:page-size="pageSize"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         layout="sizes, prev, pager, next, jumper"
         :page-sizes="[10, 15, 20, 25, 30]"
-        background
         :total="mainList.total" />
     </div>
   </div>

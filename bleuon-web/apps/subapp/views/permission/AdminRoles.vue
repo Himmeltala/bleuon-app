@@ -29,11 +29,22 @@ async function handleCurrentChange() {
   await fetchDataList();
 }
 
+const addRoleDialog = ref(false);
+
+// TODO: 1. 查询要分配角色的管理员用户 2. 查询当前角色列表。3. 传递角色id和管理员用户id、username即可分配角色。
+// TODO: 可以删除当前的管理员用户的角色、不可以修改信息
+
 await fetchDataList();
 </script>
 
 <template>
   <div>
+    <div class="mb-5 text-text-secondary text-0.9rem">描述: 维护后台管理系统的管理员的角色分组</div>
+    <div class="f-c-e mb-5">
+      <div class="add-role">
+        <el-button @click="addRoleDialog = true" size="small" type="primary">分配角色</el-button>
+      </div>
+    </div>
     <el-table stripe border :data="mainList.list" style="width: 100%">
       <el-table-column label="权限列表" type="expand" width="120">
         <template #default="scope">
@@ -68,6 +79,13 @@ await fetchDataList();
         </template>
       </el-table-column>
     </el-table>
+    <el-dialog
+      :close-on-press-escape="false"
+      :close-on-click-modal="false"
+      v-model="addRoleDialog"
+      width="40%"
+      title="分配角色">
+    </el-dialog>
     <div class="mt-5 f-c-e">
       <el-pagination
         v-model:current-page="currPage"
