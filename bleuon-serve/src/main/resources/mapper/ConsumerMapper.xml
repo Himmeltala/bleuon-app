@@ -22,4 +22,46 @@
         WHERE id = #{id}
     </update>
 
+    <select id="findBy" resultType="com.bleuon.entity.ConsumerModel">
+        SELECT id, username, email, phone, company, degree, profession, position, avatar, signature, sex,
+        create_date, modify_date FROM t_consumers
+        <where>
+            <trim prefixOverrides="AND" prefix="AND">
+                <if test="id != null">
+                    AND id = #{id}
+                </if>
+                <if test="username != null">
+                    AND username = #{username}
+                </if>
+                <if test="password != null">
+                    AND `password` = #{password}
+                </if>
+                <if test="phone != null">
+                    AND phone = #{phone}
+                </if>
+                <if test="email != null">
+                    AND email = #{email}
+                </if>
+            </trim>
+        </where>
+    </select>
+
+    <select id="findByOr" resultType="com.bleuon.entity.ConsumerModel">
+        SELECT id,
+               username,
+               email,
+               phone,
+               company,
+               degree,
+               profession,
+               position,
+               avatar,
+               signature,
+               sex,
+               create_date,
+               modify_date
+        FROM t_consumers
+        WHERE username = #{username} OR email = #{username} OR phone = #{username}
+    </select>
+
 </mapper>

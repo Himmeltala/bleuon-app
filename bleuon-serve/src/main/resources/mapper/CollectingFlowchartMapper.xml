@@ -4,7 +4,7 @@
 
     <resultMap id="findMap" type="com.bleuon.entity.FlowchartModel" autoMapping="true">
         <id column="id" property="id"/>
-        <association javaType="com.bleuon.entity.dto.ConsumerDTO" property="consumer" columnPrefix="u_"
+        <association javaType="com.bleuon.entity.ConsumerModel" property="consumer" columnPrefix="u_"
                      autoMapping="true">
             <id column="id" property="id"/>
         </association>
@@ -18,7 +18,7 @@
         FROM t_flowcharts f
         LEFT JOIN t_consumers u ON f.consumer_id = u.id
         LEFT JOIN co_collecting_flowchart cf ON f.id = cf.flowchart_id
-        WHERE cf.collecting_cid = #{collectingCid}
+        WHERE cf.collector_id = #{collectorId}
         <trim prefix="AND" prefixOverrides="AND">
             <if test="filename != null and filename != ''">
                 f.filename = #{filename}
@@ -34,20 +34,20 @@
         FROM t_flowcharts f
                  LEFT JOIN t_consumers u ON u.id = f.consumer_id
                  LEFT JOIN co_collecting_flowchart cf ON f.id = cf.flowchart_id
-        WHERE cf.collecting_cid = #{collectingCid}
+        WHERE cf.collector_id = #{collectorId}
           AND cf.flowchart_id = #{flowchartId};
     </select>
 
     <delete id="delete" parameterType="com.bleuon.entity.CollectingFlowchartModel">
         DELETE
         FROM co_collecting_flowchart
-        WHERE collecting_cid = #{collectingCid}
+        WHERE collector_id = #{collectorId}
           AND flowchart_id = #{flowchartId}
     </delete>
 
     <insert id="add" parameterType="com.bleuon.entity.CollectingFlowchartModel">
-        INSERT INTO co_collecting_flowchart(collecting_cid, flowchart_id)
-        VALUES (#{collectingCid}, #{flowchartId})
+        INSERT INTO co_collecting_flowchart(collector_id, flowchart_id)
+        VALUES (#{collectorId}, #{flowchartId})
     </insert>
 
 </mapper>

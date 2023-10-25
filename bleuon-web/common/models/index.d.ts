@@ -93,7 +93,7 @@ declare type CollectingConsumerModel = Partial<{
   remark: string;
   createDate: string;
   modifyDate: string;
-  collectingCid: string;
+  collectorId: string;
   consumerId: string;
   consumer: ConsumerModel;
 }>;

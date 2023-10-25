@@ -24,7 +24,7 @@ import java.io.Serializable;
 public class FlowchartCriteria extends CommonCriteria implements Serializable {
 
     @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
-    private String collectingCid;
+    private String collectorId;
 
     private String filename;
 

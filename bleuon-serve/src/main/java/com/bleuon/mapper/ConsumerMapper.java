@@ -14,4 +14,8 @@ public interface ConsumerMapper extends BaseMapper<ConsumerModel> {
 
     Integer upgrade(ConsumerModel model);
 
+    ConsumerModel findBy(ConsumerModel model);
+
+    ConsumerModel findByOr(ConsumerModel model);
+
 }

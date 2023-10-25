@@ -10,7 +10,6 @@ import com.bleuon.entity.criterias.ConsumerCriteria;
 import com.bleuon.entity.criterias.DynamicCriteria;
 import com.bleuon.entity.criterias.FlowchartCriteria;
 import com.bleuon.entity.criterias.Sequence;
-import com.bleuon.entity.dto.ConsumerDTO;
 import com.bleuon.service.impl.CollectingConsumerService;
 import com.bleuon.service.impl.ConsumerService;
 import com.bleuon.service.impl.DynamicService;
@@ -47,11 +46,11 @@ public class ApiConsumerController implements Serializable {
     private final FlowchartService flowchartService;
     private final CollectingConsumerService collectingConsumerService;
 
-    @Operation(summary = "查询用户")
+    @Operation(summary = "查询用户，通过多个字段")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:consumer')")
-    @GetMapping("/find/{id}")
-    public R<ConsumerDTO> findById(@Validated @PathVariable @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！") String id) {
-        ConsumerDTO exists = consumerService.findById(id);
+    @GetMapping("/find/by")
+    public R<ConsumerModel> findBy(@Validated ConsumerModel model) {
+        ConsumerModel exists = consumerService.findBy(model);
         return !Objects.isNull(exists) ? R.success(exists) : R.failed("未查询到该用户！");
     }
 
@@ -132,13 +131,13 @@ public class ApiConsumerController implements Serializable {
         return R.success(list);
     }
 
-    @Operation(summary = "新增单个关注用户", description = "需要传递 collectingCid、consumerId。")
+    @Operation(summary = "新增单个关注用户", description = "需要传递 collectorId、consumerId。")
     @PreAuthorize("hasAnyAuthority('sys:add', 'sys:add:consumer')")
     @PostMapping("/add/collecting")
     public R<Object> addCollecting(@Validated @RequestBody CollectingConsumerModel model) {
         ConsumerCriteria criteria = new ConsumerCriteria();
         criteria.setConsumerId(model.getConsumerId());
-        criteria.setCollectingCid(model.getCollectingCid());
+        criteria.setCollectorId(model.getCollectorId());
         CollectingConsumerModel exists = collectingConsumerService.findByCriteria(criteria);
 
         if (!Objects.isNull(exists)) {

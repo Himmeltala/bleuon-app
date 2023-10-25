@@ -15,7 +15,7 @@ const props = defineProps({
 });
 
 const mainData = ref(
-  await ConsumerHttp.findAllCollectingConsumerByCriteria({ collectingCid: props.consumer.id })
+  await ConsumerHttp.findAllCollectingConsumerByCriteria({ collectorId: props.consumer.id })
 );
 
 function cancelStar(item: CollectingConsumerModel, index: number) {

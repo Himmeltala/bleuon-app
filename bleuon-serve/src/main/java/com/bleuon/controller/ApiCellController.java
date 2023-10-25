@@ -31,7 +31,7 @@ public class ApiCellController implements Serializable {
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:cell:all')")
     @GetMapping("/find/all/by/criteria")
     public R<List<CellModel>> findAllByCriteria(@Validated CellModel model) {
-        return cellService.findAllByCriteria(model);
+        return R.success(cellService.findAllByCriteria(model));
     }
 
 }

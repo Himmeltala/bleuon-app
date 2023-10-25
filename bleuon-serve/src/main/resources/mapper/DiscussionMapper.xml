@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bleuon.mapper.DiscussionMapper">
 
-    <select id="findConsumerById" resultType="com.bleuon.entity.dto.ConsumerDTO">
+    <select id="findConsumerById" resultType="com.bleuon.entity.ConsumerModel">
         SELECT id,
                username,
                avatar,
@@ -18,7 +18,7 @@
 
     <resultMap id="findAllByCriteriaMap" type="com.bleuon.entity.ArticleModel" autoMapping="true">
         <id column="id" property="id"/>
-        <association javaType="com.bleuon.entity.dto.ConsumerDTO" property="consumer" column="{consumerId=consumer_id}"
+        <association javaType="com.bleuon.entity.ConsumerModel" property="consumer" column="{consumerId=consumer_id}"
                      select="findConsumerById">
         </association>
     </resultMap>
@@ -61,7 +61,7 @@
 
     <resultMap id="findByCriteriaMap" type="com.bleuon.entity.ArticleModel" autoMapping="true">
         <id column="id" property="id"/>
-        <association javaType="com.bleuon.entity.dto.ConsumerDTO" property="consumer" column="{consumerId=consumer_id}"
+        <association javaType="com.bleuon.entity.ConsumerModel" property="consumer" column="{consumerId=consumer_id}"
                      select="findConsumerById">
         </association>
     </resultMap>
@@ -92,7 +92,7 @@
 
     <resultMap id="findCommentsByCriteria" type="com.bleuon.entity.ArticleCommentModel" autoMapping="true">
         <id column="id" property="id"/>
-        <association javaType="com.bleuon.entity.dto.ConsumerDTO" property="consumer" column="{consumerId=consumer_id}"
+        <association javaType="com.bleuon.entity.ConsumerModel" property="consumer" column="{consumerId=consumer_id}"
                      select="findConsumerById">
         </association>
     </resultMap>

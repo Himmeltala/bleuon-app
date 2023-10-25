@@ -1,9 +1,7 @@
 package com.bleuon.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bleuon.entity.ConsumerModel;
-import com.bleuon.entity.dto.ConsumerDTO;
 import com.bleuon.exception.JdbcErrorException;
 import com.bleuon.mapper.ConsumerMapper;
 import com.bleuon.service.FileService;
@@ -34,42 +32,13 @@ public class ConsumerService extends ServiceImpl<ConsumerMapper, ConsumerModel> 
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public ConsumerDTO findById(String id) {
-        ConsumerModel exists = query().eq("id", id).one();
-        if (Objects.isNull(exists)) return null;
-
-        ConsumerDTO dto = new ConsumerDTO();
-        BeanUtil.copyProperties(exists, dto);
-        return dto;
+    public ConsumerModel findBy(ConsumerModel model) {
+        return consumerMapper.findBy(model);
     }
 
     @Override
-    public ConsumerModel findByUname(String uname) {
-        ConsumerModel exists = query().eq("username", uname).one();
-        if (Objects.isNull(exists)) return null;
-        return exists;
-    }
-
-    @Override
-    public ConsumerDTO findByEmail(String email) {
-        ConsumerModel exists = query().eq("email", email).one();
-        if (Objects.isNull(exists)) return null;
-
-        ConsumerDTO dto = new ConsumerDTO();
-        BeanUtil.copyProperties(exists, dto);
-        return dto;
-    }
-
-    @Override
-    public ConsumerDTO findByAnyUniqueFiled(ConsumerModel model) {
-        ConsumerModel exists = query().eq("username", model.getUsername())
-                .or().eq("email", model.getUsername())
-                .or().eq("phone", model.getUsername()).one();
-        if (Objects.isNull(exists)) return null;
-
-        ConsumerDTO dto = new ConsumerDTO();
-        BeanUtil.copyProperties(exists, dto);
-        return dto;
+    public ConsumerModel findByOr(ConsumerModel model) {
+        return consumerMapper.findByOr(model);
     }
 
     @Transactional

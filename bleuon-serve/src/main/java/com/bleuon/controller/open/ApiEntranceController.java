@@ -7,7 +7,6 @@ import com.bleuon.entity.AdminModel;
 import com.bleuon.entity.ConsumerModel;
 import com.bleuon.entity.CustomUserDetails;
 import com.bleuon.entity.TokenModel;
-import com.bleuon.entity.dto.ConsumerDTO;
 import com.bleuon.entity.vo.EmailCaptchaVO;
 import com.bleuon.service.impl.AdminService;
 import com.bleuon.service.impl.ConsumerService;
@@ -72,7 +71,10 @@ public class ApiEntranceController implements Serializable {
             return R.error("60s 内只能发送一次！");
         }
 
-        ConsumerDTO exists = consumerService.findByEmail(vo.getEmail());
+
+        ConsumerModel consumer = new ConsumerModel();
+        consumer.setEmail(vo.getEmail());
+        ConsumerModel exists = consumerService.findBy(consumer);
 
         if (Objects.isNull(exists)) {
             return R.error("邮箱不存在！");
@@ -91,7 +93,9 @@ public class ApiEntranceController implements Serializable {
         boolean duplicate = emailUtil.memorize(vo.getEmail(), IpUtil.getIp(http));
         if (duplicate) return R.error("60s 内只能发送一次！");
 
-        ConsumerDTO exists = consumerService.findByEmail(vo.getEmail());
+        ConsumerModel consumer = new ConsumerModel();
+        consumer.setEmail(vo.getEmail());
+        ConsumerModel exists = consumerService.findBy(consumer);
 
         if (!Objects.isNull(exists)) {
             return R.error("邮箱被注册！");
@@ -112,7 +116,9 @@ public class ApiEntranceController implements Serializable {
             return R.error("60s 内只能发送一次！");
         }
 
-        ConsumerDTO exists = consumerService.findByEmail(vo.getEmail());
+        ConsumerModel consumer = new ConsumerModel();
+        consumer.setEmail(vo.getEmail());
+        ConsumerModel exists = consumerService.findBy(consumer);
 
         if (Objects.isNull(exists)) {
             return R.error("邮箱没有注册！");
@@ -158,7 +164,9 @@ public class ApiEntranceController implements Serializable {
         }
 
         emailUtil.removeCaptcha(key);
-        ConsumerDTO exists = consumerService.findByEmail(model.getEmail());
+        ConsumerModel consumer = new ConsumerModel();
+        consumer.setEmail(vo.getEmail());
+        ConsumerModel exists = consumerService.findBy(consumer);
 
         if (!Objects.isNull(exists)) {
             return R.error("邮箱已被注册！");
@@ -192,7 +200,9 @@ public class ApiEntranceController implements Serializable {
         }
 
         emailUtil.removeCaptcha(key);
-        ConsumerDTO exists = consumerService.findByEmail(vo.getEmail());
+        ConsumerModel consumer = new ConsumerModel();
+        consumer.setEmail(vo.getEmail());
+        ConsumerModel exists = consumerService.findBy(consumer);
 
         if (Objects.isNull(exists)) {
             return R.error("该用户不存在！");
@@ -206,7 +216,7 @@ public class ApiEntranceController implements Serializable {
     @Operation(summary = "用户名称注册")
     @PostMapping("/account-register")
     public R<Object> accountRegister(@RequestBody @Validated ConsumerModel model) {
-        ConsumerModel exists = consumerService.findByUname(model.getUsername());
+        ConsumerModel exists = consumerService.findBy(model);
 
         if (!Objects.isNull(exists)) {
             return R.error("用户名已被注册！");
@@ -252,7 +262,7 @@ public class ApiEntranceController implements Serializable {
     @Operation(summary = "前台用户名、密码、手机号登录", description = "前台系统的登录入口")
     @PostMapping("/account-login")
     public R<TokenModel> accountLogin(@RequestBody @Validated ConsumerModel model) {
-        ConsumerDTO exists = consumerService.findByAnyUniqueFiled(model);
+        ConsumerModel exists = consumerService.findByOr(model);
 
         if (Objects.isNull(exists)) {
             return R.error("用户名或密码错误！");

@@ -28,15 +28,15 @@ public class CollectingFlowchartModel implements Serializable {
     private Integer id;
 
     @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
-    private String collectingCid;
+    private String collectorId;
 
     @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
     private String flowchartId;
 
     private Timestamp createDate;
 
-    public CollectingFlowchartModel(String collectingCid, String flowchartId) {
-        this.collectingCid = collectingCid;
+    public CollectingFlowchartModel(String collectorId, String flowchartId) {
+        this.collectorId = collectorId;
         this.flowchartId = flowchartId;
     }
 

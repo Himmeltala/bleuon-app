@@ -13,7 +13,7 @@ import { ElFormUtil, DateUtil } from "@common/utils";
 import CommonHeader from "@mainapp/fragments/CommonHeader.vue";
 
 const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
-const mainData = ref(await ConsumerHttp.findById(token.id));
+const mainData = ref(await ConsumerHttp.findBy({ id: token.id }));
 
 function upgradeBasicData() {
   ConsumerHttp.upgrade({

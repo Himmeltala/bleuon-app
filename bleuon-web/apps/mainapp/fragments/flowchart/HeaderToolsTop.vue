@@ -41,7 +41,7 @@ const calcFileName = computed({
 });
 
 function collect() {
-  FlowchartHttp.addCollecting({ flowchartId: mainData.value.id, collectingCid: token.id });
+  FlowchartHttp.addCollecting({ flowchartId: mainData.value.id, collectorId: token.id });
 }
 </script>
 

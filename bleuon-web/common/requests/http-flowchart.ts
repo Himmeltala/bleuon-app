@@ -59,7 +59,7 @@ export async function findIsShare(model: { id: string }, error?: Function) {
  * @returns
  */
 export async function findAllByCriteria(criteria: {
-  collectingCid: string;
+  collectorId: string;
   sequences?: { isAsc: boolean; col: string }[];
   filename?: string;
   isPublic?: number;
@@ -118,10 +118,7 @@ export function deleteById(model: { id?: string }, success: Function) {
  * @param model
  * @returns
  */
-export async function findAllCollectByCriteria(model: {
-  filename?: string;
-  collectingCid: string;
-}) {
+export async function findAllCollectByCriteria(model: { filename?: string; collectorId: string }) {
   const { data } = await http.get<R<FlowchartModel[]>>("/flowchart/find/all/collect/by/criteria", {
     params: model
   });
@@ -135,7 +132,7 @@ export async function findAllCollectByCriteria(model: {
  * @param success
  */
 export async function addCollecting(
-  model: { flowchartId: string; collectingCid: string },
+  model: { flowchartId: string; collectorId: string },
   success?: Function
 ) {
   http.post("/flowchart/add/collecting", model).then(() => {
@@ -150,7 +147,7 @@ export async function addCollecting(
  * @param success
  */
 export async function deleteCollecting(
-  model: { flowchartId: string; collectingCid: string },
+  model: { flowchartId: string; collectorId: string },
   success?: Function
 ) {
   await http.delete<R>("/flowchart/delete/collecting", { params: model }).then(() => {

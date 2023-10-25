@@ -23,7 +23,7 @@ const searchVal = ref("");
 async function fetchData(params?: any) {
   mainData.value = await FlowchartHttp.findAllCollectByCriteria({
     ...params,
-    collectingCid: token.id
+    collectorId: token.id
   });
 }
 
@@ -40,7 +40,7 @@ function replicate(data: FlowchartModel) {
 }
 
 function remove(flowchartId: string, index: number) {
-  FlowchartHttp.deleteCollecting({ flowchartId, collectingCid: token.id }, () => {
+  FlowchartHttp.deleteCollecting({ flowchartId, collectorId: token.id }, () => {
     mainData.value.splice(index, 1);
   });
 }

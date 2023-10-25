@@ -59,7 +59,7 @@ function uploadCommentImage(formData: FormData) {
 }
 
 function collectConsumer() {
-  ConsumerHttp.addCollecting({ collectingCid: token.id, consumerId: mainData.value.consumer.id });
+  ConsumerHttp.addCollecting({ collectorId: token.id, consumerId: mainData.value.consumer.id });
 }
 
 function addComment() {

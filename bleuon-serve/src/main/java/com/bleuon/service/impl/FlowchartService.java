@@ -79,7 +79,7 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, FlowchartMode
     @Override
     public List<FlowchartModel> findAllByCriteria(FlowchartCriteria criteria) {
         QueryWrapper<FlowchartModel> wrapper = new QueryWrapper<>();
-        wrapper.eq("consumer_id", criteria.getCollectingCid());
+        wrapper.eq("consumer_id", criteria.getCollectorId());
 
         if (StringUtils.hasText(criteria.getFilename())) {
             wrapper.like("file_name", criteria.getFilename());

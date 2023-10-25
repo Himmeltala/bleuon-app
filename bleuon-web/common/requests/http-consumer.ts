@@ -183,13 +183,13 @@ export function resetPassword(model: ConsumerModel, success: Function) {
 }
 
 /**
- * 查询用户信息
+ * 查询用户
  *
  * @param id
  * @returns
  */
-export async function findById(id: string) {
-  const { data } = await http.get<R<ConsumerModel>>(`/consumer/find/${id}`);
+export async function findBy(params: ConsumerModel) {
+  const { data } = await http.get<R<ConsumerModel>>(`/consumer/find/by`, { params });
   return data.data;
 }
 
@@ -280,7 +280,7 @@ export function addDynamic(model: DynamicModel, success?: Function) {
  * @returns
  */
 export async function findAllFlowchart(model: {
-  collectingCid: string;
+  collectorId: string;
   isPublic?: 1 | 0;
   isShare?: 1 | 0;
 }) {
@@ -297,7 +297,7 @@ export async function findAllFlowchart(model: {
  * @returns
  */
 export async function findAllCollectingConsumerByCriteria(model: {
-  collectingCid: string;
+  collectorId: string;
   remark?: string;
   sequences?: { isAsc: boolean; col: string }[];
 }) {

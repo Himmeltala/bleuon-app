@@ -9,7 +9,7 @@
 import { ConsumerHttp } from "@common/requests";
 
 const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
-const consumer = ref(await ConsumerHttp.findById(token.id));
+const consumer = ref(await ConsumerHttp.findBy({ id: token.id }));
 
 const root = document.querySelector("html");
 const mode = useStorage(KeyVals.MAINAPP_THEME_MODE, "");

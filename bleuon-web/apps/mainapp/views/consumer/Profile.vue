@@ -24,11 +24,11 @@ const tabs = [MyDynamic, MyPublicFlowchart, MyShareFlowchart, MyPostArticles, My
 const tabIndex = ref(0);
 
 async function fetchData(id: string | string[]) {
-  formData.value = await ConsumerHttp.findById(id.toString());
+  formData.value = await ConsumerHttp.findBy({ id: id.toString() });
 }
 
 function collectConsumer() {
-  ConsumerHttp.addCollecting({ collectingCid: token.id, consumerId: formData.value.id });
+  ConsumerHttp.addCollecting({ collectorId: token.id, consumerId: formData.value.id });
 }
 
 onBeforeRouteUpdate(async updateGuard => {

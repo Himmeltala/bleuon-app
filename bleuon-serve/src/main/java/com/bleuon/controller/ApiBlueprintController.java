@@ -43,14 +43,14 @@ public class ApiBlueprintController implements Serializable {
         if (StringUtils.hasText(filename)) {
             model.setFilename(filename.toLowerCase());
         }
-        return blueprintFlowchartService.findAll(model);
+        return R.success(blueprintFlowchartService.findAll(model));
     }
 
     @Operation(summary = "根据流程图模板 ID 查询单个流程图模板")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:blueprint')")
     @GetMapping("/find/by/id")
     public R<BlueprintFlowchartModel> findById(@Validated BlueprintFlowchartModel model) {
-        return blueprintFlowchartService.findById(model);
+        return R.success(blueprintFlowchartService.findById(model));
     }
 
     @Operation(summary = "导入流程图模板为个人流程图", description = "consumerId 必须是导入人的 UID")

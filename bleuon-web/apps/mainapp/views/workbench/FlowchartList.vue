@@ -33,7 +33,7 @@ const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
 async function fetchData(params: any) {
   mainData.value = await FlowchartHttp.findAllByCriteria({
     ...params,
-    collectingCid: token.id
+    collectorId: token.id
   });
 }
 

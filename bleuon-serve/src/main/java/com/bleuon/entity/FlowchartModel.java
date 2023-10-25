@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.bleuon.constant.ValidPattern;
-import com.bleuon.entity.dto.ConsumerDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -69,6 +68,6 @@ public class FlowchartModel implements Serializable {
     private String consumerId;
 
     @TableField(exist = false)
-    private ConsumerDTO consumer;
+    private ConsumerModel consumer;
 
 }

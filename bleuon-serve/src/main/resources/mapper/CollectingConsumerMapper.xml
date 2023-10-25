@@ -4,7 +4,7 @@
 
     <resultMap id="findMap" type="com.bleuon.entity.CollectingConsumerModel" autoMapping="true">
         <id column="id" property="id"/>
-        <association property="consumer" javaType="com.bleuon.entity.dto.ConsumerDTO" columnPrefix="c_">
+        <association property="consumer" javaType="com.bleuon.entity.ConsumerModel" columnPrefix="c_">
             <id column="id" property="id"/>
             <result column="username" property="username"/>
             <result column="avatar" property="avatar"/>
@@ -19,20 +19,20 @@
                c.signature c_signature
         FROM co_conllecting_consumer cc
                  JOIN t_consumers c ON cc.consumer_id = c.id
-        WHERE cc.collecting_cid = #{collectingCid};
+        WHERE cc.collector_id = #{collectorId};
     </select>
 
     <select id="findByCriteria" resultType="com.bleuon.entity.CollectingConsumerModel"
             parameterType="com.bleuon.entity.criterias.ConsumerCriteria">
         SELECT cc.*
         FROM co_conllecting_consumer cc
-        WHERE cc.collecting_cid = #{collectingCid}
+        WHERE cc.collector_id = #{collectorId}
           AND cc.consumer_id = #{consumerId};
     </select>
 
     <insert id="add" parameterType="com.bleuon.entity.CollectingConsumerModel">
-        INSERT INTO co_conllecting_consumer(id, collecting_cid, consumer_id)
-        VALUES (#{id}, #{collectingCid}, #{consumerId});
+        INSERT INTO co_conllecting_consumer(id, collector_id, consumer_id)
+        VALUES (#{id}, #{collectorId}, #{consumerId});
     </insert>
 
     <delete id="delete" parameterType="com.bleuon.entity.CollectingConsumerModel">

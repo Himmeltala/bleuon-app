@@ -91,7 +91,7 @@ public class ApiFlowchartController implements Serializable {
         return R.success(list);
     }
 
-    @Operation(summary = "删除收藏的流程图", description = "flowchartId、collectingCid 必填")
+    @Operation(summary = "删除收藏的流程图", description = "flowchartId、collectorId 必填")
     @PreAuthorize("hasAnyAuthority('sys:delete', 'sys:delete:flowchart:collect')")
     @DeleteMapping("/delete/collecting")
     public R<Object> deleteCollecting(@Validated CollectingFlowchartModel model) {
@@ -99,7 +99,7 @@ public class ApiFlowchartController implements Serializable {
         return status ? R.success("删除成功！") : R.failed("删除失败！");
     }
 
-    @Operation(summary = "收藏一个流程图", description = "flowchartId、collectingCid 必填")
+    @Operation(summary = "收藏一个流程图", description = "flowchartId、collectorId 必填")
     @PreAuthorize("hasAnyAuthority('sys:add', 'sys:add:flowchart:collect')")
     @PostMapping("/add/collecting")
     public R<Object> addCollecting(@RequestBody @Validated CollectingFlowchartModel model) {

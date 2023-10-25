@@ -27,7 +27,7 @@ public class ConsumerCriteria extends CommonCriteria implements Serializable {
     private String consumerId;
 
     @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
-    private String collectingCid;
+    private String collectorId;
 
     private String remark;
 

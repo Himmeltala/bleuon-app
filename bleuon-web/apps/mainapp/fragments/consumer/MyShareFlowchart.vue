@@ -18,7 +18,7 @@ const props = defineProps({
 });
 
 const mainData = ref(
-  await ConsumerHttp.findAllFlowchart({ collectingCid: `${props.consumer.id}`, isShare: 1 })
+  await ConsumerHttp.findAllFlowchart({ collectorId: `${props.consumer.id}`, isShare: 1 })
 );
 </script>
 
