@@ -115,8 +115,9 @@ await fetchData({ sequences: [{ isAsc: false, col: "create_date" }] });
                   <div class="title mt-5 f-c-s flex-wrap">
                     <el-tag
                       size="small"
-                      v-for="titleTagItem in JSON.parse(item.titleTag)"
-                      class="mr-2">
+                      class="mr-2"
+                      v-if="item.titleTag"
+                      v-for="titleTagItem in JSON.parse(item.titleTag)">
                       {{ titleTagItem }}
                     </el-tag>
                     <div class="font-bold text-1.1rem">{{ item.title }}</div>
@@ -125,6 +126,7 @@ await fetchData({ sequences: [{ isAsc: false, col: "create_date" }] });
                   <div class="desc-imgs mt-4 f-c-s">
                     <img
                       class="rd-2 w-20% h-35 mr-2 object-cover"
+                      v-if="item.descImgs"
                       v-for="descImgItem in JSON.parse(item.descImgs)"
                       :src="descImgItem" />
                   </div>
@@ -134,8 +136,9 @@ await fetchData({ sequences: [{ isAsc: false, col: "create_date" }] });
                 <el-tag
                   size="small"
                   type="info"
-                  v-for="descTagItem in JSON.parse(item.descTag)"
-                  class="mr-2">
+                  class="mr-2"
+                  v-if="item.descTag"
+                  v-for="descTagItem in JSON.parse(item.descTag)">
                   {{ descTagItem }}
                 </el-tag>
               </div>

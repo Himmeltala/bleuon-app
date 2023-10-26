@@ -122,8 +122,6 @@ const multiImgsUpload = ref();
 const descEnterTags = ref();
 const titleEnterTags = ref();
 
-const type = ref();
-
 function repostArticle() {
   ElFormUtil.validate(formEl.value, () => {
     formData.value.consumerId = token.id;
@@ -131,11 +129,14 @@ function repostArticle() {
   });
 }
 
+const viewType = ref();
+
 onMounted(async () => {
-  type.value = route.query?.type.toString();
-  if (type.value === "edit") {
-    const id = route.query.id.toString();
-    formData.value = await DiscussionHttp.findDetailByCriteria({ articleId: id });
+  const articleId = route.query.id.toString();
+  viewType.value = route.query.type.toString();
+
+  if (viewType.value === "edit") {
+    formData.value = await DiscussionHttp.findDetailByCriteria({ articleId });
     classicCkEditor.value.initalData(formData.value.content);
     multiImgsUpload.value.initalData(JSON.parse(formData.value.descImgs));
     descEnterTags.value.initalData(JSON.parse(formData.value.descTag));
@@ -153,7 +154,7 @@ onMounted(async () => {
           <div class="f-c-b mb-10">
             <div class="font-bold text-1.2rem">帖子编辑器</div>
             <div>
-              <el-button size="small" type="danger" plain @click="$router.back()">返回</el-button>
+              <el-button plain @click="$router.back()">返回社区</el-button>
             </div>
           </div>
           <el-form
@@ -222,7 +223,10 @@ onMounted(async () => {
             </el-form-item>
             <el-form-item>
               <div class="f-c-e w-100%">
-                <el-button v-if="type === 'edit'" type="primary" @click="repostArticle">
+                <div class="mr-4">
+                  <el-button plain @click="$router.back()">返回社区</el-button>
+                </div>
+                <el-button v-if="viewType === 'edit'" type="primary" @click="repostArticle">
                   重新发表
                 </el-button>
                 <el-button v-else type="primary" @click="startCreateArticle">发表帖子</el-button>
