@@ -1,12 +1,11 @@
 package com.bleuon.controller.open;
 
 import com.bleuon.annotaion.RequestMappingPrefix;
+import com.bleuon.constant.KeyVals;
 import com.bleuon.entity.vo.FileParamsVO;
 import com.bleuon.service.FileService;
 import com.bleuon.utils.http.R;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
@@ -45,16 +44,14 @@ public class ApiFileController implements Serializable {
         }
     }
 
-    @Operation(summary = "上传图片", parameters = {
-            @Parameter(name = "path", description = "图片路径，上传到 classes/target 目录下", example = "/static/images/avatar", in = ParameterIn.HEADER)
-    })
+    @Operation(summary = "上传图片")
     @PostMapping("/upload/image")
-    public R<Object> uploadImageFile(MultipartFile file, String filepath) {
+    public R<Object> uploadImageFile(MultipartFile file, FileParamsVO vo) {
         if (file.isEmpty()) {
             return R.error("请选择一个图片！");
         }
 
-        String imgUrl = fileService.upload("/static/images/" + filepath, null, file);
+        String imgUrl = fileService.upload(KeyVals.RESOURCE_ROOT + "/static/images/" + vo.getFilepath(), vo.getFilename(), file);
         if (StringUtils.hasText(imgUrl)) {
             return R.success("上传成功！", imgUrl);
         } else {

@@ -24,25 +24,25 @@ public class FileService {
     private final FileUtil fileUtil;
 
     /**
-     * @param filepath   写入的目录
-     * @param refilename 重命名文件
-     * @param file       上传的文件
+     * @param filepath 写入的目录
+     * @param rename   重命名文件
+     * @param file     上传的文件
      * @return 返回一个存储的文件路径
      */
-    public String upload(String filepath, String refilename, MultipartFile file) {
+    public String upload(String filepath, String rename, MultipartFile file) {
         try {
             String filename = file.getOriginalFilename();
 
             if (filename != null && filename.lastIndexOf(".") != -1) {
                 String extension = filename.substring(filename.lastIndexOf(".") + 1);
                 String uuid = UUID.randomUUID().toString();
-                if (StringUtils.hasText(refilename)) {
-                    filename = refilename + "_" + uuid + "." + extension;
+                if (StringUtils.hasText(rename)) {
+                    filename = rename + "_" + uuid + "." + extension;
                 } else {
                     String prefix = filename.substring(0, filename.lastIndexOf('.'));
                     filename = prefix + "_" + uuid + "." + extension;
                 }
-                boolean success = fileUtil.writeToResources(filepath, filename, file.getInputStream());
+                boolean success = fileUtil.writeTo(file.getInputStream(), filepath, filename);
                 if (success) {
                     return "http://localhost:8080/api/public/file/preview/image?filepath=" + filepath + "&filename=" + filename;
                 }
@@ -58,7 +58,7 @@ public class FileService {
         try {
             MediaType contentType = fileUtil.getContentType(filename);
             response.setContentType(contentType.toString());
-            return fileUtil.readFileFromResources(filepath, filename);
+            return fileUtil.readFrom(filepath, filename);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -66,7 +66,7 @@ public class FileService {
 
     public boolean delete(String filepath, String filename) {
         try {
-            return fileUtil.deleteFileFromResources(filepath, filename);
+            return fileUtil.deleteFrom(filepath, filename);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

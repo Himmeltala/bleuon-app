@@ -4,11 +4,10 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * @description: 文件上传工具
@@ -19,61 +18,46 @@ import java.nio.file.Files;
 @Component
 public class FileUtil {
 
-    public boolean writeToResources(String filepath, String filename, InputStream inputStream) throws IOException {
-        File file = getFileFromResources(filepath, filename);
+    public boolean writeTo(InputStream inputStream, String filepath, String filename) throws IOException {
+        File file = new File(filepath, filename);
 
-        if (file != null) {
-            try (inputStream; FileOutputStream outputStream = new FileOutputStream(file)) {
-                byte[] buffer = new byte[1024];
-                int bytesRead;
-                while ((bytesRead = inputStream.read(buffer)) != -1) {
-                    outputStream.write(buffer, 0, bytesRead);
-                }
-                return true;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()) {
+            return false;
         }
 
-        return false;
+        return write(inputStream, file);
     }
 
-    public byte[] readFileFromResources(String filepath, String filename) throws IOException {
-        File file = getFileFromResources(filepath, filename);
-
-        if (file != null && file.exists()) {
-            try {
-                return Files.readAllBytes(file.toPath());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return null;
-    }
-
-    public File getFileFromResources(String filepath, String filename) throws IOException {
-        File resourceDirectory = ResourceUtils.getFile("classpath:");
-        File file = new File(resourceDirectory, filepath + File.separator + filename);
+    public byte[] readFrom(String filepath, String filename) throws IOException {
+        File file = new File(filepath, filename);
 
         if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()) {
             return null;
         }
 
-        return file;
+        return Files.readAllBytes(file.toPath());
     }
 
-    public boolean deleteFileFromResources(String filepath, String filename) throws IOException {
-        boolean success;
-        File file = getFileFromResources(filepath, filename);
+    public boolean deleteFrom(String filepath, String filename) throws IOException {
+        File file = new File(filepath, filename);
 
-        if (file.exists()) {
-            success = file.delete();
-        } else {
-            success = false;
+        if (!file.exists()) {
+            return false;
         }
 
-        return success;
+        return file.delete();
+    }
+
+    public boolean write(InputStream inputStream, File file) throws IOException {
+        OutputStream outputStream = new FileOutputStream(file);
+        byte[] buffer = new byte[1024];
+        int bytesRead;
+        while ((bytesRead = inputStream.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, bytesRead);
+        }
+        outputStream.close();
+        inputStream.close();
+        return true;
     }
 
     public MediaType getContentType(String filename) {
