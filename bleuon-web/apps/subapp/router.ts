@@ -60,6 +60,12 @@ const router = createRouter({
               component: () => import("@subapp/views/permission/AdminRoles.vue")
             },
             {
+              path: "add-admin-role",
+              name: "auth-add-admin-role",
+              meta: { title: "分配管理员角色", icon: "FolderChecked" },
+              component: () => import("@subapp/views/permission/AddAdminRole.vue")
+            },
+            {
               path: "authorities",
               name: "auth-authorities",
               meta: { title: "权限管理", icon: "Lock" },

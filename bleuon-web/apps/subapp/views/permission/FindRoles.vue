@@ -20,14 +20,6 @@ async function fetchDataList() {
   });
 }
 
-async function handleSizeChange() {
-  await fetchDataList();
-}
-
-async function handleCurrentChange() {
-  await fetchDataList();
-}
-
 const roleFormRules = reactive({
   name: [{ required: true, message: "角色名称必须填写！", trigger: "blur" }],
   remark: [{ required: true, message: "角色备注必须填写！", trigger: "blur" }]
@@ -195,7 +187,7 @@ await fetchDataList();
 
 <template>
   <div>
-    <div class="mb-2 text-text-secondary text-0.9rem">描述: 管理角色分组以及角色的权限列表</div>
+    <RemarkText class="mb-4" title="当前页面备注" sub="管理角色分组以及角色的权限列表" />
     <div class="f-c-e mb-5">
       <div class="add-role">
         <el-button @click="addRoleDialog = true" size="small" type="primary">新增角色</el-button>
@@ -210,7 +202,7 @@ await fetchDataList();
       <el-table-column label="权限列表" type="expand" width="120">
         <template #default="scope">
           <div class="mx-20 my-5">
-            <div class="f-c-e mb-5">
+            <div class="f-c-e mb-4">
               <div>
                 <el-button
                   type="primary"
@@ -221,7 +213,7 @@ await fetchDataList();
                 </el-button>
               </div>
             </div>
-            <div class="mb-5 font-bold">权限列表</div>
+            <RemarkText class="mb-4" title="权限列表" sub="该角色所拥有的权限" />
             <div class="" v-if="scope.row.authorities?.list">
               <el-table v-loading="scope.row.loading" border :data="scope.row.authorities.list">
                 <el-table-column sortable prop="id" label="权限 ID"></el-table-column>
@@ -384,8 +376,8 @@ await fetchDataList();
         background
         v-model:current-page="currPage"
         v-model:page-size="pageSize"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
+        @size-change="async () => await fetchDataList()"
+        @current-change="async () => await fetchDataList()"
         layout="sizes, prev, pager, next, jumper"
         :page-sizes="[10, 15, 20, 25, 30]"
         :total="mainList.total" />

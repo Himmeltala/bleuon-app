@@ -169,9 +169,9 @@ export function deleteRoleAuthority(params: { roleId: number; authId: number }, 
  */
 export function addRoleToAdmin(
   model: { adminId: string; roleId: number; username: string },
-  success: Function
+  success?: Function
 ) {
   http.post<R>("/permission/add/role/to/admin", model).then(() => {
-    success();
+    success && success();
   });
 }
