@@ -48,11 +48,20 @@ await fetchRoleList();
 
 <template>
   <div>
-    <RemarkText class="mb-4" title="当前页面备注" sub="给当前系统已存在的管理员分配角色" />
+    <RemarkText class="mb-4" sub="备注: 给当前系统已存在的管理员分配角色" />
     <div class="f-c-e mb-10">
-      <el-button size="small" type="primary" @click="confirmAddRoleToAdmin">确认分配角色</el-button>
+      <el-button
+        :disabled="!selectedCurrAdminRow?.id || !selectedCurrRoleRow?.id"
+        size="small"
+        type="primary"
+        @click="confirmAddRoleToAdmin"
+        >确认分配角色</el-button
+      >
     </div>
-    <RemarkText class="mb-4" title="系统已存在的管理员列表" sub="单击选中下列某一个管理员为其分配角色" />
+    <RemarkText
+      class="mb-4"
+      title="系统已存在的管理员列表"
+      sub="单击选中下列某一个管理员为其分配角色" />
     <el-table
       class="mb-4"
       highlight-current-row
@@ -60,12 +69,14 @@ await fetchRoleList();
       border
       @current-change="(val: AdminModel) => selectedCurrAdminRow = val"
       :data="adminList.list">
-      <el-table-column label="头像">
+      <el-table-column label="头像" width="100">
         <template #default="scope">
           <img :src="scope.row.avatar" class="rd-50% w-10 h-10" />
         </template>
       </el-table-column>
       <el-table-column prop="username" label="用户名"></el-table-column>
+      <el-table-column prop="phone" label="手机号"></el-table-column>
+      <el-table-column prop="email" label="邮箱"></el-table-column>
       <el-table-column label="已有角色">
         <template #default="scope">
           <div class="f-c-s flex-wrap flex-gap-2">
@@ -120,8 +131,18 @@ await fetchRoleList();
         </template>
       </el-table-column>
       <el-table-column prop="id" label="角色 ID"> </el-table-column>
-      <el-table-column prop="remark" label="角色备注"> </el-table-column>
       <el-table-column prop="name" label="角色名称"> </el-table-column>
+      <el-table-column prop="remark" label="角色备注"> </el-table-column>
+      <el-table-column sortable label="创建日期">
+        <template #default="scope">
+          {{ DateUtil.formatted(scope.row.createDate) }}
+        </template>
+      </el-table-column>
+      <el-table-column sortable label="修改日期">
+        <template #default="scope">
+          {{ DateUtil.formatted(scope.row.modifyDate) }}
+        </template>
+      </el-table-column>
     </el-table>
     <div class="mb-10 f-c-e">
       <el-pagination

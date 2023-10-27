@@ -8,9 +8,9 @@ import com.bleuon.entity.ConsumerModel;
 import com.bleuon.entity.CustomUserDetails;
 import com.bleuon.entity.TokenModel;
 import com.bleuon.entity.vo.EmailCaptchaVO;
-import com.bleuon.service.impl.AdminService;
-import com.bleuon.service.impl.ConsumerService;
-import com.bleuon.service.impl.PermissionService;
+import com.bleuon.service.IAdminService;
+import com.bleuon.service.IConsumerService;
+import com.bleuon.service.IPermissionService;
 import com.bleuon.utils.EmailUtil;
 import com.bleuon.utils.JwtUtil;
 import com.bleuon.utils.http.IpUtil;
@@ -40,9 +40,9 @@ import java.util.UUID;
 @RequestMappingPrefix("/public/entrance")
 public class ApiEntranceController implements Serializable {
 
-    private final AdminService adminService;
-    private final ConsumerService consumerService;
-    private final PermissionService permissionService;
+    private final IAdminService adminService;
+    private final IConsumerService consumerService;
+    private final IPermissionService permissionService;
     private final JwtUtil jwtUtil;
     private final EmailUtil emailUtil;
 

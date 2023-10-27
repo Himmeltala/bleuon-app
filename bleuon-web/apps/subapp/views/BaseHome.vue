@@ -52,7 +52,7 @@ await fetchAdminData();
       </el-header>
       <el-container>
         <el-aside width="200px">
-          <el-menu unique-opened default-active="/home/permission/roles" router>
+          <el-menu unique-opened router>
             <el-sub-menu :index="`${fatherIndex + 1}`" v-for="(fatherRoute, fatherIndex) in routes">
               <template #title>
                 <el-icon>

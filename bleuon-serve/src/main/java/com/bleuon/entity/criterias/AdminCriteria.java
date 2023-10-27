@@ -1,13 +1,11 @@
 package com.bleuon.entity.criterias;
 
-import com.bleuon.entity.AdminModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * @description:
@@ -19,10 +17,12 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AdminCriteria extends AdminModel implements Serializable {
+public class AdminCriteria extends CommonCriteria implements Serializable {
 
-    private Integer pageSize;
-    private Integer currPage;
-    private List<Sequence> sequences;
+    private String id;
+    private String username;
+    private String password;
+    private String phone;
+    private String email;
 
 }

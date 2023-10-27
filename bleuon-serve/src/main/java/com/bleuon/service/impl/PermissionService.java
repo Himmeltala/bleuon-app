@@ -166,9 +166,14 @@ public class PermissionService implements IPermissionService {
         }
     }
 
-    public boolean isDuplicateAddRoleToAdmin(String adminId) {
+    public boolean duplicateRole(String adminId, Integer roleId) {
         AdminModel admin = permissionMapper.findAdminWithRoleAndAuthorityList(adminId);
-
+        List<RoleModel> roles = admin.getRoles();
+        for (RoleModel role : roles) {
+            if (role.getId().equals(roleId)) {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -176,8 +181,6 @@ public class PermissionService implements IPermissionService {
     @Override
     public boolean addRoleToAdmin(PermissionCriteria criteria) {
         try {
-            // 分配之前，查询已有的角色
-            // 如果插入了重复的角色，就返回 false
             Integer row = permissionMapper.addRoleToAdmin(criteria);
             return row > 0;
         } catch (Exception e) {

@@ -25,10 +25,10 @@ await fetchDataList();
 
 <template>
   <div>
-    <RemarkText class="mb-4" title="当前页面备注" sub="维护后台管理系统的管理员的角色分组" />
+    <RemarkText class="mb-4" sub="备注: 维护后台管理系统的管理员的角色分组" />
     <div class="f-c-e mb-5"></div>
     <el-table stripe border :data="mainList.list" style="width: 100%">
-      <el-table-column label="权限列表" type="expand" width="120">
+      <el-table-column label="权限列表" type="expand" width="100">
         <template #default="scope">
           <div class="m-5 font-bold">权限列表</div>
           <div class="m-5">
@@ -40,12 +40,12 @@ await fetchDataList();
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="username" label="用户名" />
-      <el-table-column label="头像">
+      <el-table-column label="头像" width="100">
         <template #default="scope">
           <img :src="scope.row.avatar" class="rd-50% w-10 h-10" />
         </template>
       </el-table-column>
+      <el-table-column prop="username" label="用户名" />
       <el-table-column label="角色名称">
         <template #default="scope">
           <div class="f-c-s flex-wrap flex-gap-2">

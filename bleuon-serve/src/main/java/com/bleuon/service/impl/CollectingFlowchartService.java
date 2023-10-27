@@ -40,8 +40,8 @@ public class CollectingFlowchartService implements ICollectingFlowchartService {
         return row > 0;
     }
 
-    @Override
     @Transactional
+    @Override
     public boolean add(CollectingFlowchartModel model) {
         try {
             Integer row = collectingFlowchartMapper.add(model);

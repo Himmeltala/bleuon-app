@@ -2,7 +2,7 @@ package com.bleuon.controller;
 
 import com.bleuon.annotaion.RequestMappingPrefix;
 import com.bleuon.entity.CellModel;
-import com.bleuon.service.impl.CellService;
+import com.bleuon.service.ICellService;
 import com.bleuon.utils.http.R;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,7 +25,7 @@ import java.util.List;
 @RequestMappingPrefix("/cell")
 public class ApiCellController implements Serializable {
 
-    private final CellService cellService;
+    private final ICellService cellService;
 
     @Operation(summary = "根据条件查询所有的流程图图形")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:cell:all')")

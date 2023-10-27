@@ -21,8 +21,8 @@ import java.util.List;
 public class PermissionCriteria extends CommonCriteria implements Serializable {
 
     private String adminId;
-    private String roleId;
-    private String authId;
+    private Integer roleId;
+    private Integer authId;
     private String username;
     private List<String> authIds;
 

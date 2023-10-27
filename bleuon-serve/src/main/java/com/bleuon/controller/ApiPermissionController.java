@@ -138,6 +138,12 @@ public class ApiPermissionController {
     @PreAuthorize("hasAnyAuthority('sys:add', 'sys:add:permission:RoleToAdmin')")
     @PostMapping("/add/role/to/admin")
     public R<Object> addRoleToAdmin(@RequestBody PermissionCriteria criteria) {
+        boolean duplicated = permissionService.duplicateRole(criteria.getAdminId(), criteria.getRoleId());
+
+        if (duplicated) {
+            R.error("不能重复添加角色！");
+        }
+
         boolean success = permissionService.addRoleToAdmin(criteria);
         return success ? R.success("添加成功！") : R.error("添加失败！");
     }

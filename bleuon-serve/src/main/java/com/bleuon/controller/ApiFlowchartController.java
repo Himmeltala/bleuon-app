@@ -6,8 +6,8 @@ import com.bleuon.entity.BlueprintFlowchartModel;
 import com.bleuon.entity.CollectingFlowchartModel;
 import com.bleuon.entity.FlowchartModel;
 import com.bleuon.entity.criterias.FlowchartCriteria;
-import com.bleuon.service.impl.CollectingFlowchartService;
-import com.bleuon.service.impl.FlowchartService;
+import com.bleuon.service.ICollectingFlowchartService;
+import com.bleuon.service.IFlowchartService;
 import com.bleuon.utils.http.R;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -32,8 +32,8 @@ import java.util.Objects;
 @RequestMappingPrefix("/flowchart")
 public class ApiFlowchartController implements Serializable {
 
-    private final FlowchartService flowchartService;
-    private final CollectingFlowchartService collectingFlowchartService;
+    private final IFlowchartService flowchartService;
+    private final ICollectingFlowchartService collectingFlowchartService;
 
     @Operation(summary = "更新流程图")
     @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:upgrade:flowchart')")

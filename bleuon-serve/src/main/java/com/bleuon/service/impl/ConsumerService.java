@@ -71,11 +71,11 @@ public class ConsumerService extends ServiceImpl<ConsumerMapper, ConsumerModel> 
             model.setAvatar(imgUrl);
             boolean upgraded = upgrade(model);
 
-            if (upgraded) {
-                return imgUrl;
+            if (!upgraded) {
+                return "";
             }
 
-            return "";
+            return imgUrl;
         } catch (Exception e) {
             throw new JdbcErrorException(e);
         }

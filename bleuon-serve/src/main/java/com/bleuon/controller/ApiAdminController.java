@@ -3,7 +3,7 @@ package com.bleuon.controller;
 import com.bleuon.annotaion.RequestMappingPrefix;
 import com.bleuon.entity.AdminModel;
 import com.bleuon.entity.criterias.AdminCriteria;
-import com.bleuon.service.impl.AdminService;
+import com.bleuon.service.IAdminService;
 import com.bleuon.utils.http.R;
 import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMappingPrefix("/admin")
 public class ApiAdminController {
 
-    private final AdminService adminService;
+    private final IAdminService adminService;
 
     @Operation(summary = "查询管理员，通过多个字段查询")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:admin:ByFiled')")
@@ -37,8 +37,8 @@ public class ApiAdminController {
     @Operation(summary = "查询管理员列表，通过多个字段查询")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:admin:ListByFiled')")
     @PostMapping("/find/list/by")
-    public R<PageInfo<AdminModel>> findListBy(@RequestBody AdminCriteria model) {
-        return R.success(adminService.findListBy(model));
+    public R<PageInfo<AdminModel>> findListBy(@RequestBody AdminCriteria criteria) {
+        return R.success(adminService.findListBy(criteria));
     }
 
 }

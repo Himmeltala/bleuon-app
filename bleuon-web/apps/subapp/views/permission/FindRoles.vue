@@ -187,7 +187,7 @@ await fetchDataList();
 
 <template>
   <div>
-    <RemarkText class="mb-4" title="当前页面备注" sub="管理角色分组以及角色的权限列表" />
+    <RemarkText class="mb-4" sub="备注: 管理角色分组以及角色的权限列表" />
     <div class="f-c-e mb-5">
       <div class="add-role">
         <el-button @click="addRoleDialog = true" size="small" type="primary">新增角色</el-button>
@@ -255,7 +255,7 @@ await fetchDataList();
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="remark" label="角色备注"></el-table-column>
+      <el-table-column sortable prop="id" label="角色 ID" />
       <el-table-column label="角色名称">
         <template #default="scope">
           <el-tag>
@@ -263,13 +263,13 @@ await fetchDataList();
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column sortable prop="id" label="角色 ID" />
-      <el-table-column sortable prop="createDate" label="创建日期">
+      <el-table-column prop="remark" label="角色备注"></el-table-column>
+      <el-table-column sortable label="创建日期">
         <template #default="scope">
           {{ DateUtil.formatted(scope.row.createDate) }}
         </template>
       </el-table-column>
-      <el-table-column sortable prop="modifyDate" label="修改日期">
+      <el-table-column sortable label="修改日期">
         <template #default="scope">
           {{ DateUtil.formatted(scope.row.modifyDate) }}
         </template>

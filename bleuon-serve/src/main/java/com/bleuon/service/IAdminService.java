@@ -16,6 +16,6 @@ public interface IAdminService {
 
     AdminModel findBy(AdminModel model);
 
-    PageInfo<AdminModel> findListBy(AdminCriteria model);
+    PageInfo<AdminModel> findListBy(AdminCriteria criteria);
 
 }

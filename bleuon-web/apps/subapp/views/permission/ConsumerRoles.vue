@@ -9,7 +9,7 @@
 
 <template>
   <div>
-    <RemarkText class="mb-4" title="当前页面备注" sub="维护前台系统的用户的角色分组" />
+    <RemarkText class="mb-4" sub="备注: 维护前台系统的用户的角色分组" />
   </div>
 </template>
 

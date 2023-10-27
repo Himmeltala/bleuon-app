@@ -2,7 +2,7 @@ package com.bleuon.controller.open;
 
 import com.bleuon.annotaion.RequestMappingPrefix;
 import com.bleuon.entity.FlowchartModel;
-import com.bleuon.service.impl.FlowchartService;
+import com.bleuon.service.IFlowchartService;
 import com.bleuon.utils.http.R;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,7 +23,7 @@ import java.io.Serializable;
 @RequestMappingPrefix("/public/flowchart")
 public class OpenApiFlowchartController implements Serializable {
 
-    private final FlowchartService flowchartService;
+    private final IFlowchartService flowchartService;
 
     @Operation(summary = "查找分享的流程图")
     @GetMapping("/find/share")

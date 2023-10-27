@@ -1,9 +1,7 @@
 package com.bleuon.service;
 
 import com.bleuon.utils.FileUtil;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,8 +18,6 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class FileService {
-
-    private final FileUtil fileUtil;
 
     /**
      * @param filepath 写入的目录
@@ -42,7 +38,7 @@ public class FileService {
                     String prefix = filename.substring(0, filename.lastIndexOf('.'));
                     filename = prefix + "_" + uuid + "." + extension;
                 }
-                boolean success = fileUtil.writeTo(file.getInputStream(), filepath, filename);
+                boolean success = FileUtil.writeTo(file.getInputStream(), filepath, filename);
                 if (success) {
                     return "http://localhost:8080/api/public/file/preview/image?filepath=" + filepath + "&filename=" + filename;
                 }
@@ -54,11 +50,9 @@ public class FileService {
         }
     }
 
-    public byte[] download(String filepath, String filename, HttpServletResponse response) {
+    public byte[] download(String filepath, String filename) {
         try {
-            MediaType contentType = fileUtil.getContentType(filename);
-            response.setContentType(contentType.toString());
-            return fileUtil.readFrom(filepath, filename);
+            return FileUtil.readFrom(filepath, filename);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -66,7 +60,7 @@ public class FileService {
 
     public boolean delete(String filepath, String filename) {
         try {
-            return fileUtil.deleteFrom(filepath, filename);
+            return FileUtil.deleteFrom(filepath, filename);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

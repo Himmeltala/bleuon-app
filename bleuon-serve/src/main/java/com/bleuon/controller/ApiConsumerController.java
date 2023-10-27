@@ -10,10 +10,10 @@ import com.bleuon.entity.criterias.ConsumerCriteria;
 import com.bleuon.entity.criterias.DynamicCriteria;
 import com.bleuon.entity.criterias.FlowchartCriteria;
 import com.bleuon.entity.criterias.Sequence;
-import com.bleuon.service.impl.CollectingConsumerService;
-import com.bleuon.service.impl.ConsumerService;
-import com.bleuon.service.impl.DynamicService;
-import com.bleuon.service.impl.FlowchartService;
+import com.bleuon.service.ICollectingConsumerService;
+import com.bleuon.service.IConsumerService;
+import com.bleuon.service.IDynamicService;
+import com.bleuon.service.IFlowchartService;
 import com.bleuon.utils.http.R;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -41,10 +41,10 @@ import java.util.Objects;
 @RequestMappingPrefix("/consumer")
 public class ApiConsumerController implements Serializable {
 
-    private final ConsumerService consumerService;
-    private final DynamicService dynamicService;
-    private final FlowchartService flowchartService;
-    private final CollectingConsumerService collectingConsumerService;
+    private final IConsumerService consumerService;
+    private final IDynamicService dynamicService;
+    private final IFlowchartService flowchartService;
+    private final ICollectingConsumerService collectingConsumerService;
 
     @Operation(summary = "查询用户，通过多个字段")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:consumer')")

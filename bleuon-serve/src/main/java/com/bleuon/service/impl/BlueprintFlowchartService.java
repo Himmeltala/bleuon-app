@@ -46,8 +46,8 @@ public class BlueprintFlowchartService implements IBlueprintFlowchartService {
         }
     }
 
-    @Override
     @Transactional
+    @Override
     public boolean add(BlueprintFlowchartModel model) {
         try {
             Integer status = blueprintFlowchartMapper.add(model);
@@ -57,8 +57,8 @@ public class BlueprintFlowchartService implements IBlueprintFlowchartService {
         }
     }
 
-    @Override
     @Transactional
+    @Override
     public boolean delete(BlueprintFlowchartModel model) {
         try {
             Integer status = blueprintFlowchartMapper.delete(model);

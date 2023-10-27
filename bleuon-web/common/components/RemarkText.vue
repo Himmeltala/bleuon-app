@@ -2,7 +2,7 @@
 defineProps({
   title: {
     type: String,
-    required: true
+    required: false
   },
   sub: {
     type: String,
@@ -14,8 +14,8 @@ defineProps({
 <template>
   <div class="remark-text">
     <div class="f-e-s">
-      <div class="mr-2 font-bold text-1.1rem">{{ title }}</div>
-      <div class="text-text-secondary text-0.9rem">{{ sub }}</div>
+      <div v-if="title" class="mr-2 text-0.9rem">{{ title }}</div>
+      <div v-if="sub" class="text-text-secondary text-0.8rem">{{ sub }}</div>
     </div>
   </div>
 </template>

@@ -42,7 +42,7 @@ public interface PermissionMapper {
 
     Integer upgradeRole(RoleModel model);
 
-    List<AuthorityModel> findAuthorityListOfRole(String roleId);
+    List<AuthorityModel> findAuthorityListOfRole(Integer roleId);
 
     List<RoleModel> findAllRoleButNoAuthorityList(PermissionCriteria criteria);
 

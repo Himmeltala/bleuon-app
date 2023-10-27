@@ -4,9 +4,9 @@ import com.bleuon.annotaion.RequestMappingPrefix;
 import com.bleuon.entity.BlueprintFlowchartModel;
 import com.bleuon.entity.CollectingFlowchartModel;
 import com.bleuon.entity.FlowchartModel;
-import com.bleuon.service.impl.BlueprintFlowchartService;
-import com.bleuon.service.impl.CollectingFlowchartService;
-import com.bleuon.service.impl.FlowchartService;
+import com.bleuon.service.IBlueprintFlowchartService;
+import com.bleuon.service.ICollectingFlowchartService;
+import com.bleuon.service.IFlowchartService;
 import com.bleuon.utils.http.R;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,9 +31,9 @@ import java.util.Objects;
 @RequestMappingPrefix("/blueprint")
 public class ApiBlueprintController implements Serializable {
 
-    private final FlowchartService flowchartService;
-    private final CollectingFlowchartService collectFlowchartService;
-    private final BlueprintFlowchartService blueprintFlowchartService;
+    private final IFlowchartService flowchartService;
+    private final ICollectingFlowchartService collectFlowchartService;
+    private final IBlueprintFlowchartService blueprintFlowchartService;
 
     @Operation(summary = "查询所有流程图模板")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:blueprint:all')")

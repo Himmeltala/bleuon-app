@@ -2,6 +2,7 @@ package com.bleuon.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.bleuon.entity.AdminModel;
+import com.bleuon.entity.criterias.AdminCriteria;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -19,6 +20,6 @@ public interface AdminMapper extends BaseMapper<AdminModel> {
 
     AdminModel findBy(AdminModel model);
 
-    List<AdminModel> findListBy(AdminModel model);
+    List<AdminModel> findListBy(AdminCriteria criteria);
 
 }

@@ -4,7 +4,7 @@ import com.bleuon.annotaion.RequestMappingPrefix;
 import com.bleuon.entity.ArticleCommentModel;
 import com.bleuon.entity.ArticleModel;
 import com.bleuon.entity.criterias.DiscussionCriteria;
-import com.bleuon.service.impl.DiscussionService;
+import com.bleuon.service.IDiscussionService;
 import com.bleuon.utils.http.R;
 import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,7 +30,7 @@ import java.io.Serializable;
 @RequiredArgsConstructor
 public class ApiDiscussionController implements Serializable {
 
-    private final DiscussionService discussionService;
+    private final IDiscussionService discussionService;
 
     @Operation(summary = "根据条件查询帖子列表")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:article:all')")

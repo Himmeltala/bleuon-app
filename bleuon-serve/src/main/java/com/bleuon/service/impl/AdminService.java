@@ -35,10 +35,10 @@ public class AdminService extends ServiceImpl<AdminMapper, AdminModel> implement
     }
 
     @Override
-    public PageInfo<AdminModel> findListBy(AdminCriteria model) {
-        int pageSize = Optional.ofNullable(model.getPageSize()).orElse(10);
-        int currPage = Optional.ofNullable(model.getCurrPage()).orElse(1);
-        return PageHelper.startPage(currPage, pageSize).doSelectPageInfo(() -> adminMapper.findListBy(model));
+    public PageInfo<AdminModel> findListBy(AdminCriteria criteria) {
+        int pageSize = Optional.ofNullable(criteria.getPageSize()).orElse(10);
+        int currPage = Optional.ofNullable(criteria.getCurrPage()).orElse(1);
+        return PageHelper.startPage(currPage, pageSize).doSelectPageInfo(() -> adminMapper.findListBy(criteria));
     }
 
 }
