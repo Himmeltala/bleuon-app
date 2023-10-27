@@ -141,7 +141,7 @@ public class ApiPermissionController {
         boolean duplicated = permissionService.duplicateRole(criteria.getAdminId(), criteria.getRoleId());
 
         if (duplicated) {
-            R.error("不能重复添加角色！");
+            return R.error("不能重复添加角色！");
         }
 
         boolean success = permissionService.addRoleToAdmin(criteria);

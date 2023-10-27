@@ -5,7 +5,7 @@
  * @since 2023/10/27
  * @link https://gitee.com/himmelbleu/bleuon-app
  */
-import { AdminHttp, PermissionHttp } from "@common/requests";
+import { PermissionHttp } from "@common/requests";
 import { DateUtil } from "@common/utils";
 
 const adminList = ref<PageInfo<AdminModel>>();
@@ -24,26 +24,62 @@ async function fetchAdminList() {
 const roleCurrPage = ref(1);
 const rolePageSize = ref(5);
 
-async function fetchRoleList() {
-  roleList.value = await PermissionHttp.findAllRoleWithAuthorityList({
+async function fetchRoleListButNoAuthorityList() {
+  roleList.value = await PermissionHttp.findAllRoleButNoAuthorityList({
     pageSize: rolePageSize.value,
     currPage: roleCurrPage.value
   });
 }
 
-const selectedCurrAdminRow = ref<AdminModel>();
-const selectedCurrRoleRow = ref<RoleModel>();
+function onExpandAuthorityListOfRoleItem(item: any) {
+  item.loading = true;
+  if (!item.hasGetAuthorities) {
+    PermissionHttp.findAuthorityListOfRole({ roleId: item.id }, data => {
+      item.authorities = data;
+      item.pageSize = 10;
+      item.currPage = 1;
+      item.hasGetAuthorities = true;
+      item.loading = false;
+    });
+  } else {
+    item.loading = false;
+  }
+}
+
+function fetchAuthorityListOfRole(item: any) {
+  item.loading = true;
+  PermissionHttp.findAuthorityListOfRole(
+    {
+      roleId: item.id,
+      pageSize: item.pageSize,
+      currPage: item.currPage
+    },
+    data => {
+      item.authorities = data;
+      item.hasGetAuthorities = true;
+      item.loading = false;
+    }
+  );
+}
+
+const currAdminRow = ref<AdminModel>();
+const currRoleRow = ref<RoleModel>();
 
 function confirmAddRoleToAdmin() {
-  PermissionHttp.addRoleToAdmin({
-    roleId: selectedCurrRoleRow.value.id,
-    adminId: selectedCurrAdminRow.value.id,
-    username: selectedCurrAdminRow.value.username
-  });
+  PermissionHttp.addRoleToAdmin(
+    {
+      roleId: currRoleRow.value.id,
+      adminId: currAdminRow.value.id,
+      username: currAdminRow.value.username
+    },
+    async () => {
+      await fetchAdminList();
+    }
+  );
 }
 
 await fetchAdminList();
-await fetchRoleList();
+await fetchRoleListButNoAuthorityList();
 </script>
 
 <template>
@@ -51,12 +87,12 @@ await fetchRoleList();
     <RemarkText class="mb-4" sub="备注: 给当前系统已存在的管理员分配角色" />
     <div class="f-c-e mb-10">
       <el-button
-        :disabled="!selectedCurrAdminRow?.id || !selectedCurrRoleRow?.id"
+        :disabled="!currAdminRow?.id || !currRoleRow?.id"
         size="small"
         type="primary"
-        @click="confirmAddRoleToAdmin"
-        >确认分配角色</el-button
-      >
+        @click="confirmAddRoleToAdmin">
+        确认分配角色
+      </el-button>
     </div>
     <RemarkText
       class="mb-4"
@@ -64,10 +100,11 @@ await fetchRoleList();
       sub="单击选中下列某一个管理员为其分配角色" />
     <el-table
       class="mb-4"
-      highlight-current-row
       stripe
       border
-      @current-change="(val: AdminModel) => selectedCurrAdminRow = val"
+      row-key="id"
+      highlight-current-row
+      @current-change="(val: AdminModel) => currAdminRow = val"
       :data="adminList.list">
       <el-table-column label="头像" width="100">
         <template #default="scope">
@@ -115,18 +152,43 @@ await fetchRoleList();
       sub="单击选中下列某一个角色，以给选中的管理员分配角色" />
     <el-table
       class="mb-4"
+      row-key="id"
       highlight-current-row
-      @current-change="(val: RoleModel) =>  selectedCurrRoleRow = val"
-      :data="roleList.list">
+      :data="roleList.list"
+      @expand-change="onExpandAuthorityListOfRoleItem"
+      @current-change="(val: RoleModel) =>  currRoleRow = val">
       <el-table-column label="权限列表" type="expand" width="120">
         <template #default="scope">
-          <div class="m-5 font-bold">权限列表</div>
-          <div class="m-5">
-            <el-table border :data="scope.row.authorities">
-              <el-table-column prop="id" label="权限 ID"></el-table-column>
-              <el-table-column prop="name" label="权限备注"></el-table-column>
-              <el-table-column prop="value" label="权限值"></el-table-column>
-            </el-table>
+          <div class="mx-20 my-5">
+            <RemarkText class="mb-4" title="权限列表" sub="该角色所拥有的权限" />
+            <div v-if="scope.row.authorities?.list">
+              <el-table v-loading="scope.row.loading" border :data="scope.row.authorities.list">
+                <el-table-column sortable prop="id" label="权限 ID"></el-table-column>
+                <el-table-column prop="name" label="权限备注"></el-table-column>
+                <el-table-column prop="value" label="权限值"></el-table-column>
+                <el-table-column sortable label="创建日期">
+                  <template #default="authScope">
+                    {{ DateUtil.formatted(authScope.row.createDate) }}
+                  </template>
+                </el-table-column>
+                <el-table-column sortable label="修改日期">
+                  <template #default="authScope">
+                    {{ DateUtil.formatted(authScope.row.modifyDate) }}
+                  </template>
+                </el-table-column>
+              </el-table>
+              <div class="mt-5 f-c-e">
+                <el-pagination
+                  small
+                  v-model:current-page="scope.row.currPage"
+                  v-model:page-size="scope.row.pageSize"
+                  @size-change="fetchAuthorityListOfRole(scope.row)"
+                  @current-change="fetchAuthorityListOfRole(scope.row)"
+                  layout="prev, pager, next"
+                  :page-sizes="[5, 10, 15, 20]"
+                  :total="scope.row.authorities.total" />
+              </div>
+            </div>
           </div>
         </template>
       </el-table-column>
@@ -150,8 +212,8 @@ await fetchRoleList();
         background
         v-model:current-page="roleCurrPage"
         v-model:page-size="rolePageSize"
-        @size-change="async () => await fetchRoleList()"
-        @current-change="async () => await fetchRoleList()"
+        @size-change="async () => await fetchRoleListButNoAuthorityList()"
+        @current-change="async () => await fetchRoleListButNoAuthorityList()"
         layout="sizes, prev, pager, next, jumper"
         :page-sizes="[5, 10, 15, 20]"
         :total="roleList.total" />

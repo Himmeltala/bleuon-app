@@ -96,19 +96,7 @@ function onExpandAuthChange(item: any) {
   }
 }
 
-function handleAuthSizeChange(item: any) {
-  item.loading = true;
-  PermissionHttp.findAuthorityListOfRole(
-    { roleId: item.id, pageSize: item.pageSize, currPage: item.currPage },
-    data => {
-      item.authorities = data;
-      item.hasGetAuthorities = true;
-      item.loading = false;
-    }
-  );
-}
-
-function handleAuthCurrentChange(item: any) {
+function fetchAuthorityListOfRole(item: any) {
   item.loading = true;
   PermissionHttp.findAuthorityListOfRole(
     { roleId: item.id, pageSize: item.pageSize, currPage: item.currPage },
@@ -166,19 +154,7 @@ function handleAddRoleAuth() {
 
 function handleDeleteAuth(authItem: any, roleItem: any) {
   PermissionHttp.deleteRoleAuthority({ roleId: roleItem.id, authId: authItem.id }, () => {
-    roleItem.loading = true;
-    PermissionHttp.findAuthorityListOfRole(
-      {
-        roleId: roleItem.id,
-        pageSize: roleItem.pageSize,
-        currPage: roleItem.currPage
-      },
-      data => {
-        roleItem.authorities = data;
-        roleItem.hasGetAuthorities = true;
-        roleItem.loading = false;
-      }
-    );
+    fetchAuthorityListOfRole(roleItem);
   });
 }
 
@@ -193,38 +169,35 @@ await fetchDataList();
         <el-button @click="addRoleDialog = true" size="small" type="primary">新增角色</el-button>
       </div>
     </div>
-    <el-table
-      stripe
-      border
-      @expand-change="onExpandAuthChange"
-      :data="mainList.list"
-      style="width: 100%">
+    <el-table stripe border row-key="id" @expand-change="onExpandAuthChange" :data="mainList.list">
       <el-table-column label="权限列表" type="expand" width="120">
         <template #default="scope">
           <div class="mx-20 my-5">
-            <div class="f-c-e mb-4">
-              <div>
-                <el-button
-                  type="primary"
-                  size="small"
-                  plain
-                  @click="openAddRoleAuthDialog(scope.row)">
-                  添加权限
-                </el-button>
-              </div>
-            </div>
             <RemarkText class="mb-4" title="权限列表" sub="该角色所拥有的权限" />
-            <div class="" v-if="scope.row.authorities?.list">
-              <el-table v-loading="scope.row.loading" border :data="scope.row.authorities.list">
+            <div class="f-c-e mb-4">
+              <el-button
+                plain
+                type="primary"
+                size="small"
+                @click="openAddRoleAuthDialog(scope.row)">
+                添加权限
+              </el-button>
+            </div>
+            <div v-if="scope.row.authorities?.list">
+              <el-table
+                border
+                row-key="id"
+                v-loading="scope.row.loading"
+                :data="scope.row.authorities.list">
                 <el-table-column sortable prop="id" label="权限 ID"></el-table-column>
                 <el-table-column prop="name" label="权限备注"></el-table-column>
                 <el-table-column prop="value" label="权限值"></el-table-column>
-                <el-table-column sortable prop="createDate" label="创建日期">
+                <el-table-column sortable label="创建日期">
                   <template #default="authScope">
                     {{ DateUtil.formatted(authScope.row.createDate) }}
                   </template>
                 </el-table-column>
-                <el-table-column sortable prop="modifyDate" label="修改日期">
+                <el-table-column sortable label="修改日期">
                   <template #default="authScope">
                     {{ DateUtil.formatted(authScope.row.modifyDate) }}
                   </template>
@@ -246,8 +219,8 @@ await fetchDataList();
                   small
                   v-model:current-page="scope.row.currPage"
                   v-model:page-size="scope.row.pageSize"
-                  @size-change="handleAuthSizeChange(scope.row)"
-                  @current-change="handleAuthCurrentChange(scope.row)"
+                  @size-change="fetchAuthorityListOfRole(scope.row)"
+                  @current-change="fetchAuthorityListOfRole(scope.row)"
                   layout="prev, pager, next"
                   :total="scope.row.authorities.total" />
               </div>
