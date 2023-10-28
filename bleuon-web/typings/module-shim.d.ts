@@ -9,6 +9,10 @@ declare module "axios" {
     /**
      * 是否关闭消息提示
      */
-    nomessage?: boolean;
+    ignoreMsg?: boolean;
+    /**
+     * 不管是否 500 错误都不提示
+     */
+    ignoreError?: boolean;
   }
 }

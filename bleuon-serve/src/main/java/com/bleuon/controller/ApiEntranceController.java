@@ -71,7 +71,6 @@ public class ApiEntranceController implements Serializable {
             return R.error("60s 内只能发送一次！");
         }
 
-
         ConsumerModel consumer = new ConsumerModel();
         consumer.setEmail(vo.getEmail());
         ConsumerModel exists = consumerService.findBy(consumer);

@@ -125,7 +125,7 @@ onMounted(() => {
   });
 });
 
-async function upgradeMetaData(nomessage: boolean, success?: (message: any) => void) {
+async function upgradeMetaData(ignoreMsg: boolean, success?: (message: any) => void) {
   const { width, height } = paper.value.getArea();
   const { defaultConnector, defaultRouter, gridSize } = paper.value.options;
   mainData.value = {
@@ -140,7 +140,7 @@ async function upgradeMetaData(nomessage: boolean, success?: (message: any) => v
     dataUri: await getDataURI(paper.value)
   };
 
-  FlowchartHttp.upgrade(mainData.value, { nomessage }, success);
+  FlowchartHttp.upgrade(mainData.value, { ignoreMsg }, success);
 }
 
 const upgradeThrottle = PreventUtil.throttle(() => upgradeMetaData(true), 300);
@@ -167,7 +167,7 @@ const shareFormRules = reactive<FormRules<any>>({
 function confirmShare() {
   ElFormUtil.validate(shareFormRef.value, () => {
     mainData.value.isShare = 1;
-    FlowchartHttp.upgrade(mainData.value, { nomessage: true }, message => {
+    FlowchartHttp.upgrade(mainData.value, { ignoreMsg: true }, message => {
       if (message.code === 200) {
         ElMessage.success("分享成功！");
       } else {
@@ -180,7 +180,7 @@ function confirmShare() {
 
 function cancelShare() {
   mainData.value.isShare = 0;
-  FlowchartHttp.upgrade(mainData.value, { nomessage: true }, message => {
+  FlowchartHttp.upgrade(mainData.value, { ignoreMsg: true }, message => {
     if (message.code === 200) {
       ElMessage.success("取消分享成功！");
     } else {

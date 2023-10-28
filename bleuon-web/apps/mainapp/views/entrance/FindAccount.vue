@@ -6,8 +6,8 @@
  * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
-import FindAccountVerifyCode from "./components/FindAccountVerifyCode.vue";
-import FindAccountRsetPassword from "./components/FindAccountResetPassword.vue";
+import FindAccountVerifyCode from "@mainapp/fragments/entrance/FindAccountVerifyCode.vue";
+import FindAccountRsetPassword from "@mainapp/fragments/entrance/FindAccountResetPassword.vue";
 
 defineProps({
   dynamicCompName: {

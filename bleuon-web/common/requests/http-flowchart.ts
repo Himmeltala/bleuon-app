@@ -15,7 +15,7 @@ import { http } from "@common/requests/use-axios";
  */
 export function upgrade(
   model: FlowchartModel,
-  config?: { nomessage: boolean },
+  config?: { ignoreMsg: boolean },
   success?: (data: R) => void
 ) {
   http.put<R>("/flowchart/upgrade", model, config).then(({ data }) => {

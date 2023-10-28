@@ -58,7 +58,7 @@ export async function replicate(
  */
 export async function upgrade(
   model: BlueprintFlowchartModel,
-  config?: { nomessage: boolean },
+  config?: { ignoreMsg: boolean },
   success?: (res: R) => void
 ) {
   http.put("/blueprint/upgrade", model, config).then(({ data }) => {

@@ -6,8 +6,8 @@
  * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
-import AccountLogin from "./components/AccountLogin.vue";
-import EmailLogin from "./components/EmailLogin.vue";
+import AccountLogin from "@mainapp/fragments/entrance/AccountLogin.vue";
+import EmailLogin from "@mainapp/fragments/entrance/EmailLogin.vue";
 
 defineProps({
   dynamicCompName: {

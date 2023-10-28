@@ -38,7 +38,7 @@ async function fetchData(params: any) {
 }
 
 function upgrade() {
-  FlowchartHttp.upgrade(mainData.value[clickedIndex.value], { nomessage: false }, () => {
+  FlowchartHttp.upgrade(mainData.value[clickedIndex.value], { ignoreMsg: false }, () => {
     dialogVisible.value = !dialogVisible.value;
   });
 }

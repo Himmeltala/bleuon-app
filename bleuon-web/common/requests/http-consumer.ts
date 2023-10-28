@@ -36,9 +36,11 @@ export function askLoginEmailCaptcha(
   },
   success?: Function
 ) {
-  http.get<R>("/public/entrance/ask/login-email-captcha", { params: model }).then(({ data }) => {
-    success && success(data);
-  });
+  http
+    .get<R>("/public/entrance/ask/login-email-captcha", { params: model, ignoreError: true })
+    .then(({ data }) => {
+      success && success(data);
+    });
 }
 
 /**
@@ -242,7 +244,7 @@ export async function findAllDynamicByCriteria(criteria: {
 export function upgradeDynamic(model: DynamicModel, success?: Function) {
   http
     .put<R>("/consumer/upgrade/dynamic", model, {
-      nomessage: true
+      ignoreMsg: true
     })
     .then(() => {
       success && success();

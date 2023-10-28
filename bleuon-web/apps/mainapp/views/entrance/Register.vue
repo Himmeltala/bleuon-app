@@ -6,8 +6,8 @@
  * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
-import AccountRegister from "./components/AccountRegister.vue";
-import EmailRegister from "./components/EmailRegister.vue";
+import AccountRegister from "@mainapp/fragments/entrance/AccountRegister.vue";
+import EmailRegister from "@mainapp/fragments/entrance/EmailRegister.vue";
 
 defineProps({
   dynamicCompName: {

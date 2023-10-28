@@ -51,8 +51,8 @@ export async function findDetailByCriteria(model: {
  *
  * @param model
  */
-export function upgradeDetail(model: ArticleModel, nomessage?: boolean, success?: Function) {
-  http.put<R>("/discussion/upgrade/detail", model, { nomessage }).then(() => {
+export function upgradeDetail(model: ArticleModel, ignoreMsg?: boolean, success?: Function) {
+  http.put<R>("/discussion/upgrade/detail", model, { ignoreMsg }).then(() => {
     success && success();
   });
 }

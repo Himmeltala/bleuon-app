@@ -88,7 +88,7 @@ onMounted(() => {
 
   BlueprintHttp.upgrade(
     { views: mainData.value.views + 1, id: mainData.value.id },
-    { nomessage: true }
+    { ignoreMsg: true }
   );
 });
 </script>

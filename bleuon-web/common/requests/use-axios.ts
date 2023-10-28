@@ -15,23 +15,30 @@ const http = axios.create({
 export function createRequest(name: "mainapp" | "subapp") {
   const tokenKey = name === "mainapp" ? KeyVals.MAINAPP_TOKEN_KEY : KeyVals.SUBAPP_TOKEN_KEY;
 
-  const requestInterceptor = (config: InternalAxiosRequestConfig) => {
+  const requestInterceptor = (request: InternalAxiosRequestConfig) => {
     const token = localStorage.getToken(tokenKey);
 
     if (token) {
-      config.headers.Authorization = `Bearer ${token.value}`;
+      request.headers.Authorization = `Bearer ${token.value}`;
     }
 
-    return config;
+    return request;
   };
 
-  const responseInterceptor = (config: AxiosResponse) => {
-    const { data, config: configuration } = config;
+  const responseInterceptor = (response: AxiosResponse) => {
+    const { data, config } = response;
+
+    if (config.ignoreError) {
+      data.message && ElMessage.info(data.message);
+      return response;
+    }
 
     if (data.code == 500) {
       data.message && ElMessage.error(data.message);
-      return Promise.reject(config);
-    } else if (data.code == 403) {
+      return Promise.reject(response);
+    }
+
+    if (data.code == 403) {
       data.message && ElMessage.warning(data.message);
       location.reload();
       localStorage.removeItem(tokenKey);
@@ -39,18 +46,15 @@ export function createRequest(name: "mainapp" | "subapp") {
       data.message && ElMessage.warning(data.message);
     }
 
-    if (!configuration.nomessage) {
-      if (
-        data.code == 200 &&
-        !InterceptorUtil.notInterceptUrl(config.config, {
-          fuzzy: ["find", "replicate"]
-        })
-      ) {
-        data.message && ElMessage.success(data.message);
-      }
+    if (
+      !config.ignoreMsg &&
+      data.code == 200 &&
+      !InterceptorUtil.notInterceptUrl(response.config, { fuzzy: ["find", "replicate"] })
+    ) {
+      data.message && ElMessage.success(data.message);
     }
 
-    return config;
+    return response;
   };
 
   http.interceptors.request.use(requestInterceptor, error => {
