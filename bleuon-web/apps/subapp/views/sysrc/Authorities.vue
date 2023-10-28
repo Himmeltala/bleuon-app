@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { PermissionHttp } from "@common/requests";
-import { DateUtil } from "@common/utils";
+import { DateUtil, ElFormUtil } from "@common/utils";
 
 const authList = ref<PageInfo<AuthorityModel>>();
 
@@ -50,9 +50,11 @@ const addAuthFormRules = reactive({
 });
 
 function addAuth() {
-  PermissionHttp.addAuthority(addAuthFormData, async () => {
-    await fetchDataList();
-    addAuthDialog.value = false;
+  ElFormUtil.validate(addAuthFormEl.value, () => {
+    PermissionHttp.addAuthority(addAuthFormData, async () => {
+      await fetchDataList();
+      addAuthDialog.value = false;
+    });
   });
 }
 

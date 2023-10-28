@@ -49,4 +49,8 @@ public class AdminModel implements Serializable {
     @TableField(exist = false)
     private List<RoleModel> roles;
 
+    public AdminModel(String username) {
+        this.username = username;
+    }
+
 }

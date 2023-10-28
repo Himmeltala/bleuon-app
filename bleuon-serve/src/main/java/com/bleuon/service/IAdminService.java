@@ -12,7 +12,7 @@ import com.github.pagehelper.PageInfo;
  */
 public interface IAdminService {
 
-    AdminModel findByUsernameOrPhoneOrEmail(AdminModel model);
+    AdminModel findByUsernameOrPhoneOrEmailAndPwd(AdminModel model);
 
     AdminModel findBy(AdminModel model);
 

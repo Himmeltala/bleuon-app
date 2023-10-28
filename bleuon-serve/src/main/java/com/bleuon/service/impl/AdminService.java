@@ -8,8 +8,11 @@ import com.bleuon.service.IAdminService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -23,10 +26,21 @@ import java.util.Optional;
 public class AdminService extends ServiceImpl<AdminMapper, AdminModel> implements IAdminService {
 
     private final AdminMapper adminMapper;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public AdminModel findByUsernameOrPhoneOrEmail(AdminModel model) {
-        return adminMapper.findByUsernameOrPhoneOrEmail(model);
+    public AdminModel findByUsernameOrPhoneOrEmailAndPwd(AdminModel model) {
+        AdminModel result = adminMapper.findByUsernameOrPhoneOrEmail(model);
+
+        if (Objects.isNull(result)) return null;
+
+        if (!StringUtils.hasText(result.getPassword())) return null;
+
+        boolean matches = passwordEncoder.matches(model.getPassword(), result.getPassword());
+
+        if (!matches) return null;
+
+        return result;
     }
 
     @Override

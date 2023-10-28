@@ -1,4 +1,4 @@
-package com.bleuon.controller.open;
+package com.bleuon.controller;
 
 import com.bleuon.annotaion.RequestMappingPrefix;
 import com.bleuon.constant.AuthorityType;
@@ -248,7 +248,7 @@ public class ApiEntranceController implements Serializable {
     @Operation(summary = "管理员登录", description = "后台管理系统的登录入口")
     @PostMapping("/admin-login")
     public R<TokenModel> adminLogin(@RequestBody @Validated AdminModel model) {
-        AdminModel exists = adminService.findByUsernameOrPhoneOrEmail(model);
+        AdminModel exists = adminService.findByUsernameOrPhoneOrEmailAndPwd(model);
 
         if (Objects.isNull(exists)) {
             return R.error("用户名或密码错误！");
@@ -262,7 +262,7 @@ public class ApiEntranceController implements Serializable {
     @Operation(summary = "前台用户名、密码、手机号登录", description = "前台系统的登录入口")
     @PostMapping("/account-login")
     public R<TokenModel> accountLogin(@RequestBody @Validated ConsumerModel model) {
-        ConsumerModel exists = consumerService.findByOr(model);
+        ConsumerModel exists = consumerService.findByUsernameOrPhoneOrEmailAndPwd(model);
 
         if (Objects.isNull(exists)) {
             return R.error("用户名或密码错误！");

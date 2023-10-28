@@ -16,6 +16,6 @@ public interface ConsumerMapper extends BaseMapper<ConsumerModel> {
 
     ConsumerModel findBy(ConsumerModel model);
 
-    ConsumerModel findByOr(ConsumerModel model);
+    ConsumerModel findByUsernameOrPhoneOrEmail(ConsumerModel model);
 
 }

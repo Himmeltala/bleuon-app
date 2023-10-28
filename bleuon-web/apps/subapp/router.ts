@@ -27,13 +27,13 @@ const router = createRouter({
               path: "consumers",
               name: "auth-consumers",
               meta: { title: "用户", icon: "User" },
-              component: () => import("@subapp/views/peopls/Consumers.vue")
+              component: () => import("@subapp/views/pepoles/Consumers.vue")
             },
             {
               path: "admins",
               name: "auth-admins",
               meta: { title: "管理员", icon: "UserFilled" },
-              component: () => import("@subapp/views/peopls/Admins.vue")
+              component: () => import("@subapp/views/pepoles/Admins.vue")
             }
           ]
         },

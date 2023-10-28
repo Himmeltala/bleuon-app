@@ -19,7 +19,19 @@
                 <if test="sex != null">sex = #{sex},</if>
             </trim>
         </set>
-        WHERE id = #{id}
+        <where>
+            <trim prefix="AND" prefixOverrides="AND">
+                <if test="id != null">
+                    AND id = #{id}
+                </if>
+                <if test="email != null">
+                    AND email = #{email}
+                </if>
+                <if test="username != null">
+                    AND username = #{username}
+                </if>
+            </trim>
+        </where>
     </update>
 
     <select id="findBy" resultType="ConsumerModel">
@@ -46,9 +58,10 @@
         </where>
     </select>
 
-    <select id="findByOr" resultType="ConsumerModel">
+    <select id="findByUsernameOrPhoneOrEmail" resultType="ConsumerModel">
         SELECT id,
                username,
+               password,
                email,
                phone,
                company,
@@ -61,7 +74,9 @@
                create_date,
                modify_date
         FROM t_consumers
-        WHERE username = #{username} OR email = #{username} OR phone = #{username}
+        WHERE username = #{username}
+           OR email = #{username}
+           OR phone = #{username}
     </select>
 
 </mapper>

@@ -38,8 +38,18 @@ public class ConsumerService extends ServiceImpl<ConsumerMapper, ConsumerModel> 
     }
 
     @Override
-    public ConsumerModel findByOr(ConsumerModel model) {
-        return consumerMapper.findByOr(model);
+    public ConsumerModel findByUsernameOrPhoneOrEmailAndPwd(ConsumerModel model) {
+        ConsumerModel result = consumerMapper.findByUsernameOrPhoneOrEmail(model);
+
+        if (Objects.isNull(result)) return null;
+
+        if (!StringUtils.hasText(result.getPassword())) return null;
+
+        boolean matches = passwordEncoder.matches(model.getPassword(), result.getPassword());
+
+        if (!matches) return null;
+
+        return result;
     }
 
     @Transactional

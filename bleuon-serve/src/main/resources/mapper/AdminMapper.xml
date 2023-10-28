@@ -3,7 +3,14 @@
 <mapper namespace="com.bleuon.mapper.AdminMapper">
 
     <select id="findByUsernameOrPhoneOrEmail" resultType="AdminModel">
-        SELECT id, username, phone, email, avatar, create_date, modify_date
+        SELECT id,
+               username,
+               password,
+               phone,
+               email,
+               avatar,
+               create_date,
+               modify_date
         FROM t_admins
         WHERE username = #{username}
            OR phone = #{username}

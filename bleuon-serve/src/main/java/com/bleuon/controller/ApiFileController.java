@@ -1,4 +1,4 @@
-package com.bleuon.controller.open;
+package com.bleuon.controller;
 
 import com.bleuon.annotaion.RequestMappingPrefix;
 import com.bleuon.constant.KeyVals;

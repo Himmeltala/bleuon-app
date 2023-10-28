@@ -13,7 +13,7 @@ public interface IConsumerService {
 
     ConsumerModel findBy(ConsumerModel model);
 
-    ConsumerModel findByOr(ConsumerModel model);
+    ConsumerModel findByUsernameOrPhoneOrEmailAndPwd(ConsumerModel model);
 
     boolean upgrade(ConsumerModel model);
 

@@ -16,8 +16,8 @@ class BleuonServeApplicationTests {
 
     @Test
     public void test() {
-        String string = UUID.randomUUID().toString();
-        System.out.println(string);
+        String encode = passwordEncoder.encode("12345678");
+        System.out.println(encode);
     }
 
 }

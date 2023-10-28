@@ -1,6 +1,5 @@
 package com.bleuon.security;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bleuon.constant.KeyVals;
 import com.bleuon.entity.AdminModel;
 import com.bleuon.entity.CustomUserDetails;
@@ -26,24 +25,21 @@ import java.util.Objects;
  */
 @Service
 @RequiredArgsConstructor
-public class UserDetailsServiceImpl extends ServiceImpl<AdminMapper, AdminModel> implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
+    private final AdminMapper adminMapper;
     private final PermissionService permissionService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        AdminModel exists = findAdminByUname(username);
+        AdminModel exists = adminMapper.findByUsernameOrPhoneOrEmail(new AdminModel(username));
 
         if (Objects.isNull(exists)) {
-            throw new UsernameNotFoundException("用户名或密码错误！");
+            throw new UsernameNotFoundException("该用户不存在！");
         }
 
         List<String> authorities = permissionService.findAdminAuthorityList(null, exists.getUsername());
         return new CustomUserDetails(exists.getId(), exists.getUsername(), exists.getPassword(), KeyVals.USER_TYPE_ADMIN, authorities);
-    }
-
-    private AdminModel findAdminByUname(String uname) {
-        return query().eq("username", uname).one();
     }
 
 }

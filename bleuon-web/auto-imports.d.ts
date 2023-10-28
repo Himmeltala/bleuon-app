@@ -6,7 +6,9 @@
 export {}
 declare global {
   const EffectScope: typeof import('vue')['EffectScope']
+  const ElFormUtil: typeof import('element-plus/es')['ElFormUtil']
   const ElMessage: typeof import('element-plus/es')['ElMessage']
+  const ElU: typeof import('element-plus/es')['ElU']
   const KeyVals: typeof import('@common/constants')['KeyVals']
   const computed: typeof import('vue')['computed']
   const createApp: typeof import('vue')['createApp']
@@ -79,7 +81,9 @@ import { UnwrapRef } from 'vue'
 declare module 'vue' {
   interface ComponentCustomProperties {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
+    readonly ElFormUtil: UnwrapRef<typeof import('element-plus/es')['ElFormUtil']>
     readonly ElMessage: UnwrapRef<typeof import('element-plus/es')['ElMessage']>
+    readonly ElU: UnwrapRef<typeof import('element-plus/es')['ElU']>
     readonly KeyVals: UnwrapRef<typeof import('@common/constants')['KeyVals']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly createApp: UnwrapRef<typeof import('vue')['createApp']>
@@ -144,7 +148,9 @@ declare module 'vue' {
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
+    readonly ElFormUtil: UnwrapRef<typeof import('element-plus/es')['ElFormUtil']>
     readonly ElMessage: UnwrapRef<typeof import('element-plus/es')['ElMessage']>
+    readonly ElU: UnwrapRef<typeof import('element-plus/es')['ElU']>
     readonly KeyVals: UnwrapRef<typeof import('@common/constants')['KeyVals']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly createApp: UnwrapRef<typeof import('vue')['createApp']>
