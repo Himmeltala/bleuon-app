@@ -39,19 +39,19 @@
         </trim>
     </select>
 
-    <resultMap id="findAdminWithAuthorityListMap" type="AdminModel" autoMapping="true">
-        <collection property="roles" select="findAdminRoleByAdminId" column="{adminId=id}"/>
-        <collection property="authorities" select="findAdminAuthorities" column="{adminId=id}"/>
+    <resultMap id="findAdminWithAuthorityListMap" type="AdminModel">
+        <collection property="roles" select="findAdminRoleListByAdminId" column="{adminId=id}"/>
+        <collection property="authorities" select="findAdminAuthorityListByAdminId" column="{adminId=id}"/>
     </resultMap>
 
-    <select id="findAdminRoleByAdminId" resultType="RoleModel">
+    <select id="findAdminRoleListByAdminId" resultType="RoleModel">
         SELECT r.*
         FROM co_admin_role AS cur
                  LEFT JOIN p_roles AS r ON r.id = cur.role_id
         WHERE cur.admin_id = #{adminId}
     </select>
 
-    <select id="findAdminAuthorities" resultType="AuthorityModel">
+    <select id="findAdminAuthorityListByAdminId" resultType="AuthorityModel">
         SELECT a.*
         FROM co_admin_role AS cur
                  LEFT JOIN p_roles AS r ON r.id = cur.role_id
@@ -118,10 +118,10 @@
     </select>
 
     <resultMap id="findRoleWithAuthorityListMap" type="RoleModel" autoMapping="true">
-        <collection property="authorities" select="findAuthorityListOfRole" column="{roleId=id}"/>
+        <collection property="authorities" select="findAdminAuthorityListByRoleId" column="{roleId=id}"/>
     </resultMap>
 
-    <select id="findAuthorityListOfRole" resultType="AuthorityModel">
+    <select id="findAdminAuthorityListByRoleId" resultType="AuthorityModel">
         SELECT *
         FROM co_auth_role ar
                  LEFT JOIN p_auths a ON ar.auth_id = a.id
@@ -190,14 +190,21 @@
         DELETE
         FROM co_admin_role
         WHERE username = #{username}
-        <trim prefixOverrides="AND">
-            <if test="adminId != null">
-                AND admin_id = #{adminId}
-            </if>
-            <if test="roleId != null">
-                AND role_id = #{roleId}
-            </if>
-        </trim>
+        <if test="adminId != null">
+            AND admin_id = #{adminId}
+        </if>
+        <if test="roleId != null">
+            AND role_id = #{roleId}
+        </if>
     </delete>
+
+    <resultMap id="findAllAdminWithRoleListButNoAuthorityListMap" type="AdminModel">
+        <collection property="roles" select="findAdminRoleListByAdminId" column="{adminId=id}"/>
+    </resultMap>
+
+    <select id="findAllAdminWithRoleListButNoAuthorityList" resultMap="findAllAdminWithRoleListButNoAuthorityListMap">
+        SELECT id, username, phone, email, avatar, create_date, modify_date
+        FROM t_admins
+    </select>
 
 </mapper>

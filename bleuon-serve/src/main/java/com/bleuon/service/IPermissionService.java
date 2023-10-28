@@ -55,4 +55,6 @@ public interface IPermissionService {
 
     boolean deleteRoleOfAdmin(PermissionCriteria criteria);
 
+    PageInfo<AdminModel> findAllAdminWithRoleListButNoAuthorityList(PermissionCriteria criteria);
+
 }

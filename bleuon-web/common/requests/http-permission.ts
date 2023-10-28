@@ -38,6 +38,20 @@ export async function findAllAdminWithRoleAndAuthorityList(model: Criteria) {
 }
 
 /**
+ * 获取所有管理员，仅包括角色不包括权限
+ *
+ * @param model
+ * @returns
+ */
+export async function findAllAdminWithRoleListButNoAuthorityList(model: Criteria) {
+  const { data } = await http.post<R<PageInfo<AdminModel>>>(
+    "/permission/find/all/admin/with/role-list-but-no-authority-list",
+    model
+  );
+  return data.data;
+}
+
+/**
  * 查询角色分组，包括权限列表
  *
  * @param model
@@ -66,13 +80,13 @@ export async function findAllRoleButNoAuthorityList(criteria: Criteria) {
 }
 
 /**
- * 查询角色的权限列表
+ * 查询角色的权限列表，可以通过 roleId 或者 adminId
  *
  * @param criteria
  * @returns
  */
 export function findAuthorityListOfRole(
-  criteria: Criteria<{ roleId: number }>,
+  criteria: Criteria<{ roleId?: number; adminId?: string }>,
   success: (data: PageInfo<AuthorityModel>) => void
 ) {
   http

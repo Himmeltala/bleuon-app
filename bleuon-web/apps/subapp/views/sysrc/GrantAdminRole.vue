@@ -34,7 +34,7 @@ async function fetchRoleListButNoAuthorityList() {
 function onExpandAuthorityListOfRoleItem(item: any) {
   item.loading = true;
   if (!item.hasGetAuthorities) {
-    PermissionHttp.findAuthorityListOfRole({ roleId: item.id }, data => {
+    PermissionHttp.findAuthorityListOfRole({ roleId: item.id, pageSize: 10, currPage: 1 }, data => {
       item.authorities = data;
       item.pageSize = 10;
       item.currPage = 1;
@@ -112,6 +112,7 @@ await fetchRoleListButNoAuthorityList();
         </template>
       </el-table-column>
       <el-table-column prop="username" label="用户名"></el-table-column>
+      <el-table-column prop="phone" label="手机号"></el-table-column>
       <el-table-column label="已有角色">
         <template #default="scope">
           <div class="f-c-s flex-wrap flex-gap-2">

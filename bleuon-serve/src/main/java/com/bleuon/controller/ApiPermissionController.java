@@ -45,6 +45,13 @@ public class ApiPermissionController {
         return R.success(permissionService.findAllAdminWithRoleAndAuthorityList(criteria));
     }
 
+    @Operation(summary = "获取所有管理员，仅包括角色不包括权限")
+    @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:permission:AllAdminWithRoleListButNoAuthorityList')")
+    @PostMapping("/find/all/admin/with/role-list-but-no-authority-list")
+    public R<PageInfo<AdminModel>> findAllAdminWithRoleListButNoAuthorityList(@RequestBody PermissionCriteria criteria) {
+        return R.success(permissionService.findAllAdminWithRoleListButNoAuthorityList(criteria));
+    }
+
     @Operation(summary = "获取单个用户，包括权限和角色")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:permission:ConsumerWithRoleAndAuthorityList')")
     @GetMapping("/find/consumer/with/role-and-authority-list")
@@ -73,7 +80,7 @@ public class ApiPermissionController {
         return R.success(permissionService.findAllRoleButNoAuthorityList(criteria));
     }
 
-    @Operation(summary = "查询角色的权限列表")
+    @Operation(summary = "查询角色的权限列表，可以通过 roleId 或者 adminId")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:permission:AuthorityListOfRole')")
     @PostMapping("/find/authority-list-of-role")
     public R<PageInfo<AuthorityModel>> findAuthorityListOfRole(@RequestBody PermissionCriteria criteria) {

@@ -84,7 +84,7 @@ function handleDeleteRole(item: RoleModel) {
 function onExpandAuthChange(item: any) {
   item.loading = true;
   if (!item.hasGetAuthorities) {
-    PermissionHttp.findAuthorityListOfRole({ roleId: item.id }, data => {
+    PermissionHttp.findAuthorityListOfRole({ roleId: item.id, pageSize: 10, currPage: 1 }, data => {
       item.authorities = data;
       item.pageSize = 10;
       item.currPage = 1;
@@ -332,6 +332,7 @@ await fetchDataList();
       title="添加权限">
       <el-table
         stripe
+        row-key="id"
         border
         :data="calcRoleAuthList"
         @selection-change="handleAddRoleAuthSelectionChange">

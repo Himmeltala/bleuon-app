@@ -30,6 +30,10 @@ function getCurrentRouteList() {
   return router.currentRoute.value.matched;
 }
 
+function getCurrentRoutePath() {
+  return router.currentRoute.value.path;
+}
+
 routeList.value = getCurrentRouteList();
 
 watch(route, () => {
@@ -52,7 +56,7 @@ await fetchAdminData();
       </el-header>
       <el-container>
         <el-aside width="200px">
-          <el-menu unique-opened router>
+          <el-menu unique-opened router :default-active="getCurrentRoutePath()">
             <el-sub-menu :index="`${fatherIndex + 1}`" v-for="(fatherRoute, fatherIndex) in routes">
               <template #title>
                 <el-icon>
@@ -73,7 +77,7 @@ await fetchAdminData();
             </el-sub-menu>
           </el-menu>
         </el-aside>
-        <el-main style="padding: 0 1.25rem">
+        <el-main style="padding: 0 1.25rem 1.25rem 1.25rem">
           <div class="mb-10">
             <el-breadcrumb separator="/">
               <template v-for="(item, index) in routeList">

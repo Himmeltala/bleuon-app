@@ -15,10 +15,44 @@ const pageSize = ref(10);
 const mainList = ref<PageInfo<AdminModel>>();
 
 async function fetchDataList() {
-  mainList.value = await PermissionHttp.findAllAdminWithRoleAndAuthorityList({
+  mainList.value = await PermissionHttp.findAllAdminWithRoleListButNoAuthorityList({
     pageSize: pageSize.value,
     currPage: currPage.value
   });
+}
+
+async function onExpandAuthorityListOfRoleItem(item: any) {
+  item.loading = true;
+  if (!item.hasGetAuthorities) {
+    PermissionHttp.findAuthorityListOfRole(
+      { adminId: item.id, pageSize: 10, currPage: 1 },
+      data => {
+        item.authorities = data;
+        item.pageSize = 10;
+        item.currPage = 1;
+        item.hasGetAuthorities = true;
+        item.loading = false;
+      }
+    );
+  } else {
+    item.loading = false;
+  }
+}
+
+async function fetchAuthorityListOfRole(item: any) {
+  item.loading = true;
+  PermissionHttp.findAuthorityListOfRole(
+    {
+      adminId: item.id,
+      pageSize: item.pageSize,
+      currPage: item.currPage
+    },
+    data => {
+      item.authorities = data;
+      item.hasGetAuthorities = true;
+      item.loading = false;
+    }
+  );
 }
 
 function handleDelete(item: AdminModel) {
@@ -56,7 +90,13 @@ await fetchDataList();
   <div>
     <RemarkText class="mb-4" sub="备注: 维护后台管理系统的管理员角色，而非管理员" />
     <div class="f-c-e mb-5"></div>
-    <el-table stripe border :data="mainList.list" style="width: 100%">
+    <el-table
+      @expand-change="onExpandAuthorityListOfRoleItem"
+      row-key="id"
+      stripe
+      border
+      :data="mainList.list"
+      style="width: 100%">
       <el-table-column label="权限列表" type="expand" width="100">
         <template #default="scope">
           <div class="mx-20 my-5">
@@ -68,13 +108,34 @@ await fetchDataList();
               <div class="mb-2">注册日期： {{ DateUtil.formatted(scope.row.createDate) }}</div>
               <div>修改日期： {{ DateUtil.formatted(scope.row.modifyDate) }}</div>
             </div>
-            <RemarkText class="mb-4" title="权限列表" sub="该角色所拥有的权限" />
-            <div>
-              <el-table border :data="scope.row.authorities">
-                <el-table-column prop="id" label="权限 ID"></el-table-column>
+            <div v-if="scope.row.authorities?.list">
+              <RemarkText class="mb-4" title="权限列表" sub="该角色所拥有的权限" />
+              <el-table border :data="scope.row.authorities.list">
+                <el-table-column sortable prop="id" label="权限 ID"></el-table-column>
                 <el-table-column prop="name" label="权限备注"></el-table-column>
                 <el-table-column prop="value" label="权限值"></el-table-column>
+                <el-table-column sortable label="创建日期">
+                  <template #default="authScope">
+                    {{ DateUtil.formatted(authScope.row.createDate) }}
+                  </template>
+                </el-table-column>
+                <el-table-column sortable label="修改日期">
+                  <template #default="authScope">
+                    {{ DateUtil.formatted(authScope.row.modifyDate) }}
+                  </template>
+                </el-table-column>
               </el-table>
+              <div class="mt-5 f-c-e">
+                <el-pagination
+                  small
+                  v-model:current-page="scope.row.currPage"
+                  v-model:page-size="scope.row.pageSize"
+                  @size-change="fetchAuthorityListOfRole(scope.row)"
+                  @current-change="fetchAuthorityListOfRole(scope.row)"
+                  layout="prev, pager, next"
+                  :page-sizes="[5, 10, 15, 20]"
+                  :total="scope.row.authorities.total" />
+              </div>
             </div>
           </div>
         </template>
