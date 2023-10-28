@@ -142,8 +142,8 @@ public class PermissionService implements IPermissionService {
     }
 
     @Override
-    public List<AuthorityModel> findAllAuthorityList(PermissionCriteria criteria) {
-        List<AuthorityModel> allAuthorityList = permissionMapper.findAllAuthorityList();
+    public List<AuthorityModel> findAuthorityListOfRoleButNohave(PermissionCriteria criteria) {
+        List<AuthorityModel> allAuthorityList = permissionMapper.findAuthorityList();
         List<AuthorityModel> roleAuthorityList = permissionMapper.findAdminAuthorityListByRoleId(criteria.getRoleId());
         allAuthorityList.removeAll(roleAuthorityList);
         return allAuthorityList;
@@ -211,4 +211,42 @@ public class PermissionService implements IPermissionService {
         return PageHelper.startPage(currPage, pageSize).doSelectPageInfo(() -> permissionMapper.findAllAdminWithRoleListButNoAuthorityList(criteria));
     }
 
+    @Override
+    public PageInfo<AuthorityModel> findAuthorityList(PermissionCriteria criteria) {
+        int pageSize = Optional.ofNullable(criteria.getPageSize()).orElse(10);
+        int currPage = Optional.ofNullable(criteria.getCurrPage()).orElse(1);
+        return PageHelper.startPage(currPage, pageSize).doSelectPageInfo(() -> permissionMapper.findAuthorityList());
+    }
+
+    @Transactional
+    @Override
+    public boolean upgradeAuthority(AuthorityModel model) {
+        try {
+            Integer affectedRows = permissionMapper.upgradeAuthority(model);
+            return affectedRows > 0;
+        } catch (Exception e) {
+            throw new JdbcErrorException(e);
+        }
+    }
+
+    @Transactional
+    @Override
+    public boolean dropAuthority(AuthorityModel model) {
+        try {
+            Integer affectedRows = permissionMapper.dropAuthority(model);
+            return affectedRows > 0;
+        } catch (Exception e) {
+            throw new JdbcErrorException(e);
+        }
+    }
+
+    @Override
+    public boolean addAuthority(AuthorityModel model) {
+        try {
+            Integer affectedRows = permissionMapper.addAuthority(model);
+            return affectedRows > 0;
+        } catch (Exception e) {
+            throw new JdbcErrorException(e);
+        }
+    }
 }

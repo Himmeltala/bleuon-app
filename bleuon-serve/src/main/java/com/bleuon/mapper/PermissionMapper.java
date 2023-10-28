@@ -46,7 +46,7 @@ public interface PermissionMapper {
 
     List<RoleModel> findAllRoleButNoAuthorityList(PermissionCriteria criteria);
 
-    List<AuthorityModel> findAllAuthorityList();
+    List<AuthorityModel> findAuthorityList();
 
     Integer addAuthorityListToRole(PermissionCriteria criteria);
 
@@ -59,5 +59,11 @@ public interface PermissionMapper {
     List<AdminModel> findAllAdminWithRoleListButNoAuthorityList(PermissionCriteria criteria);
 
     List<AuthorityModel> findAdminAuthorityListByAdminId(PermissionCriteria criteria);
+
+    Integer upgradeAuthority(AuthorityModel model);
+
+    Integer dropAuthority(AuthorityModel model);
+
+    Integer addAuthority(AuthorityModel model);
 
 }

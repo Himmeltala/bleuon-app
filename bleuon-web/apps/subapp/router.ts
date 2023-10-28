@@ -16,7 +16,7 @@ const router = createRouter({
     {
       path: "/home",
       meta: { title: "首页", icon: "House" },
-      redirect: "/home/sysrc/roles-and-authorities",
+      redirect: "/home/sysrc/grant-admin-role",
       component: () => import("@subapp/views/BaseHome.vue"),
       children: [
         {

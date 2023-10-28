@@ -133,19 +133,34 @@ export function upgradeRole(model: RoleModel, success?: Function) {
 }
 
 /**
- * 查询所有权限
+ * 查询权限列表，但是不能和该角色已有的权限重复，即查询角色没有的权限列表
  *
  * @param success
  */
-export function findAllAuthorityList(
+export function findAuthorityListOfRoleButNohave(
   criteria: Criteria<{ roleId: number }>,
   success: (data: AuthorityModel[]) => void
 ) {
   http
-    .get<R<AuthorityModel[]>>("/permission/find/all/authority/list", { params: criteria })
+    .get<R<AuthorityModel[]>>("/permission/find/authority-list-of-role-but-nohave", {
+      params: criteria
+    })
     .then(({ data }) => {
       success && success(data.data);
     });
+}
+
+/**
+ * 查询权限列表
+ *
+ * @param success
+ */
+export async function findAuthorityList(criteria: Criteria) {
+  const { data } = await http.post<R<PageInfo<AuthorityModel>>>(
+    "/permission/find/authority-list",
+    criteria
+  );
+  return data.data;
 }
 
 /**
@@ -202,5 +217,41 @@ export function deleteRoleOfAdmin(
 ) {
   http.delete<R>("/permission/delete/role-of-admin", { params }).then(() => {
     success();
+  });
+}
+
+/**
+ * 更新权限
+ *
+ * @param model
+ * @param success
+ */
+export function upgradeAuthority(model: AdminModel, success?: Function) {
+  http.put<R>("/permission/upgrade/authority", model).then(() => {
+    success && success();
+  });
+}
+
+/**
+ * 删除权限
+ *
+ * @param params
+ * @param success
+ */
+export function dropAuthority(params: AuthorityModel, success?: Function) {
+  http.delete<R>("/permission/delete/authority", { params }).then(() => {
+    success && success();
+  });
+}
+
+/**
+ * 添加权限
+ *
+ * @param model
+ * @param success
+ */
+export function addAuthority(model: AuthorityModel, success?: Function) {
+  http.post<R>("/permission/add/authority", model).then(() => {
+    success && success();
   });
 }

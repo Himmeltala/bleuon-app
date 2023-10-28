@@ -45,7 +45,7 @@ public interface IPermissionService {
 
     PageInfo<RoleModel> findAllRoleButNoAuthorityList(PermissionCriteria criteria);
 
-    List<AuthorityModel> findAllAuthorityList(PermissionCriteria criteria);
+    List<AuthorityModel> findAuthorityListOfRoleButNohave(PermissionCriteria criteria);
 
     boolean addAuthorityListToRole(PermissionCriteria criteria);
 
@@ -56,5 +56,13 @@ public interface IPermissionService {
     boolean deleteRoleOfAdmin(PermissionCriteria criteria);
 
     PageInfo<AdminModel> findAllAdminWithRoleListButNoAuthorityList(PermissionCriteria criteria);
+
+    PageInfo<AuthorityModel> findAuthorityList(PermissionCriteria criteria);
+
+    boolean upgradeAuthority(AuthorityModel model);
+
+    boolean dropAuthority(AuthorityModel model);
+
+    boolean addAuthority(AuthorityModel model);
 
 }

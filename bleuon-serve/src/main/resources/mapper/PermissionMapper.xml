@@ -163,7 +163,7 @@
         FROM p_roles
     </select>
 
-    <select id="findAllAuthorityList" resultType="AuthorityModel">
+    <select id="findAuthorityList" resultType="AuthorityModel">
         SELECT *
         FROM p_auths
     </select>
@@ -206,5 +206,27 @@
         SELECT id, username, phone, email, avatar, create_date, modify_date
         FROM t_admins
     </select>
+
+    <update id="upgradeAuthority">
+        UPDATE p_auths
+        <set>
+            <trim suffixOverrides=",">
+                <if test="name != null">name = #{name},</if>
+                <if test="value != null">`value` = #{value},</if>
+            </trim>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="dropAuthority">
+        DELETE
+        FROM p_auths
+        WHERE id = #{id}
+    </delete>
+
+    <insert id="addAuthority">
+        INSERT INTO p_auths(name, value)
+        VALUES (#{name}, #{value})
+    </insert>
 
 </mapper>

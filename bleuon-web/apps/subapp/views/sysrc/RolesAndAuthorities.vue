@@ -120,7 +120,7 @@ const calcRoleAuthList = PagerUtil.paginate(roleAuthList, addRoleAuthCurrPage, a
 
 function openAddRoleAuthDialog(item: any) {
   addRoleAuthItem.value = item;
-  PermissionHttp.findAllAuthorityList({ roleId: item.id }, data => {
+  PermissionHttp.findAuthorityListOfRoleButNohave({ roleId: item.id }, data => {
     roleAuthList.value = data;
     addRoleAuthDialog.value = true;
   });
@@ -328,7 +328,7 @@ await fetchDataList();
       :close-on-press-escape="false"
       :close-on-click-modal="false"
       v-model="addRoleAuthDialog"
-      width="40%"
+      width="60%"
       title="添加权限">
       <el-table
         stripe
