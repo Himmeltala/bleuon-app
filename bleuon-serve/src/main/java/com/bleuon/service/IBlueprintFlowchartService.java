@@ -20,6 +20,6 @@ public interface IBlueprintFlowchartService {
 
     boolean add(BlueprintFlowchartModel model);
 
-    boolean delete(BlueprintFlowchartModel model);
+    boolean drop(BlueprintFlowchartModel model);
 
 }

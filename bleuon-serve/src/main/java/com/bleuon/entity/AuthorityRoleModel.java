@@ -24,5 +24,4 @@ public class AuthorityRoleModel implements Serializable {
 
     private RoleModel role;
 
-
 }

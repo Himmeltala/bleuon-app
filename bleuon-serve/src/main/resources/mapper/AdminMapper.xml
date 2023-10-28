@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bleuon.mapper.AdminMapper">
 
-    <select id="findByUsernameOrPhoneOrEmail" resultType="com.bleuon.entity.AdminModel">
+    <select id="findByUsernameOrPhoneOrEmail" resultType="AdminModel">
         SELECT id, username, phone, email, avatar, create_date, modify_date
         FROM t_admins
         WHERE username = #{username}
@@ -10,7 +10,7 @@
            OR email = #{username}
     </select>
 
-    <select id="findBy" resultType="com.bleuon.entity.AdminModel">
+    <select id="findBy" resultType="AdminModel">
         SELECT id, username, phone, email, avatar, create_date, modify_date FROM t_admins
         <where>
             <trim prefixOverrides="AND" prefix="AND">
@@ -33,7 +33,7 @@
         </where>
     </select>
 
-    <select id="findListBy" resultType="com.bleuon.entity.AdminModel">
+    <select id="findListBy" resultType="AdminModel">
         SELECT id, username, phone, email, avatar, create_date, modify_date FROM t_admins
         <where>
             <trim prefixOverrides="AND" prefix="AND">

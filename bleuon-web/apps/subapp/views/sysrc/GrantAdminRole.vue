@@ -112,14 +112,13 @@ await fetchRoleListButNoAuthorityList();
         </template>
       </el-table-column>
       <el-table-column prop="username" label="用户名"></el-table-column>
-      <el-table-column prop="phone" label="手机号"></el-table-column>
-      <el-table-column prop="email" label="邮箱"></el-table-column>
       <el-table-column label="已有角色">
         <template #default="scope">
           <div class="f-c-s flex-wrap flex-gap-2">
             <el-tag v-for="item in scope.row.roles" v-if="scope.row.roles?.length > 0">
               {{ item.name }}
             </el-tag>
+            <div v-else>可以为该管理员分配角色</div>
           </div>
         </template>
       </el-table-column>

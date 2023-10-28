@@ -152,7 +152,7 @@ public class ApiConsumerController implements Serializable {
     @PreAuthorize("hasAnyAuthority('sys:delete', 'sys:delete:consumer')")
     @DeleteMapping("/delete/collecting")
     public R<Object> deleteCollecting(@Validated CollectingConsumerModel model) {
-        boolean status = collectingConsumerService.delete(model);
+        boolean status = collectingConsumerService.drop(model);
         return status ? R.success("取消关注成功！") : R.error("取消关注失败！");
     }
 

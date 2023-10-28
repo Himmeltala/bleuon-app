@@ -19,6 +19,6 @@ public interface ICollectingConsumerService {
 
     boolean add(CollectingConsumerModel model);
 
-    boolean delete(CollectingConsumerModel model);
+    boolean drop(CollectingConsumerModel model);
 
 }

@@ -35,8 +35,8 @@ public class CollectingFlowchartService implements ICollectingFlowchartService {
     }
 
     @Override
-    public boolean delete(CollectingFlowchartModel model) {
-        Integer row = collectingFlowchartMapper.delete(model);
+    public boolean drop(CollectingFlowchartModel model) {
+        Integer row = collectingFlowchartMapper.drop(model);
         return row > 0;
     }
 

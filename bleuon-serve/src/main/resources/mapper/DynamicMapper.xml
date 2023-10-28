@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bleuon.mapper.DynamicMapper">
 
-    <update id="upgrade" parameterType="com.bleuon.entity.DynamicModel">
+    <update id="upgrade" parameterType="DynamicModel">
         UPDATE t_dynamics
         <set>
             <trim suffixOverrides=",">

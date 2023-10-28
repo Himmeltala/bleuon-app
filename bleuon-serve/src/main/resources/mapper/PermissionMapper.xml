@@ -39,19 +39,19 @@
         </trim>
     </select>
 
-    <resultMap id="findAdminWithAuthorityListMap" type="com.bleuon.entity.AdminModel" autoMapping="true">
+    <resultMap id="findAdminWithAuthorityListMap" type="AdminModel" autoMapping="true">
         <collection property="roles" select="findAdminRoleByAdminId" column="{adminId=id}"/>
         <collection property="authorities" select="findAdminAuthorities" column="{adminId=id}"/>
     </resultMap>
 
-    <select id="findAdminRoleByAdminId" resultType="com.bleuon.entity.RoleModel">
+    <select id="findAdminRoleByAdminId" resultType="RoleModel">
         SELECT r.*
         FROM co_admin_role AS cur
                  LEFT JOIN p_roles AS r ON r.id = cur.role_id
         WHERE cur.admin_id = #{adminId}
     </select>
 
-    <select id="findAdminAuthorities" resultType="com.bleuon.entity.AuthorityModel">
+    <select id="findAdminAuthorities" resultType="AuthorityModel">
         SELECT a.*
         FROM co_admin_role AS cur
                  LEFT JOIN p_roles AS r ON r.id = cur.role_id
@@ -66,20 +66,21 @@
         WHERE id = #{adminId}
     </select>
 
-    <resultMap id="findConsumerWithAuthorityListMap" type="com.bleuon.entity.ConsumerModel" autoMapping="true">
-        <association property="roles" select="findConsumerRoleByConsumerId" column="{consumerId=id}" autoMapping="true"/>
+    <resultMap id="findConsumerWithAuthorityListMap" type="ConsumerModel" autoMapping="true">
+        <association property="roles" select="findConsumerRoleByConsumerId" column="{consumerId=id}"
+                     autoMapping="true"/>
         <collection property="authorities" select="findConsumerAuthorities" column="{consumerId=id}"
                     autoMapping="true"/>
     </resultMap>
 
-    <select id="findConsumerRoleByConsumerId" resultType="com.bleuon.entity.RoleModel">
+    <select id="findConsumerRoleByConsumerId" resultType="RoleModel">
         SELECT r.*
         FROM co_consumer_role AS cur
                  LEFT JOIN p_roles AS r ON r.id = cur.role_id
         WHERE cur.consumer_id = #{consumerId}
     </select>
 
-    <select id="findConsumerAuthorities" resultType="com.bleuon.entity.AuthorityModel">
+    <select id="findConsumerAuthorities" resultType="AuthorityModel">
         SELECT a.*
         FROM co_consumer_role AS cur
                  LEFT JOIN p_roles AS r ON r.id = cur.role_id
@@ -116,11 +117,11 @@
         FROM t_consumers
     </select>
 
-    <resultMap id="findRoleWithAuthorityListMap" type="com.bleuon.entity.RoleModel" autoMapping="true">
+    <resultMap id="findRoleWithAuthorityListMap" type="RoleModel" autoMapping="true">
         <collection property="authorities" select="findAuthorityListOfRole" column="{roleId=id}"/>
     </resultMap>
 
-    <select id="findAuthorityListOfRole" resultType="com.bleuon.entity.AuthorityModel">
+    <select id="findAuthorityListOfRole" resultType="AuthorityModel">
         SELECT *
         FROM co_auth_role ar
                  LEFT JOIN p_auths a ON ar.auth_id = a.id
@@ -137,7 +138,7 @@
         VALUES (#{remark}, #{name})
     </insert>
 
-    <select id="findRoleAnyFiled" resultType="com.bleuon.entity.RoleModel">
+    <select id="findRoleAnyFiled" resultType="RoleModel">
         SELECT *
         FROM p_roles
         WHERE name = #{name}
@@ -157,12 +158,12 @@
         WHERE id = #{id}
     </update>
 
-    <select id="findAllRoleButNoAuthorityList" resultType="com.bleuon.entity.RoleModel">
+    <select id="findAllRoleButNoAuthorityList" resultType="RoleModel">
         SELECT *
         FROM p_roles
     </select>
 
-    <select id="findAllAuthorityList" resultType="com.bleuon.entity.AuthorityModel">
+    <select id="findAllAuthorityList" resultType="AuthorityModel">
         SELECT *
         FROM p_auths
     </select>
@@ -184,5 +185,19 @@
         INSERT INTO co_admin_role(admin_id, role_id, username)
         VALUES (#{adminId}, #{roleId}, #{username})
     </insert>
+
+    <delete id="deleteRoleOfAdmin">
+        DELETE
+        FROM co_admin_role
+        WHERE username = #{username}
+        <trim prefixOverrides="AND">
+            <if test="adminId != null">
+                AND admin_id = #{adminId}
+            </if>
+            <if test="roleId != null">
+                AND role_id = #{roleId}
+            </if>
+        </trim>
+    </delete>
 
 </mapper>

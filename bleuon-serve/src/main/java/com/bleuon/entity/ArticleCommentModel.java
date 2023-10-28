@@ -42,10 +42,10 @@ public class ArticleCommentModel implements Serializable {
     @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
     private String consumerId;
 
-    @TableField(exist = false)
-    private ConsumerModel consumer;
-
     @Pattern(regexp = ValidPattern.UUID, message = "不是合法的 UUID！")
     private String articleId;
+
+    @TableField(exist = false)
+    private ConsumerModel consumer;
 
 }

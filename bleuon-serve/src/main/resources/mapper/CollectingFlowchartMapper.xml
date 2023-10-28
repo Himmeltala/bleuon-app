@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bleuon.mapper.CollectingFlowchartMapper">
 
-    <resultMap id="findMap" type="com.bleuon.entity.FlowchartModel" autoMapping="true">
+    <resultMap id="findMap" type="FlowchartModel" autoMapping="true">
         <id column="id" property="id"/>
-        <association javaType="com.bleuon.entity.ConsumerModel" property="consumer" columnPrefix="u_"
+        <association javaType="ConsumerModel" property="consumer" columnPrefix="u_"
                      autoMapping="true">
             <id column="id" property="id"/>
         </association>
@@ -38,14 +38,14 @@
           AND cf.flowchart_id = #{flowchartId};
     </select>
 
-    <delete id="delete" parameterType="com.bleuon.entity.CollectingFlowchartModel">
+    <delete id="drop" parameterType="CollectingFlowchartModel">
         DELETE
         FROM co_collecting_flowchart
         WHERE collector_id = #{collectorId}
           AND flowchart_id = #{flowchartId}
     </delete>
 
-    <insert id="add" parameterType="com.bleuon.entity.CollectingFlowchartModel">
+    <insert id="add" parameterType="CollectingFlowchartModel">
         INSERT INTO co_collecting_flowchart(collector_id, flowchart_id)
         VALUES (#{collectorId}, #{flowchartId})
     </insert>

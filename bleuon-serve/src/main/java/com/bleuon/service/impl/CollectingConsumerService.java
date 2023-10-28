@@ -49,9 +49,9 @@ public class CollectingConsumerService implements ICollectingConsumerService {
     }
 
     @Override
-    public boolean delete(CollectingConsumerModel model) {
+    public boolean drop(CollectingConsumerModel model) {
         try {
-            Integer deled = collectingConsumerMapper.delete(model);
+            Integer deled = collectingConsumerMapper.drop(model);
             return deled > 0;
         } catch (Exception e) {
             throw new JdbcErrorException(e);

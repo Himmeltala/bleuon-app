@@ -59,9 +59,9 @@ public class BlueprintFlowchartService implements IBlueprintFlowchartService {
 
     @Transactional
     @Override
-    public boolean delete(BlueprintFlowchartModel model) {
+    public boolean drop(BlueprintFlowchartModel model) {
         try {
-            Integer status = blueprintFlowchartMapper.delete(model);
+            Integer status = blueprintFlowchartMapper.drop(model);
             return status > 0;
         } catch (Exception e) {
             throw new JdbcErrorException(e);

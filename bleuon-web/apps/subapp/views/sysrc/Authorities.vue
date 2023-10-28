@@ -2,7 +2,7 @@
 
 <template>
   <div>
-    <RemarkText class="mb-4" sub="备注: 维护权限列表" />
+    <RemarkText class="mb-4" sub="备注: 系统权限管理" />
   </div>
 </template>
 

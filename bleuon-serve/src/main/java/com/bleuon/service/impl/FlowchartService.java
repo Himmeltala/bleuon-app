@@ -214,7 +214,7 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, FlowchartMode
 
             BlueprintFlowchartModel blueprintFlowchart = new BlueprintFlowchartModel();
             blueprintFlowchart.setFlowchartId(flowchartId);
-            boolean canceled = blueprintFlowchartService.delete(blueprintFlowchart);
+            boolean canceled = blueprintFlowchartService.drop(blueprintFlowchart);
 
             if (!canceled) {
                 return R.failed("取消发布失败！");

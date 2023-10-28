@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bleuon.mapper.DiscussionMapper">
 
-    <select id="findConsumerById" resultType="com.bleuon.entity.ConsumerModel">
+    <select id="findConsumerById" resultType="ConsumerModel">
         SELECT id,
                username,
                avatar,
@@ -16,9 +16,9 @@
 
     <!-- findAllByCriteria -->
 
-    <resultMap id="findAllByCriteriaMap" type="com.bleuon.entity.ArticleModel" autoMapping="true">
+    <resultMap id="findAllByCriteriaMap" type="ArticleModel" autoMapping="true">
         <id column="id" property="id"/>
-        <association javaType="com.bleuon.entity.ConsumerModel" property="consumer" column="{consumerId=consumer_id}"
+        <association javaType="ConsumerModel" property="consumer" column="{consumerId=consumer_id}"
                      select="findConsumerById">
         </association>
     </resultMap>
@@ -59,9 +59,9 @@
 
     <!-- findByCriteria -->
 
-    <resultMap id="findByCriteriaMap" type="com.bleuon.entity.ArticleModel" autoMapping="true">
+    <resultMap id="findByCriteriaMap" type="ArticleModel" autoMapping="true">
         <id column="id" property="id"/>
-        <association javaType="com.bleuon.entity.ConsumerModel" property="consumer" column="{consumerId=consumer_id}"
+        <association javaType="ConsumerModel" property="consumer" column="{consumerId=consumer_id}"
                      select="findConsumerById">
         </association>
     </resultMap>
@@ -90,9 +90,9 @@
 
     <!-- findCommentsByCriteria -->
 
-    <resultMap id="findCommentsByCriteria" type="com.bleuon.entity.ArticleCommentModel" autoMapping="true">
+    <resultMap id="findCommentsByCriteria" type="ArticleCommentModel" autoMapping="true">
         <id column="id" property="id"/>
-        <association javaType="com.bleuon.entity.ConsumerModel" property="consumer" column="{consumerId=consumer_id}"
+        <association javaType="ConsumerModel" property="consumer" column="{consumerId=consumer_id}"
                      select="findConsumerById">
         </association>
     </resultMap>

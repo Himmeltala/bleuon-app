@@ -2,12 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bleuon.mapper.BlueprintFlowchartMapper">
 
-    <resultMap id="findBlueprintMap" type="com.bleuon.entity.BlueprintFlowchartModel" autoMapping="true">
+    <resultMap id="findBlueprintMap" type="BlueprintFlowchartModel" autoMapping="true">
         <id property="id" column="id"/>
-        <association javaType="com.bleuon.entity.FlowchartModel" property="flowchart" columnPrefix="f_"
+        <association javaType="FlowchartModel" property="flowchart" columnPrefix="f_"
                      autoMapping="true">
             <id property="id" column="id"/>
-            <association javaType="com.bleuon.entity.ConsumerModel" property="consumer"
+            <association javaType="ConsumerModel" property="consumer"
                          column="{consumerId=consumer_id}" select="findUserById"/>
         </association>
     </resultMap>
@@ -52,7 +52,7 @@
         </where>
     </select>
 
-    <select id="findUserById" resultType="com.bleuon.entity.ConsumerModel">
+    <select id="findUserById" resultType="ConsumerModel">
         SELECT avatar, username, id
         FROM t_consumers
         WHERE id = #{consumerId};
@@ -61,7 +61,7 @@
     <select id="find" resultMap="findBlueprintMap">
         SELECT bf.*,
                f.id                f_id,
-               f.filename         f_file_name,
+               f.filename          f_file_name,
                f.json              f_json,
                f.data_uri          f_data_uri,
                f.width             f_width,
@@ -105,7 +105,7 @@
         VALUES (#{id}, #{tags}, #{scene}, #{price}, #{description}, #{flowchartId});
     </insert>
 
-    <delete id="delete">
+    <delete id="drop">
         DELETE
         FROM t_blueprint_flowcharts
         WHERE flowchart_id = #{flowchartId};

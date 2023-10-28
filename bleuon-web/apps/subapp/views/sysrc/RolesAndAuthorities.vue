@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /**
- * @description 角色查询
+ * @description
  * @author zheng
  * @since 2023/10/24
  * @link https://gitee.com/himmelbleu/bleuon-app
@@ -163,7 +163,7 @@ await fetchDataList();
 
 <template>
   <div>
-    <RemarkText class="mb-4" sub="备注: 管理角色分组以及角色的权限列表" />
+    <RemarkText class="mb-4" sub="备注: 角色以及权限管理" />
     <div class="f-c-e mb-5">
       <div class="add-role">
         <el-button @click="addRoleDialog = true" size="small" type="primary">新增角色</el-button>
@@ -208,7 +208,7 @@ await fetchDataList();
                       title="确定是否要删除该权限？"
                       @confirm="handleDeleteAuth(authScope.row, scope.row)">
                       <template #reference>
-                        <el-button size="small" type="danger" plain> 删除 </el-button>
+                        <el-button size="small" type="danger" plain>删除</el-button>
                       </template>
                     </el-popconfirm>
                   </template>
@@ -258,6 +258,18 @@ await fetchDataList();
         </template>
       </el-table-column>
     </el-table>
+    <div class="mt-5 f-c-e">
+      <el-pagination
+        small
+        background
+        v-model:current-page="currPage"
+        v-model:page-size="pageSize"
+        @size-change="async () => await fetchDataList()"
+        @current-change="async () => await fetchDataList()"
+        layout="sizes, prev, pager, next, jumper"
+        :page-sizes="[10, 15, 20, 25, 30]"
+        :total="mainList.total" />
+    </div>
     <el-dialog
       :close-on-press-escape="false"
       :close-on-click-modal="false"
@@ -343,18 +355,6 @@ await fetchDataList();
         <el-button type="primary" @click="handleAddRoleAuth">确定</el-button>
       </template>
     </el-dialog>
-    <div class="mt-5 f-c-e">
-      <el-pagination
-        small
-        background
-        v-model:current-page="currPage"
-        v-model:page-size="pageSize"
-        @size-change="async () => await fetchDataList()"
-        @current-change="async () => await fetchDataList()"
-        layout="sizes, prev, pager, next, jumper"
-        :page-sizes="[10, 15, 20, 25, 30]"
-        :total="mainList.total" />
-    </div>
   </div>
 </template>
 

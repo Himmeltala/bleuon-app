@@ -53,4 +53,6 @@ public interface IPermissionService {
 
     boolean addRoleToAdmin(PermissionCriteria criteria);
 
+    boolean deleteRoleOfAdmin(PermissionCriteria criteria);
+
 }

@@ -175,3 +175,18 @@ export function addRoleToAdmin(
     success && success();
   });
 }
+
+/**
+ * 删除管理员其中一个或整个角色
+ *
+ * @param params
+ * @param success
+ */
+export function deleteRoleOfAdmin(
+  params: { roleId?: number; adminId?: string; username: string },
+  success: Function
+) {
+  http.delete<R>("/permission/delete/role-of-admin", { params }).then(() => {
+    success();
+  });
+}

@@ -31,6 +31,7 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
     map-underscore-to-camel-case: true
   mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: com.bleuon.entity
 
 pagehelper:
   helper-dialect: mysql

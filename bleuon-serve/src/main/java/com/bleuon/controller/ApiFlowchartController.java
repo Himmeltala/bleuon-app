@@ -95,7 +95,7 @@ public class ApiFlowchartController implements Serializable {
     @PreAuthorize("hasAnyAuthority('sys:delete', 'sys:delete:flowchart:collect')")
     @DeleteMapping("/delete/collecting")
     public R<Object> deleteCollecting(@Validated CollectingFlowchartModel model) {
-        boolean status = collectingFlowchartService.delete(model);
+        boolean status = collectingFlowchartService.drop(model);
         return status ? R.success("删除成功！") : R.failed("删除失败！");
     }
 

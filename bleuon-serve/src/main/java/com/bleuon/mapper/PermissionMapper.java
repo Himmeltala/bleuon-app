@@ -54,4 +54,6 @@ public interface PermissionMapper {
 
     Integer addRoleToAdmin(PermissionCriteria criteria);
 
+    Integer deleteRoleOfAdmin(PermissionCriteria criteria);
+
 }

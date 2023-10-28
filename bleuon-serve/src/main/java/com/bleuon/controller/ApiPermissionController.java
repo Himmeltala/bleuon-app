@@ -148,4 +148,12 @@ public class ApiPermissionController {
         return success ? R.success("添加成功！") : R.error("添加失败！");
     }
 
+    @Operation(summary = "删除管理员的角色，可以删除整个管理员所拥有的角色")
+    @PreAuthorize("hasAnyAuthority('sys:delete', 'sys:delete:permission:RoleOfAdmin')")
+    @DeleteMapping("/delete/role-of-admin")
+    public R<Object> deleteRoleOfAdmin(PermissionCriteria criteria) {
+        boolean success = permissionService.deleteRoleOfAdmin(criteria);
+        return success ? R.success("删除成功！") : R.error("删除失败！");
+    }
+
 }

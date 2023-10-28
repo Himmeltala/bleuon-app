@@ -18,7 +18,7 @@ public interface ICollectingFlowchartService {
 
     FlowchartModel find(CollectingFlowchartModel model);
 
-    boolean delete(CollectingFlowchartModel model);
+    boolean drop(CollectingFlowchartModel model);
 
     boolean add(CollectingFlowchartModel model);
 

@@ -1,5 +1,6 @@
 package com.bleuon.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.bleuon.entity.CollectingFlowchartModel;
 import com.bleuon.entity.FlowchartModel;
 import com.bleuon.entity.criterias.FlowchartCriteria;
@@ -14,11 +15,11 @@ import java.util.List;
  * @date: 2023/10/2
  */
 @Mapper
-public interface CollectingFlowchartMapper {
+public interface CollectingFlowchartMapper extends BaseMapper<CollectingFlowchartModel> {
 
     List<FlowchartModel> findAllByCriteria(FlowchartCriteria criteria);
 
-    Integer delete(CollectingFlowchartModel model);
+    Integer drop(CollectingFlowchartModel model);
 
     Integer add(CollectingFlowchartModel model);
 
