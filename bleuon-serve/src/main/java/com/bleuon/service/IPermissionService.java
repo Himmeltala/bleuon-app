@@ -41,7 +41,7 @@ public interface IPermissionService {
 
     boolean upgradeRole(RoleModel model);
 
-    PageInfo<AuthorityModel> findAuthorityListOfRole(PermissionCriteria criteria);
+    PageInfo<AuthorityModel> findAuthorityListByRoleIdOrAdminId(PermissionCriteria criteria);
 
     PageInfo<RoleModel> findAllRoleButNoAuthorityList(PermissionCriteria criteria);
 

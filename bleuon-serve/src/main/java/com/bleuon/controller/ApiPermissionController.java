@@ -83,8 +83,8 @@ public class ApiPermissionController {
     @Operation(summary = "查询角色的权限列表，可以通过 roleId 或者 adminId")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:permission:AuthorityListOfRole')")
     @PostMapping("/find/authority-list-of-role")
-    public R<PageInfo<AuthorityModel>> findAuthorityListOfRole(@RequestBody PermissionCriteria criteria) {
-        return R.success(permissionService.findAuthorityListOfRole(criteria));
+    public R<PageInfo<AuthorityModel>> findAuthorityListByRoleIdOrAdminId(@RequestBody PermissionCriteria criteria) {
+        return R.success(permissionService.findAuthorityListByRoleIdOrAdminId(criteria));
     }
 
     @Operation(summary = "新增一个角色")
@@ -119,7 +119,7 @@ public class ApiPermissionController {
 
     @Operation(summary = "查询角色没有的权限列表")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:permission:AuthorityListOfRoleButNohave')")
-    @GetMapping("/find/all/authority/list-but-not-duplicates")
+    @GetMapping("/find/authority-list-of-role-but-nohave")
     public R<List<AuthorityModel>> findAuthorityListOfRoleButNohave(PermissionCriteria criteria) {
         List<AuthorityModel> list = permissionService.findAuthorityListOfRoleButNohave(criteria);
         return R.success(list);

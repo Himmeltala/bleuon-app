@@ -28,7 +28,7 @@ async function fetchData(params: BlueprintFlowchartModel) {
 }
 
 function replicate() {
-  BlueprintHttp.replicate(mainData.value, token.id, message => ElMessage.success(message.message));
+  BlueprintHttp.replicate(mainData.value, token.id);
 }
 
 function collect() {

@@ -118,10 +118,10 @@
     </select>
 
     <resultMap id="findRoleWithAuthorityListMap" type="RoleModel" autoMapping="true">
-        <collection property="authorities" select="findAdminAuthorityListByRoleId" column="{roleId=id}"/>
+        <collection property="authorities" select="findAuthorityListByRoleId" column="{roleId=id}"/>
     </resultMap>
 
-    <select id="findAdminAuthorityListByRoleId" resultType="AuthorityModel">
+    <select id="findAuthorityListByRoleId" resultType="AuthorityModel">
         SELECT *
         FROM co_auth_role ar
                  LEFT JOIN p_auths a ON ar.auth_id = a.id

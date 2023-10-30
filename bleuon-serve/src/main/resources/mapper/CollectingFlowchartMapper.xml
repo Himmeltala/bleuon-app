@@ -21,7 +21,7 @@
         WHERE cf.collector_id = #{collectorId}
         <trim prefix="AND" prefixOverrides="AND">
             <if test="filename != null and filename != ''">
-                f.filename = #{filename}
+                f.filename LIKE CONCAT('%', #{filename}, '%')
             </if>
         </trim>
     </select>

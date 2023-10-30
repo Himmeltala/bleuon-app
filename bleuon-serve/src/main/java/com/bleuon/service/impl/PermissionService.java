@@ -122,14 +122,14 @@ public class PermissionService implements IPermissionService {
     }
 
     @Override
-    public PageInfo<AuthorityModel> findAuthorityListOfRole(PermissionCriteria criteria) {
+    public PageInfo<AuthorityModel> findAuthorityListByRoleIdOrAdminId(PermissionCriteria criteria) {
         int pageSize = Optional.ofNullable(criteria.getPageSize()).orElse(10);
         int currPage = Optional.ofNullable(criteria.getCurrPage()).orElse(1);
 
         if (StringUtils.hasText(criteria.getAdminId())) {
             return PageHelper.startPage(currPage, pageSize).doSelectPageInfo(() -> permissionMapper.findAdminAuthorityListByAdminId(criteria));
         } else {
-            return PageHelper.startPage(currPage, pageSize).doSelectPageInfo(() -> permissionMapper.findAdminAuthorityListByRoleId(criteria.getRoleId()));
+            return PageHelper.startPage(currPage, pageSize).doSelectPageInfo(() -> permissionMapper.findAuthorityListByRoleId(criteria.getRoleId()));
         }
     }
 
@@ -144,7 +144,7 @@ public class PermissionService implements IPermissionService {
     @Override
     public List<AuthorityModel> findAuthorityListOfRoleButNohave(PermissionCriteria criteria) {
         List<AuthorityModel> allAuthorityList = permissionMapper.findAuthorityList();
-        List<AuthorityModel> roleAuthorityList = permissionMapper.findAdminAuthorityListByRoleId(criteria.getRoleId());
+        List<AuthorityModel> roleAuthorityList = permissionMapper.findAuthorityListByRoleId(criteria.getRoleId());
         allAuthorityList.removeAll(roleAuthorityList);
         return allAuthorityList;
     }

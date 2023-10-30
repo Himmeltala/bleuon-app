@@ -82,7 +82,7 @@ public class FlowchartService extends ServiceImpl<FlowchartMapper, FlowchartMode
         wrapper.eq("consumer_id", criteria.getCollectorId());
 
         if (StringUtils.hasText(criteria.getFilename())) {
-            wrapper.like("file_name", criteria.getFilename());
+            wrapper.like("filename", criteria.getFilename());
         }
 
         if (criteria.getIsShare() != null) {

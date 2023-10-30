@@ -36,7 +36,7 @@ function download(data: FlowchartModel) {
 }
 
 function replicate(data: FlowchartModel) {
-  FlowchartHttp.replicate({ ...data, consumerId: token.id }, res => ElMessage.success(res.message));
+  FlowchartHttp.replicate({ ...data, consumerId: token.id });
 }
 
 function remove(flowchartId: string, index: number) {

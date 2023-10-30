@@ -61,7 +61,7 @@
     <select id="find" resultMap="findBlueprintMap">
         SELECT bf.*,
                f.id                f_id,
-               f.filename          f_file_name,
+               f.filename          f_filename,
                f.json              f_json,
                f.data_uri          f_data_uri,
                f.width             f_width,
