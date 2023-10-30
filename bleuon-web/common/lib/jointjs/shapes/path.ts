@@ -2,7 +2,6 @@
  * @description 定义路径
  * @author zheng
  * @since 2023/9/24
- * @link https://gitee.com/himmelbleu/bleuon-app
  */
 import { dia, elementTools } from "jointjs";
 import { NormalResizeTool, RotateTool } from "../tools";

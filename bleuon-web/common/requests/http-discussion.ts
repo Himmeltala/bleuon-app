@@ -2,7 +2,6 @@
  * @description 社区 API
  * @author zheng
  * @since 2023/10/14
- * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 import { http } from "@common/requests/use-axios";
@@ -51,8 +50,14 @@ export async function findDetailByCriteria(model: {
  *
  * @param model
  */
-export function upgradeDetail(model: ArticleModel, ignoreMsg?: boolean, success?: Function) {
-  http.put<R>("/discussion/upgrade/detail", model, { ignoreMsg }).then(() => {
+export function upgradeArticle(
+  req: ReqConfig<
+    ArticleModel,
+    Criteria<Partial<{ isBury: boolean; isDigg: boolean; isViews: boolean }>>
+  >,
+  success?: Function
+) {
+  http.put<R>("/discussion/upgrade/article", req.model, req.config).then(() => {
     success && success();
   });
 }

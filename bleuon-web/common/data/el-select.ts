@@ -2,7 +2,6 @@
  * @description element-plus el-select 通用数据
  * @author zheng
  * @since 2023/10/6
- * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 /**

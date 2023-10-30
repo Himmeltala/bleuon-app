@@ -1,3 +1,9 @@
+/**
+ * @description jointjs 创建函数
+ * @author zheng
+ * @since 2023/9/30
+ */
+
 import { dia, shapes } from "jointjs";
 import { getPorts } from "../tools";
 

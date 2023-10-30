@@ -35,7 +35,9 @@ const formRules = reactive<FormRules>({
 
 function confirmGetVerifyCode() {
   ElFormUtil.askVerifyCaptcha(interval, coudButtonCount, codeButtonDisabled, (callback: any) => {
-    ConsumerHttp.askLoginEmailCaptcha({ email: formData.email }, () => callback());
+    ConsumerHttp.askLoginEmailCaptcha({ config: { params: { email: formData.email } } }, () =>
+      callback()
+    );
   });
 }
 

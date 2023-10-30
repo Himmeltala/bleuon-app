@@ -16,14 +16,14 @@
 
     <!-- findAllByCriteria -->
 
-    <resultMap id="findAllByCriteriaMap" type="ArticleModel" autoMapping="true">
+    <resultMap id="findAllArticleByMap" type="ArticleModel" autoMapping="true">
         <id column="id" property="id"/>
         <association javaType="ConsumerModel" property="consumer" column="{consumerId=consumer_id}"
                      select="findConsumerById">
         </association>
     </resultMap>
 
-    <select id="findAllByCriteria" resultMap="findAllByCriteriaMap">
+    <select id="findAllArticleBy" resultMap="findAllArticleByMap">
         SELECT *
         FROM t_articles
         <where>
@@ -59,14 +59,14 @@
 
     <!-- findByCriteria -->
 
-    <resultMap id="findByCriteriaMap" type="ArticleModel" autoMapping="true">
+    <resultMap id="findArticleByMap" type="ArticleModel" autoMapping="true">
         <id column="id" property="id"/>
         <association javaType="ConsumerModel" property="consumer" column="{consumerId=consumer_id}"
                      select="findConsumerById">
         </association>
     </resultMap>
 
-    <select id="findDetailByCriteria" resultMap="findByCriteriaMap">
+    <select id="findArticleBy" resultMap="findArticleByMap">
         SELECT *
         FROM t_articles
         <where>
@@ -90,14 +90,14 @@
 
     <!-- findCommentsByCriteria -->
 
-    <resultMap id="findCommentsByCriteria" type="ArticleCommentModel" autoMapping="true">
+    <resultMap id="findArticleCommentListByMap" type="ArticleCommentModel" autoMapping="true">
         <id column="id" property="id"/>
         <association javaType="ConsumerModel" property="consumer" column="{consumerId=consumer_id}"
                      select="findConsumerById">
         </association>
     </resultMap>
 
-    <select id="findCommentsByCriteria" resultMap="findCommentsByCriteria">
+    <select id="findArticleCommentListBy" resultMap="findArticleCommentListByMap">
         SELECT *
         FROM t_article_comments
         WHERE article_id = #{articleId}
@@ -116,12 +116,12 @@
         </if>
     </select>
 
-    <insert id="addComment">
+    <insert id="addArticleComment">
         INSERT INTO t_article_comments(id, content, consumer_id, article_id)
         VALUES (#{id}, #{content}, #{consumerId}, #{articleId})
     </insert>
 
-    <delete id="deleteComment">
+    <delete id="deleteArticleComment">
         DELETE
         FROM t_article_comments
         WHERE id = #{id}
@@ -129,7 +129,7 @@
           AND article_id = #{articleId};
     </delete>
 
-    <update id="upgradeComment">
+    <update id="upgradeArticleComment">
         UPDATE t_article_comments
         <set>
             <trim suffixOverrides=",">
@@ -141,7 +141,7 @@
         WHERE id = #{id} AND article_id = #{articleId}
     </update>
 
-    <update id="upgradeDetail">
+    <update id="upgradeArticle">
         UPDATE t_articles
         <set>
             <trim suffixOverrides=",">

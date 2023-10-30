@@ -2,7 +2,6 @@
  * @description jointjs 初始化
  * @author zheng
  * @since 2023/9/9
- * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 import { dia, shapes } from "jointjs";

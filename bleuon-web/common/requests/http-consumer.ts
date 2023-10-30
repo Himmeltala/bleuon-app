@@ -2,7 +2,6 @@
  * @description 用户 API
  * @author zheng
  * @since 2023/9/9
- * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 import { http } from "@common/requests/use-axios";
@@ -31,16 +30,12 @@ export function askMailCaptcha(
  * @param success
  */
 export function askLoginEmailCaptcha(
-  model: {
-    email: string;
-  },
+  req: ReqConfig<undefined, { email: string }>,
   success?: Function
 ) {
-  http
-    .get<R>("/public/entrance/ask/login-email-captcha", { params: model, ignoreError: true })
-    .then(({ data }) => {
-      success && success(data);
-    });
+  http.get<R>("/public/entrance/ask/login-email-captcha", req.config).then(({ data }) => {
+    success && success(data);
+  });
 }
 
 /**
@@ -241,14 +236,10 @@ export async function findAllDynamicByCriteria(criteria: {
  * @param model id
  * @param success
  */
-export function upgradeDynamic(model: DynamicModel, success?: Function) {
-  http
-    .put<R>("/consumer/upgrade/dynamic", model, {
-      ignoreMsg: true
-    })
-    .then(() => {
-      success && success();
-    });
+export function upgradeDynamic(req: ReqConfig<DynamicModel>, success?: Function) {
+  http.put<R>("/consumer/upgrade/dynamic", req.model, req.config).then(() => {
+    success && success();
+  });
 }
 
 /**

@@ -3,7 +3,6 @@
  * @description 工作台侧边栏菜单
  * @author zheng
  * @since 2023/8/23
- * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 import { FlowchartHttp } from "@common/requests";

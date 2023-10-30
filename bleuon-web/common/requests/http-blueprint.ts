@@ -2,7 +2,6 @@
  * @description 模板 API
  * @author zheng
  * @since 2023/10/5
- * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 import { http } from "@common/requests/use-axios";
@@ -56,12 +55,8 @@ export async function replicate(
  * @param config
  * @param success
  */
-export async function upgrade(
-  model: BlueprintFlowchartModel,
-  config?: { ignoreMsg: boolean },
-  success?: (res: R) => void
-) {
-  http.put("/blueprint/upgrade", model, config).then(({ data }) => {
+export async function upgrade(req: ReqConfig<BlueprintFlowchartModel>, success?: (res: R) => void) {
+  http.put("/blueprint/upgrade", req.model, req.config).then(({ data }) => {
     success && success(data);
   });
 }

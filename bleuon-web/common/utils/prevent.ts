@@ -2,7 +2,6 @@
  * @description 防抖函数、节流函数等
  * @author zheng
  * @since 2023/9/29
- * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 export function debounce<T extends (...args: any[]) => void>(

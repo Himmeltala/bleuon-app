@@ -3,7 +3,6 @@
  * @description 文件
  * @author zheng
  * @since 2023/8/23
- * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 defineProps({

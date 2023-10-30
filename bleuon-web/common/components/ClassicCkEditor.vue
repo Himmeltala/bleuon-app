@@ -3,7 +3,6 @@
  * @description Classic Ckeditor 富文本编辑器
  * @author zheng
  * @since 2023/10/12
- * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 import "@common/lib/ckeditor/ckeditor.js";

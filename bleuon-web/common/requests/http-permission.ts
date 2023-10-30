@@ -2,7 +2,6 @@
  * @description 权限和角色
  * @author zheng
  * @since 2023/10/23
- * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 import { http } from "@common/requests/use-axios";

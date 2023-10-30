@@ -7,12 +7,12 @@ declare module "vue" {
 declare module "axios" {
   interface AxiosRequestConfig {
     /**
-     * 是否关闭消息提示
+     * 是否忽略 200 消息
      */
-    ignoreMsg?: boolean;
+    ignore200?: boolean;
     /**
-     * 不管是否 500 错误都不提示
+     * 是否忽略 500 消息
      */
-    ignoreError?: boolean;
+    ignore500?: boolean;
   }
 }

@@ -3,7 +3,7 @@
  * @description 欢迎页
  * @author zheng
  * @since 2023/8/23
- * @link https://gitee.com/himmelbleu/bleuon-app
+ *
  */
 
 import { ConsumerHttp } from "@common/requests";

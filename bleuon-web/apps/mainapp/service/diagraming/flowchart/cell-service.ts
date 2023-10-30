@@ -2,7 +2,7 @@
  * @description link 以及 element 共同业务
  * @author zheng
  * @since 2023/9/24
- * @link https://gitee.com/himmelbleu/bleuon-app
+ *
  */
 
 import { dia } from "jointjs";

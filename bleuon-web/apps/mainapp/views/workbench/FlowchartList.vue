@@ -3,7 +3,7 @@
  * @description flowcharts 流程图列表
  * @author zheng
  * @since 2023/8/23
- * @link https://gitee.com/himmelbleu/bleuon-app
+ *
  */
 
 // jointjs
@@ -38,7 +38,7 @@ async function fetchData(params: any) {
 }
 
 function upgrade() {
-  FlowchartHttp.upgrade(mainData.value[clickedIndex.value], { ignoreMsg: false }, () => {
+  FlowchartHttp.upgrade({ model: mainData.value[clickedIndex.value] }, () => {
     dialogVisible.value = !dialogVisible.value;
   });
 }

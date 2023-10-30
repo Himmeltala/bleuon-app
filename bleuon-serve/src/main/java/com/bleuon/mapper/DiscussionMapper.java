@@ -16,19 +16,19 @@ import java.util.List;
 @Mapper
 public interface DiscussionMapper {
 
-    List<ArticleModel> findAllByCriteria(DiscussionCriteria criteria);
+    List<ArticleModel> findAllArticleBy(DiscussionCriteria criteria);
 
-    ArticleModel findDetailByCriteria(DiscussionCriteria criteria);
+    ArticleModel findArticleBy(DiscussionCriteria criteria);
 
-    List<ArticleCommentModel> findCommentsByCriteria(DiscussionCriteria criteria);
+    List<ArticleCommentModel> findArticleCommentListBy(DiscussionCriteria criteria);
 
-    Integer addComment(ArticleCommentModel model);
+    Integer addArticleComment(ArticleCommentModel model);
 
-    Integer deleteComment(ArticleCommentModel model);
+    Integer deleteArticleComment(ArticleCommentModel model);
 
-    Integer upgradeComment(ArticleCommentModel model);
+    Integer upgradeArticleComment(ArticleCommentModel model);
 
-    Integer upgradeDetail(ArticleModel model);
+    Integer upgradeArticle(ArticleModel model);
 
     Integer addArticle(ArticleModel model);
 

@@ -3,7 +3,7 @@
  * @description App.vue 程序入口组件
  * @author zheng
  * @since 2023/6/23
- * @link https://gitee.com/himmelbleu/bleuon-app
+ *
  */
 
 const html = document.querySelector("html");

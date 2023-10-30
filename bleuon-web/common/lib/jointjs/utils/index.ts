@@ -1,3 +1,9 @@
+/**
+ * @description jointjs 辅助工具，一般对外使用
+ * @author zheng
+ * @since 2023/9/30
+ */
+
 import { dia } from "jointjs";
 import { DateUtil } from "@common/utils";
 

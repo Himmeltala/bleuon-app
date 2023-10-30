@@ -13,19 +13,19 @@ import com.github.pagehelper.PageInfo;
  */
 public interface IDiscussionService {
 
-    PageInfo<ArticleModel> findAllByCriteria(DiscussionCriteria criteria);
+    PageInfo<ArticleModel> findAllArticleBy(DiscussionCriteria criteria);
 
-    ArticleModel findDetailByCriteria(DiscussionCriteria criteria);
+    ArticleModel findArticleBy(DiscussionCriteria criteria);
 
-    PageInfo<ArticleCommentModel> findCommentsByCriteria(DiscussionCriteria criteria);
+    PageInfo<ArticleCommentModel> findArticleCommentListBy(DiscussionCriteria criteria);
 
-    boolean addComment(ArticleCommentModel model);
+    boolean addArticleComment(ArticleCommentModel model);
 
-    boolean deleteComment(ArticleCommentModel model);
+    boolean deleteArticleComment(ArticleCommentModel model);
 
-    boolean upgradeComment(ArticleCommentModel model);
+    boolean upgradeArticleComment(ArticleCommentModel model);
 
-    boolean upgradeDetail(ArticleModel model);
+    int upgradeArticle(ArticleModel model, DiscussionCriteria criteria);
 
     boolean addArticle(ArticleModel model);
 

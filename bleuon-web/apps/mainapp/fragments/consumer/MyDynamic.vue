@@ -1,4 +1,10 @@
 <script setup lang="ts">
+/**
+ * @description 我发表的动态
+ * @author zheng
+ * @since 2023/10/20
+ */
+
 import { DateUtil, TextUtil } from "@common/utils";
 import { ConsumerHttp, FileHttp } from "@common/requests";
 
@@ -38,16 +44,22 @@ function commit() {
 
 function digg(item: DynamicModel) {
   item.digg += 1;
-  ConsumerHttp.upgradeDynamic({ digg: item.digg, id: item.id }, () => {
-    ElMessage.success("支持成功！");
-  });
+  ConsumerHttp.upgradeDynamic(
+    { model: { digg: item.digg, id: item.id }, config: { ignore200: true } },
+    () => {
+      ElMessage.success("支持成功！");
+    }
+  );
 }
 
 function bury(item: DynamicModel) {
   item.bury += 1;
-  ConsumerHttp.upgradeDynamic({ bury: item.bury, id: item.id }, () => {
-    ElMessage.success("反对成功！");
-  });
+  ConsumerHttp.upgradeDynamic(
+    { model: { bury: item.bury, id: item.id }, config: { ignore200: true } },
+    () => {
+      ElMessage.success("反对成功！");
+    }
+  );
 }
 
 function remove(item: DynamicModel, index: number) {

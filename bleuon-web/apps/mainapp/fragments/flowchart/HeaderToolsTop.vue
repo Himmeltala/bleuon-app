@@ -3,7 +3,6 @@
  * @description 流程图头部工具
  * @author zheng
  * @since 2023/10/1
- * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 import { dia } from "jointjs";

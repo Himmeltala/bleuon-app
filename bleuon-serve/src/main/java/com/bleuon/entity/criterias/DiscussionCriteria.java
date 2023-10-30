@@ -36,4 +36,13 @@ public class DiscussionCriteria extends CommonCriteria implements Serializable {
 
     private String type;
 
+    @Schema(description = "是否更新点赞信息")
+    private Boolean isDigg;
+
+    @Schema(description = "是否更新反对信息")
+    private Boolean isBury;
+
+    @Schema(description = "是否更新阅读量信息")
+    private Boolean isViews;
+
 }

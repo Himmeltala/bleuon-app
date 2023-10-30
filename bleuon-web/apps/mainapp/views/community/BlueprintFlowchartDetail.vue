@@ -3,7 +3,6 @@
  * @description 社区模板详细页
  * @author zheng
  * @since 2023/10/5
- * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 // jointjs
@@ -86,10 +85,12 @@ onMounted(() => {
     "blank:mousewheel": evt => events.onMousewheelBlank(evt, paper.value)
   });
 
-  BlueprintHttp.upgrade(
-    { views: mainData.value.views + 1, id: mainData.value.id },
-    { ignoreMsg: true }
-  );
+  BlueprintHttp.upgrade({
+    config: {
+      ignore200: true
+    },
+    model: { views: mainData.value.views + 1, id: mainData.value.id }
+  });
 });
 </script>
 

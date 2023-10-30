@@ -3,7 +3,6 @@
  * @description 后台系统登录
  * @author zheng
  * @since 2023/10/22
- * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 import { AdminHttp } from "@common/requests";

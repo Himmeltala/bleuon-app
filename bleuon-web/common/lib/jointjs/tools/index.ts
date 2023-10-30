@@ -1,8 +1,7 @@
 /**
- * @description 定义 jointjs elementTools
+ * @description jointjs 图形的工具
  * @author zheng
  * @since 2023/9/23
- * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 import { dia, elementTools } from "jointjs";

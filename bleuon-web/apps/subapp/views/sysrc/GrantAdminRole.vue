@@ -3,8 +3,8 @@
  * @description
  * @author zheng
  * @since 2023/10/27
- * @link https://gitee.com/himmelbleu/bleuon-app
  */
+
 import { PermissionHttp } from "@common/requests";
 import { DateUtil } from "@common/utils";
 

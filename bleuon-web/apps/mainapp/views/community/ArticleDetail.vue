@@ -3,7 +3,6 @@
  * @description 帖子详情
  * @author zheng
  * @since 2023/10/15
- * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 import { DateUtil, TextUtil } from "@common/utils";
@@ -30,9 +29,14 @@ async function fetchCommentList(params: any) {
 }
 
 function diggArticle() {
-  DiscussionHttp.upgradeDetail(
-    { id: mainData.value.id, digg: mainData.value.digg + 1 },
-    true,
+  DiscussionHttp.upgradeArticle(
+    {
+      model: { id: mainData.value.id },
+      config: {
+        ignore200: true,
+        params: { isDigg: true }
+      }
+    },
     () => {
       mainData.value.digg += 1;
       ElMessage.success("感谢您的支持！");
@@ -41,9 +45,16 @@ function diggArticle() {
 }
 
 function buryArticle() {
-  DiscussionHttp.upgradeDetail(
-    { id: mainData.value.id, bury: mainData.value.bury + 1 },
-    true,
+  DiscussionHttp.upgradeArticle(
+    {
+      model: { id: mainData.value.id },
+      config: {
+        ignore200: true,
+        params: {
+          isBury: true
+        }
+      }
+    },
     () => {
       mainData.value.bury += 1;
       ElMessage.success("感谢您的建议！");
@@ -134,8 +145,20 @@ async function handleCurrentChange() {
 }
 
 onMounted(() => {
-  mainData.value.views += 1;
-  DiscussionHttp.upgradeDetail({ id: mainData.value.id, views: mainData.value.views }, true);
+  DiscussionHttp.upgradeArticle(
+    {
+      model: { id: mainData.value.id },
+      config: {
+        ignore200: true,
+        params: {
+          isViews: true
+        }
+      }
+    },
+    () => {
+      mainData.value.views += 1;
+    }
+  );
 });
 
 await fetchData({});

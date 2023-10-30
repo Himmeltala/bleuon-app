@@ -3,7 +3,7 @@
  * @description Flowchart 流程图
  * @author zheng
  * @since 2023/9/9
- * @link https://gitee.com/himmelbleu/bleuon-app
+ *
  */
 
 // jointjs
@@ -115,7 +115,7 @@ onMounted(() => {
 
   events.onKeydownWithShortcutKey({
     ctrlWithSKey: () =>
-      upgradeMetaData(true, message => {
+      upgradeMetaData(message => {
         if (message.code === 200) {
           ElMessage.success("保存成功！");
         } else {
@@ -125,7 +125,7 @@ onMounted(() => {
   });
 });
 
-async function upgradeMetaData(ignoreMsg: boolean, success?: (message: any) => void) {
+async function upgradeMetaData(success?: (message: any) => void) {
   const { width, height } = paper.value.getArea();
   const { defaultConnector, defaultRouter, gridSize } = paper.value.options;
   mainData.value = {
@@ -140,10 +140,10 @@ async function upgradeMetaData(ignoreMsg: boolean, success?: (message: any) => v
     dataUri: await getDataURI(paper.value)
   };
 
-  FlowchartHttp.upgrade(mainData.value, { ignoreMsg }, success);
+  FlowchartHttp.upgrade({ model: mainData.value, config: { ignore200: true } }, success);
 }
 
-const upgradeThrottle = PreventUtil.throttle(() => upgradeMetaData(true), 300);
+const upgradeThrottle = PreventUtil.throttle(() => upgradeMetaData(), 300);
 
 const shareDialogVisible = ref(false);
 const shareFormRef = ref<FormInstance>();
@@ -167,7 +167,7 @@ const shareFormRules = reactive<FormRules<any>>({
 function confirmShare() {
   ElFormUtil.validate(shareFormRef.value, () => {
     mainData.value.isShare = 1;
-    FlowchartHttp.upgrade(mainData.value, { ignoreMsg: true }, message => {
+    FlowchartHttp.upgrade({ model: mainData.value, config: { ignore200: true } }, message => {
       if (message.code === 200) {
         ElMessage.success("分享成功！");
       } else {
@@ -180,7 +180,7 @@ function confirmShare() {
 
 function cancelShare() {
   mainData.value.isShare = 0;
-  FlowchartHttp.upgrade(mainData.value, { ignoreMsg: true }, message => {
+  FlowchartHttp.upgrade({ model: mainData.value, config: { ignore200: true } }, message => {
     if (message.code === 200) {
       ElMessage.success("取消分享成功！");
     } else {

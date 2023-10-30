@@ -1,23 +1,3 @@
-declare type PageInfo<T> = {
-  list: T[];
-  total: number;
-  pageSize: number;
-  pageNum: number;
-  hasNextPage: boolean;
-  isFirstPage: boolean;
-  isLastPage: boolean;
-};
-
-declare type Sequence = { isAsc: boolean; col: string };
-
-declare type BaseCriteria = {
-  pageSize?: number;
-  currPage?: number;
-  sequences?: Sequence[];
-};
-
-declare type Criteria<T = undefined> = T extends undefined ? BaseCriteria : T & BaseCriteria;
-
 declare type ConsumerModel = Partial<{
   id: string;
   username: string;

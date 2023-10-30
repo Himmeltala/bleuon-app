@@ -2,7 +2,6 @@
  * @description 校验器工具
  * @author zheng
  * @since 2023/10/1
- * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 import type { FormInstance } from "element-plus";

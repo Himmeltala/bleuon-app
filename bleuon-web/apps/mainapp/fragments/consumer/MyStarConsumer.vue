@@ -3,7 +3,6 @@
  * @description 收藏的流程图
  * @author zheng
  * @since 2023/10/13
- * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 import { ConsumerHttp } from "@common/requests";

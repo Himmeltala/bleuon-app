@@ -3,7 +3,6 @@
  * @description 可以点击出菜单的头像组件
  * @author zheng
  * @since 2023/8/23
- * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 import { ConsumerHttp } from "@common/requests";

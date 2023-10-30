@@ -2,7 +2,6 @@
  * @description 配置 axios
  * @author zheng
  * @since 2023/9/9
- * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 import { InterceptorUtil } from "@common/utils";
@@ -28,28 +27,21 @@ export function createRequest(name: "mainapp" | "subapp") {
   const responseInterceptor = (response: AxiosResponse) => {
     const { data, config } = response;
 
-    if (config.ignoreError) {
-      data.message && ElMessage.info(data.message);
-      return response;
-    }
-
-    if (data.code == 500) {
+    if (data.code === 500 && !config.ignore500) {
       data.message && ElMessage.error(data.message);
       return Promise.reject(response);
-    }
-
-    if (data.code == 403) {
+    } else if (data.code === 403) {
       data.message && ElMessage.warning(data.message);
       location.reload();
       localStorage.removeItem(tokenKey);
-    } else if (data.code == 400) {
-      data.message && ElMessage.warning(data.message);
+    } else if (data.code === 400) {
+      data.message && ElMessage.info(data.message);
     }
 
     if (
-      !config.ignoreMsg &&
-      data.code == 200 &&
-      !InterceptorUtil.notInterceptUrl(response.config, { fuzzy: ["find", "replicate"] })
+      data.code === 200 &&
+      !config.ignore200 &&
+      !InterceptorUtil.matchURL(response.config, { pattern: ["find"] })
     ) {
       data.message && ElMessage.success(data.message);
     }

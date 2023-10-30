@@ -3,7 +3,6 @@
  * @description Flowchart 侧边栏工具
  * @author zheng
  * @since 2023/9/24
- * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 import CellsForFlowchart from "./CellsForFlowchart.vue";

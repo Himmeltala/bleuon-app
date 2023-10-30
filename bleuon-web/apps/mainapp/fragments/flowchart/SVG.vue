@@ -3,7 +3,7 @@
  * @description Path SVG 创建组件
  * @author zheng
  * @since 2023/9/26
- * @link https://gitee.com/himmelbleu/bleuon-app
+ *
  */
 
 import { dia } from "jointjs";

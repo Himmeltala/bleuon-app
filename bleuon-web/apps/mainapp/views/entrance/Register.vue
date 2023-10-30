@@ -3,7 +3,7 @@
  * @description 注册页
  * @author zheng
  * @since 2023/8/23
- * @link https://gitee.com/himmelbleu/bleuon-app
+ *
  */
 
 import AccountRegister from "@mainapp/fragments/entrance/AccountRegister.vue";

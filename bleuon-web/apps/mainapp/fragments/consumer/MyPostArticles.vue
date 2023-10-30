@@ -3,7 +3,6 @@
  * @description 我发表的帖子
  * @author zheng
  * @since 2023/10/20
- * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 import { DateUtil } from "@common/utils";

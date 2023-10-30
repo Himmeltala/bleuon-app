@@ -3,7 +3,6 @@
  * @description App.vue 程序入口组件
  * @author zheng
  * @since 2023/10/22
- * @link https://gitee.com/himmelbleu/bleuon-app
  */
 </script>
 

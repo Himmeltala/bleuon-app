@@ -3,7 +3,6 @@
  * @description 讨论社区
  * @author zheng
  * @since 2023/10/5
- * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 import { DateUtil } from "@common/utils";

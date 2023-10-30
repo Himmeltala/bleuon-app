@@ -2,7 +2,7 @@
  * @description 配置路由组件
  * @author zheng
  * @since 2023/6/23
- * @link https://gitee.com/himmelbleu/bleuon-app
+ *
  */
 
 import { createRouter, createWebHashHistory } from "vue-router";

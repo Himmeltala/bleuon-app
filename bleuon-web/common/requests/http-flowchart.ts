@@ -2,7 +2,6 @@
  * @description FlowChart API
  * @author zheng
  * @since 2023/9/28
- * @link https://gitee.com/himmelbleu/bleuon-app
  */
 
 import { http } from "@common/requests/use-axios";
@@ -13,12 +12,8 @@ import { http } from "@common/requests/use-axios";
  * @param model
  * @param success
  */
-export function upgrade(
-  model: FlowchartModel,
-  config?: { ignoreMsg: boolean },
-  success?: (data: R) => void
-) {
-  http.put<R>("/flowchart/upgrade", model, config).then(({ data }) => {
+export function upgrade(req: ReqConfig<FlowchartModel>, success?: (data: R) => void) {
+  http.put<R>("/flowchart/upgrade", req.model, req.config).then(({ data }) => {
     success && success(data);
   });
 }
