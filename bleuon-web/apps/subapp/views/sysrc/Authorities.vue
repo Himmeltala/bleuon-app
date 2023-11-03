@@ -16,7 +16,8 @@ const currPage = ref(1);
 async function fetchDataList() {
   authList.value = await PermissionHttp.findAuthorityList({
     pageSize: pageSize.value,
-    currPage: currPage.value
+    currPage: currPage.value,
+    ...findFormData
   });
 }
 
@@ -64,14 +65,28 @@ function addAuth() {
   });
 }
 
+const findFormData = reactive({
+  keyword: ""
+});
+
 await fetchDataList();
 </script>
 
 <template>
   <div>
     <RemarkText class="mb-4" sub="备注: 系统权限管理" />
-    <div class="mb-5 f-c-e">
+    <div class="mb-5 f-c-s">
       <el-button @click="addAuthDialog = true" type="primary" size="small">新增权限</el-button>
+    </div>
+    <div class="mb-4">
+      <el-form>
+        <el-form-item label="搜索">
+          <el-input
+            @keydown.enter="async () => await fetchDataList()"
+            v-model="findFormData.keyword"
+            placeholder="输入权限备注或权限值关键字以搜索" />
+        </el-form-item>
+      </el-form>
     </div>
     <el-table border stripe row-key="id" :data="authList.list">
       <el-table-column sortable prop="id" label="权限 ID"></el-table-column>

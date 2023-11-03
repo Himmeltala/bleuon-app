@@ -34,8 +34,8 @@ public class ApiPermissionController {
     @Operation(summary = "获取单个管理员，包括权限和角色")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:permission:AdminWithRoleAndAuthorityList')")
     @GetMapping("/admin/with/role-and-authority-list")
-    public R<AdminModel> findAdminWithRoleAndAuthorityList(String adminId) {
-        return R.success(permissionService.findAdminWithRoleAndAuthorityList(adminId));
+    public R<AdminModel> findAdminWithRoleAndAuthorityList(PermissionCriteria criteria) {
+        return R.success(permissionService.findAdminWithRoleAndAuthorityList(criteria));
     }
 
     @Operation(summary = "获取所有管理员，包括权限和角色")
@@ -145,7 +145,7 @@ public class ApiPermissionController {
     @PreAuthorize("hasAnyAuthority('sys:add', 'sys:add:permission:RoleToAdmin')")
     @PostMapping("/role/to/admin")
     public R<Object> addRoleToAdmin(@RequestBody PermissionCriteria criteria) {
-        boolean duplicated = permissionService.duplicateRole(criteria.getAdminId(), criteria.getRoleId());
+        boolean duplicated = permissionService.duplicateRole(criteria);
 
         if (duplicated) {
             return R.error("不能重复添加角色！");

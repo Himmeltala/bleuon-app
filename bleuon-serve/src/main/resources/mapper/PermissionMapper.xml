@@ -166,6 +166,10 @@
     <select id="findAuthorityList" resultType="AuthorityModel">
         SELECT *
         FROM p_auths
+        <if test="keyword != null and keyword != ''">
+            WHERE name LIKE CONCAT('%', #{keyword}, '%')
+            OR value LIKE CONCAT('%', #{keyword}, '%')
+        </if>
     </select>
 
     <insert id="addAuthorityListToRole">

@@ -52,8 +52,8 @@ public class PermissionService implements IPermissionService {
     }
 
     @Override
-    public AdminModel findAdminWithRoleAndAuthorityList(String adminId) {
-        return permissionMapper.findAdminWithRoleAndAuthorityList(adminId);
+    public AdminModel findAdminWithRoleAndAuthorityList(PermissionCriteria criteria) {
+        return permissionMapper.findAdminWithRoleAndAuthorityList(criteria);
     }
 
     @Override
@@ -143,7 +143,7 @@ public class PermissionService implements IPermissionService {
 
     @Override
     public List<AuthorityModel> findNoRepeatAuthorityListOfRole(PermissionCriteria criteria) {
-        List<AuthorityModel> allAuthorityList = permissionMapper.findAuthorityList();
+        List<AuthorityModel> allAuthorityList = permissionMapper.findAuthorityList(criteria);
         List<AuthorityModel> roleAuthorityList = permissionMapper.findAuthorityListByRoleId(criteria.getRoleId());
         allAuthorityList.removeAll(roleAuthorityList);
         return allAuthorityList;
@@ -171,11 +171,11 @@ public class PermissionService implements IPermissionService {
         }
     }
 
-    public boolean duplicateRole(String adminId, Integer roleId) {
-        AdminModel admin = permissionMapper.findAdminWithRoleAndAuthorityList(adminId);
+    public boolean duplicateRole(PermissionCriteria criteria) {
+        AdminModel admin = permissionMapper.findAdminWithRoleAndAuthorityList(criteria);
         List<RoleModel> roles = admin.getRoles();
         for (RoleModel role : roles) {
-            if (role.getId().equals(roleId)) {
+            if (role.getId().equals(criteria.getRoleId())) {
                 return true;
             }
         }
@@ -215,7 +215,7 @@ public class PermissionService implements IPermissionService {
     public PageInfo<AuthorityModel> findAuthorityList(PermissionCriteria criteria) {
         int pageSize = Optional.ofNullable(criteria.getPageSize()).orElse(10);
         int currPage = Optional.ofNullable(criteria.getCurrPage()).orElse(1);
-        return PageHelper.startPage(currPage, pageSize).doSelectPageInfo(() -> permissionMapper.findAuthorityList());
+        return PageHelper.startPage(currPage, pageSize).doSelectPageInfo(() -> permissionMapper.findAuthorityList(criteria));
     }
 
     @Transactional

@@ -148,9 +148,9 @@ export function findNoRepeatAuthorityListOfRole(
 /**
  * 查询权限列表
  *
- * @param success
+ * @param params
  */
-export async function findAuthorityList(params: Criteria) {
+export async function findAuthorityList(params: Criteria<{ value?: string; name?: string }>) {
   const { data } = await http.get<R<PageInfo<AuthorityModel>>>("/permission/authority-list", {
     params
   });

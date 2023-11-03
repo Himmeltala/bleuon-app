@@ -24,6 +24,7 @@ public class PermissionCriteria extends CommonCriteria implements Serializable {
     private Integer roleId;
     private Integer authId;
     private String username;
+    private String keyword;
     private List<String> authIds;
 
 }

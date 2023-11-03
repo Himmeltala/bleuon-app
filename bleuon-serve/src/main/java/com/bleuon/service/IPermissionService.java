@@ -23,7 +23,7 @@ public interface IPermissionService {
 
     boolean addConsumerAuthority(String consumerId, Long roleId, String username);
 
-    AdminModel findAdminWithRoleAndAuthorityList(String adminId);
+    AdminModel findAdminWithRoleAndAuthorityList(PermissionCriteria criteria);
 
     ConsumerModel findConsumerWithRoleAndAuthorityList(String consumerId);
 

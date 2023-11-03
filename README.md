@@ -6,7 +6,7 @@
 
 后端技术：Spring Boot、Spring Security、Mybatis、MybatisPlus
 
-- 作者：Himmelbleu(zheng)
-- 博客园：[www.cnblogs.com/himmelbleu](www.cnblogs.com/himmelbleu)
-- Gitee：[www.gitee.com/himmelbleu](www.gitee.com/himmelbleu)
-- Github：[www.github.com/himmelbleu](www.github.com/himmelbleu)
+- Himmeltala(zheng)
+- 博客园：[www.cnblogs.com/Himmeltala](www.cnblogs.com/Himmeltala)
+- Gitee：[www.gitee.com/Himmeltala](www.gitee.com/Himmeltala)
+- Github：[www.github.com/Himmeltala](www.github.com/Himmeltala)

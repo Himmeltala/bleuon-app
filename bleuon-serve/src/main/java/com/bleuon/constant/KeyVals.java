@@ -16,6 +16,6 @@ public class KeyVals {
 
     public static final String USER_TYPE_ADMIN = "admin";
 
-    public static final String RESOURCE_ROOT = "E:/Type Files/Pictures/BleuOn";
+    public static final String RESOURCE_ROOT = "E:/SystemFolders/Pictures/BleuOn";
 
 }
