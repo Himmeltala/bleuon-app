@@ -13,25 +13,22 @@ import { http } from "@common/requests/use-axios";
  * @returns
  */
 export async function findAdminWithRoleAndAuthorityList(params: { adminId: string }) {
-  const { data } = await http.get<R<AdminModel>>(
-    "/permission/find/admin/with/role-and-authority-list",
-    {
-      params
-    }
-  );
+  const { data } = await http.get<R<AdminModel>>("/permission/admin/with/role-and-authority-list", {
+    params
+  });
   return data.data;
 }
 
 /**
  * 获取所有管理员，包括权限和角色
  *
- * @param model
+ * @param params
  * @returns
  */
-export async function findAllAdminWithRoleAndAuthorityList(model: Criteria) {
-  const { data } = await http.post<R<PageInfo<AdminModel>>>(
-    "/permission/find/all/admin/with/role-and-authority-list",
-    model
+export async function findAdminsWithRoleAndAuthorityList(params: Criteria) {
+  const { data } = await http.get<R<PageInfo<AdminModel>>>(
+    "/permission/admins/with/role-and-authority-list",
+    { params }
   );
   return data.data;
 }
@@ -39,13 +36,13 @@ export async function findAllAdminWithRoleAndAuthorityList(model: Criteria) {
 /**
  * 获取所有管理员，仅包括角色不包括权限
  *
- * @param model
+ * @param params
  * @returns
  */
-export async function findAllAdminWithRoleListButNoAuthorityList(model: Criteria) {
-  const { data } = await http.post<R<PageInfo<AdminModel>>>(
-    "/permission/find/all/admin/with/role-list-but-no-authority-list",
-    model
+export async function findAdminsWithRoleListWithoutAuthorityList(params: Criteria) {
+  const { data } = await http.get<R<PageInfo<AdminModel>>>(
+    "/permission/admins/with/role-list/without/authority-list",
+    { params }
   );
   return data.data;
 }
@@ -53,27 +50,26 @@ export async function findAllAdminWithRoleListButNoAuthorityList(model: Criteria
 /**
  * 查询角色分组，包括权限列表
  *
- * @param model
+ * @param params
  * @returns
  */
-export async function findAllRoleWithAuthorityList(model: Criteria) {
-  const { data } = await http.post<R<PageInfo<RoleModel>>>(
-    "/permission/find/all/role/with-authority-list",
-    model
-  );
+export async function findRolesWithAuthorityList(params: Criteria) {
+  const { data } = await http.get<R<PageInfo<RoleModel>>>("/permission/roles/with-authority-list", {
+    params
+  });
   return data.data;
 }
 
 /**
  * 查询角色分组，但是没有权限列表
  *
- * @param criteria
+ * @param params
  * @returns
  */
-export async function findAllRoleButNoAuthorityList(criteria: Criteria) {
-  const { data } = await http.post<R<PageInfo<RoleModel>>>(
-    `/permission/find/all/role/but-no-authority-list`,
-    criteria
+export async function findRolesWithoutAuthorityList(params: Criteria) {
+  const { data } = await http.get<R<PageInfo<RoleModel>>>(
+    `/permission/roles/without/authority-list`,
+    { params }
   );
   return data.data;
 }
@@ -84,12 +80,12 @@ export async function findAllRoleButNoAuthorityList(criteria: Criteria) {
  * @param criteria
  * @returns
  */
-export function findAuthorityListOfRole(
-  criteria: Criteria<{ roleId?: number; adminId?: string }>,
+export function findAuthoritiesOfRole(
+  params: Criteria<{ roleId?: number; adminId?: string }>,
   success: (data: PageInfo<AuthorityModel>) => void
 ) {
   http
-    .post<R<PageInfo<AuthorityModel>>>(`/permission/find/authority-list-of-role`, criteria)
+    .get<R<PageInfo<AuthorityModel>>>(`/permission/authorities/of/role`, { params })
     .then(({ data }) => {
       success(data.data);
     });
@@ -102,7 +98,7 @@ export function findAuthorityListOfRole(
  * @param success
  */
 export function addRole(model: RoleModel, success?: Function) {
-  http.post<R>("/permission/add/role", model).then(() => {
+  http.post<R>("/permission/role", model).then(() => {
     success && success();
   });
 }
@@ -114,7 +110,7 @@ export function addRole(model: RoleModel, success?: Function) {
  * @param success
  */
 export function deleteRole(params: RoleModel, success?: Function) {
-  http.delete<R>("/permission/delete/role", { params }).then(() => {
+  http.delete<R>("/permission/role", { params }).then(() => {
     success && success();
   });
 }
@@ -126,7 +122,7 @@ export function deleteRole(params: RoleModel, success?: Function) {
  * @param success
  */
 export function upgradeRole(model: RoleModel, success?: Function) {
-  http.put<R>("/permission/upgrade/role", model).then(() => {
+  http.put<R>("/permission/role", model).then(() => {
     success && success();
   });
 }
@@ -136,13 +132,13 @@ export function upgradeRole(model: RoleModel, success?: Function) {
  *
  * @param success
  */
-export function findAuthorityListOfRoleButNohave(
-  criteria: Criteria<{ roleId: number }>,
+export function findNoRepeatAuthorityListOfRole(
+  params: Criteria<{ roleId: number }>,
   success: (data: AuthorityModel[]) => void
 ) {
   http
-    .get<R<AuthorityModel[]>>("/permission/find/authority-list-of-role-but-nohave", {
-      params: criteria
+    .get<R<AuthorityModel[]>>("/permission/no-repeat/authorities/of/role", {
+      params
     })
     .then(({ data }) => {
       success && success(data.data);
@@ -154,11 +150,10 @@ export function findAuthorityListOfRoleButNohave(
  *
  * @param success
  */
-export async function findAuthorityList(criteria: Criteria) {
-  const { data } = await http.post<R<PageInfo<AuthorityModel>>>(
-    "/permission/find/authority-list",
-    criteria
-  );
+export async function findAuthorityList(params: Criteria) {
+  const { data } = await http.get<R<PageInfo<AuthorityModel>>>("/permission/authority-list", {
+    params
+  });
   return data.data;
 }
 
@@ -172,7 +167,7 @@ export function addAuthorityListToRole(
   model: { roleId: number; authIds: number[] },
   success: Function
 ) {
-  http.post<R>("/permission/add/authority/list/to/role", model).then(() => {
+  http.post<R>("/permission/authority/list/to/role", model).then(() => {
     success();
   });
 }
@@ -184,7 +179,7 @@ export function addAuthorityListToRole(
  * @param success
  */
 export function deleteRoleAuthority(params: { roleId: number; authId: number }, success: Function) {
-  http.delete<R>("/permission/delete/role/authority", { params }).then(() => {
+  http.delete<R>("/permission/role/authority", { params }).then(() => {
     success();
   });
 }
@@ -199,7 +194,7 @@ export function addRoleToAdmin(
   model: { adminId: string; roleId: number; username: string },
   success?: Function
 ) {
-  http.post<R>("/permission/add/role/to/admin", model).then(() => {
+  http.post<R>("/permission/role/to/admin", model).then(() => {
     success && success();
   });
 }
@@ -214,7 +209,7 @@ export function deleteRoleOfAdmin(
   params: { roleId?: number; adminId?: string; username: string },
   success: Function
 ) {
-  http.delete<R>("/permission/delete/role-of-admin", { params }).then(() => {
+  http.delete<R>("/permission/role-of-admin", { params }).then(() => {
     success();
   });
 }
@@ -226,7 +221,7 @@ export function deleteRoleOfAdmin(
  * @param success
  */
 export function upgradeAuthority(model: AdminModel, success?: Function) {
-  http.put<R>("/permission/upgrade/authority", model).then(() => {
+  http.put<R>("/permission/authority", model).then(() => {
     success && success();
   });
 }
@@ -238,7 +233,7 @@ export function upgradeAuthority(model: AdminModel, success?: Function) {
  * @param success
  */
 export function dropAuthority(params: AuthorityModel, success?: Function) {
-  http.delete<R>("/permission/delete/authority", { params }).then(() => {
+  http.delete<R>("/permission/authority", { params }).then(() => {
     success && success();
   });
 }
@@ -250,7 +245,7 @@ export function dropAuthority(params: AuthorityModel, success?: Function) {
  * @param success
  */
 export function addAuthority(model: AuthorityModel, success?: Function) {
-  http.post<R>("/permission/add/authority", model).then(() => {
+  http.post<R>("/permission/authority", model).then(() => {
     success && success();
   });
 }

@@ -27,11 +27,11 @@ public interface IPermissionService {
 
     ConsumerModel findConsumerWithRoleAndAuthorityList(String consumerId);
 
-    PageInfo<AdminModel> findAllAdminWithRoleAndAuthorityList(PermissionCriteria criteria);
+    PageInfo<AdminModel> findAdminsWithRoleAndAuthorityList(PermissionCriteria criteria);
 
     PageInfo<ConsumerModel> findAllConsumerWithRoleAndAuthorityList(PermissionCriteria criteria);
 
-    PageInfo<RoleModel> findAllRoleWithAuthorityList(PermissionCriteria criteria);
+    PageInfo<RoleModel> findRolesWithAuthorityList(PermissionCriteria criteria);
 
     boolean addRole(RoleModel model);
 
@@ -41,11 +41,11 @@ public interface IPermissionService {
 
     boolean upgradeRole(RoleModel model);
 
-    PageInfo<AuthorityModel> findAuthorityListByRoleIdOrAdminId(PermissionCriteria criteria);
+    PageInfo<AuthorityModel> findAuthoritiesOfRole(PermissionCriteria criteria);
 
-    PageInfo<RoleModel> findAllRoleButNoAuthorityList(PermissionCriteria criteria);
+    PageInfo<RoleModel> findRolesWithoutAuthorityList(PermissionCriteria criteria);
 
-    List<AuthorityModel> findAuthorityListOfRoleButNohave(PermissionCriteria criteria);
+    List<AuthorityModel> findNoRepeatAuthorityListOfRole(PermissionCriteria criteria);
 
     boolean addAuthorityListToRole(PermissionCriteria criteria);
 
@@ -55,7 +55,7 @@ public interface IPermissionService {
 
     boolean deleteRoleOfAdmin(PermissionCriteria criteria);
 
-    PageInfo<AdminModel> findAllAdminWithRoleListButNoAuthorityList(PermissionCriteria criteria);
+    PageInfo<AdminModel> findAdminsWithRoleListWithoutAuthorityList(PermissionCriteria criteria);
 
     PageInfo<AuthorityModel> findAuthorityList(PermissionCriteria criteria);
 

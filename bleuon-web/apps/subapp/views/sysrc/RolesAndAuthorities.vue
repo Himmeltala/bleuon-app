@@ -13,7 +13,7 @@ const pageSize = ref(10);
 const mainList = shallowRef<PageInfo<RoleModel>>();
 
 async function fetchDataList() {
-  mainList.value = await PermissionHttp.findAllRoleButNoAuthorityList({
+  mainList.value = await PermissionHttp.findRolesWithoutAuthorityList({
     pageSize: pageSize.value,
     currPage: currPage.value
   });
@@ -83,7 +83,7 @@ function handleDeleteRole(item: RoleModel) {
 function onExpandAuthChange(item: any) {
   item.loading = true;
   if (!item.hasGetAuthorities) {
-    PermissionHttp.findAuthorityListOfRole({ roleId: item.id, pageSize: 10, currPage: 1 }, data => {
+    PermissionHttp.findAuthoritiesOfRole({ roleId: item.id, pageSize: 10, currPage: 1 }, data => {
       item.authorities = data;
       item.pageSize = 10;
       item.currPage = 1;
@@ -97,7 +97,7 @@ function onExpandAuthChange(item: any) {
 
 function fetchAuthorityListOfRole(item: any) {
   item.loading = true;
-  PermissionHttp.findAuthorityListOfRole(
+  PermissionHttp.findAuthoritiesOfRole(
     { roleId: item.id, pageSize: item.pageSize, currPage: item.currPage },
     data => {
       item.authorities = data;
@@ -119,7 +119,7 @@ const calcRoleAuthList = PagerUtil.paginate(roleAuthList, addRoleAuthCurrPage, a
 
 function openAddRoleAuthDialog(item: any) {
   addRoleAuthItem.value = item;
-  PermissionHttp.findAuthorityListOfRoleButNohave({ roleId: item.id }, data => {
+  PermissionHttp.findNoRepeatAuthorityListOfRole({ roleId: item.id }, data => {
     roleAuthList.value = data;
     addRoleAuthDialog.value = true;
   });
@@ -134,7 +134,7 @@ function handleAddRoleAuth() {
     { roleId: addRoleAuthItem.value.id, authIds: authIdList.value },
     () => {
       addRoleAuthItem.value.loading = true;
-      PermissionHttp.findAuthorityListOfRole(
+      PermissionHttp.findAuthoritiesOfRole(
         {
           roleId: addRoleAuthItem.value.id,
           pageSize: addRoleAuthItem.value.pageSize,

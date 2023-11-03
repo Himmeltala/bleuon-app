@@ -101,7 +101,7 @@
         WHERE id = #{consumerId}
     </select>
 
-    <select id="findAllAdminWithRoleAndAuthorityList" resultMap="findAdminWithAuthorityListMap">
+    <select id="findAdminsWithRoleAndAuthorityList" resultMap="findAdminWithAuthorityListMap">
         SELECT id, username, phone, email, avatar, create_date, modify_date
         FROM t_admins
     </select>
@@ -128,7 +128,7 @@
         WHERE role_id = #{roleId}
     </select>
 
-    <select id="findAllRoleWithAuthorityList" resultMap="findRoleWithAuthorityListMap">
+    <select id="findRolesWithAuthorityList" resultMap="findRoleWithAuthorityListMap">
         SELECT *
         FROM p_roles
     </select>
@@ -158,7 +158,7 @@
         WHERE id = #{id}
     </update>
 
-    <select id="findAllRoleButNoAuthorityList" resultType="RoleModel">
+    <select id="findRolesWithoutAuthorityList" resultType="RoleModel">
         SELECT *
         FROM p_roles
     </select>
@@ -198,11 +198,11 @@
         </if>
     </delete>
 
-    <resultMap id="findAllAdminWithRoleListButNoAuthorityListMap" type="AdminModel">
+    <resultMap id="findAdminsWithRoleListWithoutAuthorityListMap" type="AdminModel">
         <collection property="roles" select="findAdminRoleListByAdminId" column="{adminId=id}"/>
     </resultMap>
 
-    <select id="findAllAdminWithRoleListButNoAuthorityList" resultMap="findAllAdminWithRoleListButNoAuthorityListMap">
+    <select id="findAdminsWithRoleListWithoutAuthorityList" resultMap="findAdminsWithRoleListWithoutAuthorityListMap">
         SELECT id, username, phone, email, avatar, create_date, modify_date
         FROM t_admins
     </select>

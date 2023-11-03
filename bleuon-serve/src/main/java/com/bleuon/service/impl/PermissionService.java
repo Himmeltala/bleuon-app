@@ -57,15 +57,15 @@ public class PermissionService implements IPermissionService {
     }
 
     @Override
-    public ConsumerModel findConsumerWithRoleAndAuthorityList(String consumerId) {
-        return permissionMapper.findConsumerWithRoleAndAuthorityList(consumerId);
+    public PageInfo<AdminModel> findAdminsWithRoleAndAuthorityList(PermissionCriteria criteria) {
+        int pageSize = Optional.ofNullable(criteria.getPageSize()).orElse(10);
+        int currPage = Optional.ofNullable(criteria.getCurrPage()).orElse(1);
+        return PageHelper.startPage(currPage, pageSize).doSelectPageInfo(() -> permissionMapper.findAdminsWithRoleAndAuthorityList(criteria));
     }
 
     @Override
-    public PageInfo<AdminModel> findAllAdminWithRoleAndAuthorityList(PermissionCriteria criteria) {
-        int pageSize = Optional.ofNullable(criteria.getPageSize()).orElse(10);
-        int currPage = Optional.ofNullable(criteria.getCurrPage()).orElse(1);
-        return PageHelper.startPage(currPage, pageSize).doSelectPageInfo(() -> permissionMapper.findAllAdminWithRoleAndAuthorityList(criteria));
+    public ConsumerModel findConsumerWithRoleAndAuthorityList(String consumerId) {
+        return permissionMapper.findConsumerWithRoleAndAuthorityList(consumerId);
     }
 
     @Override
@@ -76,11 +76,11 @@ public class PermissionService implements IPermissionService {
     }
 
     @Override
-    public PageInfo<RoleModel> findAllRoleWithAuthorityList(PermissionCriteria criteria) {
+    public PageInfo<RoleModel> findRolesWithAuthorityList(PermissionCriteria criteria) {
         int pageSize = Optional.ofNullable(criteria.getPageSize()).orElse(10);
         int currPage = Optional.ofNullable(criteria.getCurrPage()).orElse(1);
 
-        return PageHelper.startPage(currPage, pageSize).doSelectPageInfo(() -> permissionMapper.findAllRoleWithAuthorityList(criteria));
+        return PageHelper.startPage(currPage, pageSize).doSelectPageInfo(() -> permissionMapper.findRolesWithAuthorityList(criteria));
     }
 
     @Transactional
@@ -122,7 +122,7 @@ public class PermissionService implements IPermissionService {
     }
 
     @Override
-    public PageInfo<AuthorityModel> findAuthorityListByRoleIdOrAdminId(PermissionCriteria criteria) {
+    public PageInfo<AuthorityModel> findAuthoritiesOfRole(PermissionCriteria criteria) {
         int pageSize = Optional.ofNullable(criteria.getPageSize()).orElse(10);
         int currPage = Optional.ofNullable(criteria.getCurrPage()).orElse(1);
 
@@ -134,15 +134,15 @@ public class PermissionService implements IPermissionService {
     }
 
     @Override
-    public PageInfo<RoleModel> findAllRoleButNoAuthorityList(PermissionCriteria criteria) {
+    public PageInfo<RoleModel> findRolesWithoutAuthorityList(PermissionCriteria criteria) {
         int pageSize = Optional.ofNullable(criteria.getPageSize()).orElse(10);
         int currPage = Optional.ofNullable(criteria.getCurrPage()).orElse(1);
 
-        return PageHelper.startPage(currPage, pageSize).doSelectPageInfo(() -> permissionMapper.findAllRoleButNoAuthorityList(criteria));
+        return PageHelper.startPage(currPage, pageSize).doSelectPageInfo(() -> permissionMapper.findRolesWithoutAuthorityList(criteria));
     }
 
     @Override
-    public List<AuthorityModel> findAuthorityListOfRoleButNohave(PermissionCriteria criteria) {
+    public List<AuthorityModel> findNoRepeatAuthorityListOfRole(PermissionCriteria criteria) {
         List<AuthorityModel> allAuthorityList = permissionMapper.findAuthorityList();
         List<AuthorityModel> roleAuthorityList = permissionMapper.findAuthorityListByRoleId(criteria.getRoleId());
         allAuthorityList.removeAll(roleAuthorityList);
@@ -205,10 +205,10 @@ public class PermissionService implements IPermissionService {
     }
 
     @Override
-    public PageInfo<AdminModel> findAllAdminWithRoleListButNoAuthorityList(PermissionCriteria criteria) {
+    public PageInfo<AdminModel> findAdminsWithRoleListWithoutAuthorityList(PermissionCriteria criteria) {
         int pageSize = Optional.ofNullable(criteria.getPageSize()).orElse(10);
         int currPage = Optional.ofNullable(criteria.getCurrPage()).orElse(1);
-        return PageHelper.startPage(currPage, pageSize).doSelectPageInfo(() -> permissionMapper.findAllAdminWithRoleListButNoAuthorityList(criteria));
+        return PageHelper.startPage(currPage, pageSize).doSelectPageInfo(() -> permissionMapper.findAdminsWithRoleListWithoutAuthorityList(criteria));
     }
 
     @Override

@@ -9,7 +9,6 @@ import com.bleuon.service.IDiscussionService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,14 +22,18 @@ import java.util.UUID;
  * @date: 2023/10/14
  */
 @Service
-@RequiredArgsConstructor
 public class DiscussionService implements IDiscussionService {
 
     private final DiscussionMapper discussionMapper;
+    private final TransactionalWrapper transactionalWrapper;
+
+    public DiscussionService(DiscussionMapper discussionMapper) {
+        this.discussionMapper = discussionMapper;
+        transactionalWrapper = new TransactionalWrapper(discussionMapper);
+    }
 
     @Override
     public PageInfo<ArticleModel> findAllArticleBy(DiscussionCriteria criteria) {
-        // 如果 page size 为空，返回 5 默认值
         int pageSize = Optional.ofNullable(criteria.getPageSize()).orElse(5);
         int currPage = Optional.ofNullable(criteria.getCurrPage()).orElse(1);
 
@@ -44,7 +47,6 @@ public class DiscussionService implements IDiscussionService {
 
     @Override
     public PageInfo<ArticleCommentModel> findArticleCommentListBy(DiscussionCriteria criteria) {
-        // 如果 page size 为空，返回 5 默认值
         int pageSize = Optional.ofNullable(criteria.getPageSize()).orElse(10);
         int currPage = Optional.ofNullable(criteria.getCurrPage()).orElse(1);
 
@@ -88,7 +90,7 @@ public class DiscussionService implements IDiscussionService {
 
     @Override
     public synchronized int upgradeArticle(ArticleModel model, DiscussionCriteria criteria) {
-        return new TransactionalWrapper(discussionMapper).doUpgradeArticle(model, criteria);
+        return transactionalWrapper.doUpgradeArticle(model, criteria);
     }
 
     @Transactional

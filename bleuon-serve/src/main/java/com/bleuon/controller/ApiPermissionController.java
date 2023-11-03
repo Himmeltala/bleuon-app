@@ -33,63 +33,63 @@ public class ApiPermissionController {
 
     @Operation(summary = "获取单个管理员，包括权限和角色")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:permission:AdminWithRoleAndAuthorityList')")
-    @GetMapping("/find/admin/with/role-and-authority-list")
+    @GetMapping("/admin/with/role-and-authority-list")
     public R<AdminModel> findAdminWithRoleAndAuthorityList(String adminId) {
         return R.success(permissionService.findAdminWithRoleAndAuthorityList(adminId));
     }
 
     @Operation(summary = "获取所有管理员，包括权限和角色")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:permission:AllAdminWithRoleAndAuthorityList')")
-    @PostMapping("/find/all/admin/with/role-and-authority-list")
-    public R<PageInfo<AdminModel>> findAllAdminWithRoleAndAuthorityList(@RequestBody PermissionCriteria criteria) {
-        return R.success(permissionService.findAllAdminWithRoleAndAuthorityList(criteria));
+    @GetMapping("/admins/with/role-and-authority-list")
+    public R<PageInfo<AdminModel>> findAdminsWithRoleAndAuthorityList(PermissionCriteria criteria) {
+        return R.success(permissionService.findAdminsWithRoleAndAuthorityList(criteria));
     }
 
     @Operation(summary = "获取所有管理员，仅包括角色不包括权限")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:permission:AllAdminWithRoleListButNoAuthorityList')")
-    @PostMapping("/find/all/admin/with/role-list-but-no-authority-list")
-    public R<PageInfo<AdminModel>> findAllAdminWithRoleListButNoAuthorityList(@RequestBody PermissionCriteria criteria) {
-        return R.success(permissionService.findAllAdminWithRoleListButNoAuthorityList(criteria));
+    @GetMapping("/admins/with/role-list/without/authority-list")
+    public R<PageInfo<AdminModel>> findAdminsWithRoleListWithoutAuthorityList(PermissionCriteria criteria) {
+        return R.success(permissionService.findAdminsWithRoleListWithoutAuthorityList(criteria));
     }
 
     @Operation(summary = "获取单个用户，包括权限和角色")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:permission:ConsumerWithRoleAndAuthorityList')")
-    @GetMapping("/find/consumer/with/role-and-authority-list")
+    @GetMapping("/consumer/with/role-and-authority-list")
     public R<ConsumerModel> findConsumerWithRoleAndAuthorityList(String consumerId) {
         return R.success(permissionService.findConsumerWithRoleAndAuthorityList(consumerId));
     }
 
     @Operation(summary = "获取所有用户，包括权限和角色")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:permission:AllConsumerWithRoleAndAuthorityList')")
-    @PostMapping("/find/all/consumers/with/authority/list")
-    public R<PageInfo<ConsumerModel>> findAllConsumerWithRoleAndAuthorityList(@RequestBody PermissionCriteria criteria) {
+    @GetMapping("/consumers/with/role-and-authority-list")
+    public R<PageInfo<ConsumerModel>> findAllConsumerWithRoleAndAuthorityList(PermissionCriteria criteria) {
         return R.success(permissionService.findAllConsumerWithRoleAndAuthorityList(criteria));
     }
 
     @Operation(summary = "查询角色分组，包括权限列表")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:permission:AllRoleWithAuthorityList')")
-    @PostMapping("/find/all/role/with-authority-list")
-    public R<PageInfo<RoleModel>> findAllRoleWithAuthorityList(@RequestBody PermissionCriteria criteria) {
-        return R.success(permissionService.findAllRoleWithAuthorityList(criteria));
+    @GetMapping("/roles/with-authority-list")
+    public R<PageInfo<RoleModel>> findRolesWithAuthorityList(PermissionCriteria criteria) {
+        return R.success(permissionService.findRolesWithAuthorityList(criteria));
     }
 
     @Operation(summary = "查询角色分组，但是没有权限列表")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:permission:AllRoleButNoAuthorityList')")
-    @PostMapping("/find/all/role/but-no-authority-list")
-    public R<PageInfo<RoleModel>> findAllRoleButNoAuthorityList(@RequestBody PermissionCriteria criteria) {
-        return R.success(permissionService.findAllRoleButNoAuthorityList(criteria));
+    @GetMapping("/roles/without/authority-list")
+    public R<PageInfo<RoleModel>> findRolesWithoutAuthorityList(PermissionCriteria criteria) {
+        return R.success(permissionService.findRolesWithoutAuthorityList(criteria));
     }
 
     @Operation(summary = "查询角色的权限列表，可以通过 roleId 或者 adminId")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:permission:AuthorityListOfRole')")
-    @PostMapping("/find/authority-list-of-role")
-    public R<PageInfo<AuthorityModel>> findAuthorityListByRoleIdOrAdminId(@RequestBody PermissionCriteria criteria) {
-        return R.success(permissionService.findAuthorityListByRoleIdOrAdminId(criteria));
+    @GetMapping("/authorities/of/role")
+    public R<PageInfo<AuthorityModel>> findAuthoritiesOfRole(PermissionCriteria criteria) {
+        return R.success(permissionService.findAuthoritiesOfRole(criteria));
     }
 
     @Operation(summary = "新增一个角色")
     @PreAuthorize("hasAnyAuthority('sys:add', 'sys:add:permisson:role')")
-    @PostMapping("/add/role")
+    @PostMapping("/role")
     public R<Object> addRole(@RequestBody RoleModel model) {
         RoleModel exists = permissionService.findRoleAnyFiled(model);
 
@@ -103,7 +103,7 @@ public class ApiPermissionController {
 
     @Operation(summary = "删除一个角色")
     @PreAuthorize("hasAnyAuthority('sys:delete', 'sys:delete:permisson:role')")
-    @DeleteMapping("/delete/role")
+    @DeleteMapping("/role")
     public R<Object> deleteRole(RoleModel model) {
         boolean success = permissionService.deleteRole(model);
         return success ? R.success("删除成功！") : R.error("删除失败！");
@@ -111,7 +111,7 @@ public class ApiPermissionController {
 
     @Operation(summary = "修改一个角色")
     @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:upgrade:permisson:role')")
-    @PutMapping("/upgrade/role")
+    @PutMapping("/role")
     public R<Object> upgradeRole(@RequestBody RoleModel model) {
         boolean success = permissionService.upgradeRole(model);
         return success ? R.success("修改成功！") : R.error("修改失败！");
@@ -119,15 +119,15 @@ public class ApiPermissionController {
 
     @Operation(summary = "查询角色没有的权限列表")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:permission:AuthorityListOfRoleButNohave')")
-    @GetMapping("/find/authority-list-of-role-but-nohave")
-    public R<List<AuthorityModel>> findAuthorityListOfRoleButNohave(PermissionCriteria criteria) {
-        List<AuthorityModel> list = permissionService.findAuthorityListOfRoleButNohave(criteria);
+    @GetMapping("/no-repeat/authorities/of/role")
+    public R<List<AuthorityModel>> findNoRepeatAuthorityListOfRole(PermissionCriteria criteria) {
+        List<AuthorityModel> list = permissionService.findNoRepeatAuthorityListOfRole(criteria);
         return R.success(list);
     }
 
     @Operation(summary = "添加权限列表到权限角色关联表中")
     @PreAuthorize("hasAnyAuthority('sys:add', 'sys:add:permission:AuthorityListToRole')")
-    @PostMapping("/add/authority/list/to/role")
+    @PostMapping("/authority/list/to/role")
     public R<Object> addAuthorityListToRole(@RequestBody PermissionCriteria criteria) {
         boolean success = permissionService.addAuthorityListToRole(criteria);
         return success ? R.success("添加成功！") : R.error("添加失败！");
@@ -135,7 +135,7 @@ public class ApiPermissionController {
 
     @Operation(summary = "删除角色权限")
     @PreAuthorize("hasAnyAuthority('sys:delete', 'sys:delete:permission:RoleAuthority')")
-    @DeleteMapping("/delete/role/authority")
+    @DeleteMapping("/role/authority")
     public R<Object> deleteRoleAuthority(PermissionCriteria criteria) {
         boolean success = permissionService.deleteRoleAuthority(criteria);
         return success ? R.success("删除成功！") : R.error("删除失败！");
@@ -143,7 +143,7 @@ public class ApiPermissionController {
 
     @Operation(summary = "将角色分配给管理员")
     @PreAuthorize("hasAnyAuthority('sys:add', 'sys:add:permission:RoleToAdmin')")
-    @PostMapping("/add/role/to/admin")
+    @PostMapping("/role/to/admin")
     public R<Object> addRoleToAdmin(@RequestBody PermissionCriteria criteria) {
         boolean duplicated = permissionService.duplicateRole(criteria.getAdminId(), criteria.getRoleId());
 
@@ -157,7 +157,7 @@ public class ApiPermissionController {
 
     @Operation(summary = "删除管理员的角色，可以删除整个管理员所拥有的角色")
     @PreAuthorize("hasAnyAuthority('sys:delete', 'sys:delete:permission:RoleOfAdmin')")
-    @DeleteMapping("/delete/role-of-admin")
+    @DeleteMapping("/role-of-admin")
     public R<Object> deleteRoleOfAdmin(PermissionCriteria criteria) {
         boolean success = permissionService.deleteRoleOfAdmin(criteria);
         return success ? R.success("删除成功！") : R.error("删除失败！");
@@ -165,14 +165,14 @@ public class ApiPermissionController {
 
     @Operation(summary = "查询权限列表")
     @PreAuthorize("hasAnyAuthority('sys:find', 'sys:find:permission:AuthorityList')")
-    @PostMapping("/find/authority-list")
-    public R<PageInfo<AuthorityModel>> findAuthorityList(@RequestBody PermissionCriteria criteria) {
+    @GetMapping("/authority-list")
+    public R<PageInfo<AuthorityModel>> findAuthorityList(PermissionCriteria criteria) {
         return R.success(permissionService.findAuthorityList(criteria));
     }
 
     @Operation(summary = "更新权限")
     @PreAuthorize("hasAnyAuthority('sys:upgrade', 'sys:upgrade:permission:Authority')")
-    @PutMapping("/upgrade/authority")
+    @PutMapping("/authority")
     public R<Object> upgradeAuthority(@RequestBody AuthorityModel model) {
         boolean success = permissionService.upgradeAuthority(model);
         return success ? R.success("更新成功！") : R.error("更新失败！");
@@ -180,7 +180,7 @@ public class ApiPermissionController {
 
     @Operation(summary = "删除权限")
     @PreAuthorize("hasAnyAuthority('sys:delete', 'sys:delete:permission:Authority')")
-    @DeleteMapping("/delete/authority")
+    @DeleteMapping("/authority")
     public R<Object> dropAuthority(AuthorityModel model) {
         boolean success = permissionService.dropAuthority(model);
         return success ? R.success("删除成功！") : R.error("删除失败！");
@@ -188,7 +188,7 @@ public class ApiPermissionController {
 
     @Operation(summary = "添加权限")
     @PreAuthorize("hasAnyAuthority('sys:add', 'sys:add:permission:Authority')")
-    @PostMapping("/add/authority")
+    @PostMapping("/authority")
     public R<Object> addAuthority(@RequestBody AuthorityModel model) {
         boolean success = permissionService.addAuthority(model);
         return success ? R.success("添加成功！") : R.error("添加失败！");

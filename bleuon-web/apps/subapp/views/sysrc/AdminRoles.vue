@@ -14,7 +14,7 @@ const pageSize = ref(10);
 const mainList = ref<PageInfo<AdminModel>>();
 
 async function fetchDataList() {
-  mainList.value = await PermissionHttp.findAllAdminWithRoleListButNoAuthorityList({
+  mainList.value = await PermissionHttp.findAdminsWithRoleListWithoutAuthorityList({
     pageSize: pageSize.value,
     currPage: currPage.value
   });
@@ -23,16 +23,13 @@ async function fetchDataList() {
 async function onExpandAuthorityListOfRoleItem(item: any) {
   item.loading = true;
   if (!item.hasGetAuthorities) {
-    PermissionHttp.findAuthorityListOfRole(
-      { adminId: item.id, pageSize: 10, currPage: 1 },
-      data => {
-        item.authorities = data;
-        item.pageSize = 10;
-        item.currPage = 1;
-        item.hasGetAuthorities = true;
-        item.loading = false;
-      }
-    );
+    PermissionHttp.findAuthoritiesOfRole({ adminId: item.id, pageSize: 10, currPage: 1 }, data => {
+      item.authorities = data;
+      item.pageSize = 10;
+      item.currPage = 1;
+      item.hasGetAuthorities = true;
+      item.loading = false;
+    });
   } else {
     item.loading = false;
   }
@@ -40,7 +37,7 @@ async function onExpandAuthorityListOfRoleItem(item: any) {
 
 async function fetchAuthorityListOfRole(item: any) {
   item.loading = true;
-  PermissionHttp.findAuthorityListOfRole(
+  PermissionHttp.findAuthoritiesOfRole(
     {
       adminId: item.id,
       pageSize: item.pageSize,

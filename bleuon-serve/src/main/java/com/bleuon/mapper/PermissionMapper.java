@@ -28,11 +28,11 @@ public interface PermissionMapper {
 
     ConsumerModel findConsumerWithRoleAndAuthorityList(String consumerId);
 
-    List<AdminModel> findAllAdminWithRoleAndAuthorityList(PermissionCriteria criteria);
+    List<AdminModel> findAdminsWithRoleAndAuthorityList(PermissionCriteria criteria);
 
     List<ConsumerModel> findAllConsumerWithRoleAndAuthorityList(PermissionCriteria criteria);
 
-    List<RoleModel> findAllRoleWithAuthorityList(PermissionCriteria criteria);
+    List<RoleModel> findRolesWithAuthorityList(PermissionCriteria criteria);
 
     Integer addRole(RoleModel model);
 
@@ -44,7 +44,7 @@ public interface PermissionMapper {
 
     List<AuthorityModel> findAuthorityListByRoleId(Integer roleId);
 
-    List<RoleModel> findAllRoleButNoAuthorityList(PermissionCriteria criteria);
+    List<RoleModel> findRolesWithoutAuthorityList(PermissionCriteria criteria);
 
     List<AuthorityModel> findAuthorityList();
 
@@ -56,7 +56,7 @@ public interface PermissionMapper {
 
     Integer deleteRoleOfAdmin(PermissionCriteria criteria);
 
-    List<AdminModel> findAllAdminWithRoleListButNoAuthorityList(PermissionCriteria criteria);
+    List<AdminModel> findAdminsWithRoleListWithoutAuthorityList(PermissionCriteria criteria);
 
     List<AuthorityModel> findAdminAuthorityListByAdminId(PermissionCriteria criteria);
 
