@@ -84,7 +84,7 @@ await fetchRoleListButNoAuthorityList();
 
 <template>
   <div>
-    <RemarkText class="mb-4" sub="备注: 给当前系统已存在的管理员分配角色" />
+    <RemarkText class="mb-4" sub="备注: 给当前存在的管理员、普通用户分配角色" />
     <div class="f-c-e mb-10">
       <el-button
         :disabled="!currAdminRow?.id || !currRoleRow?.id"

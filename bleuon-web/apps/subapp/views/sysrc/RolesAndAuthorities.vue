@@ -162,7 +162,7 @@ await fetchDataList();
 
 <template>
   <div>
-    <RemarkText class="mb-4" sub="备注: 角色以及权限管理" />
+    <RemarkText class="mb-4" sub="备注: 管理角色和权限。例如，新增角色、维护角色下的权限列表。" />
     <div class="f-c-e mb-5">
       <div class="add-role">
         <el-button @click="addRoleDialog = true" size="small" type="primary">新增角色</el-button>

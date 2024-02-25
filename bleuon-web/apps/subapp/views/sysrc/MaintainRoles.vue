@@ -84,7 +84,7 @@ await fetchDataList();
 
 <template>
   <div>
-    <RemarkText class="mb-4" sub="备注: 维护后台管理系统的管理员角色，而非管理员" />
+    <RemarkText class="mb-4" sub="备注: 维护角色" />
     <div class="f-c-e mb-5"></div>
     <el-table
       @expand-change="onExpandAuthorityListOfRoleItem"
@@ -148,7 +148,7 @@ await fetchDataList();
             <el-tag v-for="item in scope.row.roles" v-if="scope.row.roles?.length > 0">
               {{ item.name }}
             </el-tag>
-            <div v-else>该管理员没有分配角色</div>
+            <div v-else>该用户或管理员没有分配角色</div>
           </div>
         </template>
       </el-table-column>
@@ -162,7 +162,7 @@ await fetchDataList();
       </el-table-column>
       <el-table-column label="操作">
         <template #default="scope">
-          <el-popconfirm title="确定是否要删除该管理员？" @confirm="handleDelete(scope.row)">
+          <el-popconfirm title="确定是否要删除该用户或管理员？" @confirm="handleDelete(scope.row)">
             <template #reference>
               <el-button size="small" type="danger" plain>删除</el-button>
             </template>
@@ -184,8 +184,8 @@ await fetchDataList();
         background
         :total="mainList.total" />
     </div>
-    <el-dialog v-model="editAdminDialog" title="编辑管理员角色" width="35%">
-      <RemarkText class="mb-6" :title="currEditRole.username" sub="该管理员目前拥有的角色" />
+    <el-dialog v-model="editAdminDialog" title="编辑用户或管理员的角色" width="35%">
+      <RemarkText class="mb-6" :title="currEditRole.username" sub="该用户或管理员目前拥有的角色" />
       <div class="f-c-s flex-gap-2 flex-wrap">
         <el-tag
           v-for="item in currEditRole.roles"

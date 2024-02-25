@@ -15,7 +15,7 @@ const router = createRouter({
     {
       path: "/home",
       meta: { title: "首页", icon: "House" },
-      redirect: "/home/sysrc/grant-admin-role",
+      redirect: "/home/sysrc/grant-roles",
       component: () => import("@subapp/views/BaseHome.vue"),
       children: [
         {
@@ -41,28 +41,16 @@ const router = createRouter({
           meta: { title: "系统资源", icon: "Loading" },
           children: [
             {
-              path: "consumer-roles",
-              name: "auth-consumer-roles",
-              meta: { title: "用户角色", icon: "User" },
-              component: () => import("@subapp/views/sysrc/ConsumerRoles.vue")
+              path: "maintain-roles",
+              name: "auth-maintain-roles",
+              meta: { title: "维护角色", icon: "UserFilled" },
+              component: () => import("@subapp/views/sysrc/MaintainRoles.vue")
             },
             {
-              path: "grant-consumer-role",
-              name: "auth-grant-consumer-role",
-              meta: { title: "分配用户角色", icon: "FolderChecked" },
-              component: () => import("@subapp/views/sysrc/GrantConsumerRole.vue")
-            },
-            {
-              path: "admin-roles",
-              name: "auth-admin-roles",
-              meta: { title: "管理员角色", icon: "UserFilled" },
-              component: () => import("@subapp/views/sysrc/AdminRoles.vue")
-            },
-            {
-              path: "grant-admin-role",
-              name: "auth-grant-admin-role",
-              meta: { title: "分配管理员角色", icon: "Files" },
-              component: () => import("@subapp/views/sysrc/GrantAdminRole.vue")
+              path: "grant-roles",
+              name: "auth-grant-roles",
+              meta: { title: "分配角色", icon: "Files" },
+              component: () => import("@subapp/views/sysrc/GrantRoles.vue")
             },
             {
               path: "authorities",

@@ -74,7 +74,7 @@ await fetchDataList();
 
 <template>
   <div>
-    <RemarkText class="mb-4" sub="备注: 系统权限管理" />
+    <RemarkText class="mb-4" sub="备注: 管理权限。例如，新增权限、查询权限、编辑权限等。" />
     <div class="mb-5 f-c-s">
       <el-button @click="addAuthDialog = true" type="primary" size="small">新增权限</el-button>
     </div>
