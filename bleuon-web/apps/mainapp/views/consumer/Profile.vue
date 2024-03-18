@@ -6,7 +6,7 @@
  *
  */
 
-import { ConsumerHttp } from "@common/requests";
+import { Requests } from "@common/requests";
 
 import CommonHeader from "@mainapp/fragments/CommonHeader.vue";
 // components
@@ -17,18 +17,18 @@ import MyStarConsumer from "@mainapp/fragments/consumer/MyStarConsumer.vue";
 import MyPostArticles from "@mainapp/fragments/consumer/MyPostArticles.vue";
 
 const route = useRoute();
-const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
+const token = localStorage.getToken(Consts.MAINAPP_TOKEN_KEY);
 const formData = ref<ConsumerModel>();
 
 const tabs = [MyDynamic, MyPublicFlowchart, MyShareFlowchart, MyPostArticles, MyStarConsumer];
 const tabIndex = ref(0);
 
 async function fetchData(id: string | string[]) {
-  formData.value = await ConsumerHttp.findBy({ id: id.toString() });
+  formData.value = await Requests.Consumer.findBy({ id: id.toString() });
 }
 
 function collectConsumer() {
-  ConsumerHttp.addCollecting({ collectorId: token.id, consumerId: formData.value.id });
+  Requests.Consumer.addCollecting({ collectorId: token.id, consumerId: formData.value.id });
 }
 
 onBeforeRouteUpdate(async updateGuard => {

@@ -5,7 +5,7 @@
  * @since 2023/10/22
  */
 
-import { AdminHttp } from "@common/requests";
+import { Requests } from "@common/requests";
 import { ElFormUtil } from "@common/utils";
 
 const router = useRouter();
@@ -36,8 +36,8 @@ const formRules = reactive<FormRules>({
 
 function confirmLogin() {
   ElFormUtil.validate(formRef.value, async () => {
-    AdminHttp.authLogin(formData, token => {
-      localStorage.setToken(KeyVals.SUBAPP_TOKEN_KEY, token);
+    Requests.Admin.authLogin(formData, token => {
+      localStorage.setToken(Consts.SUBAPP_TOKEN_KEY, token);
       router.push("/");
     });
   });

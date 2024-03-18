@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ConsumerHttp } from "@common/requests";
+import { Requests } from "@common/requests";
 import { ElFormUtil } from "@common/utils";
 
 const router = useRouter();
@@ -35,7 +35,7 @@ const formRules = reactive<FormRules>({
 
 function confirmGetVerifyCode() {
   ElFormUtil.askVerifyCaptcha(interval, coudButtonCount, codeButtonDisabled, (callback: any) => {
-    ConsumerHttp.askLoginEmailCaptcha({ config: { params: { email: formData.email } } }, () =>
+    Requests.Consumer.askLoginEmailCaptcha({ config: { params: { email: formData.email } } }, () =>
       callback()
     );
   });
@@ -43,8 +43,8 @@ function confirmGetVerifyCode() {
 
 function confirmSubmitForm() {
   ElFormUtil.validate(formRef.value, () => {
-    ConsumerHttp.verifyLoginEmailCaptcha(formData, token => {
-      localStorage.setToken(KeyVals.MAINAPP_TOKEN_KEY, token);
+    Requests.Consumer.verifyLoginEmailCaptcha(formData, token => {
+      localStorage.setToken(Consts.MAINAPP_TOKEN_KEY, token);
       router.push("/workbench");
     });
   });

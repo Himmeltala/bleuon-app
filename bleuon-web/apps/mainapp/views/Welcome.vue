@@ -6,12 +6,11 @@
  *
  */
 
-import { ConsumerHttp } from "@common/requests";
-
-const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
+import { Requests } from "@common/requests";
+const token = localStorage.getToken(Consts.MAINAPP_TOKEN_KEY);
 
 function confirmLogout() {
-  ConsumerHttp.authLogout();
+  Requests.Consumer.authLogout();
 }
 </script>
 

@@ -5,7 +5,7 @@
  * @since 2023/10/22
  */
 
-import { PermissionHttp } from "@common/requests";
+import { Requests } from "@common/requests";
 import { DateUtil } from "@common/utils";
 
 const currPage = ref(1);
@@ -14,7 +14,7 @@ const pageSize = ref(10);
 const mainList = ref<PageInfo<AdminModel>>();
 
 async function fetchDataList() {
-  mainList.value = await PermissionHttp.findAdminsWithRoleListWithoutAuthorityList({
+  mainList.value = await Requests.Permission.findAdminsWithRoleListWithoutAuthorityList({
     pageSize: pageSize.value,
     currPage: currPage.value
   });
@@ -23,7 +23,7 @@ async function fetchDataList() {
 async function onExpandAuthorityListOfRoleItem(item: any) {
   item.loading = true;
   if (!item.hasGetAuthorities) {
-    PermissionHttp.findAuthoritiesOfRole({ adminId: item.id, pageSize: 10, currPage: 1 }, data => {
+    Requests.Permission.findAuthoritiesOfRole({ adminId: item.id, pageSize: 10, currPage: 1 }, data => {
       item.authorities = data;
       item.pageSize = 10;
       item.currPage = 1;
@@ -37,7 +37,7 @@ async function onExpandAuthorityListOfRoleItem(item: any) {
 
 async function fetchAuthorityListOfRole(item: any) {
   item.loading = true;
-  PermissionHttp.findAuthoritiesOfRole(
+  Requests.Permission.findAuthoritiesOfRole(
     {
       adminId: item.id,
       pageSize: item.pageSize,
@@ -52,7 +52,7 @@ async function fetchAuthorityListOfRole(item: any) {
 }
 
 function handleDelete(item: AdminModel) {
-  PermissionHttp.deleteRoleOfAdmin({ username: item.username }, async () => {
+  Requests.Permission.deleteRoleOfAdmin({ username: item.username }, async () => {
     await fetchDataList();
   });
 }
@@ -70,7 +70,7 @@ function openEditAdminDialog(item: AdminModel) {
 }
 
 function handleRemoveRole(item: RoleModel) {
-  PermissionHttp.deleteRoleOfAdmin(
+  Requests.Permission.deleteRoleOfAdmin(
     { roleId: item.id, adminId: currEditRole.value.id, username: currEditRole.value.username },
     async () => {
       await fetchDataList();

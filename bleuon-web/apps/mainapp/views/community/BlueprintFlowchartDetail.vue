@@ -12,8 +12,8 @@ import { dia } from "jointjs";
 import { createJointjs } from "@common/lib/jointjs";
 
 import { DateUtil } from "@common/utils";
-import { BlueprintHttp } from "@common/requests";
-import { JointJsEventService } from "@mainapp/service/diagraming/flowchart/listener-service";
+import { Requests } from "@common/requests";
+import { Services } from "@mainapp/service";
 import CommonHeader from "@mainapp/fragments/CommonHeader.vue";
 
 const paper = shallowRef<dia.Paper>();
@@ -21,18 +21,18 @@ const graph = shallowRef<dia.Graph>();
 
 const route = useRoute();
 const mainData = ref<BlueprintFlowchartModel>();
-const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
+const token = localStorage.getToken(Consts.MAINAPP_TOKEN_KEY);
 
 async function fetchData(params: BlueprintFlowchartModel) {
-  mainData.value = await BlueprintHttp.findById(params);
+  mainData.value = await Requests.Blueprint.findById(params);
 }
 
 function replicate() {
-  BlueprintHttp.replicate(mainData.value, token.id);
+  Requests.Blueprint.replicate(mainData.value, token.id);
 }
 
 function collect() {
-  BlueprintHttp.addCollecting(mainData.value, token.id);
+  Requests.Blueprint.addCollecting(mainData.value, token.id);
 }
 
 await fetchData({ id: route.params.id.toString() });
@@ -71,7 +71,7 @@ onMounted(() => {
 
   paper.value.unfreeze();
 
-  const events = new JointJsEventService(
+  const events = new Services.Listener.JointJsEventService(
     lastView,
     currView,
     activeLink,
@@ -85,7 +85,7 @@ onMounted(() => {
     "blank:mousewheel": evt => events.onMousewheelBlank(evt, paper.value)
   });
 
-  BlueprintHttp.upgrade({
+  Requests.Blueprint.upgrade({
     config: {
       ignore200: true
     },

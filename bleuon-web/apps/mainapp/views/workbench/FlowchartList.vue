@@ -10,7 +10,7 @@
 import { downloadWithDataURI } from "@common/lib/jointjs/utils";
 
 import { DateUtil, ElFormUtil } from "@common/utils";
-import { FlowchartHttp } from "@common/requests";
+import { Requests } from "@common/requests";
 
 // components
 import File from "@mainapp/components/File.vue";
@@ -28,17 +28,17 @@ const fileNameRules = reactive({
   ]
 });
 
-const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
+const token = localStorage.getToken(Consts.MAINAPP_TOKEN_KEY);
 
 async function fetchData(params: any) {
-  mainData.value = await FlowchartHttp.findAllByCriteria({
+  mainData.value = await Requests.Flowchart.findAllByCriteria({
     ...params,
     collectorId: token.id
   });
 }
 
 function upgrade() {
-  FlowchartHttp.upgrade({ model: mainData.value[clickedIndex.value] }, () => {
+  Requests.Flowchart.upgrade({ model: mainData.value[clickedIndex.value] }, () => {
     dialogVisible.value = !dialogVisible.value;
   });
 }
@@ -53,13 +53,13 @@ function download(data: FlowchartModel) {
 }
 
 function replicate(data: FlowchartModel) {
-  FlowchartHttp.replicate({ ...data, consumerId: token.id }, async () => {
+  Requests.Flowchart.replicate({ ...data, consumerId: token.id }, async () => {
     await fetchData({});
   });
 }
 
 function remove(id: string, index: number) {
-  FlowchartHttp.deleteById({ id }, async () => {
+  Requests.Flowchart.deleteById({ id }, async () => {
     mainData.value.splice(index, 1);
   });
 }

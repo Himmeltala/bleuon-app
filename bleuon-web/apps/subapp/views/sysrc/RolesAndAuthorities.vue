@@ -5,7 +5,7 @@
  * @since 2023/10/24
  */
 
-import { PermissionHttp } from "@common/requests";
+import { Requests } from "@common/requests";
 import { DateUtil, ElFormUtil, PagerUtil } from "@common/utils";
 
 const currPage = ref(1);
@@ -13,7 +13,7 @@ const pageSize = ref(10);
 const mainList = shallowRef<PageInfo<RoleModel>>();
 
 async function fetchDataList() {
-  mainList.value = await PermissionHttp.findRolesWithoutAuthorityList({
+  mainList.value = await Requests.Permission.findRolesWithoutAuthorityList({
     pageSize: pageSize.value,
     currPage: currPage.value
   });
@@ -33,7 +33,7 @@ const addRoleFormData = ref<RoleModel>({
 
 function handleAddRole() {
   ElFormUtil.validate(addRoleFormEl.value, () => {
-    PermissionHttp.addRole(addRoleFormData.value, async () => {
+    Requests.Permission.addRole(addRoleFormData.value, async () => {
       ElFormUtil.reset(addRoleFormEl.value);
       addRoleDialog.value = false;
       await fetchDataList();
@@ -61,7 +61,7 @@ function openEditDialog(item: RoleModel) {
 function handleEditRole() {
   ElFormUtil.validate(editRoleFormEl.value, () => {
     console.log(editRoleFormData.value);
-    PermissionHttp.upgradeRole(editRoleFormData.value, async () => {
+    Requests.Permission.upgradeRole(editRoleFormData.value, async () => {
       ElFormUtil.reset(editRoleFormEl.value);
       editRoleDialog.value = false;
       await fetchDataList();
@@ -75,7 +75,7 @@ function closeEditDialog() {
 }
 
 function handleDeleteRole(item: RoleModel) {
-  PermissionHttp.deleteRole({ id: item.id }, async () => {
+  Requests.Permission.deleteRole({ id: item.id }, async () => {
     await fetchDataList();
   });
 }
@@ -83,13 +83,16 @@ function handleDeleteRole(item: RoleModel) {
 function onExpandAuthChange(item: any) {
   item.loading = true;
   if (!item.hasGetAuthorities) {
-    PermissionHttp.findAuthoritiesOfRole({ roleId: item.id, pageSize: 10, currPage: 1 }, data => {
-      item.authorities = data;
-      item.pageSize = 10;
-      item.currPage = 1;
-      item.hasGetAuthorities = true;
-      item.loading = false;
-    });
+    Requests.Permission.findAuthoritiesOfRole(
+      { roleId: item.id, pageSize: 10, currPage: 1 },
+      data => {
+        item.authorities = data;
+        item.pageSize = 10;
+        item.currPage = 1;
+        item.hasGetAuthorities = true;
+        item.loading = false;
+      }
+    );
   } else {
     item.loading = false;
   }
@@ -97,7 +100,7 @@ function onExpandAuthChange(item: any) {
 
 function fetchAuthorityListOfRole(item: any) {
   item.loading = true;
-  PermissionHttp.findAuthoritiesOfRole(
+  Requests.Permission.findAuthoritiesOfRole(
     { roleId: item.id, pageSize: item.pageSize, currPage: item.currPage },
     data => {
       item.authorities = data;
@@ -119,7 +122,7 @@ const calcRoleAuthList = PagerUtil.paginate(roleAuthList, addRoleAuthCurrPage, a
 
 function openAddRoleAuthDialog(item: any) {
   addRoleAuthItem.value = item;
-  PermissionHttp.findNoRepeatAuthorityListOfRole({ roleId: item.id }, data => {
+  Requests.Permission.findNoRepeatAuthorityListOfRole({ roleId: item.id }, data => {
     roleAuthList.value = data;
     addRoleAuthDialog.value = true;
   });
@@ -130,11 +133,11 @@ function handleAddRoleAuthSelectionChange(val: AuthorityModel[]) {
 }
 
 function handleAddRoleAuth() {
-  PermissionHttp.addAuthorityListToRole(
+  Requests.Permission.addAuthorityListToRole(
     { roleId: addRoleAuthItem.value.id, authIds: authIdList.value },
     () => {
       addRoleAuthItem.value.loading = true;
-      PermissionHttp.findAuthoritiesOfRole(
+      Requests.Permission.findAuthoritiesOfRole(
         {
           roleId: addRoleAuthItem.value.id,
           pageSize: addRoleAuthItem.value.pageSize,
@@ -152,7 +155,7 @@ function handleAddRoleAuth() {
 }
 
 function handleDeleteAuth(authItem: any, roleItem: any) {
-  PermissionHttp.deleteRoleAuthority({ roleId: roleItem.id, authId: authItem.id }, () => {
+  Requests.Permission.deleteRoleAuthority({ roleId: roleItem.id, authId: authItem.id }, () => {
     fetchAuthorityListOfRole(roleItem);
   });
 }

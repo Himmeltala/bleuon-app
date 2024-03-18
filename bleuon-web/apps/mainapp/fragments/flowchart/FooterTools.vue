@@ -27,7 +27,7 @@ onBeforeRouteLeave(() => {
 });
 
 const scale = ref(props.scale);
-const paper = inject<Ref<dia.Paper>>(KeyVals.BLEUON_FLOWCHART_PAPER);
+const paper = inject<Ref<dia.Paper>>(Consts.BLEUON_FLOWCHART_PAPER);
 
 const formateScale = computed({
   get() {

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ConsumerHttp } from "@common/requests";
+import { Requests } from "@common/requests";
 import { ElFormUtil } from "@common/utils";
 
 const router = useRouter();
@@ -31,8 +31,8 @@ const formRules = reactive<FormRules>({
 
 function confirmLogin() {
   ElFormUtil.validate(formRef.value, async () => {
-    ConsumerHttp.authLogin(formData, token => {
-      localStorage.setToken(KeyVals.MAINAPP_TOKEN_KEY, token);
+    Requests.Consumer.authLogin(formData, token => {
+      localStorage.setToken(Consts.MAINAPP_TOKEN_KEY, token);
       router.push("/workbench");
     });
   });

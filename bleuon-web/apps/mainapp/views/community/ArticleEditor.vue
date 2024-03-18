@@ -5,7 +5,7 @@
  * @since 2023/10/20
  */
 
-import { DiscussionHttp, FileHttp } from "@common/requests";
+import { Requests } from "@common/requests";
 import { ElFormUtil, TextUtil } from "@common/utils";
 import { ElSelectData } from "@common/data";
 
@@ -87,7 +87,7 @@ const formRules = reactive({
   ]
 });
 const formEl = ref();
-const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
+const token = localStorage.getToken(Consts.MAINAPP_TOKEN_KEY);
 
 function triggValidate() {
   formEl.value.validateField("content");
@@ -95,22 +95,22 @@ function triggValidate() {
 
 function startUploadDescImgs(formData: FormData) {
   formData.append("filepath", "/article/desc");
-  return FileHttp.uploadImageFile(formData);
+  return Requests.File.uploadImageFile(formData);
 }
 
 function removeDescImgItem(str: string, callback: Function) {
-  FileHttp.deleteImageFile(str, () => callback());
+  Requests.File.deleteImageFile(str, () => callback());
 }
 
 function uploadImageFile(formData: FormData) {
   formData.append("filepath", "/article/content");
-  return FileHttp.uploadImageFile(formData);
+  return Requests.File.uploadImageFile(formData);
 }
 
 function startCreateArticle() {
   ElFormUtil.validate(formEl.value, () => {
     formData.value.consumerId = token.id;
-    DiscussionHttp.addArticle(formData.value, () => {
+    Requests.Discussion.addArticle(formData.value, () => {
       location.reload();
     });
   });
@@ -124,7 +124,7 @@ const titleEnterTags = ref();
 function repostArticle() {
   ElFormUtil.validate(formEl.value, () => {
     formData.value.consumerId = token.id;
-    DiscussionHttp.upgradeArticle({ model: formData.value });
+    Requests.Discussion.upgradeArticle({ model: formData.value });
   });
 }
 
@@ -135,7 +135,7 @@ onMounted(async () => {
   viewType.value = route.query.type.toString();
 
   if (viewType.value === "edit") {
-    formData.value = await DiscussionHttp.findDetailByCriteria({ articleId });
+    formData.value = await Requests.Discussion.findDetailByCriteria({ articleId });
     classicCkEditor.value.initalData(formData.value.content);
     multiImgsUpload.value.initalData(JSON.parse(formData.value.descImgs));
     descEnterTags.value.initalData(JSON.parse(formData.value.descTag));

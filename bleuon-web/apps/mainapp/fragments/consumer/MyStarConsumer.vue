@@ -5,7 +5,7 @@
  * @since 2023/10/13
  */
 
-import { ConsumerHttp } from "@common/requests";
+import { Requests } from "@common/requests";
 
 const props = defineProps({
   consumer: {
@@ -14,11 +14,11 @@ const props = defineProps({
 });
 
 const mainData = ref(
-  await ConsumerHttp.findAllCollectingConsumerByCriteria({ collectorId: props.consumer.id })
+  await Requests.Consumer.findAllCollectingConsumerByCriteria({ collectorId: props.consumer.id })
 );
 
 function cancelStar(item: CollectingConsumerModel, index: number) {
-  ConsumerHttp.deleteCollecting({ id: item.id }, () => {
+  Requests.Consumer.deleteCollecting({ id: item.id }, () => {
     mainData.value.splice(index, 1);
   });
 }

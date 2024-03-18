@@ -92,7 +92,7 @@ const router = createRouter({
 });
 
 function isAuthenticated() {
-  return !!localStorage.getToken(KeyVals.SUBAPP_TOKEN_KEY);
+  return !!localStorage.getToken(Consts.SUBAPP_TOKEN_KEY);
 }
 
 router.beforeEach((to, from, next) => {

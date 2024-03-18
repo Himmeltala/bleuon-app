@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ElFormUtil } from "@common/utils";
-import { ConsumerHttp } from "@common/requests";
+import { Requests } from "@common/requests";
 
 const props = defineProps({
   email: {
@@ -51,7 +51,7 @@ onMounted(() => {
 
 function confirmSubmitForm() {
   ElFormUtil.validate(formRef.value, () => {
-    ConsumerHttp.resetPassword(formData, () => {
+    Requests.Consumer.resetPassword(formData, () => {
       ElMessage.success("密码重置成功，请返回登录！");
     });
   });

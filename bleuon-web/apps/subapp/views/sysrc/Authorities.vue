@@ -5,7 +5,7 @@
  * @since 2023/10/28
  */
 
-import { PermissionHttp } from "@common/requests";
+import { Requests } from "@common/requests";
 import { DateUtil, ElFormUtil } from "@common/utils";
 
 const authList = ref<PageInfo<AuthorityModel>>();
@@ -14,7 +14,7 @@ const pageSize = ref(10);
 const currPage = ref(1);
 
 async function fetchDataList() {
-  authList.value = await PermissionHttp.findAuthorityList({
+  authList.value = await Requests.Permission.findAuthorityList({
     pageSize: pageSize.value,
     currPage: currPage.value,
     ...findFormData
@@ -22,13 +22,13 @@ async function fetchDataList() {
 }
 
 function handleDeleteAuth(item: AuthorityModel) {
-  PermissionHttp.dropAuthority({ id: item.id }, async () => {
+  Requests.Permission.dropAuthority({ id: item.id }, async () => {
     await fetchDataList();
   });
 }
 
 function handleEdit(item: any) {
-  PermissionHttp.upgradeAuthority(item, () => {
+  Requests.Permission.upgradeAuthority(item, () => {
     item.editRow = false;
   });
 }
@@ -58,7 +58,7 @@ const addAuthFormRules = reactive({
 
 function addAuth() {
   ElFormUtil.validate(addAuthFormEl.value, () => {
-    PermissionHttp.addAuthority(addAuthFormData, async () => {
+    Requests.Permission.addAuthority(addAuthFormData, async () => {
       await fetchDataList();
       addAuthDialog.value = false;
     });

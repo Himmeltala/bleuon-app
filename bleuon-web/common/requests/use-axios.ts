@@ -12,7 +12,7 @@ const http = axios.create({
 });
 
 export function createRequest(name: "mainapp" | "subapp") {
-  const tokenKey = name === "mainapp" ? KeyVals.MAINAPP_TOKEN_KEY : KeyVals.SUBAPP_TOKEN_KEY;
+  const tokenKey = name === "mainapp" ? Consts.MAINAPP_TOKEN_KEY : Consts.SUBAPP_TOKEN_KEY;
 
   const requestInterceptor = (request: InternalAxiosRequestConfig) => {
     const token = localStorage.getToken(tokenKey);

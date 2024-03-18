@@ -161,7 +161,7 @@ export function authLogout(success?: Function, error?: Function) {
   http.post<R>("/auth/logout").then(({ data }) => {
     if (data.code === 200) {
       location.reload();
-      localStorage.removeItem(KeyVals.MAINAPP_TOKEN_KEY);
+      localStorage.removeItem(Consts.MAINAPP_TOKEN_KEY);
       success && success(data);
     } else error && error();
   });

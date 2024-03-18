@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ConsumerHttp } from "@common/requests";
+import { Requests } from "@common/requests";
 import { ElFormUtil } from "@common/utils";
 
 defineProps({
@@ -44,7 +44,7 @@ const formRules = reactive<FormRules>({
 
 function confirmGetVerifyCode() {
   ElFormUtil.askVerifyCaptcha(interval, coudButtonCount, codeButtonDisabled, (callback: any) => {
-    ConsumerHttp.askResetEmailCaptcha({ email: formData.email }, () => callback());
+    Requests.Consumer.askResetEmailCaptcha({ email: formData.email }, () => callback());
   });
 }
 
@@ -52,7 +52,7 @@ const isVerifySuccess = ref(false);
 
 function confirmSubmitForm() {
   ElFormUtil.validate(formRef.value, () => {
-    ConsumerHttp.verifyEmailCaptcha(formData, () => {
+    Requests.Consumer.verifyEmailCaptcha(formData, () => {
       isVerifySuccess.value = true;
       emits("update:email", formData.email);
     });

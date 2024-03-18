@@ -5,7 +5,7 @@
  * @since 2023/10/13
  */
 
-import { ConsumerHttp } from "@common/requests";
+import { Requests } from "@common/requests";
 import { DateUtil } from "@common/utils";
 
 import File from "@mainapp/components/File.vue";
@@ -17,7 +17,7 @@ const props = defineProps({
 });
 
 const mainData = ref(
-  await ConsumerHttp.findAllFlowchart({ collectorId: `${props.consumer.id}`, isShare: 1 })
+  await Requests.Consumer.findAllFlowchart({ collectorId: `${props.consumer.id}`, isShare: 1 })
 );
 </script>
 

@@ -6,7 +6,7 @@
  */
 
 import { DateUtil } from "@common/utils";
-import { DiscussionHttp } from "@common/requests";
+import { Requests } from "@common/requests";
 import { ElSelectData } from "@common/data";
 
 import CommonHeader from "@mainapp/fragments/CommonHeader.vue";
@@ -14,7 +14,7 @@ import CommonHeader from "@mainapp/fragments/CommonHeader.vue";
 const mainData = ref<PageInfo<ArticleModel>>();
 
 async function fetchData(pamras: any) {
-  mainData.value = await DiscussionHttp.findAllByCriteria(pamras);
+  mainData.value = await Requests.Discussion.findAllByCriteria(pamras);
 }
 
 const searchVal = ref("");

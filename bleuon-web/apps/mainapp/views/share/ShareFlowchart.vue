@@ -12,14 +12,14 @@ import "jointjs/css/themes/default.css";
 import { dia } from "jointjs";
 import { createJointjs } from "@common/lib/jointjs";
 // service
-import { JointJsEventService } from "@mainapp/service/diagraming/flowchart/listener-service";
+import { Services } from "@mainapp/service";
 // apis
-import { FlowchartHttp } from "@common/requests";
+import { Requests } from "@common/requests";
 // common
 import { DateUtil } from "@common/utils";
 // components
-import HeaderToolsBottom from "@mainapp/fragments/flowchart/HeaderToolsBottom.vue";
-import HeaderToolsTop from "@mainapp/fragments/flowchart/HeaderToolsTop.vue";
+import HeaderBottomTools from "@mainapp/fragments/flowchart/HeaderBottomTools.vue";
+import HeaderTopTools from "@mainapp/fragments/flowchart/HeaderTopTools.vue";
 import FooterTools from "@mainapp/fragments/flowchart/FooterTools.vue";
 
 const route = useRoute();
@@ -30,14 +30,14 @@ const graph = shallowRef<dia.Graph>();
 const mainData = ref<FlowchartModel>({});
 const texteditor = shallowRef<HTMLInputElement>();
 
-provide(KeyVals.BLEUON_FLOWCHART_PAPER, paper);
-provide(KeyVals.BLEUON_FLOWCHART_GRAPH, graph);
-provide(KeyVals.BLEUON_FLOWCHART_DATA, mainData);
-const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
+provide(Consts.BLEUON_FLOWCHART_PAPER, paper);
+provide(Consts.BLEUON_FLOWCHART_GRAPH, graph);
+provide(Consts.BLEUON_FLOWCHART_DATA, mainData);
+const token = localStorage.getToken(Consts.MAINAPP_TOKEN_KEY);
 
 async function fetchData() {
   const id = route.params.id.toString();
-  const data = await FlowchartHttp.findIsShare({ id }, () => {
+  const data = await Requests.Flowchart.findIsShare({ id }, () => {
     router.back();
   });
   mainData.value = data;
@@ -81,7 +81,7 @@ onMounted(() => {
 
   remodeling();
 
-  const events = new JointJsEventService(
+  const events = new Services.Listener.JointJsEventService(
     lastView,
     currView,
     activeLink,
@@ -117,7 +117,7 @@ const dialogVisible = ref(false);
 
 function replicate() {
   mainData.value.filename = mainData.value.filename;
-  FlowchartHttp.replicate({ ...mainData.value, consumerId: token.id }, res =>
+  Requests.Flowchart.replicate({ ...mainData.value, consumerId: token.id }, res =>
     ElMessage.success(res.message)
   );
 }
@@ -129,7 +129,7 @@ await fetchData();
   <div class="bleuon__flowchart-container h-100vh">
     <div
       class="bleuon__flowchart-header h-22vh border-border-primary border-b-1 border-b-solid bg-bg-primary px-4 py-4">
-      <HeaderToolsTop :data="mainData" class="mb-4">
+      <HeaderTopTools :data="mainData" class="mb-4">
         <template #tools>
           <el-tooltip content="分享">
             <div class="hover i-tabler-share mr-4" @click="dialogVisible = !dialogVisible"></div>
@@ -140,8 +140,8 @@ await fetchData();
             </div>
           </el-tooltip>
         </template>
-      </HeaderToolsTop>
-      <HeaderToolsBottom
+      </HeaderTopTools>
+      <HeaderBottomTools
         :curr-view="currView"
         :last-view="lastView"
         :active-elem="activeElem"

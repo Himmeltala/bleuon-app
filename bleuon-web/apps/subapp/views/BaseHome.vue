@@ -5,7 +5,7 @@
  * @since 2023/10/22
  */
 
-import { AdminHttp } from "@common/requests";
+import { Requests } from "@common/requests";
 import MenuAvatar from "@subapp/fragments/MenuAvatar.vue";
 
 const route = useRoute();
@@ -14,12 +14,12 @@ const routes = route.matched[0].children;
 const routeList = ref([]);
 
 const adminData = ref<AdminModel>();
-provide(KeyVals.SUBAPP_ADMIN_DATA, adminData);
+provide(Consts.SUBAPP_ADMIN_DATA, adminData);
 
 async function fetchAdminData() {
-  const token = localStorage.getToken(KeyVals.SUBAPP_TOKEN_KEY);
+  const token = localStorage.getToken(Consts.SUBAPP_TOKEN_KEY);
   if (token) {
-    adminData.value = await AdminHttp.findBy({ id: token.id });
+    adminData.value = await Requests.Admin.findBy({ id: token.id });
   } else {
     adminData.value = {};
   }
@@ -48,7 +48,7 @@ await fetchAdminData();
       <el-header class="f-c-c">
         <div class="wapper f-c-e w-100% h-100%">
           <div class="f-c-c">
-            <MenuAvatar :data="adminData" @logout="AdminHttp.authLogout" />
+            <MenuAvatar :data="adminData" @logout="Requests.Admin.authLogout" />
             <div class="ml-2">{{ adminData.username }}</div>
           </div>
         </div>

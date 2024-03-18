@@ -13,16 +13,16 @@ import { dia } from "jointjs";
 import { createJointjs } from "@common/lib/jointjs";
 import { getDataURI } from "@common/lib/jointjs/utils";
 // service
-import { JointJsEventService } from "@mainapp/service/diagraming/flowchart/listener-service";
+import { Services } from "@mainapp/service";
 // common
 import { ElDatePickerData, ElSelectData } from "@common/data";
 import { ElFormUtil, PreventUtil } from "@common/utils";
 // apis
-import { FlowchartHttp } from "@common/requests";
+import { Requests } from "@common/requests";
 // components
 import FooterTools from "@mainapp/fragments/flowchart/FooterTools.vue";
-import HeaderToolsBottom from "@mainapp/fragments/flowchart/HeaderToolsBottom.vue";
-import HeaderToolsTop from "@mainapp/fragments/flowchart/HeaderToolsTop.vue";
+import HeaderBottomTools from "@mainapp/fragments/flowchart/HeaderBottomTools.vue";
+import HeaderTopTools from "@mainapp/fragments/flowchart/HeaderTopTools.vue";
 import Sidebar from "@mainapp/fragments/flowchart/Sidebar.vue";
 
 const route = useRoute();
@@ -31,9 +31,9 @@ const graph = shallowRef<dia.Graph>();
 const mainData = ref<FlowchartModel>({});
 const texteditor = shallowRef<HTMLInputElement>();
 
-provide(KeyVals.BLEUON_FLOWCHART_PAPER, paper);
-provide(KeyVals.BLEUON_FLOWCHART_GRAPH, graph);
-provide(KeyVals.BLEUON_FLOWCHART_DATA, mainData);
+provide(Consts.BLEUON_FLOWCHART_PAPER, paper);
+provide(Consts.BLEUON_FLOWCHART_GRAPH, graph);
+provide(Consts.BLEUON_FLOWCHART_DATA, mainData);
 
 const lastView = shallowRef({
   view: null,
@@ -47,7 +47,7 @@ const offsetX = ref(0);
 const offsetY = ref(0);
 
 async function fetchData() {
-  mainData.value = await FlowchartHttp.findById({ id: route.params.id.toString() });
+  mainData.value = await Requests.Flowchart.findById({ id: route.params.id.toString() });
 }
 
 await fetchData();
@@ -79,7 +79,7 @@ onMounted(() => {
 
   remodeling();
 
-  const events = new JointJsEventService(
+  const events = new Services.Listener.JointJsEventService(
     lastView,
     currView,
     activeLink,
@@ -140,7 +140,7 @@ async function upgradeMetaData(success?: (message: any) => void) {
     dataUri: await getDataURI(paper.value)
   };
 
-  FlowchartHttp.upgrade({ model: mainData.value, config: { ignore200: true } }, success);
+  Requests.Flowchart.upgrade({ model: mainData.value, config: { ignore200: true } }, success);
 }
 
 const upgradeThrottle = PreventUtil.throttle(() => upgradeMetaData(), 300);
@@ -167,7 +167,7 @@ const shareFormRules = reactive<FormRules<any>>({
 function confirmShare() {
   ElFormUtil.validate(shareFormRef.value, () => {
     mainData.value.isShare = 1;
-    FlowchartHttp.upgrade({ model: mainData.value, config: { ignore200: true } }, message => {
+    Requests.Flowchart.upgrade({ model: mainData.value, config: { ignore200: true } }, message => {
       if (message.code === 200) {
         ElMessage.success("分享成功！");
       } else {
@@ -180,7 +180,7 @@ function confirmShare() {
 
 function cancelShare() {
   mainData.value.isShare = 0;
-  FlowchartHttp.upgrade({ model: mainData.value, config: { ignore200: true } }, message => {
+  Requests.Flowchart.upgrade({ model: mainData.value, config: { ignore200: true } }, message => {
     if (message.code === 200) {
       ElMessage.success("取消分享成功！");
     } else {
@@ -229,14 +229,14 @@ const releaseTagList = ref([]);
 function confirmRelease() {
   ElFormUtil.validate(releaseFormRef.value, () => {
     releaseFormData.tags = JSON.stringify(releaseTagList.value);
-    FlowchartHttp.release({ flowchartId: mainData.value.id, ...releaseFormData }, () => {
+    Requests.Flowchart.release({ flowchartId: mainData.value.id, ...releaseFormData }, () => {
       mainData.value.isPublic = 1;
     });
   });
 }
 
 function cancelRelease() {
-  FlowchartHttp.cancelRelease({ flowchartId: mainData.value.id }, () => {
+  Requests.Flowchart.cancelRelease({ flowchartId: mainData.value.id }, () => {
     mainData.value.isPublic = 0;
   });
 }
@@ -246,7 +246,7 @@ function cancelRelease() {
   <div class="bleuon__flowchart-container h-100vh">
     <div
       class="bleuon__flowchart-header h-22vh border-border-primary border-b-1 border-b-solid bg-bg-primary px-4 py-4">
-      <HeaderToolsTop :data="mainData" class="mb-4" @change="upgradeMetaData">
+      <HeaderTopTools :data="mainData" class="mb-4" @change="upgradeMetaData">
         <template #tools>
           <el-tooltip content="分享">
             <div
@@ -259,8 +259,8 @@ function cancelRelease() {
               @click="releaseDialogVisible = !releaseDialogVisible"></div>
           </el-tooltip>
         </template>
-      </HeaderToolsTop>
-      <HeaderToolsBottom
+      </HeaderTopTools>
+      <HeaderBottomTools
         :curr-view="currView"
         :last-view="lastView"
         :active-elem="activeElem"

@@ -6,17 +6,17 @@
  *
  */
 
-import { ConsumerHttp } from "@common/requests";
+import { Requests } from "@common/requests";
 import { ElSelectData } from "@common/data";
 import { ElFormUtil, DateUtil } from "@common/utils";
 
 import CommonHeader from "@mainapp/fragments/CommonHeader.vue";
 
-const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
-const mainData = ref(await ConsumerHttp.findBy({ id: token.id }));
+const token = localStorage.getToken(Consts.MAINAPP_TOKEN_KEY);
+const mainData = ref(await Requests.Consumer.findBy({ id: token.id }));
 
 function upgradeBasicData() {
-  ConsumerHttp.upgrade({
+  Requests.Consumer.upgrade({
     id: token.id,
     username: mainData.value.username,
     profession: mainData.value.profession,
@@ -80,22 +80,22 @@ const resetPwdFormRules = reactive<FormRules>({
 
 function getResetPwdCode() {
   ElFormUtil.askVerifyCaptcha(interval, resetButtonCount, resetButtonDisabled, callback => {
-    ConsumerHttp.askResetEmailCaptcha({ email: mainData.value.email }, () => callback());
+    Requests.Consumer.askResetEmailCaptcha({ email: mainData.value.email }, () => callback());
   });
 }
 
 function confirmResetPwd() {
   ElFormUtil.validate(resetPwdFormRef.value, () => {
-    ConsumerHttp.verifyEmailCaptcha(
+    Requests.Consumer.verifyEmailCaptcha(
       { captcha: resetPwdFormData.captcha, email: mainData.value.email },
       () => {
-        ConsumerHttp.upgrade(
+        Requests.Consumer.upgrade(
           {
             id: token.id,
             password: resetPwdFormData.password
           },
           () => {
-            ConsumerHttp.authLogout();
+            Requests.Consumer.authLogout();
           }
         );
       }
@@ -171,7 +171,7 @@ function confirmResetPwd() {
             <div class="w-30% f-c-e cursor-pointer">
               <AvatarUpload
                 v-model:img-url="mainData.avatar"
-                :start-upload="formData => ConsumerHttp.upgradeAvatar(formData, token.id)" />
+                :start-upload="formData => Requests.Consumer.upgradeAvatar(formData, token.id)" />
             </div>
           </div>
           <div class="mt-5 f-c-e text-0.8rem text-text-secondary">

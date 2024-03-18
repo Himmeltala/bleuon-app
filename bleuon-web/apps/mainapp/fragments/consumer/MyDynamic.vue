@@ -6,7 +6,7 @@
  */
 
 import { DateUtil, TextUtil } from "@common/utils";
-import { ConsumerHttp, FileHttp } from "@common/requests";
+import { Requests } from "@common/requests";
 
 const props = defineProps({
   consumer: {
@@ -16,10 +16,10 @@ const props = defineProps({
 
 const list = ref([]);
 const ckeditorValue = ref("");
-const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
+const token = localStorage.getToken(Consts.MAINAPP_TOKEN_KEY);
 
 async function fetchList() {
-  list.value = await ConsumerHttp.findAllDynamicByCriteria({
+  list.value = await Requests.Consumer.findAllDynamicByCriteria({
     sequences: [{ isAsc: false, col: "create_date" }],
     consumerId: `${props.consumer.id}`
   });
@@ -27,7 +27,7 @@ async function fetchList() {
 
 function uploadDynamicImage(formData: FormData) {
   formData.append("filepath", "/dynamic");
-  return FileHttp.uploadImageFile(formData);
+  return Requests.File.uploadImageFile(formData);
 }
 
 function commit() {
@@ -37,14 +37,14 @@ function commit() {
     return;
   }
 
-  ConsumerHttp.addDynamic({ content: ckeditorValue.value, consumerId: token.id }, async () => {
+  Requests.Consumer.addDynamic({ content: ckeditorValue.value, consumerId: token.id }, async () => {
     await fetchList();
   });
 }
 
 function digg(item: DynamicModel) {
   item.digg += 1;
-  ConsumerHttp.upgradeDynamic(
+  Requests.Consumer.upgradeDynamic(
     { model: { digg: item.digg, id: item.id }, config: { ignore200: true } },
     () => {
       ElMessage.success("支持成功！");
@@ -54,7 +54,7 @@ function digg(item: DynamicModel) {
 
 function bury(item: DynamicModel) {
   item.bury += 1;
-  ConsumerHttp.upgradeDynamic(
+  Requests.Consumer.upgradeDynamic(
     { model: { bury: item.bury, id: item.id }, config: { ignore200: true } },
     () => {
       ElMessage.success("反对成功！");
@@ -63,7 +63,7 @@ function bury(item: DynamicModel) {
 }
 
 function remove(item: DynamicModel, index: number) {
-  ConsumerHttp.deleteDynamic({ id: item.id }, () => {
+  Requests.Consumer.deleteDynamic({ id: item.id }, () => {
     list.value.splice(index, 1);
   });
 }

@@ -5,13 +5,13 @@
  * @since 2023/8/23
  */
 
-import { ConsumerHttp } from "@common/requests";
+import { Requests } from "@common/requests";
 
-const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
-const consumer = ref(await ConsumerHttp.findBy({ id: token.id }));
+const token = localStorage.getToken(Consts.MAINAPP_TOKEN_KEY);
+const consumer = ref(await Requests.Consumer.findBy({ id: token.id }));
 
 const root = document.querySelector("html");
-const mode = useStorage(KeyVals.MAINAPP_THEME_MODE, "");
+const mode = useStorage(Consts.MAINAPP_THEME_MODE, "");
 const isDark = ref(mode.value == "dark");
 
 function switchThemeMode() {
@@ -21,7 +21,7 @@ function switchThemeMode() {
 }
 
 function confirmLogout() {
-  ConsumerHttp.authLogout();
+  Requests.Consumer.authLogout();
 }
 
 switchThemeMode();

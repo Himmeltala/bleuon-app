@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ElFormUtil } from "@common/utils";
-import { ConsumerHttp } from "@common/requests";
+import { Requests } from "@common/requests";
 
 const formData = reactive({
   username: "",
@@ -45,7 +45,7 @@ const formRules = reactive<FormRules>({
 
 function confirmRegister() {
   ElFormUtil.validate(formRef.value, async () => {
-    ConsumerHttp.accountRegister(formData, () => {
+    Requests.Consumer.accountRegister(formData, () => {
       ElMessage.success("请返回登录页面进行登录！");
     });
   });

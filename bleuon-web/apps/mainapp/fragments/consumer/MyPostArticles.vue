@@ -6,14 +6,14 @@
  */
 
 import { DateUtil } from "@common/utils";
-import { DiscussionHttp } from "@common/requests";
+import { Requests } from "@common/requests";
 
-const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
+const token = localStorage.getToken(Consts.MAINAPP_TOKEN_KEY);
 const id = useRoute().params.id.toString();
 const mainData = ref<PageInfo<ArticleModel>>();
 
 async function fetchData() {
-  mainData.value = await DiscussionHttp.findAllByCriteria({
+  mainData.value = await Requests.Discussion.findAllByCriteria({
     consumerId: id,
     sequences: [{ isAsc: false, col: "create_date" }]
   });

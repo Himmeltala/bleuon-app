@@ -5,28 +5,28 @@
  * @since 2023/9/25
  */
 
-import { CellsHttp } from "@common/requests";
-import SVG from "./SVG.vue";
+import { Requests } from "@common/requests";
+import Plot from "./Plot.vue";
 
-const mainDataSource = ref(null);
-
-mainDataSource.value = await CellsHttp.findAllByCriteria({ type: "flowchart" });
+const data = ref();
+data.value = await Requests.Cell.findAllByCriteria({ type: "flowchart" });
 </script>
 
 <template>
   <div class="cells-for-flowchart">
     <div class="mb-4 text-0.8rem font-bold">Flowchart 图形</div>
     <div class="f-c-s flex-wrap flex-gap-3">
-      <SVG
-        v-for="item in mainDataSource"
-        v-if="mainDataSource.length"
+      <Plot
+        v-for="item in data"
+        v-if="data.length"
         :attrs="JSON.parse(item.attrs)"
         :content="item.notes"
         :height="item.height"
         :view-box="item.viewBox"
-        :width="item.width"></SVG>
+        :width="item.width"></Plot>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped></style>
+./Svg.vue

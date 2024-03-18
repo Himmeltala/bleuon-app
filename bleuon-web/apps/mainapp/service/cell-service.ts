@@ -148,7 +148,7 @@ export function changeTextUnderline(currView: dia.ElementView) {
  * @param currView 点击的图形
  * @param color
  */
-export function changeTextColor(currView: dia.ElementView, color: string) {
+export function changeTextColor(currView: dia.ElementView, color: any) {
   // @ts-ignore
   const model = currView.model;
   const isLink = model.isLink();

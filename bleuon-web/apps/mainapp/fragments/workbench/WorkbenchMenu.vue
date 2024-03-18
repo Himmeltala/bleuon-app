@@ -5,7 +5,7 @@
  * @since 2023/8/23
  */
 
-import { FlowchartHttp } from "@common/requests";
+import { Requests } from "@common/requests";
 
 defineProps({
   activeItem: {
@@ -15,13 +15,13 @@ defineProps({
 });
 const emits = defineEmits(["update:activeItem"]);
 
-const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
+const token = localStorage.getToken(Consts.MAINAPP_TOKEN_KEY);
 const router = useRouter();
 
 function navigateTo(name: string) {
   emits("update:activeItem", name);
   const rsv = router.resolve({ name: name });
-  router.push({ name: rsv.name, path: rsv.path });
+  router.push({ path: rsv.path });
 }
 
 onBeforeMount(() => {
@@ -30,7 +30,7 @@ onBeforeMount(() => {
 });
 
 function createFlowchart() {
-  FlowchartHttp.add({ consumerId: token.id }, res => {
+  Requests.Flowchart.add({ consumerId: token.id }, res => {
     router.push(`/flowchart/${res.data.id}`);
   });
 }

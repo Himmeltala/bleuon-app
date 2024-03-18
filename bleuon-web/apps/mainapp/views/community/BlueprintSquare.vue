@@ -5,7 +5,7 @@
  * @since 2023/10/5
  */
 
-import { BlueprintHttp } from "@common/requests";
+import { Requests } from "@common/requests";
 import { DateUtil } from "@common/utils";
 import { ElSelectData } from "@common/data";
 
@@ -19,7 +19,7 @@ const ranking = ref("");
 const mainData = shallowRef<BlueprintFlowchartModel[]>();
 
 async function fetchData(params?: BlueprintFlowchartModel) {
-  mainData.value = await BlueprintHttp.findAll(params);
+  mainData.value = await Requests.Blueprint.findAll(params);
   triggerRef(mainData);
 }
 

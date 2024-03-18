@@ -15,7 +15,7 @@ defineProps({
 defineEmits(["logout"]);
 
 const root = document.querySelector("html");
-const mode = useStorage(KeyVals.SUBAPP_THEME_MODE, "");
+const mode = useStorage(Consts.SUBAPP_THEME_MODE, "");
 const isDark = ref(mode.value == "dark");
 
 function switchThemeMode() {

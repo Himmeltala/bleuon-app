@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ElFormUtil } from "@common/utils";
-import { ConsumerHttp } from "@common/requests";
+import { Requests } from "@common/requests";
 
 const coudButtonCount = ref(60);
 let interval: number;
@@ -61,13 +61,13 @@ const formRules = reactive<FormRules>({
 
 function confirmGetVerifyCode() {
   ElFormUtil.askVerifyCaptcha(interval, coudButtonCount, codeButtonDisabled, callback => {
-    ConsumerHttp.askRegisterEmailCaptcha({ email: formData.email }, () => callback());
+    Requests.Consumer.askRegisterEmailCaptcha({ email: formData.email }, () => callback());
   });
 }
 
 function confirmSubmitForm() {
   ElFormUtil.validate(formRef.value, () => {
-    ConsumerHttp.verifyRegisterEmailCaptcha(
+    Requests.Consumer.verifyRegisterEmailCaptcha(
       formData,
       { email: formData.email, captcha: formData.captcha },
       () => {

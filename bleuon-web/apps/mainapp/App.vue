@@ -7,7 +7,7 @@
  */
 
 const html = document.querySelector("html");
-const themeMode = useStorage(KeyVals.MAINAPP_THEME_MODE, "");
+const themeMode = useStorage(Consts.MAINAPP_THEME_MODE, "");
 
 onBeforeMount(() => {
   const name = themeMode.value === "dark" ? "dark" : "light";

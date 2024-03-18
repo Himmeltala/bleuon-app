@@ -9,19 +9,19 @@
 // jointjs
 import { downloadWithDataURI } from "@common/lib/jointjs/utils";
 
-import { FlowchartHttp } from "@common/requests";
 import { DateUtil } from "@common/utils";
+import { Requests } from "@common/requests";
 
 // components
 import File from "@mainapp/components/File.vue";
 import WorkbenchHeader from "@mainapp/fragments/workbench/WorkbenchHeader.vue";
 
-const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
+const token = localStorage.getToken(Consts.MAINAPP_TOKEN_KEY);
 const mainData = ref<FlowchartModel[]>([]);
 const searchVal = ref("");
 
 async function fetchData(params?: any) {
-  mainData.value = await FlowchartHttp.findAllCollectByCriteria({
+  mainData.value = await Requests.Flowchart.findAllCollectByCriteria({
     ...params,
     collectorId: token.id
   });
@@ -36,11 +36,11 @@ function download(data: FlowchartModel) {
 }
 
 function replicate(data: FlowchartModel) {
-  FlowchartHttp.replicate({ ...data, consumerId: token.id });
+  Requests.Flowchart.replicate({ ...data, consumerId: token.id });
 }
 
 function remove(flowchartId: string, index: number) {
-  FlowchartHttp.deleteCollecting({ flowchartId, collectorId: token.id }, () => {
+  Requests.Flowchart.deleteCollecting({ flowchartId, collectorId: token.id }, () => {
     mainData.value.splice(index, 1);
   });
 }

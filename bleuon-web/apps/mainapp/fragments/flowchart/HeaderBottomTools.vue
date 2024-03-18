@@ -7,9 +7,9 @@
 
 import { dia } from "jointjs";
 import { ElSelectData } from "@common/data";
-import { CellService } from "@mainapp/service/diagraming/flowchart";
+import { Services } from "@mainapp/service";
 
-const paper = inject<dia.Paper>(KeyVals.BLEUON_FLOWCHART_PAPER);
+const paper = inject<dia.Paper>(Consts.BLEUON_FLOWCHART_PAPER);
 
 defineProps({
   activeElem: {
@@ -61,7 +61,7 @@ const shapeBackground = ref("white");
               :disabled="!activeElem && !activeLink"
               placeholder="请选择字体"
               style="width: 100px"
-              @change="value => CellService.changeTextFamily(currView, value)">
+              @change="value => Services.Cell.changeTextFamily(currView, value)">
               <el-option
                 v-for="item in ElSelectData.fontFamilyOptions"
                 :key="item.value"
@@ -76,7 +76,7 @@ const shapeBackground = ref("white");
               :disabled="!activeElem && !activeLink"
               bg
               text
-              @click="CellService.changeTextBold(currView)">
+              @click="Services.Cell.changeTextBold(currView)">
               <template #icon>
                 <div class="i-tabler-bold"></div>
               </template>
@@ -89,7 +89,7 @@ const shapeBackground = ref("white");
               :disabled="!activeElem && !activeLink"
               bg
               text
-              @click="CellService.changeTextItalic(currView)">
+              @click="Services.Cell.changeTextItalic(currView)">
               <template #icon>
                 <div class="i-tabler-italic"></div>
               </template>
@@ -102,7 +102,7 @@ const shapeBackground = ref("white");
               :disabled="!activeElem && !activeLink"
               bg
               text
-              @click="CellService.changeTextUnderline(currView)">
+              @click="Services.Cell.changeTextUnderline(currView)">
               <template #icon>
                 <div class="i-tabler-underline"></div>
               </template>
@@ -115,7 +115,7 @@ const shapeBackground = ref("white");
               :disabled="!activeElem && !activeLink"
               bg
               text
-              @click="CellService.openColorPicker(textColorPicker)">
+              @click="Services.Cell.openColorPicker(textColorPicker)">
               <template #icon>
                 <div class="i-tabler-text-color"></div>
               </template>
@@ -125,7 +125,7 @@ const shapeBackground = ref("white");
             <el-color-picker
               ref="textColorPicker"
               v-model="textColor"
-              @change="value => CellService.changeTextColor(currView, value)" />
+              @change="value => Services.Cell.changeTextColor(currView, value)" />
           </div>
         </div>
         <div class="font-size-tool ml-2">
@@ -137,8 +137,8 @@ const shapeBackground = ref("white");
               :min="14"
               controls-position="right"
               style="width: 85px"
-              @keyup.enter="CellService.changeTextSize(currView, textSize)"
-              @change="CellService.changeTextSize(currView, textSize)" />
+              @keyup.enter="Services.Cell.changeTextSize(currView, textSize)"
+              @change="Services.Cell.changeTextSize(currView, textSize)" />
           </el-tooltip>
         </div>
       </div>
@@ -157,7 +157,7 @@ const shapeBackground = ref("white");
               :disabled="!activeElem && !activeLink"
               placeholder="请选择连线粗细"
               style="width: 85px"
-              @change="value => CellService.changeStrokeWidth(currView, value)">
+              @change="value => Services.Cell.changeStrokeWidth(currView, value)">
               <el-option
                 v-for="item in ElSelectData.shapeStrokeWidthOptions"
                 :key="item.value"
@@ -173,7 +173,7 @@ const shapeBackground = ref("white");
               :disabled="!activeElem && !activeLink"
               placeholder="请选择连线样式"
               style="width: 130px"
-              @change="value => CellService.changeBorderStyle(currView, value)">
+              @change="value => Services.Cell.changeBorderStyle(currView, value)">
               <el-option label="实线" value="solid">
                 <img
                   class="object-cover w-100% h-100%"
@@ -203,7 +203,7 @@ const shapeBackground = ref("white");
               :disabled="!activeElem"
               bg
               text
-              @click="CellService.openColorPicker(shapeBgColorPicker)">
+              @click="Services.Cell.openColorPicker(shapeBgColorPicker)">
               <template #icon>
                 <div class="i-tabler-paint"></div>
               </template>
@@ -213,7 +213,7 @@ const shapeBackground = ref("white");
             <el-color-picker
               ref="shapeBgColorPicker"
               v-model="shapeBackground"
-              @change="value => CellService.changeBackground(currView, value)" />
+              @change="value => Services.Cell.changeBackground(currView, value)" />
           </div>
         </div>
         <div class="link-color-tool ml-2">
@@ -222,7 +222,7 @@ const shapeBackground = ref("white");
               :disabled="!activeElem && !activeLink"
               bg
               text
-              @click="CellService.openColorPicker(linkColorPicker)">
+              @click="Services.Cell.openColorPicker(linkColorPicker)">
               <template #icon>
                 <div class="i-tabler-pencil-minus"></div>
               </template>
@@ -232,7 +232,7 @@ const shapeBackground = ref("white");
             <el-color-picker
               ref="linkColorPicker"
               v-model="textColor"
-              @change="value => CellService.changeLinkColor(currView, value)" />
+              @change="value => Services.Cell.changeLinkColor(currView, value)" />
           </div>
         </div>
       </div>
@@ -250,7 +250,7 @@ const shapeBackground = ref("white");
               v-model="routerConfig.name"
               placeholder="请选择路由模式"
               style="width: 90px"
-              @change="CellService.changeRouterConfig(routerConfig, paper)">
+              @change="Services.Cell.changeRouterConfig(routerConfig, paper)">
               <el-option
                 v-for="item in ElSelectData.linkRouterOptions"
                 :key="item.value"
@@ -265,7 +265,7 @@ const shapeBackground = ref("white");
               v-model="connectorConfig.name"
               placeholder="请选择连接端样式"
               style="width: 90px"
-              @change="CellService.changeConnectorConfig(connectorConfig, paper)">
+              @change="Services.Cell.changeConnectorConfig(connectorConfig, paper)">
               <el-option
                 v-for="item in ElSelectData.linkConnectorOptions"
                 :key="item.value"
@@ -282,8 +282,8 @@ const shapeBackground = ref("white");
               :min="1"
               controls-position="right"
               style="width: 85px"
-              @keyup.enter="CellService.changeGridSize(gridSize, paper)"
-              @change="CellService.changeGridSize(gridSize, paper)" />
+              @keyup.enter="Services.Cell.changeGridSize(gridSize, paper)"
+              @change="Services.Cell.changeGridSize(gridSize, paper)" />
           </el-tooltip>
         </div>
       </div>

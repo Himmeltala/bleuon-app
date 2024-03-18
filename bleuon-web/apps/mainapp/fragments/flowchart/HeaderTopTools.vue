@@ -8,14 +8,14 @@
 import { dia } from "jointjs";
 import { downloadWithDataURI, getDataURI } from "@common/lib/jointjs/utils";
 import { DateUtil } from "@common/utils";
-import { FlowchartHttp } from "@common/requests";
+import { Requests } from "@common/requests";
 
 // components
 import MenuAvatar from "@mainapp/fragments/MenuAvatar.vue";
 
-const paper = inject<Ref<dia.Paper>>(KeyVals.BLEUON_FLOWCHART_PAPER);
-const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
-const mainData = inject<Ref<FlowchartModel>>(KeyVals.BLEUON_FLOWCHART_DATA);
+const paper = inject<Ref<dia.Paper>>(Consts.BLEUON_FLOWCHART_PAPER);
+const token = localStorage.getToken(Consts.MAINAPP_TOKEN_KEY);
+const mainData = inject<Ref<FlowchartModel>>(Consts.BLEUON_FLOWCHART_DATA);
 
 const emits = defineEmits(["change"]);
 
@@ -40,7 +40,7 @@ const calcFileName = computed({
 });
 
 function collect() {
-  FlowchartHttp.addCollecting({ flowchartId: mainData.value.id, collectorId: token.id });
+  Requests.Flowchart.addCollecting({ flowchartId: mainData.value.id, collectorId: token.id });
 }
 </script>
 

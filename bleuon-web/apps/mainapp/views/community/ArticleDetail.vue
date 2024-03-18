@@ -6,30 +6,33 @@
  */
 
 import { DateUtil, TextUtil } from "@common/utils";
-import { DiscussionHttp, FileHttp, ConsumerHttp } from "@common/requests";
+import { Requests } from "@common/requests";
 
 import CommonHeader from "@mainapp/fragments/CommonHeader.vue";
 
 const route = useRoute();
 const mainData = ref<ArticleModel>();
 const commentList = ref<PageInfo<ArticleCommentModel>>();
-const token = localStorage.getToken(KeyVals.MAINAPP_TOKEN_KEY);
+const token = localStorage.getToken(Consts.MAINAPP_TOKEN_KEY);
 
 async function fetchData(params: any) {
   const id = route.params.id.toString();
-  mainData.value = await DiscussionHttp.findDetailByCriteria({ ...params, ...{ articleId: id } });
+  mainData.value = await Requests.Discussion.findDetailByCriteria({
+    ...params,
+    ...{ articleId: id }
+  });
 }
 
 async function fetchCommentList(params: any) {
   const id = route.params.id.toString();
-  commentList.value = await DiscussionHttp.findCommentsByCriteria({
+  commentList.value = await Requests.Discussion.findCommentsByCriteria({
     ...params,
     ...{ articleId: id }
   });
 }
 
 function diggArticle() {
-  DiscussionHttp.upgradeArticle(
+  Requests.Discussion.upgradeArticle(
     {
       model: { id: mainData.value.id },
       config: {
@@ -45,7 +48,7 @@ function diggArticle() {
 }
 
 function buryArticle() {
-  DiscussionHttp.upgradeArticle(
+  Requests.Discussion.upgradeArticle(
     {
       model: { id: mainData.value.id },
       config: {
@@ -66,11 +69,14 @@ const commentContent = ref("");
 
 function uploadCommentImage(formData: FormData) {
   formData.append("filepath", "/article/comments");
-  return FileHttp.uploadImageFile(formData);
+  return Requests.File.uploadImageFile(formData);
 }
 
 function collectConsumer() {
-  ConsumerHttp.addCollecting({ collectorId: token.id, consumerId: mainData.value.consumer.id });
+  Requests.Consumer.addCollecting({
+    collectorId: token.id,
+    consumerId: mainData.value.consumer.id
+  });
 }
 
 function addComment() {
@@ -79,7 +85,7 @@ function addComment() {
     ElMessage.error("发表至少 3 个字的评论！");
     return;
   }
-  DiscussionHttp.addComment(
+  Requests.Discussion.addComment(
     {
       articleId: mainData.value.id,
       consumerId: token.id,
@@ -96,7 +102,7 @@ function addComment() {
 }
 
 function deleteComment(id: string) {
-  DiscussionHttp.deleteComment(
+  Requests.Discussion.deleteComment(
     { id, articleId: mainData.value.id, consumerId: token.id },
     async () => {
       await fetchCommentList({
@@ -110,12 +116,20 @@ function deleteComment(id: string) {
 
 function diggComment(item: ArticleCommentModel) {
   item.digg += 1;
-  DiscussionHttp.upgradeComment({ id: item.id, articleId: mainData.value.id, digg: item.digg });
+  Requests.Discussion.upgradeComment({
+    id: item.id,
+    articleId: mainData.value.id,
+    digg: item.digg
+  });
 }
 
 function buryComment(item: ArticleCommentModel) {
   item.bury += 1;
-  DiscussionHttp.upgradeComment({ id: item.id, articleId: mainData.value.id, bury: item.bury });
+  Requests.Discussion.upgradeComment({
+    id: item.id,
+    articleId: mainData.value.id,
+    bury: item.bury
+  });
 }
 
 const isCommentDateAsc = ref(true);
@@ -145,7 +159,7 @@ async function handleCurrentChange() {
 }
 
 onMounted(() => {
-  DiscussionHttp.upgradeArticle(
+  Requests.Discussion.upgradeArticle(
     {
       model: { id: mainData.value.id },
       config: {
