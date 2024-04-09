@@ -3,21 +3,15 @@
  * @description 分享的 Flowchart 流程图
  * @author zheng
  * @since 2023/9/30
- *
  */
 
-// jointjs
 import "jointjs/css/layout.css";
 import "jointjs/css/themes/default.css";
 import { dia } from "jointjs";
 import { createJointjs } from "@common/lib/jointjs";
-// service
 import { Services } from "@mainapp/service";
-// apis
 import { Requests } from "@common/requests";
-// common
 import { DateUtil } from "@common/utils";
-// components
 import HeaderBottomTools from "@mainapp/fragments/flowchart/HeaderBottomTools.vue";
 import HeaderTopTools from "@mainapp/fragments/flowchart/HeaderTopTools.vue";
 import FooterTools from "@mainapp/fragments/flowchart/FooterTools.vue";
@@ -26,7 +20,6 @@ const route = useRoute();
 const router = useRouter();
 const paper = shallowRef<dia.Paper>();
 const graph = shallowRef<dia.Graph>();
-
 const mainData = ref<FlowchartModel>({});
 const texteditor = shallowRef<HTMLInputElement>();
 

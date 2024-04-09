@@ -24,8 +24,6 @@ export default defineConfig(({ mode }) => {
         imports: [
           "vue",
           "vue-router",
-          // "pinia",
-          // "@vueuse/core",
           {
             "@common/constants": ["Consts"],
             "@vueuse/core": ["useStorage", "useStorageAsync"]

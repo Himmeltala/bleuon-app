@@ -2,7 +2,7 @@ package com.bleuon.controller;
 
 import com.bleuon.annotaion.RequestMappingPrefix;
 import com.bleuon.constant.AuthorityType;
-import com.bleuon.constant.KeyVals;
+import com.bleuon.constant.Constants;
 import com.bleuon.entity.AdminModel;
 import com.bleuon.entity.ConsumerModel;
 import com.bleuon.entity.CustomUserDetails;
@@ -207,7 +207,7 @@ public class ApiEntranceController implements Serializable {
             return R.error("该用户不存在！");
         }
 
-        CustomUserDetails details = new CustomUserDetails(exists.getId(), exists.getUsername(), "******", KeyVals.USER_TYPE_NORMAL, new ArrayList<>());
+        CustomUserDetails details = new CustomUserDetails(exists.getId(), exists.getUsername(), "******", Constants.USER_TYPE_NORMAL, new ArrayList<>());
         TokenModel token = jwtUtil.grant(details);
         return R.success("登录成功！", token);
     }
@@ -253,7 +253,7 @@ public class ApiEntranceController implements Serializable {
             return R.error("用户名或密码错误！");
         }
 
-        CustomUserDetails details = new CustomUserDetails(exists.getId(), exists.getUsername(), "******", KeyVals.USER_TYPE_ADMIN, new ArrayList<>());
+        CustomUserDetails details = new CustomUserDetails(exists.getId(), exists.getUsername(), "******", Constants.USER_TYPE_ADMIN, new ArrayList<>());
         TokenModel token = jwtUtil.grant(details);
         return R.success("登录成功！", token);
     }
@@ -267,7 +267,7 @@ public class ApiEntranceController implements Serializable {
             return R.error("用户名或密码错误！");
         }
 
-        CustomUserDetails details = new CustomUserDetails(exists.getId(), exists.getUsername(), "******", KeyVals.USER_TYPE_NORMAL, new ArrayList<>());
+        CustomUserDetails details = new CustomUserDetails(exists.getId(), exists.getUsername(), "******", Constants.USER_TYPE_NORMAL, new ArrayList<>());
         TokenModel token = jwtUtil.grant(details);
         return R.success("登录成功！", token);
     }

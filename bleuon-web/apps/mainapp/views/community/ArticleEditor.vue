@@ -8,11 +8,9 @@
 import { Requests } from "@common/requests";
 import { ElFormUtil, TextUtil } from "@common/utils";
 import { ElSelectData } from "@common/data";
-
 import CommonHeader from "@mainapp/fragments/CommonHeader.vue";
 
 const route = useRoute();
-
 const formData = ref<ArticleModel>({
   title: "",
   content: "",

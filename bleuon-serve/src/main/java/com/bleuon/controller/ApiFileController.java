@@ -1,7 +1,7 @@
 package com.bleuon.controller;
 
 import com.bleuon.annotaion.RequestMappingPrefix;
-import com.bleuon.constant.KeyVals;
+import com.bleuon.constant.Constants;
 import com.bleuon.entity.vo.FileParamsVO;
 import com.bleuon.service.FileService;
 import com.bleuon.utils.FileUtil;
@@ -56,7 +56,7 @@ public class ApiFileController implements Serializable {
             return R.error("请选择一个图片！");
         }
 
-        String imgUrl = fileService.upload(KeyVals.RESOURCE_ROOT + "/static/images/" + vo.getFilepath(), vo.getFilename(), file);
+        String imgUrl = fileService.upload(Constants.RESOURCE_ROOT + "/static/images/" + vo.getFilepath(), vo.getFilename(), file);
 
         if (!StringUtils.hasText(imgUrl)) {
             return R.failed("上传失败！");

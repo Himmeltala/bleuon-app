@@ -2,7 +2,7 @@ package com.bleuon.security.filter;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
-import com.bleuon.constant.KeyVals;
+import com.bleuon.constant.Constants;
 import com.bleuon.entity.CustomUserDetails;
 import com.bleuon.service.impl.PermissionService;
 import com.bleuon.utils.JwtUtil;
@@ -43,15 +43,19 @@ public class VerifyJwtFilter extends OncePerRequestFilter implements Serializabl
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
-        String cookie = IpUtil.parseCookie(request, KeyVals.ADMIN_TOKEN);
-        boolean sameSite = IpUtil.isSameSite(request);
+        String backendCookie = IpUtil.parseCookie(request, Constants.BACK_END);
+        boolean isBackend = IpUtil.isSameSite(request);
         String jwtVal;
 
-        if (cookie == null || !sameSite) {
-            jwtVal = request.getHeader(KeyVals.MAINAPP_TOKEN);
+        if (backendCookie == null || !isBackend) {
+            jwtVal = request.getHeader(Constants.FRONT_END);
         } else {
-            JSONObject parsed = JSON.parseObject(cookie);
-            jwtVal = "Bearer " + parsed.get("value").toString();
+            if (backendCookie.startsWith("{") && backendCookie.endsWith("}")) {
+                JSONObject parsed = JSON.parseObject(backendCookie);
+                jwtVal = "Bearer " + parsed.get("value").toString();
+            } else {
+                jwtVal = "Bearer " + backendCookie;
+            }
         }
 
         Claims claims = jwtUtil.parseJwt(jwtVal);
@@ -66,7 +70,7 @@ public class VerifyJwtFilter extends OncePerRequestFilter implements Serializabl
             List<String> authorities;
 
             if (expire != null && expire != -2) {
-                if (type.equals(KeyVals.USER_TYPE_NORMAL)) {
+                if (type.equals(Constants.USER_TYPE_NORMAL)) {
                     authorities = permissionService.findConsumerAuthorityList(id, username);
                 } else {
                     authorities = permissionService.findAdminAuthorityList(id, username);

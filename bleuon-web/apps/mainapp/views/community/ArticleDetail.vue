@@ -7,7 +7,6 @@
 
 import { DateUtil, TextUtil } from "@common/utils";
 import { Requests } from "@common/requests";
-
 import CommonHeader from "@mainapp/fragments/CommonHeader.vue";
 
 const route = useRoute();

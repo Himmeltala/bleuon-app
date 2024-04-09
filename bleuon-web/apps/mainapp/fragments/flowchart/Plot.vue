@@ -3,7 +3,6 @@
  * @description Path SVG 创建组件
  * @author zheng
  * @since 2023/9/26
- *
  */
 
 import { dia } from "jointjs";

@@ -1,6 +1,6 @@
 package com.bleuon.security.filter;
 
-import com.bleuon.constant.KeyVals;
+import com.bleuon.constant.Constants;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpFilter;
@@ -23,7 +23,7 @@ public class HttpCorsFilter extends HttpFilter implements Serializable {
 //        response.addHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
         response.addHeader("Access-Control-Allow-Origin", "http://localhost:5173");
         response.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-        response.addHeader("Access-Control-Allow-Headers", KeyVals.MAINAPP_TOKEN + ", Content-Type");
+        response.addHeader("Access-Control-Allow-Headers", Constants.FRONT_END + ", Content-Type");
         chain.doFilter(request, response);
     }
 }

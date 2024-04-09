@@ -1,6 +1,6 @@
 package com.bleuon.security;
 
-import com.bleuon.constant.KeyVals;
+import com.bleuon.constant.Constants;
 import com.bleuon.entity.AdminModel;
 import com.bleuon.entity.CustomUserDetails;
 import com.bleuon.mapper.AdminMapper;
@@ -39,7 +39,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         List<String> authorities = permissionService.findAdminAuthorityList(null, exists.getUsername());
-        return new CustomUserDetails(exists.getId(), exists.getUsername(), exists.getPassword(), KeyVals.USER_TYPE_ADMIN, authorities);
+        return new CustomUserDetails(exists.getId(), exists.getUsername(), exists.getPassword(), Constants.USER_TYPE_ADMIN, authorities);
     }
 
 }

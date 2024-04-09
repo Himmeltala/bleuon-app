@@ -2,7 +2,6 @@
  * @description 配置路由组件
  * @author zheng
  * @since 2023/6/23
- *
  */
 
 import { createRouter, createWebHashHistory } from "vue-router";

@@ -3,10 +3,8 @@
  * @description 工作台页
  * @author zheng
  * @since 2023/8/23
- *
  */
 
-// components
 import WorkbenchMenu from "@mainapp/fragments/workbench/WorkbenchMenu.vue";
 
 const activeItem = ref("auth-flowchart-list");

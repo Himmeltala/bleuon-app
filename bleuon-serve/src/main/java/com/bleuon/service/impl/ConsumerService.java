@@ -1,7 +1,7 @@
 package com.bleuon.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.bleuon.constant.KeyVals;
+import com.bleuon.constant.Constants;
 import com.bleuon.entity.ConsumerModel;
 import com.bleuon.exception.JdbcErrorException;
 import com.bleuon.mapper.ConsumerMapper;
@@ -72,7 +72,7 @@ public class ConsumerService extends ServiceImpl<ConsumerMapper, ConsumerModel> 
     @Override
     public String upgradeAvatar(ConsumerModel model, MultipartFile file) {
         try {
-            String imgUrl = fileService.upload(KeyVals.RESOURCE_ROOT + "/static/images/avatar", model.getId(), file);
+            String imgUrl = fileService.upload(Constants.RESOURCE_ROOT + "/static/images/avatar", model.getId(), file);
 
             if (!StringUtils.hasText(imgUrl)) {
                 return "";

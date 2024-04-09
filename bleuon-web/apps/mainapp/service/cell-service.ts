@@ -2,7 +2,6 @@
  * @description link 以及 element 共同业务
  * @author zheng
  * @since 2023/9/24
- *
  */
 
 import { dia } from "jointjs";

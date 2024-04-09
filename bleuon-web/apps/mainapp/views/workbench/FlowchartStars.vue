@@ -3,16 +3,11 @@
  * @description 收藏的流程图
  * @author zheng
  * @since 2023/8/23
- *
  */
 
-// jointjs
 import { downloadWithDataURI } from "@common/lib/jointjs/utils";
-
 import { DateUtil } from "@common/utils";
 import { Requests } from "@common/requests";
-
-// components
 import File from "@mainapp/components/File.vue";
 import WorkbenchHeader from "@mainapp/fragments/workbench/WorkbenchHeader.vue";
 

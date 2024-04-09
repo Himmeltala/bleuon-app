@@ -3,7 +3,6 @@
  * @description 找回账号
  * @author zheng
  * @since 2023/8/23
- *
  */
 
 import FindAccountVerifyCode from "@mainapp/fragments/entrance/FindAccountVerifyCode.vue";

@@ -3,23 +3,17 @@
  * @description Flowchart 流程图
  * @author zheng
  * @since 2023/9/9
- *
  */
 
-// jointjs
 import "jointjs/css/layout.css";
 import "jointjs/css/themes/default.css";
 import { dia } from "jointjs";
 import { createJointjs } from "@common/lib/jointjs";
 import { getDataURI } from "@common/lib/jointjs/utils";
-// service
 import { Services } from "@mainapp/service";
-// common
 import { ElDatePickerData, ElSelectData } from "@common/data";
 import { ElFormUtil, PreventUtil } from "@common/utils";
-// apis
 import { Requests } from "@common/requests";
-// components
 import FooterTools from "@mainapp/fragments/flowchart/FooterTools.vue";
 import HeaderBottomTools from "@mainapp/fragments/flowchart/HeaderBottomTools.vue";
 import HeaderTopTools from "@mainapp/fragments/flowchart/HeaderTopTools.vue";
@@ -189,8 +183,6 @@ function cancelShare() {
     }
   });
 }
-
-// release
 
 const releaseDialogVisible = ref(false);
 const releaseFormRef = ref<FormInstance>();

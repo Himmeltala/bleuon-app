@@ -3,7 +3,6 @@ import { Requests } from "@common/requests";
 import { ElFormUtil } from "@common/utils";
 
 const router = useRouter();
-
 let interval: number;
 const coudButtonCount = ref(60);
 const codeButtonDisabled = ref(false);

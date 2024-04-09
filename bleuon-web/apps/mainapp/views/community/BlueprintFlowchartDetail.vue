@@ -5,12 +5,10 @@
  * @since 2023/10/5
  */
 
-// jointjs
 import "jointjs/css/layout.css";
 import "jointjs/css/themes/default.css";
 import { dia } from "jointjs";
 import { createJointjs } from "@common/lib/jointjs";
-
 import { DateUtil } from "@common/utils";
 import { Requests } from "@common/requests";
 import { Services } from "@mainapp/service";

@@ -3,7 +3,6 @@
  * @description 注册页
  * @author zheng
  * @since 2023/8/23
- *
  */
 
 import AccountRegister from "@mainapp/fragments/entrance/AccountRegister.vue";

@@ -3,7 +3,6 @@ import { Requests } from "@common/requests";
 import { ElFormUtil } from "@common/utils";
 
 const router = useRouter();
-
 const isAccountCorrect = ref(false);
 const isPasswordCorrect = ref(false);
 

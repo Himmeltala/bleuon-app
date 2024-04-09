@@ -3,22 +3,16 @@
  * @description flowcharts 流程图列表
  * @author zheng
  * @since 2023/8/23
- *
  */
 
-// jointjs
 import { downloadWithDataURI } from "@common/lib/jointjs/utils";
-
 import { DateUtil, ElFormUtil } from "@common/utils";
 import { Requests } from "@common/requests";
-
-// components
 import File from "@mainapp/components/File.vue";
 import WorkbenchHeader from "@mainapp/fragments/workbench/WorkbenchHeader.vue";
 
 const clickedIndex = ref(0);
 const mainData = ref<FlowchartModel[]>([]);
-
 const dialogVisible = ref(false);
 const isFileNameCorrect = ref(false);
 const fileNameRules = reactive({

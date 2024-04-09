@@ -2,7 +2,6 @@
  * @description jointjs 事件监听、以及页面上的一些 change 事件
  * @author zheng
  * @since 2023/9/24
- *
  */
 
 import { dia } from "jointjs";

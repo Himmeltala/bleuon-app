@@ -3,13 +3,10 @@
  * @description 个人空间
  * @author zheng
  * @since 2023/8/23
- *
  */
 
 import { Requests } from "@common/requests";
-
 import CommonHeader from "@mainapp/fragments/CommonHeader.vue";
-// components
 import MyDynamic from "@mainapp/fragments/consumer/MyDynamic.vue";
 import MyPublicFlowchart from "@mainapp/fragments/consumer/MyPublicFlowchart.vue";
 import MyShareFlowchart from "@mainapp/fragments/consumer/MyShareFlowchart.vue";
