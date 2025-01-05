@@ -1,1 +1,50 @@
+spring:
+  servlet:
+    multipart:
+      max-file-size: 4MB
+      max-request-size: 4MB
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+    url: jdbc:mysql://127.0.0.1:3306/bleuon?allowMultiQueries=true
+  data:
+    redis:
+      database: 0
+      host: 127.0.0.1
+      port: 6379
+      password: 123456
+  mail:
+    host: smtp.qq.com
+    username: himmelbleu@qq.com
+    password: zrnkjyheqjbnheaa
+    default-encoding: UTF-8
+    port: 587
+    timeout: 1
+    expire: 3
+  security:
+    token-expire: 604800000
+    token-key: cereshuzhitingnizhenbangcereshuzhitingnizhenbang
 
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: com.bleuon.entity
+
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countsql
+
+# request mapping
+request:
+  mapping:
+    prefix:
+      prefix: api
+
+logging:
+  level:
+    com.bleuon.mapper: TRACE

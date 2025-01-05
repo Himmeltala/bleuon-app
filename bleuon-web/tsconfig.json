@@ -14,8 +14,34 @@
     "noEmit": true,
     "strictNullChecks": false,
     "baseUrl": ".",
-    "paths": { "@/*": ["src/*"] }
+    "paths": {
+      "@mainapp/*": ["apps/mainapp/*"],
+      "@subapp/*": ["apps/subapp/*"],
+      "@common/*": ["common/*"]
+    }
   },
-  "include": ["src/**/*.ts", "src/**/*.vue", "src/**/*.tsx", "src/**/*.d.ts", "auto-imports.d.ts", "components.d.ts"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": [
+    "apps/mainapp/**/*.ts",
+    "apps/mainapp/**/*.vue",
+    "apps/mainapp/**/*.tsx",
+    "apps/mainapp/**/*.d.ts",
+    "apps/subapp/**/*.ts",
+    "apps/subapp/**/*.vue",
+    "apps/subapp/**/*.tsx",
+    "apps/subapp/**/*.d.ts",
+    "common/**/*.ts",
+    "common/**/*.vue",
+    "common/**/*.tsx",
+    "common/**/*.d.ts",
+    "uno.config.ts",
+    "typings/*.d.ts",
+    "vite-env.d.ts",
+    "auto-imports.d.ts",
+    "components.d.ts"
+  ],
+  "references": [
+    {
+      "path": "tsconfig.node.json"
+    }
+  ]
 }

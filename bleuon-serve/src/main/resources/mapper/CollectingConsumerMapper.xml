@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bleuon.mapper.CollectingConsumerMapper">
+
+    <resultMap id="findMap" type="CollectingConsumerModel" autoMapping="true">
+        <id column="id" property="id"/>
+        <association property="consumer" javaType="ConsumerModel" columnPrefix="c_">
+            <id column="id" property="id"/>
+            <result column="username" property="username"/>
+            <result column="avatar" property="avatar"/>
+            <result column="signature" property="signature"/>
+        </association>
+    </resultMap>
+
+    <select id="findAllByCriteria" resultMap="findMap" parameterType="com.bleuon.entity.criterias.ConsumerCriteria">
+        SELECT cc.*,
+               c.id        c_id,
+               c.username  c_username,
+               c.avatar    c_avatar,
+               c.signature c_signature
+        FROM co_conllecting_consumer cc
+                 JOIN t_consumers c ON cc.consumer_id = c.id
+        WHERE cc.collector_id = #{collectorId};
+    </select>
+
+    <select id="findByCriteria" resultType="CollectingConsumerModel"
+            parameterType="com.bleuon.entity.criterias.ConsumerCriteria">
+        SELECT cc.*
+        FROM co_conllecting_consumer cc
+        WHERE cc.collector_id = #{collectorId}
+          AND cc.consumer_id = #{consumerId};
+    </select>
+
+    <insert id="add" parameterType="CollectingConsumerModel">
+        INSERT INTO co_conllecting_consumer(id, collector_id, consumer_id)
+        VALUES (#{id}, #{collectorId}, #{consumerId});
+    </insert>
+
+    <delete id="drop" parameterType="CollectingConsumerModel">
+        DELETE
+        FROM co_conllecting_consumer
+        WHERE id = #{id};
+    </delete>
+</mapper>

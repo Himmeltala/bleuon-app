@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bleuon.mapper.FlowchartMapper">
+
+    <update id="upgrade" parameterType="FlowchartModel">
+        UPDATE t_flowcharts
+        <set>
+            <trim suffixOverrides=",">
+                <if test="filename != null">filename = #{filename},</if>
+                <if test="json != null">`json` = #{json},</if>
+                <if test="dataUri != null">data_uri = #{dataUri},</if>
+                <if test="width != null">width = #{width},</if>
+                <if test="height != null">height = #{height},</if>
+                <if test="bgColor != null">bg_color = #{bgColor},</if>
+                <if test="gridSize != null">grid_size = #{gridSize},</if>
+                <if test="drawGrid != null">draw_grid = #{drawGrid},</if>
+                <if test="routerDefault != null">router_default = #{routerDefault},</if>
+                <if test="connectorDefault != null">connector_default = #{connectorDefault},</if>
+                <if test="isPublic != null">is_public = #{isPublic},</if>
+                <if test="isLegal != null">is_legal = #{isLegal},</if>
+                <if test="isShare != null">is_share = #{isShare},</if>
+                <if test="isBlueprint != null">is_blueprint = #{isBlueprint},</if>
+                <if test="createDate != null">create_date = #{createDate},</if>
+                <if test="modifyDate != null">modify_date = #{modifyDate},</if>
+                <if test="deadShareDate != null">dead_share_date = #{deadShareDate},</if>
+            </trim>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+</mapper>

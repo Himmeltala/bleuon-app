@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bleuon.mapper.DiscussionMapper">
+
+    <select id="findConsumerById" resultType="ConsumerModel">
+        SELECT id,
+               username,
+               avatar,
+               signature,
+               company,
+               position,
+               profession
+        FROM t_consumers
+        WHERE id = #{consumerId}
+    </select>
+
+    <!-- findAllByCriteria -->
+
+    <resultMap id="findAllArticleByMap" type="ArticleModel" autoMapping="true">
+        <id column="id" property="id"/>
+        <association javaType="ConsumerModel" property="consumer" column="{consumerId=consumer_id}"
+                     select="findConsumerById">
+        </association>
+    </resultMap>
+
+    <select id="findAllArticleBy" resultMap="findAllArticleByMap">
+        SELECT *
+        FROM t_articles
+        <where>
+            <trim prefix="AND" prefixOverrides="AND">
+                <if test="consumerId != null and consumerId != ''">
+                    AND consumer_id = #{consumerId}
+                </if>
+                <if test="title != null and title != ''">
+                    AND title LIKE CONCAT('%', #{title}, '%')
+                </if>
+                <if test="rankingType != null and rankingType != ''">
+                    AND ranking_type = #{rankingType}
+                </if>
+                <if test="type != null and type != ''">
+                    AND type = #{type}
+                </if>
+            </trim>
+        </where>
+        <if test="sequences != null">
+            ORDER BY
+            <foreach collection="sequences" item="sequence" separator=", ">
+                <choose>
+                    <when test="sequence.isAsc == true">
+                        ${sequence.col}
+                    </when>
+                    <otherwise>
+                        ${sequence.col} DESC
+                    </otherwise>
+                </choose>
+            </foreach>
+        </if>
+    </select>
+
+    <!-- findByCriteria -->
+
+    <resultMap id="findArticleByMap" type="ArticleModel" autoMapping="true">
+        <id column="id" property="id"/>
+        <association javaType="ConsumerModel" property="consumer" column="{consumerId=consumer_id}"
+                     select="findConsumerById">
+        </association>
+    </resultMap>
+
+    <select id="findArticleBy" resultMap="findArticleByMap">
+        SELECT *
+        FROM t_articles
+        <where>
+            AND id = #{articleId}
+            <trim prefix="AND" prefixOverrides="AND">
+                <if test="consumerId != null and consumerId != ''">
+                    AND consumer_id = #{consumerId}
+                </if>
+                <if test="title != null and title != ''">
+                    AND title LIKE CONCAT('%', #{title}, '%')
+                </if>
+                <if test="rankingType != null and rankingType != ''">
+                    AND ranking_type = #{rankingType}
+                </if>
+                <if test="type != null and type != ''">
+                    AND type = #{type}
+                </if>
+            </trim>
+        </where>
+    </select>
+
+    <!-- findCommentsByCriteria -->
+
+    <resultMap id="findArticleCommentListByMap" type="ArticleCommentModel" autoMapping="true">
+        <id column="id" property="id"/>
+        <association javaType="ConsumerModel" property="consumer" column="{consumerId=consumer_id}"
+                     select="findConsumerById">
+        </association>
+    </resultMap>
+
+    <select id="findArticleCommentListBy" resultMap="findArticleCommentListByMap">
+        SELECT *
+        FROM t_article_comments
+        WHERE article_id = #{articleId}
+        <if test="sequences != null">
+            ORDER BY
+            <foreach collection="sequences" item="sequence" separator=", ">
+                <choose>
+                    <when test="sequence.isAsc == true">
+                        ${sequence.col}
+                    </when>
+                    <otherwise>
+                        ${sequence.col} DESC
+                    </otherwise>
+                </choose>
+            </foreach>
+        </if>
+    </select>
+
+    <insert id="addArticleComment">
+        INSERT INTO t_article_comments(id, content, consumer_id, article_id)
+        VALUES (#{id}, #{content}, #{consumerId}, #{articleId})
+    </insert>
+
+    <delete id="deleteArticleComment">
+        DELETE
+        FROM t_article_comments
+        WHERE id = #{id}
+          AND consumer_id = #{consumerId}
+          AND article_id = #{articleId};
+    </delete>
+
+    <update id="upgradeArticleComment">
+        UPDATE t_article_comments
+        <set>
+            <trim suffixOverrides=",">
+                <if test="digg != null">digg = #{digg},</if>
+                <if test="bury != null">bury = #{bury},</if>
+                <if test="content != null">`content` = #{content},</if>
+            </trim>
+        </set>
+        WHERE id = #{id} AND article_id = #{articleId}
+    </update>
+
+    <update id="upgradeArticle">
+        UPDATE t_articles
+        <set>
+            <trim suffixOverrides=",">
+                <if test="digg != null">digg = #{digg},</if>
+                <if test="title != null">title = #{title},</if>
+                <if test="titleTag != null">title_tag = #{titleTag},</if>
+                <if test="bury != null">bury = #{bury},</if>
+                <if test="views != null">`views` = #{views},</if>
+                <if test="desc != null">`desc` = #{desc},</if>
+                <if test="descTag != null">desc_tag = #{descTag},</if>
+                <if test="descImgs != null">desc_imgs = #{descImgs},</if>
+                <if test="type != null">type = #{type},</if>
+                <if test="rankingType != null">ranking_type = #{rankingType},</if>
+                <if test="content != null">`content` = #{content},</if>
+            </trim>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <insert id="addArticle">
+        INSERT INTO t_articles(id, title, title_tag, `desc`, desc_tag, desc_imgs, type, content, consumer_id)
+        VALUES (#{id}, #{title}, #{titleTag}, #{desc}, #{descTag}, #{descImgs}, #{type}, #{content}, #{consumerId})
+    </insert>
+
+</mapper>

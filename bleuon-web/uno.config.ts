@@ -1,32 +1,10 @@
 import {
   defineConfig,
   presetAttributify,
-  presetUno,
   presetIcons,
+  presetUno,
   transformerDirectives
 } from "unocss";
-
-const matches = [
-  { prefix: "c", value: "center" },
-  { prefix: "s", value: "start" },
-  { prefix: "e", value: "end" },
-  { prefix: "b", value: "between" },
-  { prefix: "a", value: "around" }
-];
-
-function getMatches(prefix: string) {
-  return matches.find(e => e.prefix === prefix);
-}
-
-function addFlexItemsAndContent(p1: string) {
-  const val = getMatches(p1);
-  return `flex items-${val?.value || "center"} content-${val?.value || "center"}`;
-}
-
-function addFlexJustify(p2: string) {
-  const val = getMatches(p2);
-  return ` justify-${val?.value || "center"}`;
-}
 
 export default defineConfig({
   presets: [
@@ -46,66 +24,73 @@ export default defineConfig({
   ],
   theme: {
     colors: {
-      a: "var(--text-a)",
-      b: "var(--text-b)",
-      c: "var(--text-c)",
-      d: "var(--text-d)",
-      primary: "var(--text-primary)",
-      dropPrimary: "var(--background-bg)"
-    }
-  },
-  preflights: [
-    {
-      getCSS: ({ theme }) => {
-        return `
-          * {
-            font-family: inherit;
-            color: inherit;
-            line-height: 1.7;
-            letter-spacing: 0.05rem;
-            scroll-behavior: smooth;
-            word-break: break-all;
-            line-break: anywhere;
-            box-sizing: border-box;
-          }
-        `;
+      theme: {
+        primary: "var(--bleuon-theme-color-primary)",
+        1: "var(--bleuon-theme-color-1)",
+        2: "var(--bleuon-theme-color-2)",
+        3: "var(--bleuon-theme-color-3)",
+        4: "var(--bleuon-theme-color-4)",
+        5: "var(--bleuon-theme-color-5)",
+        6: "var(--bleuon-theme-color-6)"
+      },
+      text: {
+        primary: "var(--bleuon-text-color-primary)",
+        regular: "var(--bleuon-text-color-regular)",
+        secondary: "var(--bleuon-text-color-secondary)",
+        placeholder: "var(--bleuon-text-color-placeholder)",
+        disabled: "var(--bleuon-text-color-disabled)"
+      },
+      bg: {
+        primary: "var(--bleuon-bg-color)",
+        page: "var(--bleuon-bg-color-page)",
+        overlay: "var(--bleuon-bg-color-overlay)"
+      },
+      border: {
+        primary: "var(--bleuon-border-color)",
+        darker: "var(--bleuon-border-color-darker)",
+        dark: "var(--bleuon-border-color-dark)",
+        light: "var(--bleuon-border-color-light)",
+        lighter: "var(--bleuon-border-color-lighter)",
+        extraLight: "var(--bleuon-border-color-extra-light)"
       }
     }
-  ],
+  },
   rules: [
     [
       /^flow-(auto|hidden|inherit|initial|overlay|revert|scroll|unset|visible)$/,
       ([, d]) => ({ overflow: `${d}` })
-    ],
-    [
-      /^flow-x-(auto|hidden|inherit|initial|overlay|revert|scroll|unset|visible)$/,
-      ([, d]) => ({ overflow: `${d}` })
-    ],
-    [
-      /^flow-y-(auto|hidden|inherit|initial|overlay|revert|scroll|unset|visible)$/,
-      ([, d]) => ({ overflow: `${d}` })
-    ],
-    [/^letter-spacing-(\d+|\d+\.\d+)$/, ([, d]) => ({ "letter-spacing": `${d}rem` })],
-    [/^line-height-(\d+|\d+\.\d+)$/, ([, d]) => ({ "line-height": `${d}rem` })]
+    ]
   ],
   shortcuts: [
+    // flex
     [
       /^f-((c|s|e)(-(c|s|e|b|a))*)$/,
-      ([, , p1, , p2]) => {
+      ([, , g1, , g2]) => {
         let style = ``;
+        const temps = [
+          { k: "c", v: "center" },
+          { k: "s", v: "start" },
+          { k: "e", v: "end" },
+          { k: "b", v: "between" },
+          { k: "a", v: "around" }
+        ];
 
-        style = addFlexItemsAndContent(p1);
-        if (p2) {
-          style += addFlexJustify(p2);
+        const r1 = temps.find(i => i.k == g1);
+        style = `flex items-${r1?.v || "center"} content-${r1?.v || "center"}`;
+
+        if (g2) {
+          const r2 = temps.find(i => i.k == g2);
+          style += ` justify-${r2?.v || "center"}`;
         }
 
         return style;
       }
     ],
+    // 悬停改变字体颜色
     [
       /^hover$/,
       () => {
-        return `cursor-pointer hover:text-primary transition-all-300`;
+        return `cursor-pointer hover:text-theme-primary transition-all-300`;
       }
     ]
   ]

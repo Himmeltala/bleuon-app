@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bleuon.mapper.PermissionMapper">
+
+    <insert id="addConsumerAuthority">
+        INSERT INTO co_consumer_role(consumer_id, role_id, username)
+        VALUES (#{consumerId}, #{roleId}, #{username})
+    </insert>
+
+    <select id="findConsumerAuthorityList" resultType="string">
+        SELECT a.value
+        FROM co_consumer_role AS cur
+        LEFT JOIN p_roles AS r ON r.id = cur.role_id
+        LEFT JOIN co_auth_role AS car ON car.role_id = cur.role_id
+        LEFT JOIN p_auths AS a ON a.id = car.auth_id
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="consumerId != null">
+                AND cur.consumer_id = #{consumerId}
+            </if>
+            <if test="username != null">
+                AND cur.username = #{username}
+            </if>
+        </trim>
+    </select>
+
+    <select id="findAdminAuthorityList" resultType="string">
+        SELECT a.value
+        FROM co_admin_role AS cur
+        LEFT JOIN p_roles AS r ON r.id = cur.role_id
+        LEFT JOIN co_auth_role AS car ON car.role_id = cur.role_id
+        LEFT JOIN p_auths AS a ON a.id = car.auth_id
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="adminId != null">
+                AND cur.admin_id = #{adminId}
+            </if>
+            <if test="username != null">
+                AND cur.username = #{username}
+            </if>
+        </trim>
+    </select>
+
+    <resultMap id="findAdminWithAuthorityListMap" type="AdminModel">
+        <collection property="roles" select="findAdminRoleListByAdminId" column="{adminId=id}"/>
+        <collection property="authorities" select="findAdminAuthorityListByAdminId" column="{adminId=id}"/>
+    </resultMap>
+
+    <select id="findAdminRoleListByAdminId" resultType="RoleModel">
+        SELECT r.*
+        FROM co_admin_role AS cur
+                 LEFT JOIN p_roles AS r ON r.id = cur.role_id
+        WHERE cur.admin_id = #{adminId}
+    </select>
+
+    <select id="findAdminAuthorityListByAdminId" resultType="AuthorityModel">
+        SELECT a.*
+        FROM co_admin_role AS cur
+                 LEFT JOIN p_roles AS r ON r.id = cur.role_id
+                 LEFT JOIN co_auth_role AS car ON car.role_id = cur.role_id
+                 LEFT JOIN p_auths AS a ON a.id = car.auth_id
+        WHERE cur.admin_id = #{adminId}
+    </select>
+
+    <select id="findAdminWithRoleAndAuthorityList" resultMap="findAdminWithAuthorityListMap">
+        SELECT id, username, phone, email, avatar, create_date, modify_date
+        FROM t_admins
+        WHERE id = #{adminId}
+    </select>
+
+    <resultMap id="findConsumerWithAuthorityListMap" type="ConsumerModel" autoMapping="true">
+        <association property="roles" select="findConsumerRoleByConsumerId" column="{consumerId=id}"
+                     autoMapping="true"/>
+        <collection property="authorities" select="findConsumerAuthorities" column="{consumerId=id}"
+                    autoMapping="true"/>
+    </resultMap>
+
+    <select id="findConsumerRoleByConsumerId" resultType="RoleModel">
+        SELECT r.*
+        FROM co_consumer_role AS cur
+                 LEFT JOIN p_roles AS r ON r.id = cur.role_id
+        WHERE cur.consumer_id = #{consumerId}
+    </select>
+
+    <select id="findConsumerAuthorities" resultType="AuthorityModel">
+        SELECT a.*
+        FROM co_consumer_role AS cur
+                 LEFT JOIN p_roles AS r ON r.id = cur.role_id
+                 LEFT JOIN co_auth_role AS car ON car.role_id = cur.role_id
+                 LEFT JOIN p_auths AS a ON a.id = car.auth_id
+        WHERE cur.consumer_id = #{consumerId}
+    </select>
+
+    <select id="findConsumerWithRoleAndAuthorityList" resultMap="findConsumerWithAuthorityListMap">
+        SELECT id,
+               username,
+               email,
+               phone,
+               avatar,
+               create_date,
+               modify_date
+        FROM t_consumers
+        WHERE id = #{consumerId}
+    </select>
+
+    <select id="findAdminsWithRoleAndAuthorityList" resultMap="findAdminWithAuthorityListMap">
+        SELECT id, username, phone, email, avatar, create_date, modify_date
+        FROM t_admins
+    </select>
+
+    <select id="findAllConsumerWithRoleAndAuthorityList" resultMap="findConsumerWithAuthorityListMap">
+        SELECT id,
+               username,
+               email,
+               phone,
+               avatar,
+               create_date,
+               modify_date
+        FROM t_consumers
+    </select>
+
+    <resultMap id="findRoleWithAuthorityListMap" type="RoleModel" autoMapping="true">
+        <collection property="authorities" select="findAuthorityListByRoleId" column="{roleId=id}"/>
+    </resultMap>
+
+    <select id="findAuthorityListByRoleId" resultType="AuthorityModel">
+        SELECT *
+        FROM co_auth_role ar
+                 LEFT JOIN p_auths a ON ar.auth_id = a.id
+        WHERE role_id = #{roleId}
+    </select>
+
+    <select id="findRolesWithAuthorityList" resultMap="findRoleWithAuthorityListMap">
+        SELECT *
+        FROM p_roles
+    </select>
+
+    <insert id="addRole">
+        INSERT INTO p_roles(remark, name)
+        VALUES (#{remark}, #{name})
+    </insert>
+
+    <select id="findRoleAnyFiled" resultType="RoleModel">
+        SELECT *
+        FROM p_roles
+        WHERE name = #{name}
+           OR remark = #{remark}
+    </select>
+
+    <delete id="deleteRole">
+        DELETE
+        FROM p_roles
+        WHERE id = #{id}
+    </delete>
+
+    <update id="upgradeRole">
+        UPDATE p_roles
+        SET name   = #{name},
+            remark = #{remark}
+        WHERE id = #{id}
+    </update>
+
+    <select id="findRolesWithoutAuthorityList" resultType="RoleModel">
+        SELECT *
+        FROM p_roles
+    </select>
+
+    <select id="findAuthorityList" resultType="AuthorityModel">
+        SELECT *
+        FROM p_auths
+        <if test="keyword != null and keyword != ''">
+            WHERE name LIKE CONCAT('%', #{keyword}, '%')
+            OR value LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+    </select>
+
+    <insert id="addAuthorityListToRole">
+        <foreach collection="authIds" item="authId">
+            INSERT INTO co_auth_role(auth_id, role_id) VALUES (#{authId}, #{roleId});
+        </foreach>
+    </insert>
+
+    <delete id="deleteRoleAuthority">
+        DELETE
+        FROM co_auth_role
+        WHERE role_id = #{roleId}
+          AND auth_id = #{authId}
+    </delete>
+
+    <insert id="addRoleToAdmin">
+        INSERT INTO co_admin_role(admin_id, role_id, username)
+        VALUES (#{adminId}, #{roleId}, #{username})
+    </insert>
+
+    <delete id="deleteRoleOfAdmin">
+        DELETE
+        FROM co_admin_role
+        WHERE username = #{username}
+        <if test="adminId != null">
+            AND admin_id = #{adminId}
+        </if>
+        <if test="roleId != null">
+            AND role_id = #{roleId}
+        </if>
+    </delete>
+
+    <resultMap id="findAdminsWithRoleListWithoutAuthorityListMap" type="AdminModel">
+        <collection property="roles" select="findAdminRoleListByAdminId" column="{adminId=id}"/>
+    </resultMap>
+
+    <select id="findAdminsWithRoleListWithoutAuthorityList" resultMap="findAdminsWithRoleListWithoutAuthorityListMap">
+        SELECT id, username, phone, email, avatar, create_date, modify_date
+        FROM t_admins
+    </select>
+
+    <update id="upgradeAuthority">
+        UPDATE p_auths
+        <set>
+            <trim suffixOverrides=",">
+                <if test="name != null">name = #{name},</if>
+                <if test="value != null">`value` = #{value},</if>
+            </trim>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="dropAuthority">
+        DELETE
+        FROM p_auths
+        WHERE id = #{id}
+    </delete>
+
+    <insert id="addAuthority">
+        INSERT INTO p_auths(name, value)
+        VALUES (#{name}, #{value})
+    </insert>
+
+</mapper>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bleuon.mapper.BlueprintFlowchartMapper">
+
+    <resultMap id="findBlueprintMap" type="BlueprintFlowchartModel" autoMapping="true">
+        <id property="id" column="id"/>
+        <association javaType="FlowchartModel" property="flowchart" columnPrefix="f_"
+                     autoMapping="true">
+            <id property="id" column="id"/>
+            <association javaType="ConsumerModel" property="consumer"
+                         column="{consumerId=consumer_id}" select="findUserById"/>
+        </association>
+    </resultMap>
+
+    <select id="findAll" resultMap="findBlueprintMap">
+        SELECT bf.*,
+        f.id f_id,
+        f.filename f_filename,
+        f.json f_json,
+        f.data_uri f_data_uri,
+        f.width f_width,
+        f.height f_height,
+        f.bg_color f_bg_color,
+        f.grid_size f_grid_size,
+        f.draw_grid f_draw_grid,
+        f.router_default f_router_default,
+        f.connector_default f_connector_default,
+        f.is_public f_is_public,
+        f.is_legal f_is_legal,
+        f.is_share f_is_share,
+        f.create_date f_create_date,
+        f.modify_date f_modify_date,
+        f.dead_share_date f_dead_share_date,
+        f.consumer_id f_consumer_id
+        FROM t_blueprint_flowcharts bf
+        LEFT JOIN t_flowcharts f ON f.id = bf.flowchart_id
+        <where>
+            <trim prefix="AND" prefixOverrides="AND">
+                <if test="scene != null and scene != ''">
+                    AND bf.scene = #{scene}
+                </if>
+                <if test="price != null and price != ''">
+                    AND bf.price = #{price}
+                </if>
+                <if test="ranking != null and ranking != ''">
+                    AND bf.ranking = #{ranking}
+                </if>
+                <if test="filename != null and filename != ''">
+                    AND f.filename LIKE CONCAT('%', #{filename}, '%')
+                </if>
+            </trim>
+        </where>
+    </select>
+
+    <select id="findUserById" resultType="ConsumerModel">
+        SELECT avatar, username, id
+        FROM t_consumers
+        WHERE id = #{consumerId};
+    </select>
+
+    <select id="find" resultMap="findBlueprintMap">
+        SELECT bf.*,
+               f.id                f_id,
+               f.filename          f_filename,
+               f.json              f_json,
+               f.data_uri          f_data_uri,
+               f.width             f_width,
+               f.height            f_height,
+               f.bg_color          f_bg_color,
+               f.grid_size         f_grid_size,
+               f.draw_grid         f_draw_grid,
+               f.router_default    f_router_default,
+               f.connector_default f_connector_default,
+               f.is_public         f_is_public,
+               f.is_legal          f_is_legal,
+               f.is_share          f_is_share,
+               f.create_date       f_create_date,
+               f.modify_date       f_modify_date,
+               f.dead_share_date   f_dead_share_date,
+               f.consumer_id       f_consumer_id
+        FROM t_blueprint_flowcharts bf
+                 LEFT JOIN t_flowcharts f ON bf.flowchart_id = f.id
+        WHERE bf.id = #{id};
+    </select>
+
+    <update id="upgrade">
+        UPDATE t_blueprint_flowcharts
+        <set>
+            <trim suffixOverrides=",">
+                <if test="views != null">views = #{views},</if>
+                <if test="copies != null">copies = #{copies},</if>
+                <if test="stars != null">stars = #{stars},</if>
+                <if test="tags != null">tags = #{tags},</if>
+                <if test="scene != null">scene = #{scene},</if>
+                <if test="price != null">price = #{price},</if>
+                <if test="ranking != null">ranking = #{ranking},</if>
+                <if test="description != null">`description` = #{description},</if>
+            </trim>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <insert id="add">
+        INSERT INTO t_blueprint_flowcharts(id, tags, scene, price, description, flowchart_id)
+        VALUES (#{id}, #{tags}, #{scene}, #{price}, #{description}, #{flowchartId});
+    </insert>
+
+    <delete id="drop">
+        DELETE
+        FROM t_blueprint_flowcharts
+        WHERE flowchart_id = #{flowchartId};
+    </delete>
+
+</mapper>
